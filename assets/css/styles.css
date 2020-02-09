@@ -6,7 +6,7 @@ a:active, a:hover { color: tomato; outline: 1; }
 
 h1, h2, h3, h4, h5, h6 { margin-top: 15px; margin-bottom: 15px; line-height: 1.1; }
 
-nav ul { position: fixed; top: 0; font-size: 18px; margin: 0; padding: 0; list-style-type: none; width: 100%; background-color: #f1f1f1; }
+nav ul { position: fixed; z-index: 10000; top: 0; font-size: 18px; margin: 0; padding: 0; list-style-type: none; width: 100%; background-color: #f1f1f1; }
 
 nav li { float: left; padding-left: 15%; }
 
@@ -24,16 +24,26 @@ h5 { font-size: 1em; }
 
 h6 { font-size: 1em; color: #777; }
 
-.column { float: left; }
+.column { float: left; margin-bottom: 5%; }
 
 .left { width: 25%; margin-right: 5%; }
 
 .right { width: 70%; }
+
+.fig_left { width: 45%; margin-right: 5%; }
+
+.fig_right { width: 45%; margin-left: 5%; }
 
 .current { color: teal; }
 
 .main_box { width: 70%; margin: 5% auto; padding: 2%; color: #333; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 1.6; word-wrap: break-word; }
 
 .catalog { list-style-type: none; }
+
+img { padding: 5%; text-align: center; width: 60%; }
+
+#side_bar li { margin: 0; padding: 0; list-style-type: none; }
+
+#side_bar ul { margin: 0; padding: 0%; padding-left: 10%; list-style-type: none; }
 
 /*# sourceMappingURL=styles.css.map */

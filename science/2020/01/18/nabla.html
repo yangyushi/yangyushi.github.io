@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>nabla operator</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    18 Jan 2020
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#简介" id="markdown-toc-简介">简介</a></li>
+  <li><a href="#应用" id="markdown-toc-应用">应用</a>    <ul>
+      <li><a href="#散度" id="markdown-toc-散度">散度</a></li>
+      <li><a href="#梯度" id="markdown-toc-梯度">梯度</a></li>
+      <li><a href="#旋度" id="markdown-toc-旋度">旋度</a></li>
+    </ul>
+  </li>
+  <li><a href="#复合算符" id="markdown-toc-复合算符">复合算符</a></li>
+</ul>
+
+<p><a href="https://en.wikipedia.org/wiki/Vector_calculus_identities">更多矢量微积分的记号</a></p>
+
+<h2 id="简介">简介</h2>
+
+<p>Del 算子或稱 Nabla 算子，在中文中也叫向量微分算子、劈形算子、倒三角算子，符号为 $\nabla$。</p>
+
+<p>Nabla 主要的作用就是用来简写「散度」、「梯度」和「旋度」。我们可以把它看成一个向量。</p>
+
+<p>三维空间中</p>
+
+<script type="math/tex; mode=display">\nabla=\vec{e}_{x} \frac{\partial}{\partial x}+\vec{e}_{y} \frac{\partial}{\partial y}+\vec{e}_{z} \frac{\partial}{\partial z}=\left(\frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z}\right)</script>
+
+<p>n 维空间中</p>
+
+<script type="math/tex; mode=display">\nabla=\sum_{i=1}^{n} \vec{e}_{i} \frac{\partial}{\partial x_{i}}=\left(\frac{\partial}{\partial x_{1}}, \cdots, \frac{\partial}{\partial x_{n}}\right)</script>
+
+<h2 id="应用">应用</h2>
+
+<p>我们考虑不同操作在 $n$ 维矢量 $\mathbf{A}$ 上。（不是高阶的张量）</p>
+
+<h3 id="散度">散度</h3>
+
+<ul>
+  <li>记号： $\nabla \cdot \mathbf{A}$</li>
+  <li>维度： $\mathbb{R}^n \rightarrow \mathbb{R}$</li>
+  <li>意义：散度描述的是向量场里一个点是汇聚点还是发源点，形象地说，就是这包含这一点的一个微小体元中的向量是“向外”居多还是“向内”居多。</li>
+  <li>分量表示：<script type="math/tex">\operatorname{div} \mathbf{A}=\nabla \cdot \mathbf{A}=\frac{\partial A_{x}}{\partial x}+\frac{\partial A_{y}}{\partial y}+\frac{\partial A_{z}}{\partial z}</script></li>
+</ul>
+
+<h3 id="梯度">梯度</h3>
+
+<ul>
+  <li>记号：$\nabla \mathbf{A}$</li>
+  <li>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</li>
+  <li>意义：
+    <ul>
+      <li>方向：多元函数的某一个点上，最大增长的「方向」</li>
+      <li>大小：多元函数的某一个点上，最大增长的「增长率」</li>
+    </ul>
+  </li>
+  <li>分量表示：<script type="math/tex">\text{grad}\,\mathbf{A} = \nabla \mathbf{A} = \left( \frac{\partial \textbf{A}}{\partial x}, \frac{\partial \textbf{A}}{\partial y}, \frac{\partial \textbf{A}}{\partial z} \right)</script></li>
+</ul>
+
+<h3 id="旋度">旋度</h3>
+
+<ul>
+  <li>记号：$\nabla \times \mathbf{A}$</li>
+  <li>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</li>
+  <li>意义：在向量场每个点上，点的<strong>旋度</strong>表示为一个<strong>向量</strong>。这个向量的特性（长度和方向）刻画了在这个点上的旋转。</li>
+  <li>分量表示：<script type="math/tex">% <![CDATA[
+\begin{aligned}
+\operatorname{curl} \mathbf{A}
+&=\boldsymbol{\nabla} \times \mathbf{A}\\[1em]
+&=\left(\frac{\partial A_{z}}{\partial y}-\frac{\partial A_{y}}{\partial z}\right) \mathbf{i}+\left(\frac{\partial A_{x}}{\partial z}-\frac{\partial A_{z}}{\partial x}\right) \mathbf{j}+\left(\frac{\partial A_{y}}{\partial x}-\frac{\partial A_{x}}{\partial y}\right) \mathbf{k}\\[1em]
+&=\left|\begin{array}{ccc}{\mathbf{i}} & {\mathbf{j}} & {\mathbf{k}} \\ {\frac{\partial}{\partial x}} & {\frac{\partial}{\partial y}} & {\frac{\partial}{\partial z}} \\ {A_{x}} & {A_{y}} & {A_{z}}\end{array}\right|
+\end{aligned} %]]></script></li>
+</ul>
+
+<h2 id="复合算符">复合算符</h2>
+
+<p>记号： $(\mathbf{B} \cdot \nabla)  \mathbf{A}$</p>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

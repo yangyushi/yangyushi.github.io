@@ -5,12 +5,29 @@
     <title>Science</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/assets/js/toc.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
     <nav>
     <ul>
         
@@ -18,12 +35,6 @@
         <a href=/
             
         >Home</a>
-        </li>
-        
-        <li>
-        <a href=/about.html
-            
-        >About</a>
         </li>
         
         <li>
@@ -40,6 +51,12 @@
         >Science</a>
         </li>
         
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
     </ul>
 </nav>
 
@@ -48,11 +65,45 @@
         <ul class="catalog">
     
         
+        <li>
+            <h3><a href="/science/2020/01/18/nabla.html">nabla operator</a></h3>
+        </li>
+        
+    
+        
     
         
         <li>
             <h3><a href="/science/2019/11/28/van-hove.html">Van Hove Correlation Function</a></h3>
         </li>
+        
+    
+        
+    
+        
+        <li>
+            <h3><a href="/science/2019/08/19/lagrange-multiplier.html">Lagrange multiplier</a></h3>
+        </li>
+        
+    
+        
+        <li>
+            <h3><a href="/science/2019/06/29/svd-pca.html">SVD and PCA</a></h3>
+        </li>
+        
+    
+        
+        <li>
+            <h3><a href="/science/2019/06/17/multiple-comparision.html">Multiple Comparison</a></h3>
+        </li>
+        
+    
+        
+        <li>
+            <h3><a href="/science/2019/06/17/3d-geometry.html">Geometry 3D</a></h3>
+        </li>
+        
+    
         
     
         

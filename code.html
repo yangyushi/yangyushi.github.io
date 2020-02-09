@@ -5,12 +5,29 @@
     <title>Code</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/assets/js/toc.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
     <nav>
     <ul>
         
@@ -18,12 +35,6 @@
         <a href=/
             
         >Home</a>
-        </li>
-        
-        <li>
-        <a href=/about.html
-            
-        >About</a>
         </li>
         
         <li>
@@ -40,12 +51,20 @@
         >Science</a>
         </li>
         
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
     </ul>
 </nav>
 
 
     <div class="main_box">
         <ul class="catalog">
+    
+        
     
         
         <li>
@@ -61,13 +80,27 @@
         </li>
         
     
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <li>
+            <h3><a href="/code/2017/12/09/struct.html">python module struct</a></h3>
+        </li>
+        
+    
+        
+        <li>
+            <h3><a href="/code/2017/07/22/javascript.html">javascript introduction</a></h3>
+        </li>
+        
+    
 </ul>
-
-<div>
-    <figure>
-        <embed src="https://wakatime.com/share/@yangyushi/d33e0d4b-c024-4edb-a0e7-8a4234734099.svg" width="500" />
-    </figure>
-</div>
 
     </div>
 

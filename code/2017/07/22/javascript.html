@@ -1,0 +1,1259 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>javascript introduction</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    22 Jul 2017
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#javascript-简介" id="markdown-toc-javascript-简介">Javascript 简介</a>    <ul>
+      <li><a href="#javascript-特点" id="markdown-toc-javascript-特点">JavaScript 特点</a></li>
+      <li><a href="#简单易学" id="markdown-toc-简单易学">简单易学</a></li>
+      <li><a href="#第一个-javascript-程序" id="markdown-toc-第一个-javascript-程序">第一个 JavaScript 程序</a></li>
+      <li><a href="#javascript-放在哪里" id="markdown-toc-javascript-放在哪里">JavaScript 放在哪里？</a>        <ul>
+          <li><a href="#head-中的-javascript" id="markdown-toc-head-中的-javascript">head 中的 JavaScript</a></li>
+          <li><a href="#外部的-javascript" id="markdown-toc-外部的-javascript">外部的 JavaScript</a></li>
+        </ul>
+      </li>
+      <li><a href="#作业" id="markdown-toc-作业">作业</a></li>
+    </ul>
+  </li>
+  <li><a href="#javascript-基本语法" id="markdown-toc-javascript-基本语法">JavaScript 基本语法</a>    <ul>
+      <li><a href="#变量" id="markdown-toc-变量">变量</a>        <ul>
+          <li><a href="#javascript-中的变量" id="markdown-toc-javascript-中的变量">JavaScript 中的变量</a></li>
+          <li><a href="#变量的声明" id="markdown-toc-变量的声明">变量的声明</a></li>
+          <li><a href="#作用域" id="markdown-toc-作用域">作用域</a></li>
+        </ul>
+      </li>
+      <li><a href="#数据类型" id="markdown-toc-数据类型">数据类型</a>        <ul>
+          <li><a href="#字符串" id="markdown-toc-字符串">字符串</a></li>
+          <li><a href="#数字" id="markdown-toc-数字">数字</a></li>
+          <li><a href="#布尔" id="markdown-toc-布尔">布尔</a></li>
+          <li><a href="#数组" id="markdown-toc-数组">数组</a></li>
+        </ul>
+      </li>
+      <li><a href="#运算符" id="markdown-toc-运算符">运算符</a>        <ul>
+          <li><a href="#算数运算符" id="markdown-toc-算数运算符">算数运算符</a></li>
+          <li><a href="#比较运算符" id="markdown-toc-比较运算符">比较运算符</a></li>
+          <li><a href="#逻辑运算符" id="markdown-toc-逻辑运算符">逻辑运算符</a></li>
+        </ul>
+      </li>
+      <li><a href="#javascript-语句" id="markdown-toc-javascript-语句">JavaScript 语句</a>        <ul>
+          <li><a href="#ifelse-语句" id="markdown-toc-ifelse-语句">if/else 语句</a></li>
+          <li><a href="#switchcase-语句" id="markdown-toc-switchcase-语句">switch/case 语句</a></li>
+          <li><a href="#for-循环" id="markdown-toc-for-循环">for 循环</a></li>
+          <li><a href="#while-循环" id="markdown-toc-while-循环">while 循环</a></li>
+          <li><a href="#break-和-continue-语句" id="markdown-toc-break-和-continue-语句">break 和 continue 语句</a></li>
+        </ul>
+      </li>
+      <li><a href="#javascript-函数" id="markdown-toc-javascript-函数">JavaScript 函数</a></li>
+      <li><a href="#作业-1" id="markdown-toc-作业-1">作业</a>        <ul>
+          <li><a href="#1-用-while-代替-for-循环" id="markdown-toc-1-用-while-代替-for-循环">1. 用 while 代替 for 循环</a></li>
+          <li><a href="#2-重复声明函数" id="markdown-toc-2-重复声明函数">2. 重复声明函数</a></li>
+          <li><a href="#3-变量的不稳定性" id="markdown-toc-3-变量的不稳定性">3. 变量的不稳定性</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#事件" id="markdown-toc-事件">事件</a>    <ul>
+      <li><a href="#什么是事件" id="markdown-toc-什么是事件">什么是事件</a></li>
+      <li><a href="#事件处理程序" id="markdown-toc-事件处理程序">事件处理程序</a></li>
+      <li><a href="#常用事件" id="markdown-toc-常用事件">常用事件</a></li>
+      <li><a href="#onmouseover-和-onmouseout" id="markdown-toc-onmouseover-和-onmouseout">onmouseover 和 onmouseout</a></li>
+      <li><a href="#onmousedown-和-onmouseup" id="markdown-toc-onmousedown-和-onmouseup">onmousedown 和 onmouseup</a></li>
+      <li><a href="#作业-2" id="markdown-toc-作业-2">作业</a></li>
+    </ul>
+  </li>
+  <li><a href="#对象" id="markdown-toc-对象">对象</a>    <ul>
+      <li><a href="#什么是对象" id="markdown-toc-什么是对象">什么是对象</a></li>
+      <li><a href="#创建对象" id="markdown-toc-创建对象">创建对象</a></li>
+      <li><a href="#访问对象的属性和方法" id="markdown-toc-访问对象的属性和方法">访问对象的属性和方法</a></li>
+      <li><a href="#常用内置对象" id="markdown-toc-常用内置对象">常用内置对象</a>        <ul>
+          <li><a href="#string-字符串对象" id="markdown-toc-string-字符串对象">String 字符串对象</a>            <ul>
+              <li><a href="#string-的属性" id="markdown-toc-string-的属性">String 的属性</a></li>
+              <li><a href="#string-的方法" id="markdown-toc-string-的方法">String 的方法</a></li>
+            </ul>
+          </li>
+          <li><a href="#math-对象" id="markdown-toc-math-对象">Math 对象</a>            <ul>
+              <li><a href="#math-的属性" id="markdown-toc-math-的属性">Math 的属性</a></li>
+            </ul>
+          </li>
+          <li><a href="#math-的方法" id="markdown-toc-math-的方法">Math 的方法</a></li>
+          <li><a href="#array-数组对象" id="markdown-toc-array-数组对象">Array 数组对象</a>            <ul>
+              <li><a href="#array-的属性" id="markdown-toc-array-的属性">Array 的属性</a></li>
+              <li><a href="#array-的方法" id="markdown-toc-array-的方法">Array 的方法</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#作业-3" id="markdown-toc-作业-3">作业</a></li>
+    </ul>
+  </li>
+  <li><a href="#dom" id="markdown-toc-dom">DOM</a>    <ul>
+      <li><a href="#基本概念" id="markdown-toc-基本概念">基本概念</a>        <ul>
+          <li><a href="#什么是-dom" id="markdown-toc-什么是-dom">什么是 DOM</a></li>
+          <li><a href="#节点" id="markdown-toc-节点">节点</a></li>
+        </ul>
+      </li>
+      <li><a href="#选取文档元素" id="markdown-toc-选取文档元素">选取文档元素</a>        <ul>
+          <li><a href="#通过-id-选取元素" id="markdown-toc-通过-id-选取元素">通过 ID 选取元素</a></li>
+          <li><a href="#通过名字name或标签名tagname选取元素" id="markdown-toc-通过名字name或标签名tagname选取元素">通过名字（Name）或标签名（TagName）选取元素</a></li>
+        </ul>
+      </li>
+      <li><a href="#节点属性操作和文档遍历" id="markdown-toc-节点属性操作和文档遍历">节点、属性操作和文档遍历</a>        <ul>
+          <li><a href="#查询和设置元素的属性" id="markdown-toc-查询和设置元素的属性">查询和设置元素的属性</a></li>
+          <li><a href="#父节点" id="markdown-toc-父节点">父节点</a></li>
+          <li><a href="#创建和插入节点" id="markdown-toc-创建和插入节点">创建和插入节点</a></li>
+          <li><a href="#删除节点" id="markdown-toc-删除节点">删除节点</a></li>
+        </ul>
+      </li>
+      <li><a href="#作业-4" id="markdown-toc-作业-4">作业</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="javascript-简介">Javascript 简介</h2>
+
+<h3 id="javascript-特点">JavaScript 特点</h3>
+
+<p>JavaScript 是一种脚本语言，它的解释器被称为 JavaScript 引擎。JavaScript 被发明用于在 HTML 网页上使用，给HTML网页增加动态功能。</p>
+
+<p>由于 JavaScript 简单易用，在现在世界上大多数网页中都能找到 JavaScript 代码，也是这个原因，现在所有的主流浏览器包含 JavaScript 引擎。</p>
+
+<p>JavaScript 可以让网页呈现各种特殊效果，为用户提供良好的互动体验，对于一个互联网开发者来说，如果你想提供漂亮的网页、令用户满意的上网体验、各种基于浏览器的便捷功能、前后端之间紧密高效的联系，JavaScript是必不可少的工具。</p>
+
+<p>此外，近年来 JavaScript 的使用范围，慢慢超越了浏览器，正在向通用的系统语言发展，你一定听说过“Node.js”、“JSON”等关键词。</p>
+
+<h3 id="简单易学">简单易学</h3>
+
+<p>JavaScript 的语法和 C/C++、Java 等大家都了解的语言很类似，如果学过这些语言，JavaScript的入门会非常容易。</p>
+
+<p>还有一点，JavaScript 的学习环境十分简单，无处不在，只需要浏览器（FireFox、Chrome，甚至是 IE）和文本编辑器，不需要另外安装配置编译器、解释器、IDE 等。</p>
+
+<h3 id="第一个-javascript-程序">第一个 JavaScript 程序</h3>
+
+<p>在学习一门新语言的时候，大家都喜欢用“hello world”作为第一个程序，那么现在我们写一个 JavaScript 版本的：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello world!</span><span class="dl">"</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>JavaScript 代码放在 <script>……</script> 标签里，这段代码的效果是，弹出一个小框，显示“hello world!”。</p>
+
+<p>在实验楼环境中，把这段代码保存为一个 HTML 文件，命名为“test.html”，然后双击文件，系统会调用 FireFox 浏览器打开它：</p>
+
+<p><img src="/assets/images/js_intro/14789316794500.jpg" alt="set w400" /></p>
+
+<h3 id="javascript-放在哪里">JavaScript 放在哪里？</h3>
+
+<p>刚才我们编写了第一个 JavaScript 程序，强调过 JavaScript 代码必须放置在 <code class="highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签里。</p>
+
+<p>我们把包含代码的 <code class="highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签放在了 <code class="highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里。其实不止可以这样做，我们还有另外两种方式在 HTML 中使用 JavaScript 。</p>
+
+<h4 id="head-中的-javascript">head 中的 JavaScript</h4>
+
+<p>我们除了可以把包含代码的 <code class="highlighter-rouge">&lt;script&gt;</code> 标签放在 <code class="highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里，还可以把它放在 <code class="highlighter-rouge">&lt;head&gt;……&lt;/head&gt;</code> 标签里，比如这样：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;h1&gt;</span> JavaScript in head. <span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello word!</span><span class="dl">"</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/js_intro/14789320566310.jpg" alt="set w400" /></p>
+
+<p>这个程序的执行结果和刚才的没什么不同，但其实把 JavaScript 代码放在 <code class="highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 和放在 <code class="highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 里是有区别的：</p>
+
+<p>简单地说，放在 <code class="highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 里的会比放在 <code class="highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 先执行。<code class="highlighter-rouge">head</code> 标签里的代码会在页面还未开始绘制之前被解析，而在 <code class="highlighter-rouge">body</code> 里的代码则会在页面渲染的同时在读取到这段代码的时候才被执行。</p>
+
+<h4 id="外部的-javascript">外部的 JavaScript</h4>
+
+<p>除了直接把 JavaScript 代码写在 HTML 里，我们还可以把 JavaScript 的代码写在一个 js 文件中，在 HTML 里调用这个 js 文件。我们还是以 “hello world”举例。</p>
+
+<p>在实验楼环境中，把以下代码保存并命名为 “out.js”，放在桌面上：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>把以下代码保存并命名为 “test2.html”，放在桌面：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;h1&gt;</span> my JavaScript code in "out.js" <span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"out.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>同样，双击桌面上的 “test2.html”文件，调用浏览器运行，你会发现运行效果和前两个程序也没什么区别。</p>
+
+<p><img src="/assets/images/js_intro/14789321971004.jpg" alt="set w400" /></p>
+
+<p>其实，前两种方式都是直接把 JavaScript 代码放在 HTML 中，在页面加载的同时，那些 JavaScript 的代码就被解析了。而把 JavaScript 代码放在外部文件中，只有在事件被触发，需要该段 JavaScript 代码时，才调用执行。</p>
+
+<p>这样做有个好处，当页面比较复杂的时候，把大量的 JavaScript 代码放到外部文件，只有在需要的时候才执行，那么会明显地加快页面加载速度。</p>
+
+<h3 id="作业">作业</h3>
+
+<p>在一个 HTML 文件中，不同位置加入不同的 JavaScript 代码，运行观察不同位置的 JavaScript 代码执行的顺序。</p>
+
+<p>参考如下，观察弹框顺序：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">in head</span><span class="dl">"</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">in body</span><span class="dl">"</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>弹窗结果：</p>
+
+<p><img src="/assets/images/js_intro/14789325352360.jpg" alt="set-w957" /></p>
+
+<p><img src="/assets/images/js_intro/14789325459103.jpg" alt="set-w958" /></p>
+
+<h2 id="javascript-基本语法">JavaScript 基本语法</h2>
+
+<h3 id="变量">变量</h3>
+
+<h4 id="javascript-中的变量">JavaScript 中的变量</h4>
+
+<p>JavaScript 中的变量规则和其它如 C、Java 等语言类似，建议的变量命名规则：</p>
+
+<ol>
+  <li>由字母、数字、下划线组成，区分大小写</li>
+  <li>以字母开头</li>
+  <li>变量名不能有空格</li>
+  <li>不能使用 JavaScript 中的关键字做变量名</li>
+</ol>
+
+<h4 id="变量的声明">变量的声明</h4>
+
+<p>在 JavaScript 中，变量用 Var 命令做声明</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 声明了一个名为 test 的变量。</span>
+<span class="kd">var</span> <span class="nx">test</span> <span class="p">;</span>
+
+<span class="c1">// 声明一个名为 test_2 的变量，并赋值为“shiyanlou”。</span>
+<span class="kd">var</span> <span class="nx">test_2</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">shiyanlou</span><span class="dl">"</span> <span class="p">;</span>
+</code></pre></div></div>
+
+<p>在 JavaScript 中，变量也可以不作声明，而在使用时再根据数据的类型来确其变量的类型，如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span> <span class="o">=</span> <span class="mi">100</span> <span class="p">;</span>     <span class="c1">// 变量 x 为整数</span>
+<span class="nx">y</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span> <span class="p">;</span> <span class="c1">// 变量 y 为字符串</span>
+<span class="nx">z</span> <span class="o">=</span> <span class="nx">True</span> <span class="p">;</span>    <span class="c1">// 变量 z 为布尔型</span>
+<span class="nx">cars</span><span class="o">=</span><span class="p">[</span><span class="dl">"</span><span class="s2">Audi</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">BMW</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Volvo</span><span class="dl">"</span><span class="p">];</span> <span class="c1">// cars 是一个数组</span>
+</code></pre></div></div>
+
+<h4 id="作用域">作用域</h4>
+
+<p>与其他语言一样，JavaScript 中的变量同样有全局变量和局部变量之分。</p>
+
+<p>全局变量是定义在所有函数之外的，其作用范围是整段 JavaScript 代码；</p>
+
+<p>而局部变量是定义在函数体之内，只对其该函数是可见，而对其它函数则是不可见的。</p>
+
+<h3 id="数据类型">数据类型</h3>
+
+<h4 id="字符串">字符串</h4>
+
+<p>字符串是存储字符（比如 “shiyanlou”）的变量。</p>
+
+<p>字符串可以是引号中的任意文本，您可以使用单引号或双引号，也可以在字符串中使用引号，只要不匹配包围字符串的引号即可：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">carname</span><span class="o">=</span><span class="dl">"</span><span class="s2">shiyanlou</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">carname</span><span class="o">=</span><span class="dl">'</span><span class="s1">shiyanlou</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">answer</span><span class="o">=</span><span class="dl">"</span><span class="s2">I Love 'shiyanlou'</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">answer</span><span class="o">=</span><span class="dl">'</span><span class="s1">I Love "shiyanlou"</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="数字">数字</h4>
+
+<p>JavaScript 只有一种数字类型。数字可以带小数点，也可以不带：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">x1</span><span class="o">=</span><span class="mf">34.00</span><span class="p">;</span>      <span class="c1">//使用小数点来写</span>
+<span class="kd">var</span> <span class="nx">x2</span><span class="o">=</span><span class="mi">34</span><span class="p">;</span>         <span class="c1">//不使用小数点来写</span>
+</code></pre></div></div>
+
+<h4 id="布尔">布尔</h4>
+
+<p>布尔只能有两个值：true 或 false：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">x</span><span class="o">=</span><span class="kc">true</span>
+<span class="kd">var</span> <span class="nx">y</span><span class="o">=</span><span class="kc">false</span>
+</code></pre></div></div>
+
+<h4 id="数组">数组</h4>
+
+<p>创建一个名为 boys 的数组：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">boys</span><span class="o">=</span><span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
+<span class="nx">boys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">boys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">Jack</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">boys</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">Alex</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>也可以这样:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">boys</span><span class="o">=</span><span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Jack</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Alex</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>或者这样:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">boys</span><span class="o">=</span><span class="p">[</span><span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Jack</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Alex</span><span class="dl">"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<h3 id="运算符">运算符</h3>
+
+<p>大多数编程语言的运算符规则都是相似的，JavaScript 与大多数人熟悉的 C、Java 等都很接近。</p>
+
+<h4 id="算数运算符">算数运算符</h4>
+
+<p><img src="/assets/images/js_intro/14789330221220.jpg" alt="set-w212" /></p>
+
+<h4 id="比较运算符">比较运算符</h4>
+
+<p>比较运算符的基本操作过程是，首先对它的操作数进行比较，再返回一个 true 或 False 值，有８个比较运算符:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt; (小于)
+&gt; (大于)
+&lt;= (小于等于)
+&gt;= (大于等于)
+== (等于)
+!= (不等于)。
+</code></pre></div></div>
+
+<h4 id="逻辑运算符">逻辑运算符</h4>
+
+<p><img src="/assets/images/js_intro/14789330861188.png" alt="-w390" /></p>
+
+<h3 id="javascript-语句">JavaScript 语句</h3>
+
+<h4 id="ifelse-语句">if/else 语句</h4>
+
+<p>JavaScript 中的 if/else 判断选择，你会发现，就像 C 语言。语法格式是这样的：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="err">条件</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">1</span> <span class="err">为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="err">条件</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">2</span> <span class="err">为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">1</span> <span class="err">和</span> <span class="err">条件</span> <span class="mi">2</span> <span class="err">都不为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span> 
+</code></pre></div></div>
+
+<h4 id="switchcase-语句">switch/case 语句</h4>
+
+<p>在做大量的选择判断的时候，如果依然使用 if/else 结构，那么代码有可能会变得很凌乱，于是我们采用 switch/case 结构：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">switch</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">case</span> <span class="nx">k1</span><span class="p">:</span> 
+    <span class="err">执行代码块</span> <span class="mi">1</span> <span class="p">;</span> 
+    <span class="k">break</span><span class="p">;</span> 
+<span class="k">case</span> <span class="nx">k2</span><span class="p">:</span> 
+    <span class="err">执行代码块</span> <span class="mi">2</span> <span class="p">;</span> 
+    <span class="k">break</span><span class="p">;</span> 
+<span class="nl">default</span><span class="p">:</span> 
+    <span class="err">默认执行（</span><span class="nx">k</span> <span class="err">值没有在</span> <span class="k">case</span> <span class="err">中找到匹配时）</span><span class="p">;</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<h4 id="for-循环">for 循环</h4>
+
+<p>for 循环是程序员进场经常用到的工具，在 JavaScript 中，for 循环的语法也十分类似 C 语言，格式是这样的：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="err">变量</span> <span class="o">=</span> <span class="err">初始值</span> <span class="p">;</span> <span class="err">循环条件</span> <span class="p">;</span> <span class="err">变量累加方法</span><span class="p">)</span> <span class="p">{</span> <span class="err">循环语句</span><span class="p">;</span> <span class="p">}</span> 
+</code></pre></div></div>
+
+<p>举例说明更清楚，比如循环打印出 0～7 的数字：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="dl">"</span><span class="s2">number is </span><span class="dl">"</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="dl">"</span><span class="s2">&lt;br&gt;</span><span class="dl">"</span><span class="p">);</span> <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span> 
+</code></pre></div></div>
+
+<p>在浏览器中的效果：</p>
+
+<p><img src="/assets/images/js_intro/14824000347413.jpg" alt="set-w357" /></p>
+
+<h4 id="while-循环">while 循环</h4>
+
+<p>区别于 for 循环的另一种循环方式：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="err">条件</span><span class="p">)</span> <span class="p">{</span> <span class="err">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> 
+</code></pre></div></div>
+
+<p>此外，while 循环还有一种变体，称作 do/while 循环：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">do</span> <span class="p">{</span> <span class="err">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="err">条件</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>而这两者的区别是，<code class="highlighter-rouge">do/while</code> 循环在检测条件之前就会执行，也就是说，即使条件为 <code class="highlighter-rouge">false</code>，<code class="highlighter-rouge">do/while</code> 也会执行一次循环代码。</p>
+
+<h4 id="break-和-continue-语句">break 和 continue 语句</h4>
+
+<p>有时候在循环体内，需要立即跳出循环或跳过循环体内其余代码而进行下一次循环，这便是 break 和 continue 的作用。</p>
+
+<ul>
+  <li>
+    <p>break 本语句放在循环体内，作用是立即跳出循环。</p>
+  </li>
+  <li>
+    <p>continue 本语句放在循环体内，作用是中止本次循环，并执行下一次循环。如果循环的条件已经不符合，就跳出循环。</p>
+  </li>
+</ul>
+
+<p>比如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">5</span> <span class="o">||</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="p">}</span> 
+</code></pre></div></div>
+
+<p>输出为 <code class="highlighter-rouge">12347</code>，便是跳过了 <code class="highlighter-rouge">5</code> 和 <code class="highlighter-rouge">6</code>，然后在 <code class="highlighter-rouge">i == 8</code> 的时候跳出了循环。</p>
+
+<h3 id="javascript-函数">JavaScript 函数</h3>
+
+<p>在进行一个复杂的程序设计时，需要根据所要完成的功能，将程序划分为一些相对独立的部分，每部分编写一个“函数”。从而，使各部分充分独立，任务单一，程序清晰，易懂、易读、易维护。</p>
+
+<p>JavaScript 的函数可以封装那些在程序中可能要多次用到的模块，并可作为 <strong>事件驱动</strong>的结果而调用的程序，从而实现一个函数把它与事件驱动相关联，这是与其它语言不同的地方。</p>
+
+<p>在 JavaScript 中，函数由关键词 function 定义，函数可以有多个参数。基本格式为：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="err">函数名</span> <span class="p">(</span><span class="err">参数</span><span class="mi">1</span><span class="err">，参数</span><span class="mi">2</span><span class="p">){</span>
+    <span class="err">函数体</span><span class="p">;</span>
+    <span class="k">return</span> <span class="err">返回值</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>调用（使用）函数时，传入对应的参数，执行 <strong>函数体</strong> 中如 if/else，switch/case，for，while 等各种语句，可以实现各种复杂的功能。</p>
+
+<h3 id="作业-1">作业</h3>
+
+<h4 id="1-用-while-代替-for-循环">1. 用 while 代替 for 循环</h4>
+
+<p>在 for 循环介绍时，有一处 for 循环代码，用于打印 0～7 的数字，现在将代码改为 while 循环。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">){</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="dl">'</span><span class="s1">Number is </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;br&gt;</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">i</span> <span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="2-重复声明函数">2. 重复声明函数</h4>
+
+<p>函数的重复声明：如果多次采用 function 命令重复声明同一个函数，则后面的声明会覆盖前面的声明，比如以下代码：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">my_func</span><span class="p">(){</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">my_func</span><span class="p">()</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="dl">"</span><span class="s2">&lt;br&gt;</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">my_func</span><span class="p">(){</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">my_func</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>两次声明了同一个函数 <code class="highlighter-rouge">my_func</code>，观察运行结果，并思考。</p>
+
+<p><img src="/assets/images/js_intro/14824007896209.jpg" alt="set w200" /></p>
+
+<p>说明执行代码和定义代码是分开的。大概解释器读了两遍源代码，第一次读所有的定义代码，第二次执行所有的执行代码。</p>
+
+<h4 id="3-变量的不稳定性">3. 变量的不稳定性</h4>
+
+<p>JavaScript 是一种弱类型（或称动态类型）语言，即变量的类型是不确定的，理解下面四段 JavaScript 代码，运行并观察，探索变量类型的不确定性：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span><span class="o">=</span><span class="mi">5</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span>     <span class="c1">// 数字 + 数字</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+<span class="nx">y</span><span class="o">=</span><span class="dl">"</span><span class="s2">6</span><span class="dl">"</span><span class="o">+</span><span class="dl">"</span><span class="s2">6</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// 字符串 + 字符串</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+<span class="nx">m</span><span class="o">=</span><span class="mi">7</span><span class="o">+</span><span class="dl">"</span><span class="s2">7</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// 数字 + 字符串</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">m</span><span class="p">);</span>
+<span class="nx">n</span><span class="o">=</span><span class="dl">"</span><span class="s2">8</span><span class="dl">"</span><span class="o">+</span><span class="mi">8</span><span class="p">;</span>  <span class="c1">// 字符串 + 数字</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>结果：</p>
+
+<p><img src="/assets/images/js_intro/14824040988125.jpg" alt="set w200" /></p>
+
+<h2 id="事件">事件</h2>
+
+<h3 id="什么是事件">什么是事件</h3>
+
+<p>JavaScript 是 <strong>基于对象</strong> 的语言。这与 Java 不同，Java 是 <strong>面向对象</strong> 的语言。</p>
+
+<p><strong>基于对象</strong> 的基本特征，就是采用 <strong>事件驱动</strong>。</p>
+
+<p>通常鼠标或热键的动作我们称之为 <strong>事件</strong>（Event），而由鼠标或热键引发的一连串程序的动作，称之为 <strong>事件驱动</strong>。对事件进行处理程序或函数，我们称之为 <strong>事件处理程序</strong>。</p>
+
+<h3 id="事件处理程序">事件处理程序</h3>
+
+<p>在某个事件发生的时候，执行特定的 JavaScript 代码（事件处理程序）。</p>
+
+<p>比如点击页面的某个按钮这是一个很常见的事件，执行对应的事件处理程序，弹出提示小窗口，代码如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">click_button</span><span class="p">()</span> <span class="p">{</span>     <span class="c1">// 事件处理程序，弹出提示窗</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">welcome to shiyanlou</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;br&gt;&lt;/br&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"click_button()"</span><span class="nt">&gt;</span>click me<span class="nt">&lt;/button&gt;</span>  <span class="c">&lt;!--发生事件 onclick 的时候，执行 click_button()→
+&lt;/body&gt;
+&lt;/html&gt;
+</span></code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824049522888.jpg" alt="set w300" /></p>
+
+<h3 id="常用事件">常用事件</h3>
+
+<p>除了刚才提到的 onclick 事件，还有这些常用的事件：</p>
+
+<ul>
+  <li>onclick 单击</li>
+  <li>ondblclick 双击</li>
+  <li>onfocus 元素获得焦点</li>
+  <li>onblur 元素失去焦点</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>onmouseover 鼠标移到某元素之上</li>
+  <li>onmouseout 鼠标从某元素移开</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>onmousedown 鼠标按钮被按下</li>
+  <li>onmouseup 鼠标按键被松开</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>onkeydown 某个键盘按键被按下</li>
+  <li>onkeyup 某个键盘按键被松开</li>
+  <li>onkeypress 某个键盘按键被按下并松开</li>
+</ul>
+
+<hr />
+
+<h3 id="onmouseover-和-onmouseout">onmouseover 和 onmouseout</h3>
+
+<p>onmouseover 和 onmouseout 事件可用于在鼠标移至 HTML 元素上和移出元素时触发函数。比如这一例子：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">'background-color:lightgreen;width:200px;height:50px;text-align:center;'</span>
+       <span class="na">onmouseover=</span><span class="s">"this.innerHTML='good'"</span>
+       <span class="na">onmouseout=</span><span class="s">"this.innerHTML='You have moved out'"</span>
+  <span class="nt">&gt;</span>move your mouse to here<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/js_intro/14824055248730.gif" alt="set w250" /></p>
+
+<h3 id="onmousedown-和-onmouseup">onmousedown 和 onmouseup</h3>
+
+<p>onmousedown, onmouseup 是鼠标 <strong>压下</strong>和 <strong>松开</strong> 的事件。首先当点击鼠标按钮时，会触发 onmousedown 事件，当释放鼠标按钮时，会触发 onmouseup 事件。举例说明：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">mDown</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="dl">'</span><span class="s1">release your mouse</span><span class="dl">'</span><span class="p">;</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span><span class="o">=</span><span class="dl">'</span><span class="s1">lightgreen</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">function</span> <span class="nx">mUp</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span><span class="o">=</span><span class="dl">'</span><span class="s1">lightblue</span><span class="dl">'</span><span class="p">;</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="dl">'</span><span class="s1">press me</span><span class="dl">'</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">'background-color:lightgrey;width:200px;height:35px;text-align:center;'</span>
+       <span class="na">onmousedown=</span><span class="s">'mDown(this)'</span>
+       <span class="na">onmouseup=</span><span class="s">'mUp(this)'</span>
+  <span class="nt">&gt;</span>press here<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/js_intro/14824065008413.gif" alt="set w250" /></p>
+
+<p>运行结果可见，按下鼠标时，显示“release your mouse”，背景变为蓝色；松开鼠标后，显示为“press here”，背景变为绿色。</p>
+
+<h3 id="作业-2">作业</h3>
+
+<p>请实现一个验证输入的功能，当输入中为空，失去焦点时弹出对话框提示“input cannot be empty”。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">check_input</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">value</span> <span class="o">==</span> <span class="dl">''</span><span class="p">){</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">input can not be empty</span><span class="dl">'</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;form&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">'text'</span> <span class="na">onblur=</span><span class="s">'check_input(this)'</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果</p>
+
+<p><img src="/assets/images/js_intro/14824074488953.gif" alt="set w250" /></p>
+
+<h2 id="对象">对象</h2>
+
+<p>上一节实验说过，JavaScript 是一门基于对象的语言，现在我们对 JavaScript 的基于对象概念，做详细的介绍。</p>
+
+<h3 id="什么是对象">什么是对象</h3>
+
+<p>JavaScript 的所有数据都可以被视为对象，而每个对象都有其 <strong>属性</strong>（properties）和 <strong>方法</strong>（methods）。</p>
+
+<p>对象的 <strong>属性</strong> 是反映该对象某些特定的性质的，例如：字符串的长度、图像的长宽、文字框（Textbox）里的文字等；</p>
+
+<p>对象的 <strong>方法</strong> 能对该对象做一些事情，例如，表单的“提交”(Submit)，窗口的“滚动”（Scrolling）等。</p>
+
+<p>比如当申请一个变量的时候：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">my_var</span><span class="o">=</span><span class="dl">"</span><span class="s2">shiyanlou</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>其实也就是创建了一个 <strong>字符串对象</strong> ，这个对象拥有内建的属性 <code class="highlighter-rouge">my_var.length = 9</code></p>
+
+<p>同时，这个字符串对象还有数个内建的方法，比如 <code class="highlighter-rouge">my_var.toUpperCase()</code> 方法可以将字符转为大写；<code class="highlighter-rouge">my_var.charAt(n)</code> 方法可以返回第 n 个字符。</p>
+
+<h3 id="创建对象">创建对象</h3>
+
+<p>JavaScript 提供了一些常用的内置对象（稍后介绍），但是有些情况下我们需要自定义地创建对象，以达到特殊的、丰富的功能。</p>
+
+<p>比如我们创建一个“student”对象，并为其指定几个 <strong>属性</strong> 和 <strong>方法</strong>：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">student</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>  <span class="c1">// 创建对象“student”</span>
+
+<span class="nx">student</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">;</span>   <span class="c1">// 对象属性 名字</span>
+<span class="nx">student</span><span class="p">.</span><span class="nx">age</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">19</span><span class="dl">"</span><span class="p">;</span>    <span class="c1">// 对象属性 年龄</span>
+
+<span class="nx">student</span><span class="p">.</span><span class="nx">study</span> <span class="o">=</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>   <span class="c1">// 对象方法 学习</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">studying</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">student</span><span class="p">.</span><span class="nx">eat</span> <span class="o">=</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>     <span class="c1">// 对象方法 吃</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">eating</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>此外，你也可以这样创建对象：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">student</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">student</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">;</span>
+<span class="err">……</span>
+</code></pre></div></div>
+
+<p>或者这样：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">student</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Tom</span><span class="dl">"</span><span class="p">;</span>
+     <span class="nl">age</span><span class="p">:</span><span class="dl">"</span><span class="s2">19</span><span class="dl">"</span><span class="p">;</span>
+    <span class="err">……</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>但是以上方法在创建多个对象时，会产生大量重复代码，所以我们也可以采用函数的方式新建对象：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">student</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">study</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">studying</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">eat</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">eating</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>然后通过 <code class="highlighter-rouge">new</code> 创建 <code class="highlighter-rouge">student</code> 对象的实例：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">student1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">student</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tom</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">19</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">student2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">student</span><span class="p">(</span><span class="dl">'</span><span class="s1">Jack</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">20</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="访问对象的属性和方法">访问对象的属性和方法</h3>
+
+<p>对象的存在意义，就是为了方便地操作数据，我们可以很容易地访问对象的属性或调用对象的方法，通过符号 <code class="highlighter-rouge">.</code>。</p>
+
+<p>比如我们刚才新建的 <code class="highlighter-rouge">student1</code> 对象，可以这样使用：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">student1</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>  <span class="c1">// 访问对象的属性</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">student1</span><span class="p">.</span><span class="nx">age</span><span class="p">;</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+
+<span class="nx">student1</span><span class="p">.</span><span class="nx">study</span><span class="p">();</span>     <span class="c1">// 调用对象的方法</span>
+</code></pre></div></div>
+
+<p>当我们需要 反复访问 某对象的时候，可以使用 <code class="highlighter-rouge">with</code> 语句简化操作，而不需要反复地用 <code class="highlighter-rouge">.</code> 符号，比如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">with</span><span class="p">(</span><span class="nx">student1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">y</span><span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+  <span class="nx">study</span><span class="p">();</span>
+  <span class="nx">eat</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="常用内置对象">常用内置对象</h3>
+
+<p>JavaScript 为我们提供了一些非常有用的常用内置对象，这样我们就不用每次自己编代码来实现一些常用功能。</p>
+
+<p>现在我们举例介绍 String、Math、Array 三中常用对象及其属性和方法。</p>
+
+<h4 id="string-字符串对象">String 字符串对象</h4>
+
+<p>本节实验一开始就举例介绍过 String 对象，每当创建一个字符串变量的时候，也就相当于创建了一个 String 对象。</p>
+
+<h5 id="string-的属性">String 的属性</h5>
+
+<p>该对象只有一个属性，即 length，表示字符串中的字符个数，包括所有的空格和符号：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">test_var</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">I love You!</span><span class="dl">"</span><span class="p">;</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">test_var</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>  <span class="c1">// → 11</span>
+</code></pre></div></div>
+
+<h5 id="string-的方法">String 的方法</h5>
+
+<p>String 对象共有 19 个内置方法，主要包括字符串在页面中的显示、字体大小、字体颜色、字符的搜索以及字符的大小写转换等功能，下面是一些常用的：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">charAt(n)</code> ：返回该字符串第 n 位的单个字符。（从 0 开始计数）</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">charCodeAt(n)</code> ：返回该字符串第 n 位的单个字符的 ASCII 码。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">indexOf()</code> ：用法：</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">string_1</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">string_2</span><span class="p">,</span> <span class="nx">n</span><span class="p">);</span> 
+</code></pre></div>    </div>
+
+    <p>从字符串 <code class="highlighter-rouge">string_1</code> 的第 <code class="highlighter-rouge">n</code> 位开始搜索，查找 <code class="highlighter-rouge">string_2</code>，返回查找到的位置，如果未找到，则返回 <code class="highlighter-rouge">-1</code>，其中 <code class="highlighter-rouge">n</code> 可以不填，默认从第 <code class="highlighter-rouge">0</code> 位开始查找。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">lastIndexOf()</code> ：跟 <code class="highlighter-rouge">indexOf()</code> 相似，不过是从后边开始找。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">split('分隔符')</code> ：将字符串按照指定的分隔符分离开，返回一个数组，例如：</p>
+  </li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">'</span><span class="s1">1&amp;2&amp;345&amp;678</span><span class="dl">'</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">&amp;</span><span class="dl">'</span><span class="p">)</span><span class="err">；</span> <span class="c1">// → [1, 2, 345, 678]</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">substring(n, m)</code> ：返回原字符串从 n 位置到 m 位置的子串。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">substr(n, x)</code> ：返回原字符串从 n 位置开始，长度为 x 的子串。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">toLowerCase()</code> ：返回把原字符串所有大写字母都变成小写的字符串。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">toUpperCase()</code> ：返回把原字符串所有小写字母都变成大写的字符串。</p>
+  </li>
+</ul>
+
+<h4 id="math-对象">Math 对象</h4>
+
+<p>“数学”对象，提供对数据的数学计算。</p>
+
+<h5 id="math-的属性">Math 的属性</h5>
+
+<p>Math 的几个属性，是数学上几个常用的值：</p>
+
+<ul>
+  <li>E ：返回常数 e (2.718281828…)。</li>
+  <li>LN2 ：返回 2 的自然对数 (ln 2)。</li>
+  <li>LN10 ：返回 10 的自然对数 (ln 10)。</li>
+  <li>LOG2E ：返回以 2 为低的 e 的对数 (log2e)。</li>
+  <li>LOG10E ：返回以 10 为低的 e 的对数 (log10e)。</li>
+  <li>PI ：返回π（3.1415926535…)。</li>
+  <li>SQRT1_2 ：返回 1/2 的平方根。</li>
+  <li>SQRT2 ：返回 2 的平方根。</li>
+</ul>
+
+<h4 id="math-的方法">Math 的方法</h4>
+
+<p>Math 的内置方法，是一些数学上常用的数学运算：</p>
+
+<ul>
+  <li>abs(x) ：返回 x 的绝对值。</li>
+  <li>round(x) ：返回 x 四舍五入后的值。</li>
+  <li>sqrt(x) ：返回 x 的平方根。</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>ceil(x) ：返回大于等于 x 的最小整数。</li>
+  <li>floor(x) ：返回小于等于 x 的最大整数。</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>sin(x) ：返回 x 的正弦。</li>
+  <li>cos(x) ：返回 x 的余弦。</li>
+  <li>tan(x) ：返回 x 的正切。</li>
+  <li>acos(x) ：返回 x 的反余弦值。</li>
+  <li>asin(x) ：返回 x 的反正弦值。</li>
+  <li>atan(x) ：返回 x 的反正切值。</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>exp(x) ：返回 e 的 x 次幂 (e^x)。</li>
+  <li>pow(n, m) ：返回 n 的 m 次幂 (nm)。</li>
+  <li>log(x) ：返回 x 的自然对数 (ln x)。</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>max(a, b) ：返回 a, b 中较大的数。</li>
+  <li>min(a, b) ：返回 a, b 中较小的数。</li>
+  <li>random() ：返回大于 0 小于 1 的一个随机数。</li>
+</ul>
+
+<h4 id="array-数组对象">Array 数组对象</h4>
+
+<p>数组对象是对象的集合，里边的对象可以是不同类型的。数组的每一个成员对象都有一个“下标”，用来表示它在数组中的位置（从 0 开始计数）。</p>
+
+<p>数组下标表示方法是用方括号括起来，比如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myArray</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span> 
+</code></pre></div></div>
+
+<p>注意：JavaScript只有一维数组，要使用多维数组，请用这种虚拟法：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">myArray</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="k">new</span> <span class="nb">Array</span><span class="p">(),</span> 
+                        <span class="k">new</span> <span class="nb">Array</span><span class="p">(),</span>
+                        <span class="k">new</span> <span class="nb">Array</span><span class="p">(),</span>
+                        <span class="p">...);</span> 
+</code></pre></div></div>
+
+<p>其实这是一个一维数组，里边的每一个元素又是一个数组。调用这个“二维数组”的元素时：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myArray</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">...;</span> 
+</code></pre></div></div>
+
+<h5 id="array-的属性">Array 的属性</h5>
+
+<p><code class="highlighter-rouge">length</code> ：返回数组的长度，即数组里有多少个元素。它等于数组里最后一个元素的下标加一。</p>
+
+<p>因此，想添加一个元素，只需要：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myArray</span><span class="p">[</span><span class="nx">myArray</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">...;</span>
+</code></pre></div></div>
+
+<p>（我去。。。）</p>
+
+<h5 id="array-的方法">Array 的方法</h5>
+
+<ul>
+  <li><code class="highlighter-rouge">join("指定分隔符")</code> ：返回一个字符串，把数组元素串起来，元素间用指定分隔符隔开。</li>
+  <li><code class="highlighter-rouge">toString()</code> ：把数组转为字符串，并返回结果。</li>
+  <li><code class="highlighter-rouge">reverse()</code> ：使数组元素倒序。</li>
+  <li><code class="highlighter-rouge">slice(n, m)</code> ：返回子数组，从数组第 n 个元素到第 m 个元素。</li>
+  <li><code class="highlighter-rouge">sort(SortFunction)</code> ：按照指定的 SortFunction 将数组的元素排序。</li>
+  <li><code class="highlighter-rouge">concat(Array_1, Array_2)</code> ：用于连接两个或多个数组。</li>
+</ul>
+
+<h3 id="作业-3">作业</h3>
+
+<p>创建一个名为“car”的对象，表示汽车，根据生活经验为这个对象添加 <strong>尽可能完善的</strong> 属性和方法。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">run</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">running</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">car</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="nx">speed</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">run</span> <span class="o">=</span> <span class="nx">run</span><span class="p">();</span> <span class="c1">//notice this!</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;form&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"new_car = new car('Runner', 500); new_car.run();"</span><span class="nt">&gt;</span>Build a car<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"new_car.run();"</span><span class="nt">&gt;</span>Run<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824151753108.gif" alt="set w250" /></p>
+
+<p>从运行结果中可以看出：</p>
+
+<ol>
+  <li>定义对象的方法的时候，函数要加上括号（WTF？）</li>
+  <li>如果在一个按钮里创造了一个对象的实例，这个实例只在这个按钮里有效（Run 按钮不起作用）</li>
+</ol>
+
+<h2 id="dom">DOM</h2>
+
+<p>本节 JavaScript 的 DOM 操作，内容主要包括：</p>
+
+<ul>
+  <li>通过 ID、名字、标签名 选取元素；</li>
+  <li>通过 <code class="highlighter-rouge">getAttribute</code> 和 <code class="highlighter-rouge">setAttribute</code> 获取和设置元素属性；</li>
+  <li>通过 <code class="highlighter-rouge">parentNode</code> 获取父元素、<code class="highlighter-rouge">createElement</code> 动态地创建节点、<code class="highlighter-rouge">appendChild</code> 和 <code class="highlighter-rouge">removeChild</code> 动态地添加或者删除节点。</li>
+</ul>
+
+<h3 id="基本概念">基本概念</h3>
+
+<h4 id="什么是-dom">什么是 DOM</h4>
+
+<p>DOM 是 <strong>文档对象模型</strong>（Document Object Model）的简称，它的基本思想是把结构化文档（比如 HTML 和 XML）解析成一系列的节点，再由这些节点组成一个树状结构（DOM Tree）。所有的节点和最终的树状结构，都有规范的对外接口，以达到使用编程语言操作文档的目的，所以，DOM 可以理解成文档（HTML 文档、XML 文档）的编程接口。</p>
+
+<p>严格地说，DOM 不属于 JavaScript，但是操作 DOM 是 JavaScript 最常见的任务，而 JavaScript 也是最常用于 DOM 操作的语言，本章介绍的就是 JavaScript 对 DOM 标准的实现和用法。</p>
+
+<h4 id="节点">节点</h4>
+
+<p>DOM 的最小组成单位叫做 <strong>节点</strong>（node），一个文档的树形结构（DOM 树），就是由各种不同类型的节点组成。</p>
+
+<p>对于 HTML 文档，节点主要有以下六种类型：</p>
+
+<p>==
+| 节点 | 名称 | 含义 |
+| — | — | — |
+| Document | 文档节点 | 文档的类型 |
+| Element | 元素节点 | HTML 元素（比如&lt;head&gt;、&lt;body&gt;等） |
+| Attribute | 属性节点 | HTML 元素的属性（比如 class=”right”） | 
+| Text | 文本节点 | HTML 文档中出现的文本 | 
+| DocumentFragment | 文档碎片节点 | 文档的片段 |
+==</p>
+
+<h3 id="选取文档元素">选取文档元素</h3>
+
+<h4 id="通过-id-选取元素">通过 ID 选取元素</h4>
+
+<p>我们可以使用方法 <code class="highlighter-rouge">getElementByID()</code> 通过元素的 ID 而选取元素，并对其做操作，比如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">my_div</span><span class="dl">"</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span><span class="o">=</span><span class="dl">"</span><span class="s2">100px</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// 设置 my_div 高度为 100px    </span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">my_div</span><span class="dl">"</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span><span class="o">=</span><span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>通过 <code class="highlighter-rouge">getElementByID()</code> 设置了 ID 为 <code class="highlighter-rouge">my_div</code> 的一个 <code class="highlighter-rouge">div</code> 标签的高度（100px）和颜色（red），效果：</p>
+
+<p><img src="/assets/images/js_intro/14824625618952.jpg" alt="set w250" /></p>
+
+<h4 id="通过名字name或标签名tagname选取元素">通过名字（Name）或标签名（TagName）选取元素</h4>
+
+<p>除了通过 ID 选择元素，我们还可以使用 getElementByName() 方法或者 getElementsByTagName() 方法找到元素，不过如果有多个同类型标签，那我们需要以下标来确认：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">;</span>   <span class="c1">// 下标为 [0] 表示选取第 1 个 input 标签</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">shiyanlou</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// 下标为 [1] 表示选取第 2 个 input 标签</span>
+</code></pre></div></div>
+
+<p>效果如图：</p>
+
+<p><img src="/assets/images/js_intro/14824629669268.jpg" alt="set w350" /></p>
+
+<h3 id="节点属性操作和文档遍历">节点、属性操作和文档遍历</h3>
+
+<h4 id="查询和设置元素的属性">查询和设置元素的属性</h4>
+
+<p>可以通过 <code class="highlighter-rouge">getAttribute()</code> 和 <code class="highlighter-rouge">setAttribute()</code> 查询和设置元素的属性：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nc">.class_1</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;}</span>
+    <span class="nc">.class_2</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">'div_1'</span> <span class="na">class=</span><span class="s">'class_1'</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;br/&gt;</span>
+    <span class="nt">&lt;a&gt;</span>before:<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_1</span><span class="dl">'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">class</span><span class="dl">'</span><span class="p">));</span>
+    <span class="nt">&lt;/script&gt;</span>
+    <span class="nt">&lt;br/&gt;</span>
+    <span class="nt">&lt;a&gt;</span>after:<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_1</span><span class="dl">'</span><span class="p">).</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">class</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">class_2</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_1</span><span class="dl">'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">class</span><span class="dl">'</span><span class="p">));</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824640171162.jpg" alt="set w200" /></p>
+
+<h4 id="父节点">父节点</h4>
+
+<p>通过 <code class="highlighter-rouge">parentNode()</code> 方法可以查看并操作一个节点的父节点，示例：找到 <code class="highlighter-rouge">id</code> 为 <code class="highlighter-rouge">demo</code> 的元素的父节点，并输出其 <code class="highlighter-rouge">class</code> 的名称：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"demo-parent"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo"</span><span class="nt">&gt;</span>        
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo</span><span class="dl">"</span><span class="p">).</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">));</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824642445480.jpg" alt="set w200" /></p>
+
+<h4 id="创建和插入节点">创建和插入节点</h4>
+
+<p>在了解 JavaScript 之前，可能会以为一个 HTML 页面被写出来是什么样，那它就固定了是什么样子。</p>
+
+<p>但是 JavaScript 可以动态地在页面中创建并插入节点，这便需要用到 <code class="highlighter-rouge">createElement()</code>、<code class="highlighter-rouge">appendChild()</code> 方法，它们的作用分别是创建节点和插入节点。</p>
+
+<p>比如：创建一个 div 并为其设置高度（100px）和背景色（red），并追加到 body 后面：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">stype=</span><span class="s">'background:lightgreen;height=100px;'</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">mydiv</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">mydiv</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">100px</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">mydiv</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">lightblue</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="dl">'</span><span class="s1">body</span><span class="dl">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">mydiv</span><span class="p">);</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果</p>
+
+<p><img src="/assets/images/js_intro/14824649963616.jpg" alt="set w200" /></p>
+
+<h4 id="删除节点">删除节点</h4>
+
+<p>除了创建，我们还可以删除一个节点，通过 <code class="highlighter-rouge">removeChild()</code> 方法：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">'div_green'</span> <span class="na">style=</span><span class="s">'background:lightgreen; height:50px;'</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">'div_blue'</span> <span class="na">style=</span><span class="s">'background:lightblue; height:50px;'</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">remove</span><span class="p">(){</span>
+      <span class="kd">var</span> <span class="nx">obj</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_green</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">'remove()'</span><span class="nt">&gt;</span>click to remove<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824656214787.gif" alt="set w200" /></p>
+
+<h3 id="作业-4">作业</h3>
+
+<p>参考“删除节点”的方式，在一个页面内实现：通过按钮改变页面颜色，通过按钮创建和插入节点等本节实验中的功能。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="kd">function</span> <span class="nx">create_bar</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_root</span><span class="dl">'</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">'</span><span class="s1">lightgreen</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lightblue</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lightgrey</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">tomato</span><span class="dl">'</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">colors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+            <span class="nx">child</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+            <span class="nx">child</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">10px</span><span class="dl">'</span><span class="p">;</span>
+            <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">child</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">change_color</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">'</span><span class="s1">lightgreen</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lightblue</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lightgrey</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">tomato</span><span class="dl">'</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_root</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">child_index</span> <span class="k">in</span> <span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">colors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+                <span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">child_index</span><span class="p">].</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">fine!</span><span class="dl">"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">delete_bar</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_root</span><span class="dl">'</span><span class="p">);</span>
+            <span class="nx">root</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">delete_all</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">div_root</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">childElementCount</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="nx">root</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">'div_root'</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">'create_bar()'</span><span class="nt">&gt;</span>Create Bar<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">'change_color()'</span><span class="nt">&gt;</span>Change Color<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">'delete_bar()'</span><span class="nt">&gt;</span>Delete Bar<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">'delete_all()'</span><span class="nt">&gt;</span>Clean<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<p><img src="/assets/images/js_intro/14824755476197.gif" alt="set w300" /></p>
+
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

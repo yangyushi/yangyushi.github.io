@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SVD and PCA</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    29 Jun 2019
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#svd" id="markdown-toc-svd">SVD</a>    <ul>
+      <li><a href="#公式" id="markdown-toc-公式">公式</a></li>
+      <li><a href="#svd-和特征向量特征值" id="markdown-toc-svd-和特征向量特征值">SVD 和特征向量/特征值</a></li>
+      <li><a href="#奇异向量和-svd" id="markdown-toc-奇异向量和-svd">奇异向量和 SVD</a></li>
+      <li><a href="#svd-中的小知识点" id="markdown-toc-svd-中的小知识点">SVD 中的小知识点</a></li>
+    </ul>
+  </li>
+  <li><a href="#pca" id="markdown-toc-pca">PCA</a>    <ul>
+      <li><a href="#pca-的目的" id="markdown-toc-pca-的目的">PCA 的目的</a></li>
+      <li><a href="#找到-u-和-w" id="markdown-toc-找到-u-和-w">找到 U 和 W</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="svd">SVD</h2>
+
+<h3 id="公式">公式</h3>
+
+<p>SVD 一般是这样写的</p>
+
+<script type="math/tex; mode=display">\begin{align}
+\bf{A_{m \times n}} = 
+\bf{U_{m \times n}} \;
+\Sigma_{n \times n} \;
+\bf{V_{n \times n}}
+\end{align}</script>
+
+<p>其中，$\bf{U}$ 和 $\bf{V}$ 都是酉矩阵，它们表示旋转操作，同时它们的行/列都是标准正交基（基向量的长度为 1，两两正交）。</p>
+
+<h3 id="svd-和特征向量特征值">SVD 和特征向量/特征值</h3>
+
+<p>我们想要得到的其实是类似于「特征值」的东西，对于方阵 $\bf{X}$，它的特征值 $\upsilon$ 满足</p>
+
+<script type="math/tex; mode=display">\mathbf{X} \mathbf{\upsilon} = \lambda \mathbf{\upsilon}</script>
+
+<p>对于不是方阵的 $A$，我们能找到两个类似于特征值的东西（$\bf{v}$, $\bf{u}$），叫做「一个奇异向量」。对应的数值 $\sigma$ 叫做「一个奇异值」：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\bf{A^T} u &= \sigma \bf{v} & \bf{u}\text{: 左奇异向量} \\
+\bf{A} v &= \sigma \bf{u} & \bf{v} \text{: 右奇异向量}
+\end{align} %]]></script>
+
+<p>如果我们给上面的公式左右分别左乘上 $\bf{A}$ 和 $\bf{A^T}$，我们得到</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\bf{AA^T} u &= \sigma \bf{Av}\\
+&= \sigma^2 \bf{u}
+&(\bf{u} \text{ 是} \bf{AA^T} \text{ 的特征值})\\[1em]
+\bf{A^TA} v &= \sigma \bf{u}\\
+&= \sigma^2 \bf{v}
+& (\bf{v} \text{ 是} \bf{A^TA} \text{ 的特征值})\\
+\end{aligned} %]]></script>
+
+<p>在这里，我知考虑了实数矩阵——如果考虑复数的话，我需要计算 $\bf{A}$ 的共轭转置 $\bf{A^\ast}$。</p>
+
+<h3 id="奇异向量和-svd">奇异向量和 SVD</h3>
+
+<p>公式 (1) 中的 $\bf{U}$ 和 $\bf{V}$ 是所有包含了所有左/右奇异向量的矢量空间的标准正交基。而公式 (1) 中的 $\Sigma$ 则表示了每个奇异向量对应的奇异值。</p>
+
+<p>让我们重新审视公式 (1)</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\bf{A} &= \bf{U} \bf{\Sigma} \bf{V^T}
+\end{align} %]]></script>
+
+<p>我们可以把它稍微改写成</p>
+
+<script type="math/tex; mode=display">\begin{aligned}
+\bf{A} = \bf{U} \bf{\Sigma} \bf{V^T} \bf{I}
+\end{aligned}</script>
+
+<p>其中，$\bf{I}$ 是标准正交基。上面的公式告诉了我们怎么把 $\bf{I}$ 变成 $\bf{A}$：我们首先把 $\bf{I}$ 映射到右奇异基向量（旋转）；按照奇异值大小缩放各个基向量；再把结果映射到左奇异基向量（旋转）。</p>
+
+<h3 id="svd-中的小知识点">SVD 中的小知识点</h3>
+
+<ul>
+  <li>$\Sigma$ 中的奇异值的「有序集合」被称为矩阵的「谱」spectrum。</li>
+  <li>奇异值之间的差影响着解的稳定性</li>
+  <li>最大和最小的奇异值绝对值之间的比率（条件数）影响着一个迭代求解器找到矩阵解的速度。</li>
+</ul>
+
+<h2 id="pca">PCA</h2>
+
+<h3 id="pca-的目的">PCA 的目的</h3>
+
+<p>我们使用 PCA 来压缩数据。假设我们有 $m$ 个属于 $\mathbb{R}^d$ 列向量：$\bf{x_1}, \dots \bf{x_m}$，我们用一个矩阵 $\mathbf{x}\in\mathbb{R}^{d, m}$ 来描述所有的数据点。我们希望找到一个矩阵 $\mathbf{W} \in \mathbb{R}^{d, n}$，来将 $\bf{x}$ 映射到低维空间：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\mathbf{y} &= \mathbf{Wx} & (\ \mathbf{y} \in \mathbb{R}^n, n < d)
+\end{align} %]]></script>
+
+<p>同样，我们也需要另一个矩阵 $\mathbf{U} \in \mathbb{R}^{n, d}$ 来将 $\bf{y}$ 还原为一个「同原始 $\bf{x}$ 接近」的 $\bf{\tilde{x}}$。我们通过让两者「尽量接近」来确定最好的 $\bf{U}$ 和 $\bf{W}$：</p>
+
+<script type="math/tex; mode=display">\begin{align}
+\underset{
+\mathbf{W}\in\mathbb{R}^{n, d},\
+\mathbf{U}\in\mathbb{R}^{d, n}
+}{\operatorname{argmin}}
+\sum_{i=1}^{m}{\left\|
+\mathbf{x}_i - \mathbf{UWx}_i
+\right\|^2}
+\end{align}</script>
+
+<h3 id="找到-u-和-w">找到 U 和 W</h3>
+
+<p>我们首先可以证明，我们想要的，符合公式 (6) 的， $\bf{U}$ 与 $\bf{W}$ 满足下面的性质（其实就是说，这两个都是旋转矩阵）</p>
+
+<ol>
+  <li>$\bf{U}$ 的列向量相互正交，即 $\bf U^\top U=I$</li>
+  <li>$\bf W = U^\top$</li>
+</ol>
+
+<p>根据上面的辅助定理，我们可以把公式 (6) 重新写成</p>
+
+<script type="math/tex; mode=display">\begin{align}
+\underset{
+\mathbf{W}\in\mathbb{R}^{n, d},\
+\mathbf{U}\in\mathbb{R}^{d, n}
+}{\operatorname{argmin}}
+\sum_{i=1}^{m}{\left\|
+\mathbf{x}_i - \mathbf{UU^\top x}_i
+\right\|^2}
+\end{align}</script>
+
+<p>我们可以把需要 minimise 的部分写成</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}\left\|\mathbf{x}-U U^{\top} \mathbf{x}\right\|^{2} &=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top} \mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\ &=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\ &=\|\mathbf{x}\|^{2}-\operatorname{trace}\left(U^{\top} \mathbf{x} \mathbf{x}^{\top} U\right) \end{aligned} %]]></script>
+
+<p>其中，$\text{trace}$ 的意思是对对角项求和，是一个线性算符，这让我们可以最终把公式 (6) 写成</p>
+
+<script type="math/tex; mode=display">\underset{U \in \mathbb{R}^{d, n} : U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}\left(U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U\right)</script>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

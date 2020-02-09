@@ -5,12 +5,29 @@
     <title>Van Hove Correlation Function</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/assets/js/toc.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
     <nav>
     <ul>
         
@@ -18,12 +35,6 @@
         <a href=/
             
         >Home</a>
-        </li>
-        
-        <li>
-        <a href=/about.html
-            
-        >About</a>
         </li>
         
         <li>
@@ -38,13 +49,18 @@
         >Science</a>
         </li>
         
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
     </ul>
 </nav>
 
 
     <div class="main_box">
-        
-<div class="column left" id="side_bar">
+        <div class="column left" id="side_bar">
     28 Nov 2019
 </div>
 
@@ -65,9 +81,9 @@
 
 <p>Van Hove 关联函数的公式是</p>
 
-<script type="math/tex; mode=display">\rho G\left(\mathbf{r}, \mathbf{r}^{\prime} ; t\right)=\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{yellow}j=1}^{N} \delta\left(\mathbf{r}^{\prime}+\mathbf{r}-\mathbf{r}_{\color{orange}i}(t)\right) \delta\left(\mathbf{r}-\mathbf{r}_{\color{yellow}j}(0)\right)\right\rangle</script>
+<script type="math/tex; mode=display">\rho G\left(\mathbf{r}, \mathbf{r}^{\prime} ; t\right)=\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{teal}j=1}^{N} \delta\left(\mathbf{r}^{\prime}+\mathbf{r}-\mathbf{r}_{\color{orange}i}(t)\right) \delta\left(\mathbf{r}-\mathbf{r}_{\color{teal}j}(0)\right)\right\rangle</script>
 
-<p>它的大概意思是，如果在 $t=0$ 时刻粒子 $\color{yellow}j$ 处于位置 $\bf{r}$，那么在 $t=t$ 时刻在位置 $\bf{r + r^{\prime}}$ 找到某个粒子 $\color{orange} i$ 的「平均」次数。<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>它的大概意思是，如果在 $t=0$ 时刻粒子 $\color{teal}j$ 处于位置 $\bf{r}$，那么在 $t=t$ 时刻在位置 $\bf{r + r^{\prime}}$ 找到某个粒子 $\color{orange} i$ 的「平均」次数。<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
 
 <p>这个公式实际上计算的是局部密度在不同时间和空间的关联（为什么？），也可以写成</p>
 
@@ -75,9 +91,9 @@
 
 <p>对于均匀分布的系统，这个关联函数只取决于 $\bf{r}$ 与 $\bf{r^{\prime}}$ 的相对距离（因为任何的位置 $\bf{r}$ 都是相同的）。如果我们用 $\bf{\color{tomato}r}$ 表示距离，则我们可以把关联公式「通过积分」（怎么做到？）改写成</p>
 
-<script type="math/tex; mode=display">G(\mathbf{\color{tomato}r}, t)=\frac{1}{N}\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{yellow}j=1}^{N} \delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{orange}i}(t)+\mathbf{r}_{\color{yellow}j}(0)\right)\right\rangle</script>
+<script type="math/tex; mode=display">G(\mathbf{\color{tomato}r}, t)=\frac{1}{N}\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{teal}j=1}^{N} \delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{orange}i}(t)+\mathbf{r}_{\color{teal}j}(0)\right)\right\rangle</script>
 
-<p>它的意思大概是，找到 $t=0$ 时的粒子 $\color{yellow}j$；$t=t$ 时的粒子 $\color{orange} i$；并且两个粒子的距离为 $\bf{\color{tomato}r}$ 的概率。</p>
+<p>它的意思大概是，找到 $t=0$ 时的粒子 $\color{teal}j$；$t=t$ 时的粒子 $\color{orange} i$；并且两个粒子的距离为 $\bf{\color{tomato}r}$ 的概率。</p>
 
 <h2 id="和-gr-的关系">和 g(r) 的关系</h2>
 
@@ -86,11 +102,11 @@
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
 G(\mathbf{\color{tomato}r}, 0)
-&= \frac{1}{N}\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{yellow}j=1}^{N} \delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{orange}i}(0)+\mathbf{r}_{\color{yellow}j}(0)\right)\right\rangle\\[0.5em]
+&= \frac{1}{N}\left\langle\sum_{\color{orange}i=1}^{N} \sum_{\color{teal}j=1}^{N} \delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{orange}i}(0)+\mathbf{r}_{\color{teal}j}(0)\right)\right\rangle\\[0.5em]
 &=\delta(\mathbf{\color{tomato}r}) + \rho \ g(\mathbf{\color{tomato}r})
 \end{aligned} %]]></script>
 
-<p>注意上面 $G(\mathbf{\color{tomato}r}, 0)$ 和径向分布函数 $g(\mathbf{\color{tomato}r})$ 的关系。</p>
+<p>注意上面 $ G(\mathbf{\color{tomato}r}, 0) $ 和径向分布函数 $ g(\mathbf{\color{tomato}r}) $ 的关系。</p>
 
 <h2 id="self-和-distinct">Self 和 Distinct</h2>
 
@@ -101,25 +117,24 @@ G(\mathbf{\color{tomato}r}, 0)
 G_\textsf{self}(\mathbf{\color{tomato}r}, t)
 &=\frac{1}{N}\left\langle\sum_{\color{orange}i=1}^{N}\delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{orange}i}(t)+\mathbf{r}_{\color{orange}i}(0)\right)\right\rangle \\[1em]
 G_\textsf{distinct}(\mathbf{\color{tomato}r}, t)
-&=\frac{1}{N}\left\langle\sum_{\color{lightblue}{i\neq j}}^{N}\delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{yellow}j}(t)+\mathbf{r}_{\color{yellow}j}(0)\right)\right\rangle
+&=\frac{1}{N}\left\langle\sum_{\color{lightblue}{i\neq j}}^{N}\delta\left(\mathbf{\color{tomato}r}-\mathbf{r}_{\color{teal}j}(t)+\mathbf{r}_{\color{teal}j}(0)\right)\right\rangle
 \end{aligned} %]]></script>
 
 <p>这里的 self 部分告诉我们，一个粒子在时间 $t$ 内移动了距离 $\mathbf{\color{tomato}r}$ 的概率。</p>
 
-<p>这里的 distinct 部分告诉我们，如果粒子 $i$ 在 $t=0$ 时处于原点 $\mathbf{0}$，那么在 $t=t$ 时，粒子 $j$ 从 $\mathbf{r}<em>{\color{yellow}j}(0)$ 到 $\mathbf{r}</em>{\color{yellow}j}(t)$ 的「位移」等于 $\mathbf{\color{tomato}r}$ 的概率。</p>
+<p>这里的 distinct 部分告诉我们，如果粒子 $i$ 在 $t=0$ 时处于原点 $\mathbf{0}$，那么在 $ t=t $ 时，粒子 $ j $ 从 $ r_{\color{teal}j}(0) $ 到 $ \mathbf{r}_{\color{teal}j}(t) $ 的「位移」等于 $ \mathbf{\color{tomato}r} $ 的概率。</p>
 
 <h2 id="归一化关系">归一化关系</h2>
 
 <p>在任意时刻，$G(\mathbf{\color{tomato}r}, t)$ 对空间的积分都应该等于一。所以我们有</p>
 
-<p><script type="math/tex">% <![CDATA[
+<script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
 \int d\mathbf{\color{tomato}r}\ G_\textsf{self}(\mathbf{\color{tomato}r}, t)
-&= 1\\[1em]
+&= 1 \\[1em]
 \int d\mathbf{\color{tomato}r}\ G_\textsf{distinct}(\mathbf{\color{tomato}r}, t)
 &= N-1
 \end{aligned} %]]></script>
-$$</p>
 
 <div class="footnotes">
   <ol>

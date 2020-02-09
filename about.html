@@ -5,12 +5,29 @@
     <title>Home</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/assets/js/toc.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
     <nav>
     <ul>
         
@@ -18,14 +35,6 @@
         <a href=/
             
         >Home</a>
-        </li>
-        
-        <li>
-        <a href=/about.html
-            
-                class="current"
-            
-        >About</a>
         </li>
         
         <li>
@@ -40,14 +49,40 @@
         >Science</a>
         </li>
         
+        <li>
+        <a href=/about.html
+            
+                class="current"
+            
+        >About</a>
+        </li>
+        
     </ul>
 </nav>
 
 
     <div class="main_box">
-        <p>I am a PhD student in university of Bristol. Working with <a href="http://padrus.com">Paddy Royall</a> and <a href="https://scholar.google.co.uk/citations?user=ysbXMk4AAAAJ&amp;hl=en&amp;oi=ao">John Russo</a></p>
+        <h3>
+    <a href="mailto: yushi.yang@bristol.ac.uk">Write me an email</a>
+</h3>
+
+<p>I am a PhD student in university of Bristol. Working with <a href="http://padrus.com">Paddy Royall</a> and <a href="https://scholar.google.co.uk/citations?user=ysbXMk4AAAAJ&amp;hl=en&amp;oi=ao">John Russo</a></p>
 
 <p>I am now study the collective behaviour of zebrafish.</p>
+
+<p>I enjoy <a href="code.html">coding</a> and I code a lot. This is my <a href="https://github.com/yangyushi">GitHub</a> account.</p>
+
+<div class="column fig_left">
+    <figure>
+        <embed src="https://wakatime.com/share/@yangyushi/574cfe9d-2387-4840-b390-f3e1a2aca211.svg" />
+    </figure>
+</div>
+
+<div class="column fig_left">
+    <figure>
+        <embed src="https://wakatime.com/share/@yangyushi/d33e0d4b-c024-4edb-a0e7-8a4234734099.svg" />
+    </figure>
+</div>
 
     </div>
 
