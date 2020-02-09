@@ -1,0 +1,1111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>python introduction</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    27 Oct 2017
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#enumerate" id="markdown-toc-enumerate">enumerate()</a></li>
+  <li><a href="#zip" id="markdown-toc-zip">zip()</a></li>
+  <li><a href="#filter" id="markdown-toc-filter">filter()</a></li>
+  <li><a href="#reduce" id="markdown-toc-reduce">reduce()</a></li>
+  <li><a href="#动态类型" id="markdown-toc-动态类型">动态类型</a></li>
+  <li><a href="#动态类型和参数传递" id="markdown-toc-动态类型和参数传递">动态类型和参数传递</a></li>
+  <li><a href="#函数也是一种对象" id="markdown-toc-函数也是一种对象">函数也是一种对象</a></li>
+  <li><a href="#上下文管理器" id="markdown-toc-上下文管理器">上下文管理器</a>    <ul>
+      <li><a href="#发生了什么" id="markdown-toc-发生了什么">发生了什么</a></li>
+      <li><a href="#自定义上下文管理器" id="markdown-toc-自定义上下文管理器">自定义上下文管理器</a></li>
+    </ul>
+  </li>
+  <li><a href="#闭包" id="markdown-toc-闭包">闭包</a>    <ul>
+      <li><a href="#函数对象的作用域" id="markdown-toc-函数对象的作用域">函数对象的作用域</a></li>
+      <li><a href="#闭包-1" id="markdown-toc-闭包-1">闭包</a></li>
+    </ul>
+  </li>
+  <li><a href="#装饰器" id="markdown-toc-装饰器">装饰器</a>    <ul>
+      <li><a href="#装饰器-1" id="markdown-toc-装饰器-1">装饰器</a></li>
+      <li><a href="#含参装饰器" id="markdown-toc-含参装饰器">含参装饰器</a>        <ul>
+          <li><a href="#装饰类" id="markdown-toc-装饰类">装饰类</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#内存管理" id="markdown-toc-内存管理">内存管理</a>    <ul>
+      <li><a href="#对象的内存使用" id="markdown-toc-对象的内存使用">对象的内存使用</a></li>
+      <li><a href="#引用计数" id="markdown-toc-引用计数">引用计数</a></li>
+      <li><a href="#对象引用对象" id="markdown-toc-对象引用对象">对象引用对象</a></li>
+      <li><a href="#引用环" id="markdown-toc-引用环">引用环</a></li>
+      <li><a href="#引用减少" id="markdown-toc-引用减少">引用减少</a></li>
+      <li><a href="#垃圾回收" id="markdown-toc-垃圾回收">垃圾回收</a></li>
+      <li><a href="#分代回收" id="markdown-toc-分代回收">分代回收</a></li>
+      <li><a href="#回收孤立的引用环" id="markdown-toc-回收孤立的引用环">回收孤立的引用环</a></li>
+    </ul>
+  </li>
+  <li><a href="#os-标准库" id="markdown-toc-os-标准库">OS 标准库</a>    <ul>
+      <li><a href="#ospath" id="markdown-toc-ospath">os.path</a></li>
+      <li><a href="#进程信息" id="markdown-toc-进程信息">进程信息</a></li>
+      <li><a href="#其它方法" id="markdown-toc-其它方法">其它方法</a></li>
+    </ul>
+  </li>
+  <li><a href="#pickle" id="markdown-toc-pickle">Pickle</a></li>
+  <li><a href="#subprocess" id="markdown-toc-subprocess">Subprocess</a>    <ul>
+      <li><a href="#popen" id="markdown-toc-popen">Popen()</a></li>
+      <li><a href="#子进程的文本流控制" id="markdown-toc-子进程的文本流控制">子进程的文本流控制</a></li>
+    </ul>
+  </li>
+  <li><a href="#循环器" id="markdown-toc-循环器">循环器</a>    <ul>
+      <li><a href="#无穷循环器" id="markdown-toc-无穷循环器">无穷循环器</a></li>
+      <li><a href="#函数式工具" id="markdown-toc-函数式工具">函数式工具</a></li>
+      <li><a href="#组合工具" id="markdown-toc-组合工具">组合工具</a></li>
+      <li><a href="#group_by" id="markdown-toc-group_by">group_by()</a></li>
+    </ul>
+  </li>
+  <li><a href="#数据库-sqlite3" id="markdown-toc-数据库-sqlite3">数据库 (sqlite3)</a>    <ul>
+      <li><a href="#创建数据库" id="markdown-toc-创建数据库">创建数据库</a></li>
+      <li><a href="#插入数据" id="markdown-toc-插入数据">插入数据</a></li>
+      <li><a href="#选择数据" id="markdown-toc-选择数据">选择数据</a></li>
+      <li><a href="#更新和删除数据" id="markdown-toc-更新和删除数据">更新和删除数据</a></li>
+      <li><a href="#查看所有表和删除表" id="markdown-toc-查看所有表和删除表">查看所有表和删除表</a></li>
+    </ul>
+  </li>
+  <li><a href="#网络" id="markdown-toc-网络">网络</a>    <ul>
+      <li><a href="#手写-python-服务器" id="markdown-toc-手写-python-服务器">手写 Python 服务器</a>        <ul>
+          <li><a href="#tcpip-和-socket" id="markdown-toc-tcpip-和-socket">TCP/IP 和 socket</a></li>
+          <li><a href="#tcp-socket" id="markdown-toc-tcp-socket">TCP socket</a></li>
+        </ul>
+      </li>
+      <li><a href="#基于-tcp-socket-的-http-服务器" id="markdown-toc-基于-tcp-socket-的-http-服务器">基于 TCP socket 的 HTTP 服务器</a>        <ul>
+          <li><a href="#代码" id="markdown-toc-代码">代码</a></li>
+          <li><a href="#深入-http-服务器代码" id="markdown-toc-深入-http-服务器代码">深入 HTTP 服务器代码</a></li>
+          <li><a href="#使用浏览器实验" id="markdown-toc-使用浏览器实验">使用浏览器实验</a></li>
+        </ul>
+      </li>
+      <li><a href="#使用-socketserver" id="markdown-toc-使用-socketserver">使用 socketserver</a></li>
+      <li><a href="#httpserver" id="markdown-toc-httpserver">http.server</a>        <ul>
+          <li><a href="#simplehttprequesthandler-使用静态文件来回应请求" id="markdown-toc-simplehttprequesthandler-使用静态文件来回应请求">SimpleHTTPRequestHandler: 使用静态文件来回应请求</a></li>
+          <li><a href="#cgihttpserver使用静态文件或者cgi来回应请求" id="markdown-toc-cgihttpserver使用静态文件或者cgi来回应请求">CGIHTTPServer：使用静态文件或者CGI来回应请求</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#django" id="markdown-toc-django">Django</a>    <ul>
+      <li><a href="#启动" id="markdown-toc-启动">启动</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="enumerate">enumerate()</h2>
+
+<p>利用 <code class="highlighter-rouge">enumerate()</code> 函数，可以在每次循环中同时得到下标和元素</p>
+
+<p><img src="/assets/images/py_intro/14663150754382.jpg" alt="" /></p>
+
+<h2 id="zip">zip()</h2>
+
+<p>利用 <code class="highlighter-rouge">zip()</code> 函数，可以在每次循环时从各个序列分别取出一个元素</p>
+
+<p><img src="/assets/images/py_intro/14663152539118.jpg" alt="" /></p>
+
+<h2 id="filter">filter()</h2>
+
+<p><code class="highlighter-rouge">filter()</code> 函数的第一个参数是一个函数对象。它也是将作为参数的函数对象作用于多个元素。如果函数对象返回的是 <code class="highlighter-rouge">True</code>，则该次的元素被储存于返回的表中。 <code class="highlighter-rouge">filter</code> 通过读入的函数来筛选数据。Python 3 中，<code class="highlighter-rouge">filter()</code> 返回的不是表，而是循环对象。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">'MacOSX'</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="bp">False</span>  <span class="c1"># function to filter small y scatters
+</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">((</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">sx</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">scatter</span><span class="p">]</span>
+<span class="n">sy</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">scatter</span><span class="p">]</span>  <span class="c1"># get x and y value lists for plot
+</span>
+<span class="n">scatter_filt</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">scatter</span><span class="p">))</span> 
+<span class="c1"># drop the elements in "scatter" if they yield Flase in funciton "f"
+</span><span class="n">sfx</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">scatter_filt</span><span class="p">]</span>
+<span class="n">sfy</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">scatter_filt</span><span class="p">]</span>  <span class="c1"># get x and y value lists for plot
+</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'b'</span><span class="p">),</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sfx</span><span class="p">,</span> <span class="n">sfy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">),</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/py_intro/14663205598518.jpg" alt="" /></p>
+
+<h2 id="reduce">reduce()</h2>
+
+<p><code class="highlighter-rouge">reduce</code> 函数的第一个参数也是函数，但有一个要求，就是这个函数自身能接收两个参数。reduce可以累进地将函数作用于各个参数。</p>
+
+<p>python2：</p>
+
+<p><img src="/assets/images/py_intro/14663216593394.jpg" alt="" /></p>
+
+<p>python3：
+<img src="/assets/images/py_intro/14663230614539.jpg" alt="" /></p>
+
+<h2 id="动态类型">动态类型</h2>
+
+<blockquote>
+  <p>动态类型 (dynamic typing) 是 Python 一个重要的核心概念。我们之前说过，Python 的变量 (variable) 不需要声明，而在赋值时，变量可以重新赋值为任意值。这些都与动态类型的概念相关。</p>
+</blockquote>
+
+<p>在我们接触的对象中，有一类特殊的对象，是用于存储数据的。常见的该类对象包括各种数字，字符串，表，词典。在C语言中，我们称这样一些数据结构为变量。而在Python中，这些是对象。
+对象是储存在内存中的实体。但我们并不能直接接触到该对象。我们在程序中写的对象名，只是指向这一对象的<strong>引用 (reference)</strong>。
+<strong>引用和对象分离</strong>，是动态类型的核心。引用可以随时指向一个新的对象：</p>
+
+<p>例一：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">a</span> <span class="o">=</span> <span class="s">"3"</span>
+</code></pre></div></div>
+
+<p>第一个语句中，3 是储存在内存中的一个整数对象。通过赋值，<strong>引用 a 指向对象 3</strong>。
+第二个语句中，内存中建立对象 “3”，是一个字符串 (string)。<strong>引用 a 指向了 “3”</strong>。此时，对象 3 不再有引用指向它。</p>
+
+<ul>
+  <li>Python 会自动将没有引用指向的对象销毁(destruct)，释放相应内存。</li>
+  <li>对于小的整数和短字符串，Python 会缓存这些对象，而不是频繁的建立和销毁。</li>
+</ul>
+
+<p>例二：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>通过前两个句子，我们让 a, b 指向<strong>同一个整数对象 5</strong> ( b = a 的含义是让引用 b 指向引用 a 所指的那一个对象)。
+第三个句子对引用 a 重新赋值，让 a 指向一个新的对象 7。此时 a, b 分别指向不同的对象。</p>
+
+<ul>
+  <li>我们看到，即使是多个引用指向同一个对象，如果一个引用值发生变化，那么实际上是让这个引用指向一个新的引用，并不影响其他的引用的指向。从效果上看，就是各个引用各自独立，互不影响。</li>
+</ul>
+
+<p>例三：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">L1</span><span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">L2</span> <span class="o">=</span> <span class="n">L1</span>
+<span class="n">L3</span> <span class="o">=</span> <span class="n">L1</span>
+
+<span class="c1"># inmutable 
+</span><span class="n">L1</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">L1</span><span class="p">,</span> <span class="n">L2</span><span class="p">,</span> <span class="n">L3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># mutable
+</span><span class="n">L2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">L1</span><span class="p">,</span> <span class="n">L2</span><span class="p">,</span> <span class="n">L3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="c1"># wtf?
+</span></code></pre></div></div>
+
+<p>我们不再对 <code class="highlighter-rouge">L2</code> 这一引用赋值，而是对 <code class="highlighter-rouge">L2</code> <strong>所指向的表</strong>的元素赋值。结果是，<code class="highlighter-rouge">L3</code> 也同时发生变化。</p>
+
+<p>原因何在呢？因为 <code class="highlighter-rouge">L2</code>, <code class="highlighter-rouge">L3</code> 的指向没有发生变化，依然指向那个表。表实际上是包含了多个<strong>引用</strong>的对象（每个<strong>引用</strong>是一个元素，比如 <code class="highlighter-rouge">L1[0]</code>, <code class="highlighter-rouge">L1[1]</code>, …，每个引用指向一个对象，比如 <code class="highlighter-rouge">1</code>, <code class="highlighter-rouge">2</code>, <code class="highlighter-rouge">3</code>)。而 <code class="highlighter-rouge">L2[0] = 0</code> 这一赋值操作，并不是改变 <code class="highlighter-rouge">L2</code> 的指向，而是对<code class="highlighter-rouge">L2[0]</code>, 也就是表对象的一个元素，进行操作，所以所有指向该对象的引用都受到影响。</p>
+
+<h2 id="动态类型和参数传递">动态类型和参数传递</h2>
+
+<ol>
+  <li>不可变对象 (immutable)</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>参数 <code class="highlighter-rouge">x</code> 是一个新的引用，指向 <code class="highlighter-rouge">a</code> 所指的对象。如果参数是不可变 (immutable) 的对象，<code class="highlighter-rouge">a</code> 和 <code class="highlighter-rouge">x</code> 的引用之间相互独立。对参数 <code class="highlighter-rouge">x</code> 的操作不会影响引用 <code class="highlighter-rouge">a</code>。这样的传递类似于 C 语言中的值传递。</p>
+
+<ol>
+  <li>可变对象</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>如果传递的是可变 (mutable) 的对象，那么改变函数参数，有可能改变原对象。所有指向原对象的引用都会受影响，编程的时候要对此问题留心。</p>
+
+<h2 id="函数也是一种对象">函数也是一种对象</h2>
+
+<p>任何一个有 <code class="highlighter-rouge">__call__()</code> 特殊方法的对象都被当作是函数</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">Sample</span><span class="p">():</span>
+   <span class="o">....</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+   <span class="o">....</span><span class="p">:</span>         <span class="k">print</span><span class="p">(</span><span class="s">"making sample #{i}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">))</span>
+   <span class="o">....</span><span class="p">:</span>         <span class="k">return</span> <span class="s">"sample_{i}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>     
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">s1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">making</span> <span class="n">sample</span> <span class="c1">#0
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="s">'sample_0'</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="nb">map</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="o">&lt;</span><span class="nb">map</span> <span class="n">at</span> <span class="mh">0x103d5e080</span><span class="o">&gt;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
+<span class="n">making</span> <span class="n">sample</span> <span class="c1">#1
+</span><span class="n">making</span> <span class="n">sample</span> <span class="c1">#2
+</span><span class="n">making</span> <span class="n">sample</span> <span class="c1">#3
+</span><span class="n">making</span> <span class="n">sample</span> <span class="c1">#4
+</span><span class="n">making</span> <span class="n">sample</span> <span class="c1">#5
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">[</span><span class="s">'sample_1'</span><span class="p">,</span> <span class="s">'sample_2'</span><span class="p">,</span> <span class="s">'sample_3'</span><span class="p">,</span> <span class="s">'sample_4'</span><span class="p">,</span> <span class="s">'sample_5'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="上下文管理器">上下文管理器</h2>
+
+<p>上下文管理器 (context manager) 是 Python2.5 开始支持的一种语法，用于规定某个对象的使用范围。一旦进入或者离开该使用范围，会有特殊操作被调用 (比如为对象分配或者释放内存)。它的语法形式是:  <code class="highlighter-rouge">with...as...</code></p>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"File_name"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># do something and f is closed after this
+</span></code></pre></div></div>
+
+<p><img src="/assets/images/py_intro/14678144170043.jpg" alt="" /></p>
+
+<h3 id="发生了什么">发生了什么</h3>
+
+<p>当我们使用上下文管理器的语法时，我们实际上要求 Python 在进入程序块之前调用对象的 <code class="highlighter-rouge">__enter__()</code> 方法，在结束程序块的时候调用 <code class="highlighter-rouge">__exit__()</code>方法。</p>
+
+<p>对于<strong>文件对象 f</strong> 来说，它定义了 <code class="highlighter-rouge">__enter__()</code> 和 <code class="highlighter-rouge">__exit__()</code> 方法 (可以通过 <code class="highlighter-rouge">dir(f)</code> 看到)。在 f 的 <code class="highlighter-rouge">__exit__()</code> 方法中，有<code class="highlighter-rouge">self.close()</code>语句。所以在使用上下文管理器时，我们就不用明文关闭 f 文件了。</p>
+
+<h3 id="自定义上下文管理器">自定义上下文管理器</h3>
+
+<p><img src="/assets/images/py_intro/14685473336289.jpg" alt="" />
+<img src="/assets/images/py_intro/14685473506611.jpg" alt="" /></p>
+
+<h2 id="闭包">闭包</h2>
+
+<p>闭包 (closure) 是函数式编程的重要的语法结构。函数式编程是一种编程范式。在<strong>面向过程</strong>编程中，我们见到过函数(function)；在<strong>面向对象</strong>编程中，我们见过对象(object)。函数和对象的根本目的是以某种逻辑方式组织代码，并提高代码的可重复使用性(reusability)。闭包也是一种组织代码的结构，它同样提高了代码的可重复使用性。</p>
+
+<p>不同的语言实现闭包的方式不同。Python 以函数对象为基础，为闭包这一语法结构提供支持的 (我们在特殊方法与多范式中，已经多次看到Python使用对象来实现一些特殊的语法)。Python一切皆对象，函数这一语法结构也是一个对象。在函数对象中，我们像使用一个普通对象一样使用函数对象，比如更改函数对象的名字，或者将函数对象作为参数进行传递。</p>
+
+<h3 id="函数对象的作用域">函数对象的作用域</h3>
+
+<p>和其他对象一样，函数对象也有其存活的范围，也就是函数对象的作用域。函数对象是使用 <code class="highlighter-rouge">def</code> 语句定义的，函数对象的作用域与 <code class="highlighter-rouge">def</code> 所在的层级相同。比如下面代码，我们在 <code class="highlighter-rouge">line_conf</code> 函数的隶属范围内定义的函数 <code class="highlighter-rouge">line</code>，就只能在 <code class="highlighter-rouge">line_conf</code> 的隶属范围内调用。(同样，如果使用 <code class="highlighter-rouge">lambda</code> 定义函数，那么函数对象的作用域与 <code class="highlighter-rouge">lambda</code> 所在的层级相同。)</p>
+
+<p><img src="/assets/images/py_intro/14686434333772.jpg" alt="" /></p>
+
+<h3 id="闭包-1">闭包</h3>
+
+<p>一个函数和它的环境变量合在一起，就构成了一个闭包(closure)。在 Python 中，所谓的闭包是一个包含有环境变量取值的函数对象。环境变量取值被保存在函数对象的 <code class="highlighter-rouge">__closure__</code> 属性中。</p>
+
+<p><img src="/assets/images/py_intro/14686621441832.jpg" alt="" /></p>
+
+<h2 id="装饰器">装饰器</h2>
+
+<h3 id="装饰器-1">装饰器</h3>
+
+<p>装饰器 (decorator) 是一种高级 Python 语法。装饰器可以对一个函数、方法或者类进行加工。在 Python 中，我们有多种方法对函数和类进行加工，比如在 Python 闭包中，我们见到函数对象作为某一个函数的返回结果。相对于其它方式，装饰器语法简单，代码可读性高。</p>
+
+<p>在函数定义之前调用 <code class="highlighter-rouge">@decorator</code>，我们实际上将该函数传递给 <code class="highlighter-rouge">decorator</code>，并将 <code class="highlighter-rouge">decorator</code>返回的对象赋给原来的函数名。</p>
+
+<p><img src="/assets/images/py_intro/14686637910809.jpg" alt="" /></p>
+
+<h3 id="含参装饰器">含参装饰器</h3>
+
+<p>装饰器的语法允许我们调用 <code class="highlighter-rouge">decorator</code> 时，提供其它参数，比如 <code class="highlighter-rouge">@decorator(par)</code>。这样，就为装饰器的编写和使用提供了更大的灵活性。</p>
+
+<p><img src="/assets/images/py_intro/14688055923520.jpg" alt="" /></p>
+
+<h4 id="装饰类">装饰类</h4>
+
+<p>在 <code class="highlighter-rouge">Python 2.6</code> 以后，装饰器被拓展到类。一个装饰器可以接收一个类，并返回一个类，从而起到加工类的效果。</p>
+
+<p><img src="/assets/images/py_intro/14688062970661.jpg" alt="" /></p>
+
+<h2 id="内存管理">内存管理</h2>
+
+<h3 id="对象的内存使用">对象的内存使用</h3>
+
+<p>对于赋值语句 <code class="highlighter-rouge">a = 1</code>，整数 <code class="highlighter-rouge">1</code> 为一个对象。而 <code class="highlighter-rouge">a</code> 是一个引用。利用赋值语句，引用 <code class="highlighter-rouge">a</code> 指向对象 <code class="highlighter-rouge">1</code> 。</p>
+
+<p>为了探索对象在内存的存储，我们可以求助于 Python 的内置函数 <code class="highlighter-rouge">id()</code> 。它用于返回对象的身份(identity)。其实，这里所谓的身份，就是该对象的<strong>内存地址</strong>。</p>
+
+<p><img src="/assets/images/py_intro/14688082813243.jpg" alt="" /></p>
+
+<p>Python 会缓存整数和短小的字符这类对象，以便重复使用。当我们创建多个<strong>等于 1 的引用</strong>时，实际上是让所有这些引用指向同一个对象：</p>
+
+<p><img src="/assets/images/py_intro/14688084190608.jpg" alt="set w300" /></p>
+
+<p>为了检验两个引用指向同一个对象，我们可以用 <code class="highlighter-rouge">is</code> 关键字。<code class="highlighter-rouge">is</code> 用于判断两个引用所指的对象是否相同。</p>
+
+<p><img src="/assets/images/py_intro/14688087618015.jpg" alt="set w500" /></p>
+
+<h3 id="引用计数">引用计数</h3>
+
+<p>在 Python 中，每个对象都有存有指向该对象的引用总数，即引用计数(reference count)。当一个对象 <code class="highlighter-rouge">A</code> 被另一个对象 <code class="highlighter-rouge">B</code> 引用时，<code class="highlighter-rouge">A</code> 的引用计数将增加 1。</p>
+
+<p>我们可以使用 <code class="highlighter-rouge">sys</code> 包中的<code class="highlighter-rouge">getrefcount()</code>，来查看某个对象的引用计数。需要注意的是，当使用某个引用作为参数，传递给 <code class="highlighter-rouge">getrefcount()</code> 时，参数实际上创建了一个临时的引用。因此，<code class="highlighter-rouge">getrefcount()</code> 所得到的结果，会比期望的多 1。</p>
+
+<p><img src="/assets/images/py_intro/14688098943832.jpg" alt="" /></p>
+
+<h3 id="对象引用对象">对象引用对象</h3>
+
+<p>Python 的一个容器对象(container)，比如表、词典等，可以包含多个对象。实际上，容器对象中包含的并不是元素对象本身，是指向各个元素对象的引用。
+我们也可以自定义一个对象，并引用其它对象:</p>
+
+<p><img src="/assets/images/py_intro/14688093706108.jpg" alt="" /></p>
+
+<p>对象引用对象，是 Python 最基本的构成方式。即使是 <code class="highlighter-rouge">a = 1</code> 这一赋值方式，实际上是让词典的一个键值 <code class="highlighter-rouge">"a"</code> 的元素引用整数对象 <code class="highlighter-rouge">1</code>。该词典对象用于记录所有的全局引用。该词典引用了整数对象 <code class="highlighter-rouge">1</code>。我们可以通过内置函数<code class="highlighter-rouge">globals()</code> 来查看该词典：</p>
+
+<p><img src="/assets/images/py_intro/14688096821183.jpg" alt="" /></p>
+
+<h3 id="引用环">引用环</h3>
+
+<p>两个对象可能相互引用，从而构成所谓的引用环</p>
+
+<p><img src="/assets/images/py_intro/14688115012287.jpg" alt="set w300" /></p>
+
+<p>即使是一个对象，只需要自己引用自己，也能构成引用环。</p>
+
+<p><img src="/assets/images/py_intro/14688115567884.jpg" alt="set w250" /></p>
+
+<h3 id="引用减少">引用减少</h3>
+
+<p>某个对象的引用计数可能减少。比如，可以使用 <code class="highlighter-rouge">del</code> 关键字删除某个引用</p>
+
+<p><img src="/assets/images/py_intro/14688106836423.jpg" alt="" /></p>
+
+<p><code class="highlighter-rouge">del</code> 也可以用于删除容器元素中的元素</p>
+
+<p><img src="/assets/images/py_intro/14688107620791.jpg" alt="set w300" /></p>
+
+<h3 id="垃圾回收">垃圾回收</h3>
+
+<p>Python 会启动垃圾回收 (garbage collection)，将没用的对象清除。
+从基本原理上，当 Python 的某个对象的引用计数降为 0 时，说明没有任何引用指向该对象，该对象就成为要被回收的垃圾了。</p>
+
+<p>例子：</p>
+
+<p><img src="/assets/images/py_intro/14688117160582.jpg" alt="set w300" /></p>
+
+<p><code class="highlighter-rouge">del(a)</code> 后，已经没有任何引用指向之前建立的 <code class="highlighter-rouge">[1, 2, 3]</code> 这个表。用户不可能通过任何方式接触或者动用这个对象。这个对象如果继续待在内存里，就成了不健康的脂肪。当垃圾回收启动时，Python 扫描到这个引用计数为 <code class="highlighter-rouge">0</code> 的对象，就将它所占据的内存清空。</p>
+
+<p>然而，垃圾回收时，Python 不能进行其它的任务。频繁的垃圾回收将大大降低Python 的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，Python 只会在特定条件下，自动启动垃圾回收。当 Python 运行时，会记录其中<strong>分配对象</strong> (object allocation) 和<strong>取消分配对象</strong> (object deallocation) 的次数。当两者的差值高于某个阈值时，垃圾回收才会启动。</p>
+
+<p>我们可以通过 <code class="highlighter-rouge">gc</code> 模块的 <code class="highlighter-rouge">get_threshold()</code> 方法，查看该阈值:</p>
+
+<p><img src="/assets/images/py_intro/14688121244730.jpg" alt="set w300" /></p>
+
+<p>返回 <code class="highlighter-rouge">(700, 10, 10)</code>，后面的两个 <code class="highlighter-rouge">10</code> 是与分代回收相关的阈值。<code class="highlighter-rouge">700</code> 即是垃圾回收启动的阈值。可以通过 <code class="highlighter-rouge">gc</code> 中的 <code class="highlighter-rouge">set_threshold()</code> 方法重新设置这个值。我们也可以手动启动垃圾回收，即使用 <code class="highlighter-rouge">gc.collect()</code>。</p>
+
+<h3 id="分代回收">分代回收</h3>
+
+<p>Python 同时采用了分代 (generation) 回收的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
+
+<p>Python 将所有的对象分为 0，1，2 三代。所有的新建对象都是 0 代对象。<strong>当某一代对象经历过垃圾回收，依然存活，那么它就被归入下一代对象。</strong></p>
+
+<p>垃圾回收启动时，一定会扫描所有的 0 代对象。如果 0 代经过一定次数垃圾回收，那么就启动对 0 代和 1 代的扫描清理。当 1 代也经历了一定次数的垃圾回收后，那么会启动对 0，1，2，即对所有对象进行扫描。</p>
+
+<p>这两个次数即上面</p>
+
+<p><img src="/assets/images/py_intro/14688121244730.jpg" alt="set w300" /></p>
+
+<p><code class="highlighter-rouge">get_threshold()</code> 返回的 <code class="highlighter-rouge">(700, 10, 10)</code> 返回的两个 <code class="highlighter-rouge">10</code>。也就是说，每 <code class="highlighter-rouge">10</code> 次 0 代垃圾回收，会配合 1 次 1 代的垃圾回收；而每 10 次 1 代的垃圾回收，才会有 1 次的 2 代垃圾回收。</p>
+
+<p>我们可以用 <code class="highlighter-rouge">set_threshold()</code> 来调整这个阈值：</p>
+
+<p><img src="/assets/images/py_intro/14688125650066.jpg" alt="" /></p>
+
+<h3 id="回收孤立的引用环">回收孤立的引用环</h3>
+
+<p>引用环的存在会给上面的垃圾回收机制带来很大的困难。这些引用环可能构成<strong>无法使用，但引用计数不为 0</strong> 的一些对象。</p>
+
+<p>上面我们先创建了两个表对象，并引用对方，构成一个引用环。删除了 <code class="highlighter-rouge">a，b</code> 引用之后，这两个对象不可能再从程序中调用，就没有什么用处了。但是由于引用环的存在，这两个对象的引用计数都没有降到0，不会被垃圾回收。</p>
+
+<p>孤立的引用环：
+<img src="/assets/images/py_intro/14688127207112.png" alt="" /></p>
+
+<p>为了回收这样的引用环，Python 复制每个对象的引用计数，可以记为 <code class="highlighter-rouge">gc_ref</code>。假设，每个对象 <code class="highlighter-rouge">i</code>，该计数为 <code class="highlighter-rouge">gc_ref_i</code>。Python 会遍历所有的对象 <code class="highlighter-rouge">i</code>。对于每个对象 <code class="highlighter-rouge">i</code> 引用的对象 <code class="highlighter-rouge">j</code>，将相应的 <code class="highlighter-rouge">gc_ref_j</code> 减 1。</p>
+
+<p>遍历后的结果：
+<img src="/assets/images/py_intro/14688127267504.png" alt="" /></p>
+
+<p>在结束遍历后，<code class="highlighter-rouge">gc_ref</code> 不为 0 的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
+
+<h2 id="os-标准库">OS 标准库</h2>
+
+<h3 id="ospath">os.path</h3>
+
+<p><img src="/assets/images/py_intro/14688271229059.jpg" alt="" /></p>
+
+<h3 id="进程信息">进程信息</h3>
+
+<p>os 包中相关函数如下：</p>
+
+<ol>
+  <li><code class="highlighter-rouge">uname()</code> 返回操作系统相关信息。类似于 Linux 上的 uname 命令。</li>
+  <li><code class="highlighter-rouge">mask()</code> 设置该进程创建文件时的权限 mask。类似于 Linux 上的 umask 命令</li>
+  <li><code class="highlighter-rouge">get()</code> 查询
+    <ol>
+      <li><code class="highlighter-rouge">uid, euid, resuid, gid, egid, resgid</code> ：权限相关，其中<code class="highlighter-rouge">resuid</code> 主要用来返回 <code class="highlighter-rouge">saved UID</code></li>
+      <li><code class="highlighter-rouge">pid, pgid, ppid, sid</code>：进程相关</li>
+    </ol>
+  </li>
+  <li><code class="highlighter-rouge">put()</code> 设置
+    <ol>
+      <li><code class="highlighter-rouge">euid, egid</code>： 用于更改 <code class="highlighter-rouge">euid，egid</code>。</li>
+      <li><code class="highlighter-rouge">uid, gid</code>  ： 改变进程的 <code class="highlighter-rouge">uid, gid</code>。只有 super user 才有权改变。</li>
+      <li><code class="highlighter-rouge">pgid, sid</code> ： 改变进程所在的进程组(process group)和会话(session)。</li>
+    </ol>
+  </li>
+  <li><code class="highlighter-rouge">getenviron()</code>：获得进程的环境变量</li>
+  <li><code class="highlighter-rouge">setenviron()</code>：更改进程的环境变量</li>
+</ol>
+
+<h3 id="其它方法">其它方法</h3>
+
+<p><img src="/assets/images/py_intro/14688278874617.jpg" alt="" />
+<img src="/assets/images/py_intro/14688279433882.jpg" alt="" /></p>
+
+<h2 id="pickle">Pickle</h2>
+
+<p>在之前对 Python 对象的介绍中，我提到过 Python “一切皆对象” 的哲学，在 Python 中，无论是变量还是函数，都是一个对象。当 Python 运行时，对象存储在内存中，随时等待系统的调用。然而，内存里的数据会随着计算机关机和消失，如何将对象保存到文件，并储存在硬盘上呢？</p>
+
+<p>计算机的内存中存储的对象，是二进制的序列 (当然，在Linux眼中，是文本流)。我们可以直接将某个对象所对应位置的数据抓取下来，转换成文本流 (这个过程叫做 serialize)，然后将文本流存入到文件中。</p>
+
+<p>由于 Python 在创建对象时，要参考对象的类定义，所以当我们从文本中读取对象时，必须在手边要有该对象的类定义，才能重建这一对象。</p>
+
+<p>从文件读取对象时，对于 Python 的内建对象 (比如说整数、词典、表等等)，由于其类定义已经载入内存，所以不需要我们再在程序中定义类。对于用户自行定义的对象，就必须要先定义类，然后才能从文件中载入对象。</p>
+
+<p>使用 <code class="highlighter-rouge">pickle.dumps()</code> 方法可以将对象转换成字符串 (也就是文本流)。随后我们可以用普通文本的存储方法来将该字符串储存在文件(文本文件的输入输出)。
+当然，我们也可以使用 <code class="highlighter-rouge">pickle.dump()</code> 的方法，将上面两部合二为一:</p>
+
+<p>例子：</p>
+
+<p>存储对象</p>
+
+<p><img src="/assets/images/py_intro/14688350564776.jpg" alt="" /></p>
+
+<p>读取对象</p>
+
+<p><img src="/assets/images/py_intro/14688470496446.jpg" alt="" /></p>
+
+<p>crow.pkl 的内容：</p>
+
+<p><img src="/assets/images/py_intro/14688471306175.jpg" alt="set w200" /></p>
+
+<h2 id="subprocess">Subprocess</h2>
+
+<p>当我们运行 python 的时候，我们都是在创建并运行一个进程。一个进程可以 fork 一个子进程，并让这个子进程 exec 另外一个程序。在 Python 中，我们通过标准库中的 subprocess 包来 fork 一个子进程，并运行一个外部的程序。
+subprocess 包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外 subprocess 还提供了一些管理标准流 (standard stream) 和管道 (pipe) 的工具，从而在进程间使用文本通信。</p>
+
+<p>使用 subprocess 包中的函数创建子进程的时候，要注意:</p>
+
+<ol>
+  <li>在创建子进程之后，父进程是否暂停，并等待子进程运行。</li>
+  <li>函数返回什么</li>
+  <li>当 <code class="highlighter-rouge">returncode</code> 不为0时，父进程如何处理。</li>
+</ol>
+
+<ul>
+  <li>
+    <p>subprocess.call()
+父进程等待子进程完成
+返回退出信息(<code class="highlighter-rouge">returncode</code>，相当于<code class="highlighter-rouge">exit code</code>)</p>
+  </li>
+  <li>
+    <p>subprocess.check_call()
+父进程等待子进程完成，返回 <code class="highlighter-rouge">0</code>
+检查退出信息，如果 <code class="highlighter-rouge">returncode</code> 不为 0 ，则举出错误 <code class="highlighter-rouge">subprocess.CalledProcessError</code>，该对象包含有 <code class="highlighter-rouge">returncode</code> 属性，可用 <code class="highlighter-rouge">try...except...</code>来检查。</p>
+  </li>
+  <li>
+    <p>subprocess.check_output()
+父进程等待子进程完成
+返回子进程向标准输出的输出结果
+检查退出信息，如果 <code class="highlighter-rouge">returncode</code> 不为0，则举出错误 <code class="highlighter-rouge">subprocess.CalledProcessError</code> ，该对象包含有 <code class="highlighter-rouge">returncode</code> 属性和 <code class="highlighter-rouge">output</code> 属性，<code class="highlighter-rouge">output</code> 属性为标准输出的输出结果，可用<code class="highlighter-rouge">try...except...</code> 来检查。</p>
+  </li>
+</ul>
+
+<p><img src="/assets/images/py_intro/14688919993790.jpg" alt="" />
+<img src="/assets/images/py_intro/14688925667153.jpg" alt="" /></p>
+
+<h3 id="popen">Popen()</h3>
+
+<p>实际上，我们上面的三个函数都是基于 <code class="highlighter-rouge">Popen()</code> 的封装 (wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向 <code class="highlighter-rouge">Popen</code> 类，该类生成的对象用来代表子进程。
+与上面的封装不同，<code class="highlighter-rouge">Popen</code> 对象创建后，主程序不会自动等待子进程完成。我们必须调用对象的 <code class="highlighter-rouge">wait()</code> 方法，父进程才会等待 (也就是阻塞 block)：</p>
+
+<p><img src="/assets/images/py_intro/14688941895108.jpg" alt="" />
+<img src="/assets/images/py_intro/14688942427561.jpg" alt="" /></p>
+
+<p><img src="/assets/images/py_intro/14688943187159.jpg" alt="" />
+<img src="/assets/images/py_intro/14688943737614.jpg" alt="" /></p>
+
+<h3 id="子进程的文本流控制">子进程的文本流控制</h3>
+
+<p>子进程的标准输入，标准输出和标准错误也可以通过如下属性表示:
+<code class="highlighter-rouge">child.stdin</code> ,<code class="highlighter-rouge">child.stdout</code>, <code class="highlighter-rouge">child.stderr</code></p>
+
+<ul>
+  <li>我们可以在 <code class="highlighter-rouge">Popen()</code> 建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用 <code class="highlighter-rouge">subprocess.PIPE</code> 将多个子进程的输入和输出连接在一起，构成管道(pipe):</li>
+</ul>
+
+<p><img src="/assets/images/py_intro/14688949284845.jpg" alt="" /></p>
+
+<p><code class="highlighter-rouge">subprocess.PIPE</code> 实际上为文本流提供一个缓存区。<code class="highlighter-rouge">child_1</code> 的<code class="highlighter-rouge">stdout</code> 将文本输出到缓存区，随后 <code class="highlighter-rouge">child_2</code> 的 <code class="highlighter-rouge">stdin</code> 从该 <code class="highlighter-rouge">PIPE</code> 中将文本读取走。<code class="highlighter-rouge">child_2</code> 的输出文本也被存放在 <code class="highlighter-rouge">PIPE</code> 中，直到 <code class="highlighter-rouge">communicate()</code> 方法从 <code class="highlighter-rouge">PIPE</code> 中读取出 <code class="highlighter-rouge">PIPE</code> 中的文本。</p>
+
+<ul>
+  <li>我们还可以利用 <code class="highlighter-rouge">communicate()</code> 方法来使用 <code class="highlighter-rouge">PIPE</code> 给子进程输入</li>
+</ul>
+
+<p><img src="/assets/images/py_intro/14688953147700.jpg" alt="" /></p>
+
+<h2 id="循环器">循环器</h2>
+
+<p>在循环对象和函数对象中，我们了解了循环器(iterator)的功能。循环器是对象的容器，包含有多个对象。通过调用循环器的 <code class="highlighter-rouge">next()</code> 方法 (Python 3 中 的 <code class="highlighter-rouge">__next__()</code> 方法)，循环器将依次返回一个对象。直到所有的对象遍历穷尽，循环器将举出 <code class="highlighter-rouge">StopIteration</code> 错误。</p>
+
+<p>标准库中的 <code class="highlighter-rouge">itertools</code> 包提供了更加灵活的生成循环器的工具。这些工具的输入大都是已有的循环器。另一方面，这些工具完全可以自行使用 Python 实现，该包只是提供了一种比较标准、高效的实现方式。这也符合 Python “只有且最好只有解决方案”的理念。</p>
+
+<h3 id="无穷循环器">无穷循环器</h3>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">count(a, b)</code>: 从 <code class="highlighter-rouge">a</code> 开始的整数循环器，每次增加 <code class="highlighter-rouge">b</code>
+<img src="/assets/images/py_intro/14688989307808.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">cycle('abc')</code>: 重复序列的元素，得到 <code class="highlighter-rouge">a, b, c, a, b, c...</code>
+<img src="/assets/images/py_intro/14688990709066.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">repeat(x)</code>: 重复 x，构成无穷循环器
+<img src="/assets/images/py_intro/14688998492739.jpg" alt="" /></p>
+  </li>
+</ul>
+
+<h3 id="函数式工具">函数式工具</h3>
+
+<p><img src="/assets/images/py_intro/14689001855182.jpg" alt="" /></p>
+
+<p><img src="/assets/images/py_intro/14689004981840.jpg" alt="" /></p>
+
+<h3 id="组合工具">组合工具</h3>
+
+<p><img src="/assets/images/py_intro/14689759629957.jpg" alt="" /></p>
+
+<h3 id="group_by">group_by()</h3>
+
+<p>将 <code class="highlighter-rouge">key</code> 函数作用于原循环器的各个元素。根据 <code class="highlighter-rouge">key</code> 函数结果，将拥有相同函数结果的元素分到一个新的循环器。每个新的循环器以函数返回结果为标签。</p>
+
+<p>这就好像一群人的身高作为循环器。我们可以使用这样一个 <code class="highlighter-rouge">key</code> 函数: 如果身高大于180，返回 <code class="highlighter-rouge">"tall"</code>；如果身高底于 160，返回 <code class="highlighter-rouge">"short"</code>;中间的返回 <code class="highlighter-rouge">"medium"</code>:</p>
+
+<p><img src="/assets/images/py_intro/14689766885778.jpg" alt="" /></p>
+
+<p><img src="/assets/images/py_intro/14689767128827.jpg" alt="" /></p>
+
+<h2 id="数据库-sqlite3">数据库 (sqlite3)</h2>
+
+<p>Python 自带一个轻量级的关系型数据库 SQLite。这一数据库使用 SQL 语言。SQLite 作为后端数据库，可以搭配 Python 建网站，或者制作有数据存储需求的工具。SQLite 还在其它领域有广泛的应用，比如 HTML5 和移动端。Python 标准库中的 <code class="highlighter-rouge">sqlite3</code> 提供该数据库的接口。</p>
+
+<h3 id="创建数据库">创建数据库</h3>
+
+<p>我将创建一个简单的关系型数据库，为一个书店存储书的分类和价格。数据库中包含两个表：<code class="highlighter-rouge">category</code> 用于记录分类，<code class="highlighter-rouge">book</code> 用于记录某个书的信息。一本书归属于某一个分类，因此 <code class="highlighter-rouge">book</code> 有一个外键(foreign key)，指向 <code class="highlighter-rouge">catogory</code> 表的主键 id。</p>
+
+<p><img src="/assets/images/py_intro/14689768887235.png" alt="" /></p>
+
+<p>(<code class="highlighter-rouge">sqlite3</code> 只是一个 SQLite 的接口。想要熟练的使用 SQLite 数据库，还需要学习更多的关系型数据库的知识。)</p>
+
+<p><img src="/assets/images/py_intro/14690629064106.jpg" alt="" /></p>
+
+<p>SQLite 的数据库是一个磁盘上的文件，如上面的 <code class="highlighter-rouge">test.db</code>，因此整个数据库可以方便的移动或复制。<code class="highlighter-rouge">test.db</code> 一开始不存在，所以 SQLite 将自动创建一个新文件。</p>
+
+<p>利用 <code class="highlighter-rouge">execute()</code> 命令，我执行了两个 SQL 命令，创建数据库中的两个表。创建完成后，保存并断开数据库连接。</p>
+
+<h3 id="插入数据">插入数据</h3>
+
+<p><img src="/assets/images/py_intro/14690663459025.jpg" alt="" /></p>
+
+<p>结果：</p>
+
+<p><img src="/assets/images/py_intro/14690859939367.jpg" alt="" /></p>
+
+<p><img src="/assets/images/py_intro/14690860051164.jpg" alt="set w500" /></p>
+
+<h3 id="选择数据">选择数据</h3>
+
+<p><img src="/assets/images/py_intro/14690870220285.jpg" alt="" /></p>
+
+<h3 id="更新和删除数据">更新和删除数据</h3>
+
+<p><img src="/assets/images/py_intro/14690882693434.jpg" alt="" /></p>
+
+<h3 id="查看所有表和删除表">查看所有表和删除表</h3>
+
+<p><img src="/assets/images/py_intro/14691524891657.jpg" alt="" /></p>
+
+<h2 id="网络">网络</h2>
+
+<h3 id="手写-python-服务器">手写 Python 服务器</h3>
+
+<p>在当今 Python 服务器框架 (framework, 比如Django, Twisted, web.py等等) 横行的时代，从底层的 socket 开始写服务器似乎是一个出力不讨好的笨方法。框架的意义在于掩盖底层的细节，提供一套对于开发人员更加友好的 API，并处理诸如 MVC 的布局问题。框架允许我们快速的构建一个成型而且成熟的 Python 服务器。然而，框架本身也是依赖于底层(比如 socket)。对于底层 socket 的了解，不仅可以帮助我们更好的使用框架，更可以让我们明白框架是如何设计的。更进一步，如果拥有良好的底层 socket 编程知识和其他系统编程知识，你完全可以设计并开发一款自己的框架。如果你可以从底层 socket 开始，实现一个完整的 Python 服务器，支持用户层的协议，并处理好诸如 MVC (Model-View-Control)、多线程 (threading) 等问题，并整理出一套清晰的函数或者类，作为接口 (API) 呈现给用户，你就相当于设计了一个框架。</p>
+
+<p>socket 接口是实际上是操作系统提供的系统调用。socket 的使用并不局限于 Python 语言，你可以用 C 或者 JAVA 来写出同样的 socket 服务器，而所有语言使用 socket 的方式都类似 (Apache 就是使用 C 实现的服务器)。而你不能跨语言的使用框架。框架的好处在于帮你处理了一些细节，从而实现快速开发，但同时受到 Python 本身性能的限制。我们已经看到，许多成功的网站都是利用动态语言 (比如 Python, Ruby 或者 PHP，比如 twitter 和 facebook)快速开发，在网站成功之后，将代码转换成诸如 C 和 JAVA 这样一些效率比较高的语言，从而让服务器能更有效率的面对每天亿万次的请求。在这样一些时间，底层的重要性，就远远超过了框架。</p>
+
+<h4 id="tcpip-和-socket">TCP/IP 和 socket</h4>
+
+<p>我们需要对网络传输，特别是 TCP/IP 协议和 socket 有一定的了解。socket 是<strong>进程间通信</strong>的一种方法，它是基于网络传输协议的上层接口。socket 有许多种类型，比如基于 TCP 协议或者 UDP 协议(两种网络传输协议)。其中又以 <strong>TCP socket</strong> 最为常用。</p>
+
+<p>TCP socket 与双向管道 (duplex PIPE) 有些类似，一个进程向 socket 的一端写入或读取文本流，而另一个进程可以从 socket 的另一端读取或写入，比较特别是，这两个建立 socket 通信的进程可以分别属于两台不同的计算机。</p>
+
+<p>所谓的 TCP 协议，就是规定了一些通信的守则，以便在网络环境下能够有效实现上述进程间通信过程。双向管道 (duplex PIPE) 存活于同一台电脑中，所以不必区分两个进程的所在计算机的地址，而socket 必须包含有地址信息，以便实现网络通信。一个 socket 包含四个地址信息: 两台计算机的 <strong>IP 地址</strong>和两个进程所使用的 <strong>端口(port)</strong>。<strong>IP 地址用于定位计算机，而 port 用于定位进程</strong> (一台计算机上可以有多个进程分别使用不同的端口)。</p>
+
+<p>一个 TCP socket 连接的网络
+<img src="/assets/images/py_intro/14691529250224.jpg" alt="set w500" /></p>
+
+<h4 id="tcp-socket">TCP socket</h4>
+
+<p>在互联网上，我们可以让某台计算机作为服务器。</p>
+
+<ul>
+  <li>服务器开放自己的端口，被动等待其他计算机连接。</li>
+  <li>当其他计算机作为客户，主动使用 socket 连接到服务器的时候，服务器就开始为客户提供服务。</li>
+</ul>
+
+<p>在 Python 中，我们使用标准库中的 <code class="highlighter-rouge">socket</code> 包来进行底层的 socket 编程。</p>
+
+<p>首先是服务器端，我们使用 <code class="highlighter-rouge">bind()</code> 方法来赋予 socket 以固定的地址和端口，并使用 <code class="highlighter-rouge">listen()</code> 方法来被动的监听该端口。当有客户尝试用 <code class="highlighter-rouge">connect()</code> 方法连接的时候，服务器使用 <code class="highlighter-rouge">accept()</code> 接受连接，从而建立一个连接的 socket：</p>
+
+<p><img src="/assets/images/py_intro/14692397234972.jpg" alt="" /></p>
+
+<p>然后用另一台电脑作为客户，我们主动使用 <code class="highlighter-rouge">connect()</code> 方法来搜索服务器端的 IP 地址和端口，以便客户可以找到服务器，并建立连接:</p>
+
+<p><img src="/assets/images/py_intro/14692398454845.jpg" alt="" /></p>
+
+<p>在上面的例子中，我们对 <code class="highlighter-rouge">socket</code> 的两端都可以调用 recv() 方法来接收信息，调用 <code class="highlighter-rouge">sendall()</code> 方法来发送信息。这样，我们就可以在分处于两台计算机的两个进程间进行通信了。当通信结束的时候，我们使用 <code class="highlighter-rouge">close()</code> 方法来关闭 <code class="highlighter-rouge">socket</code> 连接。</p>
+
+<ol>
+  <li>
+    <p>如果在同一台计算机中运行这个程序，需要两个线程 (两个 shell 标签页)，一个先运行 server，并且允许程序传人网络:
+<img src="/assets/images/py_intro/14692399232426.jpg" alt="set w500" />
+再运行 client，就可以看到对话
+<img src="/assets/images/py_intro/14692402486248.jpg" alt="set w300" />
+此时运行 server 的标签页也会返回信息
+<img src="/assets/images/py_intro/14692403066467.jpg" alt="set w350" /></p>
+  </li>
+  <li>
+    <p>如果再两台计算机中运行这个程序，运行 client 的计算机中的 <code class="highlighter-rouge">HOST</code> 需要改成运行 server 的计算机的 IP 地址</p>
+  </li>
+</ol>
+
+<h3 id="基于-tcp-socket-的-http-服务器">基于 TCP socket 的 HTTP 服务器</h3>
+
+<h4 id="代码">代码</h4>
+
+<p>上面的例子中，我们已经可以使用 TCP socket 来为两台远程计算机建立连接。然而，socket 传输自由度太高，从而带来很多安全和兼容的问题。我们往往利用一些应用层的协议 (比如 HTTP 协议) 来规定 socket  使用规则，以及所传输信息的格式。</p>
+
+<p>HTTP 协议利用请求-回应 (request-response) 的方式来使用 TCP socket。客户端向服务器发一段文本作为 request，服务器端在接收到 request 之后，向客户端发送一段文本作为 response。在完成了这样一次 request-response 交易之后，TCP socket 被废弃。下次的 request 将建立新的 socket。request 和 response 本质上说是两个文本，只是 HTTP 协议对这两个文本都有一定的格式要求。</p>
+
+<p>现在，我们写出一个HTTP服务器端：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="c1"># Address
+</span><span class="n">HOST</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
+
+<span class="c1"># HTTP response
+</span><span class="n">text_content</span> <span class="o">=</span> <span class="s">"""</span><span class="se">\
+</span><span class="s">HTTP/1.x 200 OK
+Content-Type: text/html
+
+&lt;head&gt;
+&lt;title&gt;Python Server&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;p&gt;Page from Python server&lt;/p&gt;
+&lt;IMG src="test.jpg"/&gt;
+&lt;form name="input" action="/" method="post"&gt;
+First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;&lt;br&gt;
+&lt;p&gt;value = {value}&lt;/p&gt;
+&lt;/html&gt;
+"""</span>
+
+<span class="c1"># Read picture, put into HTTP format
+</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.jpg'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pic_content</span> <span class="o">=</span> <span class="n">b</span><span class="s">'HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
+                  <span class="n">b</span><span class="s">'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
+    <span class="n">pic_content</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1"># Configure socket
+</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+
+<span class="c1"># Forever server
+</span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># 3: maximum number of requests waiting
+</span>    <span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># deal with GET method
+</span>    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="c1"># URL
+</span>        <span class="k">if</span> <span class="n">url</span> <span class="o">==</span> <span class="s">'/test.jpg'</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">pic_content</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">text_content</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">''</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Connected by: "</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Request is: "</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="c1"># deal with POST method
+</span>    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\r\n</span><span class="s">'</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">''</span><span class="p">)</span> <span class="c1"># find the emplt line
+</span>        <span class="n">entry</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span> <span class="c1"># main content of the request
+</span>        <span class="n">value</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'='</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">text_content</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="c1"># close connection
+</span>    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="深入-http-服务器代码">深入 HTTP 服务器代码</h4>
+
+<p>如我们上面所看到的，服务器会根据 request 向客户传输的两条信息 <code class="highlighter-rouge">text_content</code> 和 <code class="highlighter-rouge">pic_content</code> 中的一条，作为 response 文本。整个 response 分为起始行 (start line), 头信息 (head) 和主体 (body) 三部分。起始行就是第一行:</p>
+
+<p><img src="/assets/images/py_intro/14694296411055.jpg" alt="set w150" /></p>
+
+<p>它实际上又由空格分为三个片段，<code class="highlighter-rouge">HTTP/1.x</code> 表示所使用的 HTTP 版本，200 表示状态 (status code)，200 是 HTTP 协议规定的，表示服务器正常接收并处理请求，OK 是供人来阅读的 status code。</p>
+
+<p>头信息跟随起始行，它和主体之间有一个空行。这里的 <code class="highlighter-rouge">text_content</code> 或者 <code class="highlighter-rouge">pic_content</code> 都只有一行的头信息，<code class="highlighter-rouge">text_content</code> 用来表示主体信息的类型为html文本：</p>
+
+<p><img src="/assets/images/py_intro/14694296109789.jpg" alt="set w200" /></p>
+
+<p>而 <code class="highlighter-rouge">pic_content</code> 的头信息 (Content-Type: image/jpg) 说明主体的类型为 jpg 图片 (image/jpg):</p>
+
+<p><img src="/assets/images/py_intro/14694295707885.jpg" alt="set w300" /></p>
+
+<p>我们并没有写客户端程序，后面我们会用浏览器作为客户端。request 由客户端程序发给服务器。尽管 request 也可以像 response 那样分为三部分，request 的格式与 response 的格式并不相同。request 由客户发送给服务器，比如下面是一个request：</p>
+
+<p><code class="highlighter-rouge">GET /test.jpg HTTP/1.x
+Accept: text/*</code></p>
+
+<p>起始行可以分为三部分，第一部分为请求方法 (request method)，第二部分是 URL，第三部分为 HTTP 版本。request method 可以有 GET， PUT， POST， DELETE， HEAD。最常用的为 GET 和 POST。GET 是请求服务器发送资源给客户，POST 是请求服务器接收客户送来的数据。当我们打开一个网页时，我们通常是使用 GET 方法；当我们填写表格并提交时，我们通常使用 POST 方法。第二部分为 URL，它通常指向一个资源(服务器上的资源或者其它地方的资源)。像现在这样，就是指向当前服务器的当前目录的 <code class="highlighter-rouge">test.jpg</code>。</p>
+
+<p>按照 HTTP 协议的规定，服务器需要根据请求执行一定的操作。正如我们在服务器程序中看到的，我们的 Python 程序先检查了 request 的方法，随后根据 URL 的不同，来生成不同的 response (<code class="highlighter-rouge">text_content</code> 或者 <code class="highlighter-rouge">pic_content</code>)。随后，这个 response 被发送回给客户端。</p>
+
+<h4 id="使用浏览器实验">使用浏览器实验</h4>
+
+<p>为了配合上面的服务器程序，应该在放置Python程序的文件夹里，保存了一个 <code class="highlighter-rouge">test.jpg</code> 图片文件。我们在终端运行上面的 Python 程序，作为服务器端，再打开一个浏览器作为客户端。在浏览器的地址栏输入：127.0.0.1:8000，得到下面的结果:</p>
+
+<p><img src="/assets/images/py_intro/14694298709357.jpg" alt="set w300" /></p>
+
+<p>从终端，我们可以看到，浏览器实际上发出了两个请求:</p>
+
+<p><img src="/assets/images/py_intro/14694301293007.jpg" alt="" /></p>
+
+<h3 id="使用-socketserver">使用 socketserver</h3>
+
+<p>在上面使用 socket 的过程中，我们先设置了socket 的类型，然后依次调用 <code class="highlighter-rouge">bind(), listen(), accept()</code>，最后使用 <code class="highlighter-rouge">while</code> 循环来让服务器不断的接受请求。上面的这些步骤可以通过 <code class="highlighter-rouge">socketserver</code> 包来简化。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">socketserver</span>
+
+<span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span>  <span class="o">=</span> <span class="s">''</span><span class="p">,</span> <span class="mi">8000</span>
+<span class="n">text_content</span> <span class="o">=</span> <span class="s">'''
+HTTP/1.x 200 OK
+Content-Type: text/html
+
+&lt;head&gt;
+&lt;title&gt;python server&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;p&gt;A Python Server!&lt;/p&gt;
+&lt;IMG src="test.jpg"/&gt;
+&lt;form name="input" action="/" method="POST"&gt;
+First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;&lt;br&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/html&gt;
+'''</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.jpg'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pic_content</span> <span class="o">=</span> <span class="s">'</span><span class="se">\n</span><span class="s">HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span> <span class="o">+</span>\
+                <span class="s">'Content-Type: image/jpg</span><span class="se">\n\n</span><span class="s">'</span>
+    <span class="n">pic_content</span> <span class="o">=</span> <span class="n">pic_content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>  <span class="c1"># str → binary
+</span>    <span class="n">pic_content</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">My_tcp_handler</span><span class="p">(</span><span class="n">socketserver</span><span class="o">.</span><span class="n">BaseRequestHandler</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># self.request is the TCP socket connected to the client
+</span>        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>  <span class="c1"># binary → str
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">"Connected by {addr}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"request is"</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">src</span> <span class="o">==</span> <span class="s">'/test.jpg'</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">pic_content</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">text_content</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>  <span class="c1"># str → binary
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\r\n</span><span class="s">'</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'='</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">text_content</span> <span class="o">+</span> <span class="s">'</span><span class="se">\n</span><span class="s"> &lt;p&gt;'</span><span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s">'&lt;/p&gt;'</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>  <span class="c1"># str → binary
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">),</span> <span class="n">My_tcp_handler</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>我建立了一个 <code class="highlighter-rouge">TCPServer</code> 对象，即一个使用 TCP socket 的服务器。在建立 <code class="highlighter-rouge">TCPServe</code> 的同时，设置该服务器的 IP 地址和端口。使用 <code class="highlighter-rouge">server_forever()</code> 方法来让服务器不断工作 (就像原始程序中的 <code class="highlighter-rouge">while</code> 循环一样)。</p>
+
+<p>我们传递给 <code class="highlighter-rouge">TCPServer</code> 一个 <code class="highlighter-rouge">My_tcp_handler</code> 类。这个类定义了如何操作 <code class="highlighter-rouge">socket</code>。<code class="highlighter-rouge">My_tcp_handler</code> 继承自 <code class="highlighter-rouge">BaseRequestHandler</code> 。改写 <code class="highlighter-rouge">handler()</code> 方法，来具体规定不同情况下服务器的操作。</p>
+
+<p>在 <code class="highlighter-rouge">handler()</code> 中，通过 <code class="highlighter-rouge">self.request</code> 来查询通过 <code class="highlighter-rouge">socket</code> 进入服务器的请求 (正如我们在 <code class="highlighter-rouge">handler()</code> 中对 socket 进行 <code class="highlighter-rouge">recv()</code> 和 <code class="highlighter-rouge">sendall()</code> 操作)，还使用 <code class="highlighter-rouge">self.address</code> 来引用 socket 的客户端地址。</p>
+
+<p>经过 <code class="highlighter-rouge">socketserver</code> 的改造之后，代码还是不够简单。 我们上面的通信基于 <code class="highlighter-rouge">TCP</code> 协议，而不是 <code class="highlighter-rouge">HTTP</code> 协议。因此，我们必须手动的解析 <code class="highlighter-rouge">HTTP</code> 协议。下面，我们将建立基于HTTP协议的服务器。</p>
+
+<h3 id="httpserver">http.server</h3>
+
+<h4 id="simplehttprequesthandler-使用静态文件来回应请求">SimpleHTTPRequestHandler: 使用静态文件来回应请求</h4>
+
+<p>HTTP 协议基于 TCP 协议，但增加了更多的规范。这些规范，虽然限制了 TCP 协议的功能，但大大提高了信息封装和提取的方便程度。</p>
+
+<p>对于一个 HTTP 请求 (request) 来说，它包含有两个重要信息：</p>
+
+<ol>
+  <li>请求方法</li>
+  <li>URL。</li>
+</ol>
+
+<p>例子，刚才的 server 分析：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>请求方法</th>
+      <th>URL</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/</td>
+      <td>发送 text_content</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/text.jpg</td>
+      <td>发送 pic_content</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/</td>
+      <td>分析request主体中包含的 value</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>根据请求方法和URL的不同，一个大型的 HTTP 服务器可以应付成千上万种不同的请求。在 Python 中，我们可以使用 http.server 包来规定针对不同请求的操作。其中，SimpleHTTPServer 可以用于处理 GET 方法和 HEAD 方法的请求。它读取 request 中的 URL 地址，找到对应的静态文件，分析文件类型，用 HTTP 协议将文件发送给客户。</p>
+
+<p>我在当前目录下生成 index.html 文件:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>WOW<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;p&gt;</span>Wow, Python Server<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;IMG</span> <span class="na">src=</span><span class="s">"test.jpg"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">name=</span><span class="s">"input"</span> <span class="na">action=</span><span class="s">"/"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+First name:<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"firstname"</span><span class="nt">&gt;&lt;br&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>使用 http.server 包中的类 SimpleHTTPRequestHandler 写服务器：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">socketserver</span>
+<span class="kn">import</span> <span class="nn">http.server</span> <span class="k">as</span> <span class="n">http_server</span>
+
+<span class="n">HOST</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
+
+<span class="c1"># Create the server
+</span><span class="n">handler</span> <span class="o">=</span> <span class="n">http_server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="c1"># Start the server
+</span><span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</code></pre></div></div>
+<p>运行结果与之前的一样。</p>
+
+<h4 id="cgihttpserver使用静态文件或者cgi来回应请求">CGIHTTPServer：使用静态文件或者CGI来回应请求</h4>
+
+<p>CGIHTTPRequestHandler 类继承自 SimpleHTTPRequestHandler 类，所以可以用来代替上面的例子，来提供静态文件的服务。此外，CGIHTTPRequestHandler类还可以用来运行CGI脚本。</p>
+
+<p>先看看什么是 CGI (Common Gateway Interface)。CGI 是服务器和应用脚本之间的一套接口标准。它的功能是让服务器程序运行脚本程序，将程序的输出作为 response 发送给客户。总体的效果，是<strong>允许服务器动态的生成回复内容，而不必局限于静态文件</strong>。</p>
+
+<p>支持 CGI 的服务器程接收到客户的请求，根据请求中的 URL，运行对应的脚本文件。服务器会将 HTTP 请求的信息和 socket 信息传递给脚本文件，并等待脚本的输出。脚本的输出封装成合法的 HTTP 回复，发送给客户。CGI可以充分发挥服务器的可编程性，让服务器变得“更聪明”。</p>
+
+<p>服务器和 CGI 脚本之间的通信要符合 CGI 标准。CGI 的实现方式有很多，比如说使用 Apache 服务器与 Perl 写的CGI脚本，或者 Python 服务器与 shell 写的CGI脚本。</p>
+
+<p>为了使用 CGI，我们需要使用 http.server 包中的 HTTPServer 类来构建服务器。Python服务器的改动很简单。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">http.server</span>
+<span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">BaseHTTPRequestHandler</span>
+<span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">CGIHTTPRequestHandler</span>
+
+<span class="n">HOST</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
+
+<span class="c1"># Create the server
+</span><span class="n">handler</span> <span class="o">=</span> <span class="n">BaseHTTPRequestHandler</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">CGIHTTPRequestHandler</code> 默认当前目录下的 cgi-bin 和 ht-bin 文件夹中的文件为 CGI 脚本，而存放于其他地方的文件被认为是静态文件。因此，我们需要修改一下 index.html，将其中 <code class="highlighter-rouge">form</code> 元素指向的 <code class="highlighter-rouge">action</code> 改为 <code class="highlighter-rouge">cgi-bin/post.py</code>。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>WOW<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;p&gt;</span>Wow, Python Server<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;IMG</span> <span class="na">src=</span><span class="s">"test.jpg"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">name=</span><span class="s">"input"</span> <span class="na">action=</span><span class="s">"cgi-bin/post.py"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+First name:<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"firstname"</span><span class="nt">&gt;&lt;br&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>我创建一个cgi-bin的文件夹，并在cgi-bin中放入如下post.py文件，也就是我们的CGI脚本：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3  # 这一行是必要的，指定脚本的解释器
+</span><span class="kn">import</span> <span class="nn">cgi</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">FieldStorage</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Content-Type: text/html"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>  <span class="c1"># 这个空行是必要的，作为首部的终止
+</span><span class="k">print</span><span class="p">(</span><span class="s">"&lt;p&gt;Hello world!&lt;/p&gt;"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"&lt;p&gt;"</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s">'firstname'</span><span class="p">])</span> <span class="o">+</span> <span class="s">"&lt;/p&gt;"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>(post.py需要有执行权限，chmod +x cgi-bin/post.py)</p>
+
+<p>第一行说明了脚本所使用的语言，即 Python。 cgi 包用于提取请求中包含的表格信息。脚本只负责将所有的结果输出到标准输出 (使用print)。<code class="highlighter-rouge">CGIHTTPRequestHandler</code> 会收集这些输出，封装成 HTTP 回复，传送给客户端。</p>
+
+<p>对于 POST 方法的请求，它的 URL 需要指向一个 CGI 脚本 (也就是在 cgi-bin 或者 ht-bin 中的文件)。<code class="highlighter-rouge">CGIHTTPRequestHandler</code> 继承自 <code class="highlighter-rouge">SimpleHTTPRequestHandler</code>，所以也可以处理 GET 方法和 HEAD 方法的请求。如果 URL 指向CGI脚本时，服务器将脚本的运行结果传送到客户端；当此时URL 指向静态文件时，服务器将文件的内容传送到客户端。</p>
+
+<h2 id="django">Django</h2>
+
+<h3 id="启动">启动</h3>
+
+<p>在命令行使用下面的命令创建项目：</p>
+
+<p><code class="highlighter-rouge">django-admin.py startproject mysite</code></p>
+
+<p>在当前目录下，将生成mysite文件夹。其文件树结构如下:</p>
+
+<p><img src="/assets/images/py_intro/14699732974772.jpg" alt="" /></p>
+
+<p>进入 <code class="highlighter-rouge">mysite</code> 目录，启动服务器：</p>
+
+<p><code class="highlighter-rouge">python manage.py runserver 8000</code></p>
+
+<p>上面的8000为端口号。如果不说明，那么端口号默认为8000。</p>
+
+<p>打开浏览器，访问 http://127.0.0.1:8000，可以看到服务器已经在运行：</p>
+
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

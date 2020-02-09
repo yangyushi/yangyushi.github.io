@@ -1,0 +1,437 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Nature of Arguments</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    17 May 2019
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#1-the-nature-of-arguments" id="markdown-toc-1-the-nature-of-arguments">1. The Nature of Arguments</a>    <ul>
+      <li><a href="#11-definition-of-argument" id="markdown-toc-11-definition-of-argument">1.1 Definition of Argument</a></li>
+      <li><a href="#12-example" id="markdown-toc-12-example">1.2 Example</a></li>
+      <li><a href="#13-the-structure-of-an-argument" id="markdown-toc-13-the-structure-of-an-argument">1.3 The Structure of an Argument</a></li>
+      <li><a href="#14-sets-of-sentences-that-are-not-arguments" id="markdown-toc-14-sets-of-sentences-that-are-not-arguments">1.4 Sets of sentences that are not arguments</a>        <ul>
+          <li><a href="#141-have-no-relation-between-them" id="markdown-toc-141-have-no-relation-between-them">1.4.1. have no relation between them</a></li>
+          <li><a href="#142-have-between-them-a-relation-other-than-that-characterizing-an-argument" id="markdown-toc-142-have-between-them-a-relation-other-than-that-characterizing-an-argument">1.4.2. have between them a relation other than that characterizing an argument</a></li>
+        </ul>
+      </li>
+      <li><a href="#15-how-to-make-an-argument" id="markdown-toc-15-how-to-make-an-argument">1.5 How to make an argument</a></li>
+      <li><a href="#16-argument-and-assertion-断言" id="markdown-toc-16-argument-and-assertion-断言">1.6 Argument and Assertion 断言</a></li>
+      <li><a href="#17-true-or-false" id="markdown-toc-17-true-or-false">1.7 True or False</a></li>
+      <li><a href="#18-three-separate-levels" id="markdown-toc-18-three-separate-levels">1.8 Three separate levels</a>        <ul>
+          <li><a href="#181-language" id="markdown-toc-181-language">1.8.1 Language</a></li>
+          <li><a href="#182-thought" id="markdown-toc-182-thought">1.8.2 Thought</a></li>
+          <li><a href="#183-reality" id="markdown-toc-183-reality">1.8.3 Reality</a></li>
+        </ul>
+      </li>
+      <li><a href="#19-good-argument" id="markdown-toc-19-good-argument">1.9 Good argument</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-different-types-of-arguments-不同种类的论证" id="markdown-toc-2-different-types-of-arguments-不同种类的论证">2. Different Types of Arguments 不同种类的论证</a>    <ul>
+      <li><a href="#21-two-basic-type" id="markdown-toc-21-two-basic-type">2.1 Two basic type</a></li>
+      <li><a href="#22-deductive-arguments" id="markdown-toc-22-deductive-arguments">2.2 Deductive arguments</a>        <ul>
+          <li><a href="#221-definition" id="markdown-toc-221-definition">2.2.1 Definition</a></li>
+          <li><a href="#222-example" id="markdown-toc-222-example">2.2.2 Example</a></li>
+        </ul>
+      </li>
+      <li><a href="#23-inductive-argument" id="markdown-toc-23-inductive-argument">2.3 Inductive Argument</a>        <ul>
+          <li><a href="#231-definition" id="markdown-toc-231-definition">2.3.1 Definition</a></li>
+          <li><a href="#232-example" id="markdown-toc-232-example">2.3.2 Example</a>            <ul>
+              <li><a href="#strong" id="markdown-toc-strong">Strong</a></li>
+              <li><a href="#weak" id="markdown-toc-weak">Weak</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#24-form-of-deduction-演绎的形式" id="markdown-toc-24-form-of-deduction-演绎的形式">2.4 Form of deduction 演绎的形式</a>        <ul>
+          <li><a href="#241-相同形式的演绎" id="markdown-toc-241-相同形式的演绎">2.4.1 相同形式的演绎</a></li>
+          <li><a href="#242-不同的演绎形式" id="markdown-toc-242-不同的演绎形式">2.4.2 不同的演绎形式</a></li>
+          <li><a href="#243-道德逻辑" id="markdown-toc-243-道德逻辑">2.4.3 道德逻辑</a></li>
+          <li><a href="#244-模态论证-modal-logic" id="markdown-toc-244-模态论证-modal-logic">2.4.4 模态论证 Modal logic</a></li>
+          <li><a href="#245-时态逻辑-temporal-logic" id="markdown-toc-245-时态逻辑-temporal-logic">2.4.5 时态逻辑 Temporal Logic</a></li>
+        </ul>
+      </li>
+      <li><a href="#25-form-of-induction-归纳的形式" id="markdown-toc-25-form-of-induction-归纳的形式">2.5 Form of Induction 归纳的形式</a>        <ul>
+          <li><a href="#251-归纳的不同形式" id="markdown-toc-251-归纳的不同形式">2.5.1 归纳的不同形式</a>            <ul>
+              <li><a href="#analog-arguments-相似论证" id="markdown-toc-analog-arguments-相似论证">Analog arguments 相似论证</a></li>
+              <li><a href="#cause-arguments-因果论证" id="markdown-toc-cause-arguments-因果论证">Cause arguments 因果论证</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#3-setting-out-arguments-logic-book-style-将逻辑组织称逻辑书样式" id="markdown-toc-3-setting-out-arguments-logic-book-style-将逻辑组织称逻辑书样式">3. Setting out arguments logic-book-style 将逻辑组织称逻辑书样式</a>    <ul>
+      <li><a href="#31-一个例子" id="markdown-toc-31-一个例子">3.1 一个例子</a></li>
+      <li><a href="#32-the-point-of-setting-out-arguments-logic-book-style-组织逻辑书样式的意义" id="markdown-toc-32-the-point-of-setting-out-arguments-logic-book-style-组织逻辑书样式的意义">3.2 The point of setting out arguments logic-book-style 组织逻辑书样式的意义</a></li>
+      <li><a href="#33-steps-for-analyzing-arguments" id="markdown-toc-33-steps-for-analyzing-arguments">3.3 Steps for analyzing arguments</a>        <ul>
+          <li><a href="#331-identifying-premises-and-conclusions" id="markdown-toc-331-identifying-premises-and-conclusions">3.3.1 Identifying premises and conclusions</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="1-the-nature-of-arguments">1. The Nature of Arguments</h2>
+
+<h3 id="11-definition-of-argument">1.1 Definition of Argument</h3>
+
+<p>a set of sentences such that
+one of them is being said to be true
+the others are being offered as reasons for believing the truth of the one</p>
+
+<h3 id="12-example">1.2 Example</h3>
+
+<p>It is Friday. Mary always wears jeans on Friday. So Mary will be wearing jeans today.</p>
+
+<ol>
+  <li>It is Friday.</li>
+  <li>Mary always wears jeans on Friday.</li>
+  <li>So Mary will be wearing jeans today.</li>
+</ol>
+
+<h3 id="13-the-structure-of-an-argument">1.3 The Structure of an Argument</h3>
+
+<ol>
+  <li>Conclusion: the sentence being said to be true. (e.g. So Mary will be wearing jeans today.)</li>
+  <li>Premises: the sentences(s) being offered as reason(s) for believing the one. (e.g. It is Friday. Mary always wears jeans on Friday.)</li>
+</ol>
+
+<p>Conclusion 和 Premises 在 Argument 中扮演了不通的功能 (Function)。辨识出一个句子的功能，是我们判断这个句子是属于 Conclusion 还是 Premises 的唯一方法。</p>
+
+<h3 id="14-sets-of-sentences-that-are-not-arguments">1.4 Sets of sentences that are not arguments</h3>
+
+<h4 id="141-have-no-relation-between-them">1.4.1. have no relation between them</h4>
+
+<p>The sea is salt. Melbourne is in Australia. → not argument</p>
+
+<p>The sea is salt. Therefore Melbourne is in Australia. → argument</p>
+
+<p><em>The premeses of an argument do not cause the conclusion to be true!</em></p>
+
+<p>Therefore 可能没有暗示因果关系</p>
+
+<h4 id="142-have-between-them-a-relation-other-than-that-characterizing-an-argument">1.4.2. have between them a relation other than that characterizing an argument</h4>
+
+<h3 id="15-how-to-make-an-argument">1.5 How to make an argument</h3>
+
+<ul>
+  <li>Any sentence can be part of an argument</li>
+  <li>We claim one sentence to be true</li>
+  <li>We offer other sentences to believe that</li>
+  <li>It is VERY EASY to make an argument</li>
+</ul>
+
+<ol>
+  <li>只通过句子的内容，我们不能判断这些句子是否形成 Argument</li>
+  <li>我们要通过句子之间的「关系」来判断其是否形成 Argument</li>
+</ol>
+
+<h3 id="16-argument-and-assertion-断言">1.6 Argument and Assertion 断言</h3>
+
+<ul>
+  <li>Argument: a set of sentences, one of which is being asserted</li>
+  <li>Assertion: a single sentence (possibly complex) that is being expressed in assertoric mode</li>
+</ul>
+
+<p>If it is snowing the mail will be late
+这个是 assertion，我们断言的是「如果下雪邮件会晚到」这个假设</p>
+
+<p>It is snowing so the mail will be late
+这个是 argument</p>
+
+<h3 id="17-true-or-false">1.7 True or False</h3>
+
+<ul>
+  <li>Only believes or sentences that express believes can be true or not.</li>
+  <li>Facts make sentences true or false. Facts can not be true or false. Facts are just facts.</li>
+  <li>Arguments can not be true of false, arguments can only be good (正当) or bad (不正当).</li>
+</ul>
+
+<p>如果前提是真，结论是真的话，argument 是保持真实的（truth-preserving），但不能说 argument 是真实的。</p>
+
+<h3 id="18-three-separate-levels">1.8 Three separate levels</h3>
+
+<h4 id="181-language">1.8.1 Language</h4>
+
+<p>“Red” “红” 这个字</p>
+
+<h4 id="182-thought">1.8.2 Thought</h4>
+
+<p>Red 红色的概念，同样的概念在不通的语言里有不同的表示方法</p>
+
+<h4 id="183-reality">1.8.3 Reality</h4>
+
+<p>Redness 物质的红色的属性</p>
+
+<p>我们可以思考（Thought 层面）和谈论（Language 层面）事实（Reality 层面）</p>
+
+<h3 id="19-good-argument">1.9 Good argument</h3>
+
+<p>Good argument must have <em>at least</em> two characteristics:</p>
+
+<ol>
+  <li>The conclusion must follow from the premises</li>
+  <li>The premises must all be true (not considered by logicians)</li>
+</ol>
+
+<h2 id="2-different-types-of-arguments-不同种类的论证">2. Different Types of Arguments 不同种类的论证</h2>
+
+<h3 id="21-two-basic-type">2.1 Two basic type</h3>
+
+<ol>
+  <li>deductive argument 演绎论证</li>
+  <li>inductive argument 归纳论证</li>
+</ol>
+
+<p>演绎论证是确定的，归纳论证不是。归纳论证有的时候不是很管用。科学上常用归纳论证。</p>
+
+<h3 id="22-deductive-arguments">2.2 Deductive arguments</h3>
+
+<h4 id="221-definition">2.2.1 Definition</h4>
+
+<p>The truth of their premises guarantees the truth of their conclusion <em>如果</em>前提为真，结论必为真</p>
+
+<p>对于一个 Argument，它要么是合理演绎的（deductively valid），要么不是</p>
+
+<h4 id="222-example">2.2.2 Example</h4>
+
+<ul>
+  <li>It is Friday. (观察)</li>
+  <li>Marianne always wears jeans on a Friday. (假设)</li>
+  <li>Therefore Marianne is wearing jeans. (结论)</li>
+</ul>
+
+<p>如果 Marianne 没有穿牛仔裤：今天不是周五（观察错误）；或者她不是每个周五都穿牛仔裤（假设错误）；或者观察与假设都出错。</p>
+
+<h3 id="23-inductive-argument">2.3 Inductive Argument</h3>
+
+<h4 id="231-definition">2.3.1 Definition</h4>
+
+<p>The truth of their premises makes the conclusion more or less probable. 「归纳论证的前提为真」这个事实使得结论更有（或者没有）可能为真</p>
+
+<p>归纳论证可以是弱（weak）的，也可能是强（strong）的。</p>
+
+<h4 id="232-example">2.3.2 Example</h4>
+
+<h5 id="strong">Strong</h5>
+
+<p>The sun has risen every day in the history of the universe.
+Therefore the sun will rise tomorrow.</p>
+
+<h5 id="weak">Weak</h5>
+
+<p>Every time I have seen Marianne she has been wearing earrings.
+Therefore next time I see Marianne she will be wearing earrings.</p>
+
+<h3 id="24-form-of-deduction-演绎的形式">2.4 Form of deduction 演绎的形式</h3>
+
+<ul>
+  <li>逻辑学家通过研究合理论证的<em>形式</em>来研究演绎</li>
+  <li>对于大多数演绎，论证的「演绎合理（deductively valid）」取决于论证的<em>形式</em>，而不是<em>内容</em>。</li>
+</ul>
+
+<h4 id="241-相同形式的演绎">2.4.1 相同形式的演绎</h4>
+
+<ul>
+  <li>All A is B. S is A. S is B.</li>
+  <li>All men are mortal. Socrates is a man. Socrates is mortal.</li>
+  <li>All actions that produce the GHGN are right. That action produced the GHGN. That action was right.</li>
+</ul>
+
+<p>逻辑与内容无关。论证因为形式而合理。同样的论证形式对于不同的主题都是同样合理的。</p>
+
+<h4 id="242-不同的演绎形式">2.4.2 不同的演绎形式</h4>
+
+<ul>
+  <li>If P then Q, P therefore Q. (modus ponens)</li>
+  <li>If P then Q, not-Q therefore not-P. (modus tollens)</li>
+  <li>P or Q, not-P therefore Q. (Disjunctive syllogism)</li>
+  <li>a is F, a=b, therefore b is F. (Leibniz’s Law)</li>
+  <li>all Fs are G, a is an F, therefore a is a G. (syllogism)</li>
+</ul>
+
+<p>(小写字母表示具体事物，大写字母表示「性质」或者「句子」。本课程中，老师爱用 P, Q, R 来表示「句子」。)</p>
+
+<h4 id="243-道德逻辑">2.4.3 道德逻辑</h4>
+
+<p>Lying is wrong. Therefore we should not lie.</p>
+
+<p>这里，”wrong” 有很特殊的道德含义，不能被归结为抽象形式。这个论证是由于 <strong>wrong</strong> 这个特殊的词而成立的。</p>
+
+<h4 id="244-模态论证-modal-logic">2.4.4 模态论证 Modal logic</h4>
+
+<p>模态论证是关于「必然性」和「可能性」的论证。</p>
+
+<p>It is necessarily the case that there are no square circles.</p>
+
+<p>Therefore it is not possible that there are square circles.</p>
+
+<p>形式：If A is necessary, then not A is not possible.</p>
+
+<h4 id="245-时态逻辑-temporal-logic">2.4.5 时态逻辑 Temporal Logic</h4>
+
+<p>时态逻辑是时间运行的逻辑。</p>
+
+<p>It is raining day.</p>
+
+<p>Therefore tomorrow it will have been raining yesterday.</p>
+
+<p>这个论证是由于 is raining, tomorrow, yesterday 等与时间有关的词而成立的。</p>
+
+<h3 id="25-form-of-induction-归纳的形式">2.5 Form of Induction 归纳的形式</h3>
+
+<p>All inductive arguments rely on the assumption of the uniformity of nature, the idea that the future will be like the past.</p>
+
+<p>所有归纳论证依赖于对自然的「统一性」的假设。</p>
+
+<p>要证明「未来和过去一样」，我们必须使用循环论证：因为我们现在的经验能够确定「过去和现在一样」，所以我们认为这个事实能够再未来重现。</p>
+
+<h4 id="251-归纳的不同形式">2.5.1 归纳的不同形式</h4>
+
+<h5 id="analog-arguments-相似论证">Analog arguments 相似论证</h5>
+
+<p>a is like b, a is F, therefore b is F.</p>
+
+<p>(小写字母表示具体事物，大写字母表示「性质」或者「句子」。本课程中，老师爱用 P, Q, R 来表示「句子」。)</p>
+
+<p>这个形式为什么是归纳？a 在某一方面与 b 相似，则在 F 方面也相似。这依赖于自然统一性假设衍生出的，相似性的「传递」。</p>
+
+<p>不好的论证的例子：</p>
+
+<ul>
+  <li>爱因斯坦是杰出的物理学家</li>
+  <li>爱因斯坦认为相对主义是好的</li>
+  <li>相对主义是好的</li>
+</ul>
+
+<p>这个例子的不好的地方在于，爱因斯坦是杰出的物理学家，但是不是杰出的政治学家。</p>
+
+<h5 id="cause-arguments-因果论证">Cause arguments 因果论证</h5>
+
+<p>Every time A occurs a B occurs, therefore As cause Bs.</p>
+
+<p>实际上，Cause arguments 既可以是演绎的，也可以是归纳的：</p>
+
+<ul>
+  <li>As cause Bs, there was an A, therefore there will have been a B (deductive).</li>
+  <li>Every observed A has been followed by a B, therefore As cause Bs (inductive).</li>
+</ul>
+
+<h2 id="3-setting-out-arguments-logic-book-style-将逻辑组织称逻辑书样式">3. Setting out arguments logic-book-style 将逻辑组织称逻辑书样式</h2>
+
+<h3 id="31-一个例子">3.1 一个例子</h3>
+
+<p><em>Premise One (P1)</em>: It is Friday.
+<em>Premise Two (P2)</em>: Marianne always wears jeans on Fridays.
+<em>Conclusion (C)</em>: Marianne is wearing jeans.</p>
+
+<h3 id="32-the-point-of-setting-out-arguments-logic-book-style-组织逻辑书样式的意义">3.2 The point of setting out arguments logic-book-style 组织逻辑书样式的意义</h3>
+
+<ol>
+  <li>让我们加入隐含的前提</li>
+  <li>让我们排出「交叉引用 (cross references)」，「无关的东西 (irrelevancies)」和「不一致的辞语 (inconsistent terms)」</li>
+  <li>让我们更容易评价 (evaluate) 论证过程</li>
+</ol>
+
+<h3 id="33-steps-for-analyzing-arguments">3.3 Steps for analyzing arguments</h3>
+
+<ol>
+  <li>identify the conclusion of the argument 找到结论</li>
+  <li>identify each of the premises 找到每一个前提</li>
+  <li>add suppressed premises</li>
+  <li>remove irrelevancies</li>
+  <li>remove inconsistent terms</li>
+  <li>remove cross-references</li>
+</ol>
+
+<h4 id="331-identifying-premises-and-conclusions">3.3.1 Identifying premises and conclusions</h4>
+
+<ul>
+  <li>结论是什么？要论证的东西 (the thing someone is arguing for)</li>
+  <li>前提是什么？支持证据 (evidence)，支持理由 (reasons)</li>
+  <li>寻找论证标志词 (argument indicators)
+    <ul>
+      <li>so</li>
+      <li>therefore</li>
+      <li>then</li>
+      <li>accordingly</li>
+      <li>hence</li>
+      <li>since</li>
+      <li>for</li>
+      <li>because</li>
+      <li>from which we see that …</li>
+      <li>it follows that …</li>
+      <li>which establishes that …</li>
+    </ul>
+  </li>
+</ul>
+
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,452 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>c++ introduction</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    16 Sep 2019
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#函数" id="markdown-toc-函数">函数</a>    <ul>
+      <li><a href="#inline" id="markdown-toc-inline">inline</a></li>
+      <li><a href="#在不同源代码中共享函数" id="markdown-toc-在不同源代码中共享函数">在不同源代码中共享函数</a></li>
+      <li><a href="#传递指针给函数" id="markdown-toc-传递指针给函数">传递指针给函数</a></li>
+    </ul>
+  </li>
+  <li><a href="#struct-结构体" id="markdown-toc-struct-结构体">Struct 结构体</a>    <ul>
+      <li><a href="#简介" id="markdown-toc-简介">简介</a></li>
+      <li><a href="#结构体的指针" id="markdown-toc-结构体的指针">结构体的指针</a></li>
+      <li><a href="#结构体和类" id="markdown-toc-结构体和类">结构体和类</a></li>
+    </ul>
+  </li>
+  <li><a href="#类" id="markdown-toc-类">类</a>    <ul>
+      <li><a href="#不同的方法" id="markdown-toc-不同的方法">不同的方法</a></li>
+      <li><a href="#一些运算符的读法" id="markdown-toc-一些运算符的读法">一些运算符的「读法」</a></li>
+      <li><a href="#构造函数" id="markdown-toc-构造函数">构造函数</a></li>
+      <li><a href="#析构函数" id="markdown-toc-析构函数">析构函数</a></li>
+      <li><a href="#指针" id="markdown-toc-指针">指针</a></li>
+      <li><a href="#运算符重载" id="markdown-toc-运算符重载">运算符重载</a></li>
+      <li><a href="#this" id="markdown-toc-this">this</a></li>
+      <li><a href="#静态成员-static-member" id="markdown-toc-静态成员-static-member">静态成员 static member</a></li>
+      <li><a href="#friend" id="markdown-toc-friend">Friend</a></li>
+      <li><a href="#继承" id="markdown-toc-继承">继承</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="函数">函数</h2>
+
+<h3 id="inline">inline</h3>
+
+<p>在定义函数的时候，我们可以尝试在前面加上 <code class="highlighter-rouge">inline</code>。它的作用是把函数变成类似于宏的东西。这样，编译的时候，编译器会直接把函数部分的代码复制到调用函数的地方。</p>
+
+<p><code class="highlighter-rouge">inline</code> 只是一个给编译器的「建议」。对于太长的函数，编译器有可能忽略掉这个建议。</p>
+
+<p>简而言之，对于特别短的函数，<code class="highlighter-rouge">inline</code> 有可能让它更快。</p>
+
+<p><code class="highlighter-rouge">inline</code> 还可以用于「躲避」掉对函数的重复定义。比如说，如果我们在头文件 <code class="highlighter-rouge">*.h</code> 里定义函数，那么 <code class="highlighter-rouge">inline</code> 可以让这个「函数」作为宏被替换进源代码里；这样函数就不会重复定义了。</p>
+
+<h3 id="在不同源代码中共享函数">在不同源代码中共享函数</h3>
+
+<p><a href="https://stackoverflow.com/a/25274411">参考链接</a></p>
+
+<p>如果我们想要在我们的「项目」下的「不同源代码」里共用一个函数，我们可以通过下面的三个步骤完成</p>
+
+<p>1 - 将函数的定义写进「头文件」</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifndef FUNCTIONS_H_INCLUDED
+#define FUNCTIONS_H_INCLUDED
+</span>
+<span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">);</span>  <span class="c1">// Function prototype, its declaration</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<p>（其中的 <code class="highlighter-rouge">#ifndef</code> 之类的东西叫做 <a href="https://en.wikipedia.org/wiki/Include_guard">include gard</a>，用来避免重复引用头文件造成的对同一个函数的多次定义。注意，include gard 只在「同一个」.cpp 源文件内起作用。）</p>
+
+<p>2 - 在「第一个」源文件里定义函数</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "functions.h"
+</span>
+<span class="c1">// Function definition</span>
+<span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>3 - 在「其他源文件」中 <code class="highlighter-rouge">include</code> 头文件，使用函数</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include "functions.h"
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"add(1, 2) = "</span> <span class="o">&lt;&lt;</span> <span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="传递指针给函数">传递指针给函数</h3>
+
+<p>C 里传递指针式传递「指针」，<code class="highlighter-rouge">* arg</code></p>
+
+<pre><code class="language-C">#include "stdio.h"
+
+void triple(int *num) {
+    *num = *num * 3;
+}
+
+int main(){
+    int a = 2;
+    triple(&amp;a);
+    printf("2 x 3 = %d", a); // a = 6
+}
+</code></pre>
+
+<p>C++ 里可以做同样的事情，不过也可以传递「地址」</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span>
+<span class="kt">void</span> <span class="nf">triple</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">num</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">triple</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"2 x 3 = "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// a = 6</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="struct-结构体">Struct 结构体</h2>
+
+<h3 id="简介">简介</h3>
+
+<p>C++ 里最简单的结构体用法</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+</span>
+<span class="k">struct</span> <span class="n">Date</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">month</span><span class="p">;</span>
+    <span class="kt">short</span> <span class="n">day</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">birthdays</span> <span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">year</span> <span class="o">=</span> <span class="mi">1992</span><span class="p">;</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">month</span> <span class="o">=</span> <span class="s">"feb"</span><span class="p">;</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">day</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">year</span> <span class="o">=</span> <span class="mi">1989</span><span class="p">;</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">month</span> <span class="o">=</span> <span class="s">"may"</span><span class="p">;</span>
+    <span class="n">birthdays</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">day</span> <span class="o">=</span> <span class="mi">18</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="结构体的指针">结构体的指针</h3>
+
+<p>我们也可以用指针表示结构体。用指针的时候 <code class="highlighter-rouge">pointer-&gt;key</code> 相当于 <code class="highlighter-rouge">struct.key</code>。</p>
+
+<p>运算符 <code class="highlighter-rouge">-&gt;</code> 的作用是获取「对象」的「成员」。</p>
+
+<p>我们<strong>不该</strong>用 <code class="highlighter-rouge">*pointer.key</code>，因为它相当于 <code class="highlighter-rouge">*(pointer.key)</code>，将会尝试取出 <code class="highlighter-rouge">struct.key</code> 对应的内容。</p>
+
+<p>如果硬要这么用，应该 <code class="highlighter-rouge">(*pointer).key</code>。因为 <code class="highlighter-rouge">(*pointer)</code> 就是 <code class="highlighter-rouge">struct</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+</span>
+<span class="k">struct</span> <span class="n">Date</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">month</span><span class="p">;</span>
+    <span class="kt">short</span> <span class="n">day</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">Date</span> <span class="n">b_day_yushi</span><span class="p">;</span>
+    <span class="n">Date</span> <span class="o">*</span> <span class="n">pointer</span> <span class="o">=</span> <span class="o">&amp;</span> <span class="n">b_day_yushi</span><span class="p">;</span>
+    <span class="n">pointer</span><span class="o">-&gt;</span><span class="n">year</span> <span class="o">=</span> <span class="mi">1992</span><span class="p">;</span>
+    <span class="n">pointer</span><span class="o">-&gt;</span><span class="n">month</span> <span class="o">=</span> <span class="s">"feb"</span><span class="p">;</span>
+    <span class="n">pointer</span><span class="o">-&gt;</span><span class="n">day</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
+    <span class="c1">// 注意三种等效的用法</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">pointer</span><span class="p">).</span><span class="n">year</span> <span class="o">&lt;&lt;</span> <span class="s">"-"</span> 
+              <span class="o">&lt;&lt;</span> <span class="n">pointer</span><span class="o">-&gt;</span><span class="n">month</span>  <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+              <span class="o">&lt;&lt;</span> <span class="n">b_day_yushi</span><span class="p">.</span><span class="n">day</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="结构体和类">结构体和类</h3>
+
+<p>结构体和类在 C++ 中非常接近。不同的是，结构体的成员，其默认状态是 public。而类的成员默认状态是 private。</p>
+
+<h2 id="类">类</h2>
+
+<h3 id="不同的方法">不同的方法</h3>
+
+<p>C++ 中类的方法有三种类型</p>
+
+<ul>
+  <li>private ：只有同一个 class 的方法，或该 class 的 friend class 可以访问。</li>
+  <li>protected ：只有同一个 class 的方法，或该 class 的 friend class，或该 class 的子类可以访问。</li>
+  <li>public ：任何可以看到这个 class 的地方都可以访问。</li>
+</ul>
+
+<p>方法的默认种类是 private</p>
+
+<h3 id="一些运算符的读法">一些运算符的「读法」</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">*x</code> 读作: pointed by x （由x指向的）</li>
+  <li><code class="highlighter-rouge">&amp;x</code> 读作: address of x（x的地址）</li>
+  <li><code class="highlighter-rouge">x.y</code> 读作: member y of object x （对象x的成员y）</li>
+  <li><code class="highlighter-rouge">(*x).y</code> 读作: member y of object pointed by x（由x指向的对象的成员y）</li>
+  <li><code class="highlighter-rouge">x-&gt;y</code> 读作: member y of object pointed by x (同上一个等价)</li>
+  <li><code class="highlighter-rouge">x[0]</code> 读作: first object pointed by x（由x指向的第一个对象）</li>
+  <li><code class="highlighter-rouge">x[1]</code> 读作: second object pointed by x（由x指向的第二个对象）</li>
+  <li><code class="highlighter-rouge">x[n]</code> 读作: (n+1)th object pointed by x（由x指向的第n+1个对象）</li>
+</ul>
+
+<h3 id="构造函数">构造函数</h3>
+
+<ul>
+  <li>构造函数就是 python 里的 <code class="highlighter-rouge">__init__</code></li>
+  <li>构造函数的格式是 <code class="highlighter-rouge">类名::类名</code></li>
+  <li>构造函数的原型和实现中都没有返回值，也没有void 类型声明。构造函数必须这样写。一个构造函数永远没有返回值，也不用声明void</li>
+  <li>构造函数可以被重载（为不同的参数写不同的函数）</li>
+</ul>
+
+<h3 id="析构函数">析构函数</h3>
+
+<ul>
+  <li>析构函数相当于 python 里的 <code class="highlighter-rouge">__del__</code></li>
+  <li>析构函数的格式是 <code class="highlighter-rouge">类名::~类名</code></li>
+</ul>
+
+<h3 id="指针">指针</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">类名 * 指针名</code> 会定义一个类的指针。</li>
+  <li>如果我们想通过指针访问成员，我们需要 <code class="highlighter-rouge">指针名-&gt;成员</code></li>
+</ul>
+
+<h3 id="运算符重载">运算符重载</h3>
+
+<p>我们可以自己定义运算符，它的格式是：</p>
+
+<p><code class="highlighter-rouge">类名 operator 符号 (参数类型 参数名)</code></p>
+
+<p>这个格式类似于函数的定义，只不过没有 <code class="highlighter-rouge">operator</code></p>
+
+<p><code class="highlighter-rouge">返回数据类型 函数名 (参数类型 参数名)</code></p>
+
+<h3 id="this">this</h3>
+
+<p><code class="highlighter-rouge">this</code> 仅仅被用在「类的内部」（什么意思？），它表示指向「这个类的某个实例/对象」的指针。</p>
+
+<p>它可以被用来检查参数是否是对象自己</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">FOO</span><span class="o">::</span><span class="n">is_self</span> <span class="p">(</span><span class="n">FOO</span> <span class="o">&amp;</span><span class="n">object</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">object</span> <span class="o">==</span> <span class="k">this</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="静态成员-static-member">静态成员 static member</h3>
+
+<p>静态成员的内容不依赖于具体的对象/实例，它感觉像是「属于某个类的全局变量」</p>
+
+<p>静态成员的格式是 <code class="highlighter-rouge">static 类型 变量名</code></p>
+
+<p>为了避免静态成员被重复定义，静态成员的定义<strong>必须</strong>在类的定义之外。</p>
+
+<p>例子：记录总共创建了多少实例</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="k">static</span> <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+        <span class="n">Foo</span><span class="p">()</span> <span class="p">{</span><span class="n">n</span><span class="o">++</span><span class="p">;};</span>
+        <span class="o">~</span><span class="n">Foo</span><span class="p">()</span> <span class="p">{</span><span class="n">n</span><span class="o">--</span><span class="p">;};</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="n">Foo</span><span class="o">::</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">Foo</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">Foo</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"there are "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">n</span> <span class="o">&lt;&lt;</span> <span class="s">" instances of Foo"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="friend">Friend</h3>
+
+<p>我们在定义类的时候，可以通过加上 <code class="highlighter-rouge">friend</code> 关键字来将「函数」或者「类」定义为 Friend。</p>
+
+<p>Friend 可以访问该类的 <code class="highlighter-rouge">private</code> 或 <code class="highlighter-rouge">protected</code> 的内容。</p>
+
+<p>例子 - friend 函数：<code class="highlighter-rouge">a_plus_one</code> 函数可以读写 <code class="highlighter-rouge">Foo</code> 的私有变量 <code class="highlighter-rouge">a</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">friend</span> <span class="kt">void</span> <span class="n">a_plus_one</span><span class="p">(</span><span class="n">Foo</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">a_plus_one</span><span class="p">(</span><span class="n">Foo</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">){</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">a</span> <span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+    <span class="n">a_plus_one</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>例子 - friend 类：<code class="highlighter-rouge">Bar</code> 的 <code class="highlighter-rouge">eat</code> 函数可以获取 <code class="highlighter-rouge">Foo</code> 的私有变量 <code class="highlighter-rouge">a</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">friend</span> <span class="k">class</span> <span class="nc">Bar</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">inc</span><span class="p">(){</span><span class="n">a</span><span class="o">++</span><span class="p">;}</span>
+        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Bar</span><span class="p">{</span>
+    <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">eat</span><span class="p">(</span><span class="n">Foo</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">){</span><span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">a</span><span class="p">;}</span>
+        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"b is "</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
+    <span class="n">Bar</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">inc</span><span class="p">();</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">eat</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="继承">继承</h3>
+
+<p>C++ 中有子类的概念，子类继承父类的格式是 <code class="highlighter-rouge">class 字类名: 类型 父类名</code></p>
+
+<p>C++ 中也可以多重继承，其格式是 <code class="highlighter-rouge">class 字类名: 类型 父类名#1 类型 父类名#2 ...</code></p>
+
+<p>子类不会继承父类的构造函数和析构函数</p>
+
+<p>其中，<code class="highlighter-rouge">类型</code> 包括 <code class="highlighter-rouge">private</code>, <code class="highlighter-rouge">protected</code> 和 <code class="highlighter-rouge">public</code>。</p>
+
+<p>这里的 <code class="highlighter-rouge">类型</code> 的作用是保护从父类继承的成员（方法 &amp; 特性）。如果 <code class="highlighter-rouge">类型</code> 是 <code class="highlighter-rouge">private</code>，那么子类从父类继承的成员就是 <code class="highlighter-rouge">private</code></p>
+
+<p>例子</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="nl">protected:</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">inc</span><span class="p">(){</span><span class="n">a</span><span class="o">++</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Bar</span><span class="o">:</span> <span class="k">public</span> <span class="n">Foo</span><span class="p">{</span>
+    <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"b is "</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
+    <span class="n">Bar</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">inc</span><span class="p">();</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>
