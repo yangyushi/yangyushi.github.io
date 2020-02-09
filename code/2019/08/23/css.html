@@ -1,0 +1,564 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>css introduction</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/highlight.pack.js"></script>
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/assets/js/toc.js"></script>
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        
+<div class="column left" id="side_bar">
+    23 Aug 2019
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#basic" id="markdown-toc-basic">Basic</a>    <ul>
+      <li><a href="#syntax" id="markdown-toc-syntax">Syntax</a></li>
+      <li><a href="#advanced-syntax" id="markdown-toc-advanced-syntax">Advanced Syntax</a></li>
+    </ul>
+  </li>
+  <li><a href="#基础选择器" id="markdown-toc-基础选择器">基础选择器</a>    <ul>
+      <li><a href="#派生选择器" id="markdown-toc-派生选择器">派生选择器</a></li>
+      <li><a href="#id-选择器" id="markdown-toc-id-选择器">id 选择器</a></li>
+      <li><a href="#类选择器" id="markdown-toc-类选择器">类选择器</a></li>
+      <li><a href="#属性选择器" id="markdown-toc-属性选择器">属性选择器</a></li>
+      <li><a href="#id-和-class-的区别" id="markdown-toc-id-和-class-的区别">id 和 class 的区别</a></li>
+    </ul>
+  </li>
+  <li><a href="#css-基础样式" id="markdown-toc-css-基础样式">CSS 基础样式</a>    <ul>
+      <li><a href="#背景" id="markdown-toc-背景">背景</a></li>
+      <li><a href="#文本" id="markdown-toc-文本">文本</a></li>
+      <li><a href="#链接" id="markdown-toc-链接">链接</a></li>
+      <li><a href="#列表" id="markdown-toc-列表">列表</a></li>
+      <li><a href="#表格" id="markdown-toc-表格">表格</a></li>
+      <li><a href="#轮廓" id="markdown-toc-轮廓">轮廓</a></li>
+    </ul>
+  </li>
+  <li><a href="#css-盒子模型" id="markdown-toc-css-盒子模型">CSS 盒子模型</a></li>
+  <li><a href="#css-高级" id="markdown-toc-css-高级">CSS 高级</a>    <ul>
+      <li><a href="#定位" id="markdown-toc-定位">定位</a></li>
+      <li><a href="#浮动" id="markdown-toc-浮动">浮动</a></li>
+      <li><a href="#尺寸" id="markdown-toc-尺寸">尺寸</a></li>
+      <li><a href="#导航" id="markdown-toc-导航">导航</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="basic">Basic</h2>
+<h3 id="syntax">Syntax</h3>
+
+<ul>
+  <li>CSS 规则由两个主要的部分构成：选择器 (Selector)，以及一条或多条声明 (declaration)。</li>
+  <li>选择器通常是您需要改变样式的 HTML 元素。</li>
+  <li>每条声明由一个属性 (property) 和一个值 (value) 组成。</li>
+  <li>每个属性有一个值。属性和值被冒号分开。</li>
+  <li>属性大于 1 个之后，属性之间用分号隔开。</li>
+  <li>如果值大于 1 个单词，则需要加引号.</li>
+</ul>
+
+<p>格式:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">selector</span> <span class="p">{</span>
+    <span class="err">declaration1;</span> 
+    <span class="err">declaration2;</span>
+    <span class="err">...</span> 
+    <span class="err">declarationN;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>例子:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">h1</span><span class="p">{</span>
+   <span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+   <span class="nl">font-size</span><span class="p">:</span><span class="m">14px</span><span class="p">;</span>
+   <span class="nl">font-family</span><span class="p">:</span><span class="s1">"sans serif"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="advanced-syntax">Advanced Syntax</h3>
+
+<ul>
+  <li>选择器的分组
+    <ul>
+      <li>被分组的选择器就可以分享相同的声明。</li>
+      <li>用逗号将需要分组的选择器分开。</li>
+      <li><code class="highlighter-rouge">h1，h2，h3，h4，h5，h6{color：red;}</code></li>
+    </ul>
+  </li>
+  <li>继承
+    <ul>
+      <li>子元素从父元素继承属性。</li>
+      <li>子元素 (诸如 p, td, ul, ol, ul, li, dl, …) 将继承最高级元素（body）所拥有的属性。</li>
+      <li>子元素的子元素也一样。</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="基础选择器">基础选择器</h2>
+
+<h3 id="派生选择器">派生选择器</h3>
+
+<p>派生选择器允许你根据文档的上下文关系来确定某个标签的样式</p>
+
+<p>例子：让所有<strong>列表</strong>中的 strong 元素变为红色，而不是通常的黑色</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">li</span> <span class="nt">strong</span><span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="id-选择器">id 选择器</h3>
+
+<ul>
+  <li>id 选择器
+    <ul>
+      <li>id 选择器可以: 给标有 id 的 HTML 元素指定特定的样式</li>
+      <li>id 选择器以 “#” 来定义</li>
+    </ul>
+  </li>
+  <li>id 选择器和派生选择器
+    <ul>
+      <li>id 选择器常常用于建立派生选择器</li>
+    </ul>
+  </li>
+</ul>
+
+<p>例子:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#divid</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;}</span>
+<span class="nf">#pid</span> <span class="nt">a</span><span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="m">#00755f</span><span class="p">;}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;title&gt;&lt;/title&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"selector.css"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"divid"</span><span class="nt">&gt;</span>this is a div<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"pid"</span><span class="nt">&gt;</span>hello css<span class="nt">&lt;/br&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.shiyanlou.com"</span><span class="nt">&gt;</span>shiyanlou<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h3 id="类选择器">类选择器</h3>
+
+<p>例子：</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.divclass</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"divclass"</span><span class="nt">&gt;</span> hello world <span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>例子：类选择器与派生选择器嵌套</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.pclass</span> <span class="nt">a</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">}</span>
+</code></pre></div></div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"pclass"</span><span class="nt">&gt;</span>这是一个 class 显示效果
+	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"hhtp://www.example.com"</span><span class="nt">&gt;</span>效果<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<h3 id="属性选择器">属性选择器</h3>
+
+<p>例子：为所有有 title 属性设置样式</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nt">title</span><span class="o">]</span>
+<span class="p">{</span>
+<span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>例子：为所有有 title=”te” 的元素设置样式</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nt">title</span><span class="err">＝</span><span class="nt">te</span><span class="o">]</span>
+<span class="p">{</span>
+<span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="id-和-class-的区别">id 和 class 的区别</h3>
+
+<p>详细解说看<a href="https://css-tricks.com/the-difference-between-id-and-class/">这个文章</a></p>
+
+<p>在实现原理上，<code class="highlighter-rouge">id</code> 和 <code class="highlighter-rouge">class</code> 是相同的。但是通常，一个网页中不能出现多个元素有相同 <code class="highlighter-rouge">id</code> 的情况：<code class="highlighter-rouge">id</code> 被用来区分特定的元素。</p>
+
+<ul>
+  <li>Each element can have only one ID</li>
+  <li>Each page can have only one element with that ID</li>
+  <li>You can use the same class on multiple elements.</li>
+  <li>You can use multiple classes on the same element.</li>
+</ul>
+
+<p>Yes, the <code class="highlighter-rouge">id</code> and <code class="highlighter-rouge">class</code> attributes do work in the same way and the web browser treats them the same. However, the <strong>implied rule is that no two elements on a page should have the same id, but many elements on one page can have the same class</strong>. Although the browser won’t render the web page unusually if you use the same id twice, developers see it as more semantically correct to use unique identities. This is because doing this makes reading the source code is a bit easier; if you see an element with an id, you know it is likely to be something that stands out from the rest of the page, because it should be the only element with that particular styling.</p>
+
+<h2 id="css-基础样式">CSS 基础样式</h2>
+
+<h3 id="背景">背景</h3>
+
+<p>设定背景颜色</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">body</span><span class="p">{</span>
+   <span class="nl">background-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span><span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#0014ff</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>将图片设置为背景</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">body</span><span class="p">{</span>
+   <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url("pic.png")</span><span class="p">;</span>
+   <span class="nl">background-repeat</span><span class="p">:</span> <span class="nb">no-repeat</span><span class="p">;</span> 
+   <span class="c">/*no-repeat 不能重复
+   		repeat 可重复
+		repeat-x 表示 x 轴重复
+		repeat-y 表示 y 轴重复*/</span>
+   <span class="nl">background-position</span><span class="p">:</span><span class="nb">center</span> <span class="nb">top</span><span class="p">;</span>
+   <span class="nl">background-attachment</span><span class="p">:</span><span class="nb">fixed</span><span class="p">;</span>
+   <span class="c">/*背景关联 如果网页比较长，那么当网页向下滚动时，背景图像也会随之滚动。*/</span>
+   <span class="nl">background-size</span><span class="p">:</span> <span class="m">100px</span> <span class="m">100px</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="文本">文本</h3>
+
+<ul>
+  <li>属性 - 描述</li>
+  <li>color -	文本颜色</li>
+  <li>direction -	文本方向</li>
+  <li>line-height -	行高</li>
+  <li>letter-spacing -	字符间距</li>
+  <li>text-align -	对齐元素中的文本</li>
+  <li>text-decoration -	向文本添加修饰</li>
+  <li>text-indent -	缩进元素中文本的首行</li>
+  <li>text-transform -	元素中的字母</li>
+  <li>unicode-bidi -	设置文本方向</li>
+  <li>white-space -	元素中空白的处理方式</li>
+  <li>word-spacing -	字间距</li>
+</ul>
+
+<h3 id="链接">链接</h3>
+
+<p>链接的四种状态:</p>
+
+<ul>
+  <li>a:link – 普通的、未被访问的链接</li>
+  <li>a:visited – 用户已访问的链接</li>
+  <li>a:hover – 鼠标指针位于链接的上方</li>
+  <li>a:active – 链接被点击的时刻</li>
+</ul>
+
+<p>例子：</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">a</span><span class="nd">:link</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">blue</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">purple</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span> <span class="n">color</span><span class="p">:</span><span class="no">navy</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:active</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">crimson</span><span class="p">;}</span>
+</code></pre></div></div>
+
+<h3 id="列表">列表</h3>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">ol</span> <span class="p">{</span><span class="nl">list-style</span><span class="p">:</span> <span class="nb">lower-greek</span><span class="p">}</span>
+ <span class="c">/*改变所有 ordered list 的图标*/</span>
+<span class="nt">ul</span><span class="nc">.lower-alpha</span> <span class="p">{</span><span class="nl">list-style</span><span class="p">:</span> <span class="nb">lower-alpha</span><span class="p">}</span>
+<span class="nt">ul</span><span class="nc">.list_image</span> <span class="p">{</span><span class="nl">list-style-image</span><span class="p">:</span> <span class="sx">url("list_image.png")</span><span class="p">;}</span>
+<span class="c">/*使用图片代替列表图标*/</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;</span><span class="err">!</span><span class="na">doctype:</span> <span class="na">html</span><span class="nt">&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;title&gt;</span>css list intro<span class="nt">&lt;/title&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"list.css"</span> <span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;ol&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello world<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello sam<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello jack<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ol&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"lower-alpha"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello world<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello sam<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello jack<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list_image"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello image<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello picture<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>hello beauty<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h3 id="表格">表格</h3>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*设置 table 的 th 和 td*/</span>
+<span class="c">/*这里 table 是 id 选择器*/</span>
+<span class="nf">#table</span> <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span><span class="p">{</span>
+    <span class="nl">border</span><span class="p">:</span> <span class="m">2px</span> <span class="nb">solid</span> <span class="no">lightblue</span><span class="p">;</span>
+    <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/*单独设置 th 有不同的背景色和文字颜色*/</span>
+<span class="nf">#table</span> <span class="nt">th</span><span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span><span class="no">aliceblue</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span><span class="no">black</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c">/*单独设置 tr2 的 td 有不同的背景色和文字颜色*/</span>
+<span class="c">/*这里 .tr2 是类选择器*/</span>
+<span class="nf">#table</span> <span class="nt">tr</span><span class="nc">.tr2</span> <span class="nt">td</span><span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span><span class="no">white</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span><span class="no">indianred</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;</span><span class="err">!</span><span class="na">doctype:</span> <span class="na">html</span><span class="nt">&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;title&gt;</span>css table intro<span class="nt">&lt;/title&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"table.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">"table"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;tr&gt;</span>
+                <span class="nt">&lt;th&gt;</span>time<span class="nt">&lt;/th&gt;</span>
+                <span class="nt">&lt;th&gt;</span>user<span class="nt">&lt;/th&gt;</span>
+                <span class="nt">&lt;th&gt;</span>tel<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;/tr&gt;</span>
+            
+            <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">"tr2"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;td&gt;</span>today<span class="nt">&lt;/td&gt;</span>
+                <span class="nt">&lt;td&gt;</span>jaggie<span class="nt">&lt;/td&gt;</span>
+                <span class="nt">&lt;td&gt;</span>5423<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;/tr&gt;</span>
+            
+            <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">"tr2"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;td&gt;</span>tomorrow<span class="nt">&lt;/td&gt;</span>
+                <span class="nt">&lt;td&gt;</span>lynda<span class="nt">&lt;/td&gt;</span>
+                <span class="nt">&lt;td&gt;</span>2396<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;/tr&gt;</span>
+
+        <span class="nt">&lt;/table&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h3 id="轮廓">轮廓</h3>
+
+<p>例子:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#p1</span><span class="p">{</span>
+    <span class="nl">outline-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+    <span class="nl">outline-style</span><span class="p">:</span> <span class="nb">groove</span><span class="p">;</span>
+    <span class="nl">outline-width</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#p2</span><span class="p">{</span>
+    <span class="nl">outline-color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+    <span class="nl">outline-style</span><span class="p">:</span> <span class="nb">dotted</span><span class="p">;</span>
+    <span class="nl">outline-width</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;title&gt;</span> css intro outlie<span class="nt">&lt;/title&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="err">,</span> <span class="na">type=</span><span class="s">"text/css"</span><span class="err">,</span> <span class="na">href=</span><span class="s">"outline.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"p1"</span><span class="nt">&gt;</span>hello world!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"p2"</span><span class="nt">&gt;</span>hello world!<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h2 id="css-盒子模型">CSS 盒子模型</h2>
+
+<p>模型示意图</p>
+
+<p><img src="/assets/images/post_css_1.jpg" alt="" /></p>
+
+<p>例子：</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.top</span><span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">aliceblue</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span><span class="m">70px</span><span class="p">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.top_center</span><span class="p">{</span>
+    <span class="nl">margin</span><span class="p">:</span><span class="m">0px</span> <span class="nb">auto</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span><span class="m">75%</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">70px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">cadetblue</span><span class="p">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">aliceblue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.middle</span><span class="p">{</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0px</span> <span class="nb">auto</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">75%</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">700px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">cornsilk</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.middle_1</span><span class="p">{</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">darksalmon</span><span class="p">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.middle_2</span><span class="p">{</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">10px</span><span class="p">,</span> <span class="m">0px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">darkorange</span><span class="p">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"Box_3.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"top"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"top_center"</span><span class="nt">&gt;</span>
+            Top center
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle_1"</span><span class="nt">&gt;</span>Middle 1<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/br&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle_2"</span><span class="nt">&gt;</span>Middle 2<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h2 id="css-高级">CSS 高级</h2>
+
+<h3 id="定位">定位</h3>
+
+<p>定位：允许你定义元素框相对于其正常位置应该出现的位置，或者相对于父元素、另一个元素甚至浏览器窗口本身的位置。</p>
+
+<ul>
+  <li>定位机制 (relative)
+    <ul>
+      <li>普通流 ：元素按照其在 HTML 中的位置顺序决定排布的过程</li>
+      <li>浮动 (float)：浮动的框可以向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。</li>
+      <li>绝对定位 (absolute)：绝对定位使元素的位置与文档流无关，因此不占据空间。这一点与相对定位不同，相对定位实际上被看作普通流定位模型的一部分，因为元素的位置相对于它在普通流中的位置。</li>
+    </ul>
+  </li>
+  <li>定位属性
+    <ul>
+      <li>position 将元素放在
+        <ul>
+          <li>静态的位置</li>
+          <li>relative 相对的位置</li>
+          <li>absolute 绝对的位置</li>
+          <li>固定的位置</li>
+        </ul>
+      </li>
+      <li>top,left,right,bottom 元素向对应的方向偏移</li>
+      <li>overflow 设置元素溢出其区域发生的事情</li>
+      <li>clip 设置元素的显示形状,多用于图片</li>
+      <li>vertical-align 设置元素的垂直对其方式</li>
+      <li>z-index 设置元素的堆叠顺序 (序数大的在上面)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<h3 id="浮动">浮动</h3>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<h3 id="尺寸">尺寸</h3>
+
+<p>属性：</p>
+
+<ul>
+  <li>width 设置元素的宽度</li>
+  <li>height 设置元素的高度</li>
+  <li>line-height 设置行高</li>
+  <li>max-height 设置元素的最大高</li>
+  <li>max-width 设置元素的最大宽度</li>
+  <li>min-height 设置元素的最小高度</li>
+  <li>min-width 设置元素的最小宽度</li>
+</ul>
+
+<h3 id="导航">导航</h3>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>

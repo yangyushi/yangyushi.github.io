@@ -1,0 +1,640 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>html introduction</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/highlight.pack.js"></script>
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/assets/js/toc.js"></script>
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        
+<div class="column left" id="side_bar">
+    01 Dec 2019
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#html-text" id="markdown-toc-html-text">HTML Text</a>    <ul>
+      <li><a href="#html-element" id="markdown-toc-html-element">HTML Element</a>        <ul>
+          <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+          <li><a href="#syntax" id="markdown-toc-syntax">Syntax</a></li>
+          <li><a href="#nest" id="markdown-toc-nest">Nest</a></li>
+          <li><a href="#blank-element" id="markdown-toc-blank-element">Blank element</a></li>
+          <li><a href="#wrap" id="markdown-toc-wrap">Wrap</a></li>
+        </ul>
+      </li>
+      <li><a href="#attributes" id="markdown-toc-attributes">Attributes</a>        <ul>
+          <li><a href="#introduction-1" id="markdown-toc-introduction-1">Introduction</a></li>
+          <li><a href="#align" id="markdown-toc-align">align</a></li>
+          <li><a href="#color" id="markdown-toc-color">Color</a></li>
+        </ul>
+      </li>
+      <li><a href="#文本格式化" id="markdown-toc-文本格式化">文本格式化</a>        <ul>
+          <li><a href="#introduction-2" id="markdown-toc-introduction-2">Introduction</a></li>
+          <li><a href="#pre" id="markdown-toc-pre">&lt;Pre&gt;</a></li>
+        </ul>
+      </li>
+      <li><a href="#style" id="markdown-toc-style">Style</a></li>
+    </ul>
+  </li>
+  <li><a href="#html-hypertext" id="markdown-toc-html-hypertext">HTML hypertext</a>    <ul>
+      <li><a href="#html-links" id="markdown-toc-html-links">HTML Links</a>        <ul>
+          <li><a href="#adding-links-for-text-and-images" id="markdown-toc-adding-links-for-text-and-images">Adding links for text and images</a></li>
+          <li><a href="#opening-methods" id="markdown-toc-opening-methods">Opening methods</a></li>
+          <li><a href="#prompt-text" id="markdown-toc-prompt-text">Prompt text</a></li>
+          <li><a href="#anchor" id="markdown-toc-anchor">Anchor</a></li>
+        </ul>
+      </li>
+      <li><a href="#html-table" id="markdown-toc-html-table">HTML Table</a>        <ul>
+          <li><a href="#introduction-3" id="markdown-toc-introduction-3">Introduction</a></li>
+          <li><a href="#example" id="markdown-toc-example">Example:</a></li>
+          <li><a href="#important-tags--attributes" id="markdown-toc-important-tags--attributes">Important tags &amp; attributes</a></li>
+        </ul>
+      </li>
+      <li><a href="#html-image" id="markdown-toc-html-image">HTML Image</a>        <ul>
+          <li><a href="#insert-an-image" id="markdown-toc-insert-an-image">Insert an image</a></li>
+          <li><a href="#align-1" id="markdown-toc-align-1">align</a></li>
+          <li><a href="#resize" id="markdown-toc-resize">resize</a></li>
+          <li><a href="#map" id="markdown-toc-map">map</a></li>
+        </ul>
+      </li>
+      <li><a href="#html-list" id="markdown-toc-html-list">HTML List</a>        <ul>
+          <li><a href="#ordered-list" id="markdown-toc-ordered-list">Ordered List</a></li>
+          <li><a href="#unordered-list" id="markdown-toc-unordered-list">Unordered List</a></li>
+          <li><a href="#defined-list" id="markdown-toc-defined-list">Defined List</a></li>
+        </ul>
+      </li>
+      <li><a href="#html-block" id="markdown-toc-html-block">HTML Block</a>        <ul>
+          <li><a href="#introduction-4" id="markdown-toc-introduction-4">Introduction</a></li>
+          <li><a href="#div" id="markdown-toc-div">&lt;div&gt;</a></li>
+        </ul>
+      </li>
+      <li><a href="#html-布局" id="markdown-toc-html-布局">HTML 布局</a>        <ul>
+          <li><a href="#利用-talble-布局" id="markdown-toc-利用-talble-布局">利用 &lt;talble&gt; 布局</a></li>
+          <li><a href="#利用-div-布局" id="markdown-toc-利用-div-布局">利用 &lt;div&gt; 布局</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="html-text">HTML Text</h2>
+<h3 id="html-element">HTML Element</h3>
+<h4 id="introduction">Introduction</h4>
+
+<p>HTML 元素指的是从开始标签（start tag）到结束标签（end tag）的所有代码。</p>
+
+<p>This is an element：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p&gt;</span>shiyanlou<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+<h4 id="syntax">Syntax</h4>
+
+<ul>
+  <li>HTML 元素以<strong>开始标签</strong>起始</li>
+  <li>HTML 元素以<strong>结束标签</strong>终止</li>
+  <li>HTML 元素的<strong>内容</strong>是开始标签与结束标签之间的内容</li>
+  <li>某些 HTML 元素具有空内容（empty content）</li>
+  <li>空元素在开始标签中进行关闭（以开始标签的结束而结束）</li>
+  <li>大多数 HTML 元素可拥有属性</li>
+</ul>
+
+<h4 id="nest">Nest</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;p&gt;</span>let's go to shiyanlou<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h4 id="blank-element">Blank element</h4>
+
+<ul>
+  <li>没有内容的 HTML 元素被称为空元素。<code class="highlighter-rouge">&lt; br&gt;</code> 就是没有关闭标签的空元素（<code class="highlighter-rouge">&lt; br&gt;</code> 标签用来定义换行）。</li>
+  <li>在 XHTML、XML 以及未来版本的 HTML 中，所有元素都必须被关闭。</li>
+  <li>在开始标签中添加斜杠，比如 <code class="highlighter-rouge">&lt; br/&gt;</code>，是关闭空元素的正确方法</li>
+  <li>即使 <code class="highlighter-rouge">&lt; br&gt;</code> 在所有浏览器中都是有效的，但使用 <code class="highlighter-rouge">&lt; br/&gt;</code> 其实是更长远的保障，说了那么多就是想说以后换行就用 <code class="highlighter-rouge">&lt; br/&gt;</code>。</li>
+</ul>
+
+<h4 id="wrap">Wrap</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;\br&gt;</code> 相当于换行符号 <code class="highlighter-rouge">\n</code></li>
+  <li><code class="highlighter-rouge">&lt;p&gt; &lt;/p&gt;</code>也可以实现换行，但是行后多一个空行</li>
+  <li><code class="highlighter-rouge">hello world &lt;\br&gt;&lt;\br&gt;</code> 等价于 <code class="highlighter-rouge">&lt;p&gt;hello world&lt;/p&gt;</code></li>
+</ul>
+
+<h3 id="attributes">Attributes</h3>
+
+<h4 id="introduction-1">Introduction</h4>
+
+<ul>
+  <li>是在 HTML 元素的开始标签中定义。</li>
+  <li>总是以名称和值对应的形式出现，比如：<code class="highlighter-rouge">name="value"</code>。</li>
+  <li>属性值应该始终被包括在引号内。双引号是最常用的，不过使用单引号也没有问题。</li>
+</ul>
+
+<p>例子：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.shiyanlou.com"</span><span class="nt">&gt;</span>shiyanlou<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">href="http://www.shiyanlou.com"</code>，这一部分就叫做 <code class="highlighter-rouge">&lt;a&gt;</code> 标签的属性，是对 <code class="highlighter-rouge">&lt;a&gt;</code> 标签的补充说明，既指向的网页。这样的标签还有很多，下面我们就来动手做几个练习</p>
+
+<h4 id="align">align</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>Hello world!<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div></div>
+
+<h4 id="color">Color</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body</span> <span class="na">bgcolor=</span><span class="s">"#000000"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- 16 进制数 --&gt;</span>
+<span class="nt">&lt;body</span> <span class="na">bgcolor=</span><span class="s">"rgb(0,0,0)"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- rgb 数值 --&gt;</span>
+<span class="nt">&lt;body</span> <span class="na">bgcolor=</span><span class="s">"black"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- 颜色名 --&gt;</span>
+</code></pre></div></div>
+
+<h3 id="文本格式化">文本格式化</h3>
+
+<h4 id="introduction-2">Introduction</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;b&gt;</code>	（bold）粗体</li>
+  <li><code class="highlighter-rouge">&lt;big&gt;</code>	（big）大字体</li>
+  <li><code class="highlighter-rouge">&lt;em&gt;</code>	（emphasized）强调字</li>
+  <li><code class="highlighter-rouge">&lt;i&gt;</code>	（italic）斜体</li>
+  <li><code class="highlighter-rouge">&lt;small&gt;</code>	（small）小字体</li>
+  <li><code class="highlighter-rouge">&lt;strong&gt;</code>	(strong)加重语气</li>
+</ul>
+
+<h4 id="pre">&lt;Pre&gt;</h4>
+
+<p>所谓预格式文本就是指代码叶和网页展示是一样的格式，不用额外添加换行符标签就能换行</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;pre&gt;</span>
+1st line
+2nd line
+3rd line
+<span class="nt">&lt;/pre&gt;</span>
+</code></pre></div></div>
+
+<h3 id="style">Style</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"text-align:center;font-family:time;color:blue"</span><span class="nt">&gt;</span>
+Hello world!
+<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>同一标签内的 Text 有相同的 style</li>
+</ul>
+
+<h2 id="html-hypertext">HTML hypertext</h2>
+
+<h3 id="html-links">HTML Links</h3>
+
+<h4 id="adding-links-for-text-and-images">Adding links for text and images</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>let's have an example<span class="nt">&lt;/p&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>   
+    	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.shiyanlou.com"</span><span class="nt">&gt;</span>
+    	shiyanlou
+    	<span class="nt">&lt;/a&gt;</span>
+    	<span class="nt">&lt;/br&gt;</span>
+    	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span><span class="nt">&gt;</span>
+    	<span class="nt">&lt;/img</span> <span class="err">src="logo.png"</span><span class="nt">&gt;</span> <span class="c">&lt;!--显示相同 PATH 下的 logo.png 图片--&gt;</span>
+    	<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h4 id="opening-methods">Opening methods</h4>
+
+<ul>
+  <li>超级链接打开方式分为
+    <ul>
+      <li>本页打开</li>
+      <li>在新的浏览器窗口打开</li>
+    </ul>
+  </li>
+  <li>
+    <p>超级链接打开新页面的<strong>默认方式</strong>是自我覆盖（就是在本页打开）。</p>
+  </li>
+  <li>超级链接标签提供了 <code class="highlighter-rouge">target</code> 属性进行设置，取值分别为
+    <ul>
+      <li><code class="highlighter-rouge">_self</code>（自我覆盖，默认）</li>
+      <li><code class="highlighter-rouge">_blank</code>（创建新窗口打开新页面）</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Example</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h4 id="prompt-text">Prompt text</h4>
+
+<ul>
+  <li>当光标停留在超链接上时，Prompt text 就会显现。</li>
+  <li>由 <code class="highlighter-rouge">title</code> 属性实现。</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span> <span class="na">title=</span><span class="s">"baidu"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h4 id="anchor">Anchor</h4>
+
+<ul>
+  <li>锚 (Anchor) 就是用于在单个页面内不同位置的跳转</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p&gt;</span>
+	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#c1"</span><span class="nt">&gt;</span>anchor_1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+	<span class="nt">&lt;a</span> <span class="na">name=</span><span class="s">"c1"</span><span class="nt">&gt;</span>anchor_1 jumps to here<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<h3 id="html-table">HTML Table</h3>
+
+<h4 id="introduction-3">Introduction</h4>
+
+<ul>
+  <li>HTML 網頁設計不可或缺的元素就是表格（Table）</li>
+  <li>通常表格用來做版面的排版</li>
+  <li>数据单元格可以包含文本、图片、列表、段落、表单、水平线、表格等等</li>
+  <li>表格的幾個重要标签
+    <ul>
+      <li><code class="highlighter-rouge">&lt;table&gt;</code>: 定义表格</li>
+      <li><code class="highlighter-rouge">&lt;tr&gt;</code>: 每个表格的<strong>行</strong></li>
+      <li><code class="highlighter-rouge">&lt;td&gt;</code>: 每个行的<strong>单元格</strong>的内容</li>
+      <li><code class="highlighter-rouge">&lt;th&gt;</code>: 定义表头</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="example">Example:</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;title</span> <span class="nt">&gt;</span>TABLE<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"font-size:20px"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"1"</span><span class="nt">&gt;</span>  
+     	<span class="nt">&lt;tr&gt;</span>
+		<span class="nt">&lt;td&gt;</span>T11<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td&gt;</span>T12<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;/tr&gt;</span>
+		<span class="nt">&lt;tr&gt;</span>
+		<span class="nt">&lt;td&gt;</span>T21<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td&gt;</span>T22<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;/tr&gt;</span>
+     <span class="nt">&lt;/table&gt;</span>   
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h4 id="important-tags--attributes">Important tags &amp; attributes</h4>
+
+<ul>
+  <li>标签：<code class="highlighter-rouge">&lt;th&gt;</code>: 设置表头</li>
+  <li>标签：<code class="highlighter-rouge">&lt;caption&gt;</code>: 设置表的标题</li>
+  <li>属性：<code class="highlighter-rouge">cellpadding = "..."</code>: 设置单元格边距</li>
+  <li>属性：<code class="highlighter-rouge">bgcolor="..."</code>: 设置表格背景颜色</li>
+  <li>属性：<code class="highlighter-rouge">background="..."</code>: 以某张图片作为表格背景</li>
+  <li>属性：<code class="highlighter-rouge">rowspan="..."</code>: 控制此单位所占行数</li>
+  <li>属性：<code class="highlighter-rouge">colspan="..."</code>: 控制此单位所占列数</li>
+</ul>
+
+<h3 id="html-image">HTML Image</h3>
+
+<h4 id="insert-an-image">Insert an image</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body</span> <span class="na">background=</span><span class="s">"PATH to the image"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"路径加文件名"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h4 id="align-1">align</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"PATH"</span> <span class="na">align=</span><span class="s">"top"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h4 id="resize">resize</h4>
+
+<p><code class="highlighter-rouge">width="80" height="80"</code></p>
+
+<h4 id="map">map</h4>
+
+<ul>
+  <li>有时我们需要实现，点击图片的不同地方跳转到不同的地方</li>
+  <li>涉及到的标签就是 <code class="highlighter-rouge">&lt;map&gt;</code> 标签，用来指定图片, <code class="highlighter-rouge">&lt;area&gt;</code> 用来指定超链接区域</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;title&gt;</span>image<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+	<span class="nt">&lt;p&gt;</span>
+	<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"logo.png"</span> <span class="na">usemap=</span><span class="s">"#map"</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">"map"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;area</span> <span class="na">shape=</span><span class="s">"rect"</span> <span class="na">coords=</span><span class="s">"0, 0, 50, 50"</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>
+		<span class="c">&lt;!--只有图片从左上角 (0,0) 坐标到右下角 (50,50) 的区域响应点击--&gt;</span>
+	<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h3 id="html-list">HTML List</h3>
+
+<h4 id="ordered-list">Ordered List</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ol&gt;</span>
+<span class="nt">&lt;li&gt;</span>1st element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;li&gt;</span>2nd element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;li&gt;</span>3rd element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ol&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>Attributes
+    <ul>
+      <li><code class="highlighter-rouge">start</code>:  起始编号，默认是 1</li>
+      <li><code class="highlighter-rouge">type</code>: 编号方法，默认是阿拉伯数字
+        <ul>
+          <li><code class="highlighter-rouge">a</code>: a, b, c, …</li>
+          <li><code class="highlighter-rouge">A</code>: A, B, C, …</li>
+          <li><code class="highlighter-rouge">i</code>: i, ii, iii, …</li>
+          <li><code class="highlighter-rouge">I</code>: I, II, III, …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="unordered-list">Unordered List</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul&gt;</span>
+<span class="nt">&lt;li&gt;</span>1st element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;li&gt;</span>2nd element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;li&gt;</span>3rd element<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>Attributes
+    <ul>
+      <li><code class="highlighter-rouge">Disc</code>: 实心黑点 (默认)</li>
+      <li><code class="highlighter-rouge">Cirle</code>: 小圈</li>
+      <li><code class="highlighter-rouge">square</code>: 方点</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="defined-list">Defined List</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dl&gt;</span>
+	<span class="nt">&lt;dt&gt;</span>1st<span class="nt">&lt;/dt&gt;</span> <span class="c">&lt;!--Define the title--&gt;</span>
+		<span class="nt">&lt;dd&gt;</span>1st element<span class="nt">&lt;/dd&gt;</span>
+	<span class="nt">&lt;dt&gt;</span>2nd<span class="nt">&lt;/dt&gt;</span>
+		<span class="nt">&lt;dd&gt;</span>2nd element<span class="nt">&lt;/dd&gt;</span>
+	<span class="nt">&lt;dt&gt;</span>3rd<span class="nt">&lt;/dt&gt;</span>
+		<span class="nt">&lt;dd&gt;</span>3rd element<span class="nt">&lt;/dd&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<h3 id="html-block">HTML Block</h3>
+
+<h4 id="introduction-4">Introduction</h4>
+
+<ul>
+  <li>HTML元素被定义为<strong>块级元素</strong>或<strong>内联元素</strong></li>
+  <li>块级元素 (block) 特性:
+    <ul>
+      <li>总是独占一行，表现为另起一行开始，而且其后的元素也必须另起一行显示</li>
+      <li>宽度 (width)、高度 (height)、内边距 (padding) 和外边距 (margin) 都可控制</li>
+      <li>例子: <code class="highlighter-rouge">&lt;h1&gt;</code>, <code class="highlighter-rouge">&lt;p&gt;</code>, <code class="highlighter-rouge">&lt;ul&gt;</code>, <code class="highlighter-rouge">&lt;table&gt;</code> 标签</li>
+    </ul>
+  </li>
+  <li>内联元素 (inline) 特性:
+    <ul>
+      <li>和相邻的内联元素在同一行</li>
+      <li>宽度(width)、高度(height)、内边距的top/bottom (padding-top/padding-bottom) 和外边距的 top/bottom (margin-top/margin-bottom) 都不可改变</li>
+      <li>例子: <code class="highlighter-rouge">&lt;b&gt;</code>, <code class="highlighter-rouge">&lt;td&gt;</code>, <code class="highlighter-rouge">&lt;a&gt;</code>, <code class="highlighter-rouge">&lt;img&gt;</code> 标签</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="div">&lt;div&gt;</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;div&gt;</code> 用来定义文档中的<strong>分区</strong>或<strong>节</strong>（division/section），没有特定的含义</li>
+  <li>它是容器，用于组合其他 HTML 元素</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;title&gt;</span>Div<span class="nt">&lt;/title&gt;</span>
+	<span class="nt">&lt;/head&gt;</span>
+	<span class="nt">&lt;body&gt;</span>
+	<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"color:blue;font-family=arial"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;h3&gt;</span>Inside the div, font color is blue<span class="nt">&lt;/h3&gt;</span>
+	<span class="nt">&lt;p&gt;</span>Paragraphs are combined<span class="nt">&lt;/p&gt;</span>
+	<span class="nt">&lt;p&gt;</span>With the same style<span class="nt">&lt;/p&gt;</span>
+	<span class="nt">&lt;/div&gt;</span>
+	<span class="nt">&lt;h3&gt;</span>Outside the div, font color is black<span class="nt">&lt;/h3&gt;</span>
+	<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h3 id="html-布局">HTML 布局</h3>
+
+<p>网页布局可以通过 <code class="highlighter-rouge">&lt;table&gt;</code> 元素，或者 <code class="highlighter-rouge">&lt;div&gt;</code> 元素实现</p>
+
+<h4 id="利用-talble-布局">利用 &lt;talble&gt; 布局</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table</span> <span class="na">width=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">colspan=</span><span class="s">"2"</span> <span class="na">style=</span><span class="s">"background-color: royalblue"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;h1</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>Part One<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+
+    <span class="nt">&lt;tr</span> <span class="na">valign=</span><span class="s">"top"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"background-color: darkorange;width:300px"</span><span class="nt">&gt;</span>
+        	<span class="nt">&lt;h1&gt;</span>Part Two<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;/td&gt;</span>
+        
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"background-color: forestgreen;height:500px;width:700px;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;h1&gt;</span>Part Three<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">colspan=</span><span class="s">"2"</span> <span class="na">style=</span><span class="s">"background-color: powderblue;height: 100px"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Part Four<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+
+<span class="nt">&lt;/table&gt;</span>
+</code></pre></div></div>
+
+<h4 id="利用-div-布局">利用 &lt;div&gt; 布局</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nt">div</span><span class="nf">#container</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">90px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="no">black</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="no">white</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#header</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">royalblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#sidebar</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">darkorange</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#mainbody</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">forestgreen</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">150px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#footer</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">darkblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">;</span><span class="nl">clear</span><span class="p">:</span><span class="nb">both</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#formcontainer</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">220px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="n">grey</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="no">white</span><span class="p">}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"header"</span><span class="nt">&gt;</span>
+    Part One
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"sidebar"</span><span class="nt">&gt;</span>
+    Part Two
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"mainbody"</span><span class="nt">&gt;</span>
+    Part Three
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"footer"</span><span class="nt">&gt;</span>
+    Part Four
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>渲染结果：</p>
+<head>
+  <style>
+    div#container{width:200px;height:90px;background-color:black;color:white}
+    div#header{background-color:royalblue;height:20px}
+    div#sidebar{background-color:darkorange;height:50px;width:50px;float:left}
+    div#mainbody{background-color:forestgreen;height:50px;width:150px;float:left}
+    div#footer{background-color:darkblue;height:20px;clear:both}
+    div#formcontainer{width:200px;height:220px;background-color:grey;color:white}
+  </style>
+</head>
+<body>
+<div id="container">
+  <div id="header">
+    Part One
+  </div>
+  <div id="sidebar">
+    Part Two
+  </div>
+  <div id="mainbody">
+    Part Three
+  </div>
+  <div id="footer">
+    Part Four
+  </div>
+</div>
+
+### HTML 表单
+
+```html
+<html>
+<head>
+  <style>
+    div#container{width:200px;height:250px;background-color:grey;color:white}
+  </style>
+<body>
+  <div id="container" align="middle">
+    <form>
+      <p>
+      Input:&lt;/br&gt;
+      <input type="text" name="user_name" />
+      </p>
+      <p>
+      CheckBox:&lt;/br&gt;
+      <input type="checkbox" name="user_type" /> check me &lt;/br&gt;
+      <input type="checkbox" name="user_type" /> check me &lt;/br&gt;
+      </p>
+      <p>
+      RadioBox:&lt;/br&gt;
+      <input type="radio" name="user_gender" /> male &lt;/br&gt;
+      <input type="radio" name="user_gender" /> female &lt;/br&gt;
+      </p>
+    </form>
+  </div>
+</body>
+&lt;/html&gt;
+```
+渲染结果：
+  <div id="formcontainer" align="middle">
+    <form>
+      <p>
+      Input:&lt;/br&gt;
+      <input type="text" name="user_name" />
+      </p>
+      <p>
+      CheckBox:&lt;/br&gt;
+      <input type="checkbox" name="user_type" /> check me &lt;/br&gt;
+      <input type="checkbox" name="user_type" /> check me &lt;/br&gt;
+      </p>
+      <p>
+      RadioBox:&lt;/br&gt;
+      <input type="radio" name="user_gender" /> male &lt;/br&gt;
+      <input type="radio" name="user_gender" /> female &lt;/br&gt;
+      </p>
+    </form>
+  </div>
+
+
+
+</head></html></body>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>
