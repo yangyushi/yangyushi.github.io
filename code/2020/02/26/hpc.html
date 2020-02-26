@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>useful commands in HPC</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    26 Feb 2020
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#see-file-size-in-mb" id="markdown-toc-see-file-size-in-mb">See file size in MB</a></li>
+  <li><a href="#copy-to-clipboard" id="markdown-toc-copy-to-clipboard">Copy to clipboard</a></li>
+  <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
+  <li><a href="#use-large-memory-in-bc3" id="markdown-toc-use-large-memory-in-bc3">Use large memory in BC3</a></li>
+  <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
+</ul>
+
+<h2 id="see-file-size-in-mb">See file size in MB</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span> <span class="nt">--block-size</span><span class="o">=</span>M
+<span class="nb">du</span> <span class="nt">-sh</span> <span class="nb">.</span>
+</code></pre></div></div>
+
+<h2 id="copy-to-clipboard">Copy to clipboard</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>file | pbcopy
+</code></pre></div></div>
+
+<h2 id="batch-convert-image-format">Batch convert image format</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
+</code></pre></div></div>
+
+<h2 id="use-large-memory-in-bc3">Use large memory in BC3</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#PBS -l mem=128gb</span>
+<span class="c">#PBS -q  himem</span>
+</code></pre></div></div>
+
+<h2 id="get-hash">Get Hash</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shasum filename
+md5 filename
+openssl md5
+</code></pre></div></div>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>
