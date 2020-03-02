@@ -84,6 +84,11 @@
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>file | pbcopy
 </code></pre></div></div>
 
+<p>If using ubuntu, put the following in <code class="highlighter-rouge">.bashrc</code>,</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
+</code></pre></div></div>
+
 <h2 id="batch-convert-image-format">Batch convert image format</h2>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
