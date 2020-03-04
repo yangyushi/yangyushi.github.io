@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How Points are Undistorted in opencv?</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >Home</a>
+        </li>
+        
+        <li>
+        <a href=/code.html
+            
+        >Code</a>
+        </li>
+        
+        <li>
+        <a href=/science.html
+            
+        >Science</a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >About</a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main_box">
+        <div class="column left" id="side_bar">
+    04 Mar 2020
+</div>
+
+<div class="column right">
+    <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#not-the-truth" id="markdown-toc-not-the-truth">Not the Truth</a>    <ul>
+      <li><a href="#equations-from-opencv" id="markdown-toc-equations-from-opencv">Equations from opencv</a></li>
+      <li><a href="#matlab-version" id="markdown-toc-matlab-version">Matlab version</a></li>
+    </ul>
+  </li>
+  <li><a href="#the-truth" id="markdown-toc-the-truth">The Truth</a>    <ul>
+      <li><a href="#source-code-in-opencv" id="markdown-toc-source-code-in-opencv">Source code in opencv</a></li>
+      <li><a href="#undistort-manually" id="markdown-toc-undistort-manually">Undistort manually</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>When someone is trying to get the internal parameter of a camera, this person thinks about calibrating the camera using a chessboard. Then one would naturally follow <a href="https://docs.opencv.org/2.4/doc/tutorials/calib3d/camera_calibration/camera_calibration.html">this tutorial</a>, getting the results from the good <a href="https://opencv.org">opencv</a> project. Everything is great.</p>
+
+<p>After such calibration, you can <a href="https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga69f2545a8b62a6b0fc2ee060dc30559d">undistort</a> an image or features inside the image with the obtained <strong>distortion coefficients</strong>. But, there are two issues, (at least for me)</p>
+
+<ol>
+  <li>What does the numbers in the distortion coefficients <strong>mean</strong>?</li>
+  <li>How do I use these numbers to distort &amp; undistort features without calling functions in <code class="highlighter-rouge">opencv</code>?</li>
+</ol>
+
+<h2 id="not-the-truth">Not the Truth</h2>
+
+<h3 id="equations-from-opencv">Equations from opencv</h3>
+
+<p>Going back to the <a href="https://docs.opencv.org/2.4/doc/tutorials/calib3d/camera_calibration/camera_calibration.html">tutorial</a>, one see these equations for correcting the ,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+x_\text{corrected} &= x (1 + k_1 r^2 + k_2 r^4 + k_3 r^6) & \text{Radial Distortion}\\
+y_\text{corrected} &= y (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)  \\[0.5em]
+x_\text{corrected} &= x + [2 p_1 x y + p_2(r^2 + 2x^2)] & \text{Tangential Distortion} \\
+y_\text{corrected} &= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
+\end{aligned} %]]></script>
+
+<p>However, when I implement above equations to undistort points, I get strange results. The following part is my implementation,</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort_wrong</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">):</span>
+    <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
+    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="n">fx</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="n">fy</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y0</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">delta_x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x0</span><span class="o">*</span><span class="n">y0</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">delta_y</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x0</span><span class="o">*</span><span class="n">y0</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="n">delta_x</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="n">delta_y</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>And the result is what I get, and it is wrong. The tomato crosses are the undistorted points from my code and the teal circles are results from <code class="highlighter-rouge">cv2.undistortPoints</code>. They should match.</p>
+
+<p><img src="/assets/images/undist-fail.svg" alt="" /></p>
+
+<h3 id="matlab-version">Matlab version</h3>
+
+<p>Another version is from the <a href="https://www.mathworks.com/help/vision/ug/camera-calibration.html">matlab tutorial</a>, which is contrary to the <code class="highlighter-rouge">opencv</code> version, but looks correct</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+x_\text{distorted} &= x (1 + k_1 r^2 + k_2 r^4 + k_3 r^6) & \text{Radial Distortion}\\
+y_\text{distorted} &= y (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)  \\[0.5em]
+x_\text{distorted} &= x + [2 p_1 x y + p_2(r^2 + 2x^2)] & \text{Tangential Distortion} \\
+y_\text{distorted} &= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
+\end{aligned} %]]></script>
+
+<p>It is confusing but these turned out to be the <em>actual</em> equations that <code class="highlighter-rouge">opencv</code> implemented.</p>
+
+<h2 id="the-truth">The Truth</h2>
+
+<h3 id="source-code-in-opencv">Source code in opencv</h3>
+
+<p>The <em>truth</em> is, as usual, in the <a href="https://github.com/egonSchiele/OpenCV/blob/edc96c2a8c3266d0da839df362b5978bb590bfbd/modules/imgproc/src/undistort.cpp#L251">source code</a> of <code class="highlighter-rouge">opencv</code>. Typically, we see the relevant code blocks,</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x0</span> <span class="o">=</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span><span class="o">*</span><span class="n">ifx</span><span class="p">;</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span><span class="o">*</span><span class="n">ify</span><span class="p">;</span>
+
+<span class="c1">// compensate distortion iteratively</span>
+<span class="k">for</span><span class="p">(</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">iters</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">icdist</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">*</span><span class="n">r2</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="n">r2</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">*</span><span class="n">r2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="n">r2</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">r2</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">r2</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">deltaX</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">deltaY</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="n">deltaX</span><span class="p">)</span><span class="o">*</span><span class="n">icdist</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span> <span class="o">-</span> <span class="n">deltaY</span><span class="p">)</span><span class="o">*</span><span class="n">icdist</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This confirmed my guess and the math equations in the <code class="highlighter-rouge">opencv</code> tutorial is <big><strong>not correct</strong></big>.</p>
+
+<h3 id="undistort-manually">Undistort manually</h3>
+
+<p>The following code correctly undistorts points,</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">,</span> <span class="n">iter_num</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
+    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="n">fx</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="n">fy</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iter_num</span><span class="p">):</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">k_inv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">delta_x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">delta_y</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="n">delta_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_inv</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span> <span class="o">-</span> <span class="n">delta_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_inv</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>And this is the result, it is correct!</p>
+
+<p><img src="/assets/images/undist-succeed.svg" alt="" /></p>
+
+</div>
+
+    </div>
+
+  </body>
+
+</html>
