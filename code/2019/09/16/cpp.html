@@ -89,6 +89,7 @@
       <li><a href="#静态成员-static-member" id="markdown-toc-静态成员-static-member">静态成员 static member</a></li>
       <li><a href="#friend" id="markdown-toc-friend">Friend</a></li>
       <li><a href="#继承" id="markdown-toc-继承">继承</a></li>
+      <li><a href="#const-function" id="markdown-toc-const-function">const function</a></li>
     </ul>
   </li>
 </ul>
@@ -442,6 +443,42 @@ int main(){
     <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<h3 id="const-function">const function</h3>
+
+<p><a href="https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration">来源</a></p>
+
+<p>有的时候我们能看到这样的代码</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span> 
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">Bar</span><span class="p">(</span><span class="kt">int</span> <span class="n">random_arg</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="c1">// code</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>这里面的 <code class="highlighter-rouge">const</code> 让我十分困惑：它为什么在这里？它的作用是什么？</p>
+
+<p>当我们「使用」一个类的成员函数的时候，我们写出下面这样的代码</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
+<span class="n">f</span><span class="p">.</span><span class="n">Bar</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>这等价于</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
+<span class="n">Foo_Bar</span><span class="p">(</span><span class="k">const</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>所以，<code class="highlighter-rouge">int Bar(int random_arg) const</code> 里的 <code class="highlighter-rouge">const</code> 保证了成员，或者说 <code class="highlighter-rouge">this</code> 是一个常量。这导致了 <code class="highlighter-rouge">Bar</code> 这个函数无法更改<strong>任何</strong>成员函数。</p>
+
+<p>这样的函数叫 <code class="highlighter-rouge">const function</code></p>
+
+<p>有的时候我们希望，一个成员变量永远能被改变，即使是 <code class="highlighter-rouge">const function</code>。这个时候我们用关键字 <code class="highlighter-rouge">mutable</code> 来修饰这个变量。</p>
 
 </div>
 
