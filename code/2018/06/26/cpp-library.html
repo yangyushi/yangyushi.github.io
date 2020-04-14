@@ -34,69 +34,159 @@
         <li>
         <a href=/
             
-        >Home</a>
-        </li>
-        
-        <li>
-        <a href=/code.html
-            
-        >Code</a>
-        </li>
-        
-        <li>
-        <a href=/science.html
-            
-        >Science</a>
+        >
+            My Notebook
+        </a>
         </li>
         
         <li>
         <a href=/about.html
             
-        >About</a>
+        >
+            About Me
+        </a>
         </li>
         
     </ul>
 </nav>
 
 
-    <div class="main_box">
-        <div class="column left" id="side_bar">
-    26 Jun 2018
-</div>
+    <div class="main centre">
+        <div class="post">
+    <div class="column left" id="side_bar">
+        26 Jun 2018
+    </div>
 
-<div class="column right">
-    <ul id="markdown-toc">
-  <li><a href="#the-code-we-have" id="markdown-toc-the-code-we-have">The code we have</a></li>
-  <li><a href="#normal-boring-way-to-compile" id="markdown-toc-normal-boring-way-to-compile">Normal (Boring) Way to Compile</a></li>
-  <li><a href="#use-static-library" id="markdown-toc-use-static-library">Use Static Library</a></li>
-  <li><a href="#use-shared-library" id="markdown-toc-use-shared-library">Use Shared Library</a></li>
+    <div class="column right">
+        <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a>    <ul>
+      <li><a href="#the-code-we-have" id="markdown-toc-the-code-we-have">The code we have</a></li>
+      <li><a href="#the-source-code" id="markdown-toc-the-source-code">The source code</a></li>
+    </ul>
+  </li>
+  <li><a href="#compile-withwithout-the-library" id="markdown-toc-compile-withwithout-the-library">Compile with/without the library</a>    <ul>
+      <li><a href="#normal-way-to-compile" id="markdown-toc-normal-way-to-compile">Normal Way to Compile</a></li>
+      <li><a href="#use-static-library" id="markdown-toc-use-static-library">Use Static Library</a></li>
+      <li><a href="#use-shared-library" id="markdown-toc-use-shared-library">Use Shared Library</a></li>
+    </ul>
+  </li>
 </ul>
 
-<p>following <a href="https://stackoverflow.com/a/10358977/4116538">this answer</a></p>
+<h2 id="introduction">Introduction</h2>
 
-<h2 id="the-code-we-have">The code we have</h2>
+<p>At a newbe to C++, I was very very very confused about the eco-system of C family. Quite often I find myself in the following situation.</p>
 
-<p><img src="/assets/images/cpp_library/15300274851246.jpg" alt="-w437" /></p>
+<ol>
+  <li>I want to use a open source library/software.</li>
+  <li>I downloaded the source file.</li>
+  <li>The default compile options does not work.</li>
+  <li>I gave up.</li>
+</ol>
 
-<h2 id="normal-boring-way-to-compile">Normal (Boring) Way to Compile</h2>
+<p>Then I found <a href="https://stackoverflow.com/a/10358977/4116538">this answer</a>, which greatly improved my understanding about the library in C++.
+This is my own note about how to create static &amp; dynamical libries.</p>
 
-<p><img src="/assets/images/cpp_library/15300278042418.jpg" alt="-w419" /></p>
+<p>Why this matters? I think 99% times a failed compile is because of wrong library path configuration.
+Once I understand how the C++ library works, I am more confident to fix the path by myself.</p>
 
-<h2 id="use-static-library">Use Static Library</h2>
+<h3 id="the-code-we-have">The code we have</h3>
+
+<p>The example code in three files</p>
+
+<ol>
+  <li><code class="highlighter-rouge">hello_world.h</code></li>
+  <li><code class="highlighter-rouge">hello_world.cpp</code></li>
+  <li><code class="highlighter-rouge">main.cpp</code></li>
+</ol>
+
+<p>The goal is to create a library for <code class="highlighter-rouge">hello_world</code> so that <code class="highlighter-rouge">main.cpp</code> can use the library.</p>
+
+<h3 id="the-source-code">The source code</h3>
+
+<p><code class="highlighter-rouge">hello_world.h</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">hello</span><span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">printHelloWorld</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">hello_world.cpp</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
+#include &lt;iostream&gt;
+</span>
+<span class="kt">void</span> <span class="n">hello</span><span class="o">::</span><span class="n">printHelloWorld</span><span class="p">(){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World!"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">main.cpp</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">hello</span> <span class="n">h</span><span class="p">;</span>
+    <span class="n">h</span><span class="p">.</span><span class="n">printHelloWorld</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="compile-withwithout-the-library">Compile with/without the library</h2>
+
+<h3 id="normal-way-to-compile">Normal Way to Compile</h3>
+
+<p>I wrote down the normal way to compile C++ code in a file named <code class="highlighter-rouge">compile.sh</code>, with following content</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ main.cpp hello_world.cpp <span class="nt">-o</span> out
+./out
+<span class="nb">rm </span>out
+</code></pre></div></div>
+
+<p>Calling <code class="highlighter-rouge">bash compile.sh</code> would print <code class="highlighter-rouge">Hello World!</code></p>
+
+<h3 id="use-static-library">Use Static Library</h3>
 
 <p>The static library is an <strong>archive</strong> of object files <code class="highlighter-rouge">(*.o)</code> that are <strong>linked inside</strong> your final executables.</p>
 
-<p><img src="/assets/images/cpp_library/2018-06-26%20at%2016.47.png" alt="2018-06-26 at 16.47-w618" /></p>
+<p>I wrote down the compile code in a file named <code class="highlighter-rouge">static.sh</code>, with following content</p>
 
-<h2 id="use-shared-library">Use Shared Library</h2>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-c</span> hello_world.cpp  <span class="c"># compile hello_world.cpp -&gt; hello_world.o</span>
+ar rcs libhello_world.a hello_world.o  <span class="c"># create *.a library</span>
+g++ main.cpp libhello_world.a <span class="nt">-o</span> out  <span class="c"># use library to compile instead of *.cpp</span>
+./out
+<span class="nb">rm</span> <span class="k">*</span>.a
+<span class="nb">rm </span>out
+</code></pre></div></div>
+
+<p>Calling <code class="highlighter-rouge">bash static.sh</code> would print <code class="highlighter-rouge">Hello World!</code> and create a static library <code class="highlighter-rouge">libhello_world.a</code>.</p>
+
+<h3 id="use-shared-library">Use Shared Library</h3>
 
 <p>The shared libraries instead are loaded dynamically <strong>at run time</strong>.</p>
 
-<p><img src="/assets/images/cpp_library/2018-06-26%20at%2016.56.png" alt="2018-06-26 at 16.56-w618" /></p>
+<p>I wrote down the compile code in a file named <code class="highlighter-rouge">dynamical.sh</code>, with following content</p>
 
-<p><img src="/assets/images/cpp_library/2018-06-26%20at%2017.00.png" alt="2018-06-26 at 17.00-w437" /></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-fPIC</span> <span class="nt">-c</span> hello_world.cpp  <span class="c"># compile hello_world.cpp &amp; enable share -&gt; hello_world.o</span>
+g++ <span class="nt">-shared</span> <span class="nt">-o</span> libhello_world.so hello_world.o  <span class="c"># create *.so shared library</span>
+g++ main.cpp <span class="nt">-L</span> <span class="nb">.</span> <span class="nt">-l</span> hello_world <span class="nt">-o</span> out
+./out
+<span class="nb">rm</span> <span class="k">*</span>.o
+<span class="nb">rm </span>out
+</code></pre></div></div>
 
+<p>Calling <code class="highlighter-rouge">bash dynamical.sh</code> would print <code class="highlighter-rouge">Hello World!</code> and create a shared library <code class="highlighter-rouge">libhello_world.so</code>.</p>
 
+<p>This line needs more words,</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ main.cpp <span class="nt">-L</span> <span class="nb">.</span> <span class="nt">-l</span> hello_world <span class="nt">-o</span> out
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">-L .</code> means “looking for libraries inside the current folder <code class="highlighter-rouge">.</code>”</li>
+  <li><code class="highlighter-rouge">-l hello_world</code> means “looking for a library named <code class="highlighter-rouge">libhello_world.so</code>”. Yes, the prefix <code class="highlighter-rouge">lib</code> and suffix <code class="highlighter-rouge">.so</code> were deliberately ignored.</li>
+</ul>
+
+    </div>
 </div>
 
     </div>

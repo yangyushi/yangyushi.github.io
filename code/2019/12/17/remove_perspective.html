@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>remove the perspective in image</title>
+    <title>Remove the Perspective in an Image</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
     <script src="/assets/js/toc.js"></script>
@@ -34,38 +34,41 @@
         <li>
         <a href=/
             
-        >Home</a>
-        </li>
-        
-        <li>
-        <a href=/code.html
-            
-        >Code</a>
-        </li>
-        
-        <li>
-        <a href=/science.html
-            
-        >Science</a>
+        >
+            My Notebook
+        </a>
         </li>
         
         <li>
         <a href=/about.html
             
-        >About</a>
+        >
+            About Me
+        </a>
         </li>
         
     </ul>
 </nav>
 
 
-    <div class="main_box">
-        <div class="column left" id="side_bar">
-    17 Dec 2019
-</div>
+    <div class="main centre">
+        <div class="post">
+    <div class="column left" id="side_bar">
+        17 Dec 2019
+    </div>
 
-<div class="column right">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+    <div class="column right">
+        <ul id="markdown-toc">
+  <li><a href="#load-image--measurements" id="markdown-toc-load-image--measurements">Load Image &amp; measurements</a></li>
+  <li><a href="#affine-rectified-image" id="markdown-toc-affine-rectified-image">Affine rectified image</a>    <ul>
+      <li><a href="#measure-coordinates-in-the-affined-transformed-image" id="markdown-toc-measure-coordinates-in-the-affined-transformed-image">Measure Coordinates in the Affined transformed Image</a></li>
+      <li><a href="#calculate-the-homography-from-affine-image-to-similar-image" id="markdown-toc-calculate-the-homography-from-affine-image-to-similar-image">Calculate the homography from affine image to similar image</a></li>
+      <li><a href="#composing-the-transformation" id="markdown-toc-composing-the-transformation">Composing the transformation</a></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -250,6 +253,7 @@
 <span class="n">img_fish</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'cam-1-fish.png'</span><span class="p">)</span>
 </code></pre></div></div>
 
+    </div>
 </div>
 
     </div>

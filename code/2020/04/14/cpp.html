@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>c++ introduction</title>
+    <title>C++ Introduction</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
     <script src="/assets/js/toc.js"></script>
@@ -34,42 +34,45 @@
         <li>
         <a href=/
             
-        >Home</a>
-        </li>
-        
-        <li>
-        <a href=/code.html
-            
-        >Code</a>
-        </li>
-        
-        <li>
-        <a href=/science.html
-            
-        >Science</a>
+        >
+            My Notebook
+        </a>
         </li>
         
         <li>
         <a href=/about.html
             
-        >About</a>
+        >
+            About Me
+        </a>
         </li>
         
     </ul>
 </nav>
 
 
-    <div class="main_box">
-        <div class="column left" id="side_bar">
-    16 Sep 2019
-</div>
+    <div class="main centre">
+        <div class="post">
+    <div class="column left" id="side_bar">
+        14 Apr 2020
+    </div>
 
-<div class="column right">
-    <ul id="markdown-toc">
+    <div class="column right">
+        <ul id="markdown-toc">
   <li><a href="#函数" id="markdown-toc-函数">函数</a>    <ul>
       <li><a href="#inline" id="markdown-toc-inline">inline</a></li>
       <li><a href="#在不同源代码中共享函数" id="markdown-toc-在不同源代码中共享函数">在不同源代码中共享函数</a></li>
       <li><a href="#传递指针给函数" id="markdown-toc-传递指针给函数">传递指针给函数</a></li>
+    </ul>
+  </li>
+  <li><a href="#指针" id="markdown-toc-指针">指针</a>    <ul>
+      <li><a href="#基础" id="markdown-toc-基础">基础</a></li>
+      <li><a href="#声明指针" id="markdown-toc-声明指针">声明指针</a></li>
+      <li><a href="#内存" id="markdown-toc-内存">内存</a></li>
+      <li><a href="#指针不知道内存的长度" id="markdown-toc-指针不知道内存的长度">指针不知道内存的长度</a></li>
+      <li><a href="#给自定义类型分配内存" id="markdown-toc-给自定义类型分配内存">给自定义类型分配内存</a></li>
+      <li><a href="#释放内存" id="markdown-toc-释放内存">释放内存</a></li>
+      <li><a href="#null-指针" id="markdown-toc-null-指针">null 指针</a></li>
     </ul>
   </li>
   <li><a href="#struct-结构体" id="markdown-toc-struct-结构体">Struct 结构体</a>    <ul>
@@ -79,16 +82,20 @@
     </ul>
   </li>
   <li><a href="#类" id="markdown-toc-类">类</a>    <ul>
+      <li><a href="#原则" id="markdown-toc-原则">原则</a></li>
       <li><a href="#不同的方法" id="markdown-toc-不同的方法">不同的方法</a></li>
       <li><a href="#一些运算符的读法" id="markdown-toc-一些运算符的读法">一些运算符的「读法」</a></li>
       <li><a href="#构造函数" id="markdown-toc-构造函数">构造函数</a></li>
+      <li><a href="#默认构造函数" id="markdown-toc-默认构造函数">默认构造函数</a></li>
       <li><a href="#析构函数" id="markdown-toc-析构函数">析构函数</a></li>
-      <li><a href="#指针" id="markdown-toc-指针">指针</a></li>
+      <li><a href="#生成析构函数" id="markdown-toc-生成析构函数">生成析构函数</a></li>
+      <li><a href="#指针-1" id="markdown-toc-指针-1">指针</a></li>
       <li><a href="#运算符重载" id="markdown-toc-运算符重载">运算符重载</a></li>
       <li><a href="#this" id="markdown-toc-this">this</a></li>
       <li><a href="#静态成员-static-member" id="markdown-toc-静态成员-static-member">静态成员 static member</a></li>
       <li><a href="#friend" id="markdown-toc-friend">Friend</a></li>
       <li><a href="#继承" id="markdown-toc-继承">继承</a></li>
+      <li><a href="#虚函数" id="markdown-toc-虚函数">虚函数</a></li>
       <li><a href="#const-function" id="markdown-toc-const-function">const function</a></li>
     </ul>
   </li>
@@ -98,7 +105,7 @@
 
 <h3 id="inline">inline</h3>
 
-<p>在定义函数的时候，我们可以尝试在前面加上 <code class="highlighter-rouge">inline</code>。它的作用是把函数变成类似于宏的东西。这样，编译的时候，编译器会直接把函数部分的代码复制到调用函数的地方。</p>
+<p>在定义函数的时候，我们可以尝试在 函数前面 加上 <code class="highlighter-rouge">inline</code>。它的作用是把 函数 变成 类似于宏的东西。这样，编译的时候，编译器会直接把 函数部分的代码 复制到 调用函数的地方。</p>
 
 <p><code class="highlighter-rouge">inline</code> 只是一个给编译器的「建议」。对于太长的函数，编译器有可能忽略掉这个建议。</p>
 
@@ -122,7 +129,7 @@
 <span class="cp">#endif
 </span></code></pre></div></div>
 
-<p>（其中的 <code class="highlighter-rouge">#ifndef</code> 之类的东西叫做 <a href="https://en.wikipedia.org/wiki/Include_guard">include gard</a>，用来避免重复引用头文件造成的对同一个函数的多次定义。注意，include gard 只在「同一个」.cpp 源文件内起作用。）</p>
+<p>（其中的 <code class="highlighter-rouge">#ifndef</code> 之类的东西叫做 <a href="https://en.wikipedia.org/wiki/Include_guard">include gard</a>，用来避免 重复引用头文件 造成的 对同一个函数的 多次定义。注意，include gard 只在「同一个」.cpp 源文件内起作用。）</p>
 
 <p>2 - 在「第一个」源文件里定义函数</p>
 
@@ -178,11 +185,165 @@ int main(){
 <span class="p">}</span>
 </code></pre></div></div>
 
+<h2 id="指针">指针</h2>
+
+<h3 id="基础">基础</h3>
+
+<ul>
+  <li>声明指向类型的指针 <code class="highlighter-rouge">类型 * 指针名</code></li>
+  <li>获取指针的内容 (dereference) <code class="highlighter-rouge">* 指针名</code></li>
+  <li>我们也可以用 <code class="highlighter-rouge">指针名[位移]</code> 来取得地址的内容，<code class="highlighter-rouge">[]</code> 叫 subscript operator。</li>
+  <li><code class="highlighter-rouge">指针名[0]</code> 等价于 <code class="highlighter-rouge">* 指针名</code></li>
+  <li>获取一个对象的地址 <code class="highlighter-rouge">&amp; 对象名</code>，<code class="highlighter-rouge">&amp;</code> 叫 address of operator</li>
+</ul>
+
+<p>使用 <code class="highlighter-rouge">sizeof</code> 函数可以获取 不同对象/指针 占用的内存，下面是一些结果</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">uint8_t:</span>  <span class="mi">1</span>  <span class="c1">// 数据占用的内存</span>
+<span class="kt">double</span><span class="o">:</span>   <span class="mi">8</span>  <span class="c1">// 数据占用的内存</span>
+<span class="o">*</span><span class="kt">uint8_t</span><span class="o">:</span> <span class="mi">8</span>  <span class="c1">// 指针占用的内存</span>
+<span class="o">*</span><span class="kt">double</span><span class="o">:</span>  <span class="mi">8</span>  <span class="c1">// 指针占用的内存</span>
+</code></pre></div></div>
+
+<h3 id="声明指针">声明指针</h3>
+
+<p>我们可以先「给一个变量赋值」，再「得到指向这个变量的指针」</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">pa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>如果我们想要「先创建一个指针」，接着「给指针指向的内存赋值」，直觉上我们会写出这样的代码</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 这段代码一定不会编译成功</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">pa</span><span class="p">;</span>  <span class="c1">// 没有初始化，得到一个随机地址；这样的代码永远不应该出现</span>
+    <span class="o">*</span> <span class="n">pa</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>上面的代码首先生成了一个「随机的地址」，之后向这个地址写入了 <code class="highlighter-rouge">1</code>。这样是不对的，因为我们有可能改变程序里其他对象的值。</p>
+
+<p>不过，如果我们主动声明「指针指向的变量」，即确定「指针的地址」，那么我们就可以给这个地址赋值了。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 可以编译成功</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">pa</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">pa</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>还有一种方法是使用 <code class="highlighter-rouge">new</code> 主动分配内存</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">pa</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span> <span class="c1">// 得到一个 heap 里的随机地址</span>
+    <span class="o">*</span><span class="n">pa</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="内存">内存</h3>
+
+<p>为了更好的理解指针，我们需要理解 C++ 如何使用 电脑中的内存。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>一段 C++ 代码占用的内存</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Code 代码本身占用的内存</td>
+    </tr>
+    <tr>
+      <td>Static Data 声明的全局变量</td>
+    </tr>
+    <tr>
+      <td>Stack 函数使用的内存（函数的参数、临时变量）</td>
+    </tr>
+    <tr>
+      <td>Free store 其他的内存，也叫 heap</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>如果我们要使用 heap，我们使用关键字 <code class="highlighter-rouge">new</code>，比如</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>此外，我们可以用「变量」来指定「指针指向的内存」的长度</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="kt">double</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>此外，我们也可以直接通过 <code class="highlighter-rouge">{}</code> 给指针指向的内存赋值</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="指针不知道内存的长度">指针不知道内存的长度</h3>
+
+<p><code class="highlighter-rouge">double * p = new double[2]</code> 在 free store (heap) 区域里分配了 2 个 <code class="highlighter-rouge">double</code> 占用的内存，并且返回一个指向这一小块内存的指针 <code class="highlighter-rouge">p</code>。但是，指针<strong>不知道</strong>自己指向的内存的长度。</p>
+
+<p>这意味着，我们可以使用所有 free store / heap 里的内存。这样是不对的，会导致神秘的错误，制造最难查的 bug。这种错误的行为叫 out-of-range access。</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">|</span> <span class="o">...</span>
+</code></pre></div></div>
+
+<p>避免 out-of-range access 的方法是使用 <code class="highlighter-rouge">vector</code></p>
+
+<h3 id="给自定义类型分配内存">给自定义类型分配内存</h3>
+
+<p>假设我们的自定义类型为 <code class="highlighter-rouge">X</code> 并且<strong>有</strong>默认的构造函数，那么我们可以这样</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span><span class="o">*</span> <span class="n">px1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">X</span><span class="p">;</span>  <span class="c1">// 使用默认构造函数创建一个 X 实例</span>
+<span class="n">X</span><span class="o">*</span> <span class="n">px1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">X</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>  <span class="c1">// 使用默认构造函数创建 10 个 X 实例</span>
+</code></pre></div></div>
+
+<p>如果我们的自定义类型为 <code class="highlighter-rouge">Y</code> 并且<strong>没有</strong>默认的构造函数，那么我们可以这样</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Y</span><span class="o">*</span> <span class="n">py1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Y</span> <span class="p">{</span><span class="mi">1</span><span class="p">};</span>  <span class="c1">// 使用参数 1 初始化 1 个 Y 实例</span>
+<span class="n">Y</span><span class="o">*</span> <span class="n">py2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Y</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>  <span class="c1">// 使用参数 1-5 初始化 5 个 Y 实例</span>
+</code></pre></div></div>
+
+<h3 id="释放内存">释放内存</h3>
+
+<p>我们需要「手动释放」不需要的指针，来解放这个 指针 对应的 内存。语法如下</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">delete</span> <span class="n">p</span>  <span class="c1">// 释放单个对象占用的内存</span>
+<span class="k">delete</span><span class="p">[]</span> <span class="n">p</span>  <span class="c1">// 释放「多个对象组成的数组」所占用的内存</span>
+</code></pre></div></div>
+
+<p>我们需要「自行抉择」什么时候、如何释放内存。我们可以使用 garbage collector 来自动帮我们做这件事。如果我们不释放内存，我们的程序会在逐渐运行的时候，消耗掉 所有内存 然后被 操作系统 残忍地杀掉。</p>
+
+<h3 id="null-指针">null 指针</h3>
+
+<p>如果我们在 创建指针的时候 暂时没有一个「用于初始化」的地址，那么我们<strong>应该</strong>用 <code class="highlighter-rouge">nullptr</code> 来 初始化这个指针</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="o">*</span> <span class="n">p0</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>这会将 <code class="highlighter-rouge">p0</code> 的地址设定为 <code class="highlighter-rouge">0x0</code>。</p>
+
+<p>此外，不同的编译器 对于 没有初始化的指针 有不同的处理。苹果的 <code class="highlighter-rouge">clang11</code> 会将 没有初始化的指针 自动设置为 <code class="highlighter-rouge">nummptr</code> 但是 <code class="highlighter-rouge">g++9.2</code> 不会。</p>
+
+<p>我们可以用 下面两种方法 判断 指针 是否属于 <code class="highlighter-rouge">nullptr</code>；我们会这么做的原因是，有的时候我们需要 构建一个指针——它在 某种情况下 有效，指向某个地址；在 另外的情况下 无效，指向 <code class="highlighter-rouge">nullptr</code>。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">);</span>  <span class="c1">// 第一种</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>  <span class="c1">// 第二种，推荐</span>
+</code></pre></div></div>
+
 <h2 id="struct-结构体">Struct 结构体</h2>
 
 <h3 id="简介">简介</h3>
 
-<p>C++ 里最简单的结构体用法</p>
+<p>C++ 里最简单的 结构体 用法</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
 #include &lt;string&gt;
@@ -239,9 +400,19 @@ int main(){
 
 <h3 id="结构体和类">结构体和类</h3>
 
-<p>结构体和类在 C++ 中非常接近。不同的是，结构体的成员，其默认状态是 public。而类的成员默认状态是 private。</p>
+<p>结构体 和 类 在 C++ 中非常接近。不同的是，结构体的成员 的 默认状态 是 public；而 类的成员 的 默认状态 是 private。</p>
+
+<p>我们什么时候应该用 类，什么时候用 结构体 呢？如果我们的 成员/实例的取值 具有一定的「规则」，那么我们就应该用 类。反之则用 结构体。</p>
+
+<p>一个例子是，如果我们要用一个 容器 封装「日期」，那么 表示日期的整数 有额外的 规则：它需要小于 31 并且大于零。由于这个 规则，我们需要写一个 类。这个规则 在 C++ 里很诡异地被称为 invariant。</p>
 
 <h2 id="类">类</h2>
+
+<h3 id="原则">原则</h3>
+
+<ul>
+  <li>类通过 构造函数 取得 资源。类似地，在 <code class="highlighter-rouge">python</code> 里所有的特性都 应该 在</li>
+</ul>
 
 <h3 id="不同的方法">不同的方法</h3>
 
@@ -275,16 +446,96 @@ int main(){
   <li>构造函数的格式是 <code class="highlighter-rouge">类名::类名</code></li>
   <li>构造函数的原型和实现中都没有返回值，也没有void 类型声明。构造函数必须这样写。一个构造函数永远没有返回值，也不用声明void</li>
   <li>构造函数可以被重载（为不同的参数写不同的函数）</li>
+  <li>最好只在 构造函数 里用 <code class="highlighter-rouge">new</code> 创建指针</li>
 </ul>
+
+<p>使用构造函数的时候，现代的写法是</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Foo</span> <span class="n">f</span><span class="p">{</span><span class="n">arg_1</span><span class="p">,</span> <span class="n">arg_2</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>老式的写法是</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Foo</span> <span class="nf">f</span><span class="p">(</span><span class="n">arg_1</span><span class="p">,</span> <span class="n">arg_2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>新式写法更好的原因是，它清楚地表明了「类的实例被初始化/构造了」。而传统写法会与函数调用混淆。</p>
+
+<p>应用新式写法，我们发现下面的语句是等价的</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">x</span> <span class="p">{</span><span class="mi">7</span><span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="默认构造函数">默认构造函数</h3>
+
+<p>没有任何参数的构造函数是默认构造函数。对于类 <code class="highlighter-rouge">Y</code>，如果 <code class="highlighter-rouge">Y</code> 有默认构造函数，那么 <code class="highlighter-rouge">Y y</code> 会直接创建一个对象。</p>
+
+<p>一般来说</p>
 
 <h3 id="析构函数">析构函数</h3>
 
 <ul>
   <li>析构函数相当于 python 里的 <code class="highlighter-rouge">__del__</code></li>
   <li>析构函数的格式是 <code class="highlighter-rouge">类名::~类名</code></li>
+  <li>每一个「拥有资源」的类都应该有析构函数</li>
 </ul>
 
-<h3 id="指针">指针</h3>
+<p>写下了析构函数之后，当我们离开某一个 scope 后，这个 scope 里的对象会自动被执行析构函数。例子</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">s</span><span class="p">;</span>
+    <span class="kt">double</span><span class="o">*</span> <span class="n">elem</span><span class="p">;</span>
+<span class="nl">public:</span>
+    <span class="n">Foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">)</span> <span class="o">:</span> <span class="n">s</span><span class="p">{</span><span class="n">s</span><span class="p">},</span> <span class="n">elem</span><span class="p">{</span><span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="n">s</span><span class="p">]}</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">elem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">~</span><span class="n">Foo</span><span class="p">()</span> <span class="p">{</span><span class="k">delete</span><span class="p">[]</span> <span class="n">elem</span><span class="p">;}</span>  <span class="c1">// 析构函数</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+    <span class="n">Foo</span> <span class="n">f</span> <span class="p">{</span><span class="n">n</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="cm">/*
+    * 如果 Foo 没有实现析构函数，会消耗大量内存
+    */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">func</span><span class="p">(</span><span class="mi">10000000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="c1">// 离开之后 func 内 Foo 实例占用的内存被自动释放</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="生成析构函数">生成析构函数</h3>
+
+<p>如果某个类的「成员」有析构函数，那么这个类离开 scope 之后，这些「成员的析构函数」会被自动调用。这个行为被称为「编译器为这个类 生成 了一个析构函数」，所以这个不存在的析构函数被称为「生成析构函数」generated destructors。</p>
+
+<p>例子，注意这段代码比上面的代码慢很多</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;vector&gt;
+</span>
+<span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+<span class="nl">public:</span>
+    <span class="n">Foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">data</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+    <span class="n">Foo</span> <span class="n">f</span> <span class="p">{</span><span class="n">n</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="cm">/*
+    * Foo 没有实现析构函数，但没有内存泄漏
+    */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">func</span><span class="p">(</span><span class="mi">10000000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="c1">// 离开之后 func 内 Foo.data 占用的内存被自动释放</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="指针-1">指针</h3>
 
 <ul>
   <li><code class="highlighter-rouge">类名 * 指针名</code> 会定义一个类的指针。</li>
@@ -414,6 +665,8 @@ int main(){
 
 <p>其中，<code class="highlighter-rouge">类型</code> 包括 <code class="highlighter-rouge">private</code>, <code class="highlighter-rouge">protected</code> 和 <code class="highlighter-rouge">public</code>。</p>
 
+<p><code class="highlighter-rouge">protected</code> 下的方法 / 特性不能直接被成员调用，必须通过「这个类的子类的成员」来使用。</p>
+
 <p>这里的 <code class="highlighter-rouge">类型</code> 的作用是保护从父类继承的成员（方法 &amp; 特性）。如果 <code class="highlighter-rouge">类型</code> 是 <code class="highlighter-rouge">private</code>，那么子类从父类继承的成员就是 <code class="highlighter-rouge">private</code></p>
 
 <p>例子</p>
@@ -441,6 +694,56 @@ int main(){
     <span class="n">Bar</span> <span class="n">b</span><span class="p">;</span>
     <span class="n">b</span><span class="p">.</span><span class="n">inc</span><span class="p">();</span>
     <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="虚函数">虚函数</h3>
+
+<ul>
+  <li>经验规则：如果一个 类 有虚函数，那么这个类需要一个 虚 析构函数</li>
+</ul>
+
+<p>我们可以在 基类 和 继承类 里定义「同名、同类型」的函数。这样的函数叫虚函数。实例使用的函数 来自的地方，是 基类 还是 继承类，在运行时决定。所以这个特性也叫 runtime polymorphism, dynamic dispatch, runtime dispatch。</p>
+
+<p>使用虚函数的场景如下。有的时候我们创造了 抽象的基类，和许多不同的 派生类。这个时候我们想要写一个 函数 来 抽象地处理 所有的 派生类。这个时候我们的 函数 及其 调用 大概是这样</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="err">基类</span> <span class="o">&amp;</span> <span class="err">实例</span><span class="p">)</span> <span class="p">{</span>
+    <span class="err">实例</span><span class="p">.</span><span class="err">方法</span><span class="p">();</span>  <span class="c1">// 对于这个函数而言，它认为这个实例来自基类</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">func</span><span class="p">(</span><span class="err">派生类实例</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>此时，在函数 <code class="highlighter-rouge">func</code> 内部，函数认为它接受的 参数 是一个「基类的实例」。如果在 基类 里我们使用了 虚函数，那么 C++ 编译器就会自动在 <code class="highlighter-rouge">func</code> 内部的 <code class="highlighter-rouge">实例.方法()</code> 处调用 派生类 的方法。</p>
+
+<p>下面是一个稍微具体一点的例子</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span>
+<span class="k">struct</span> <span class="n">Base</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"B"</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="mi">0</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">D1</span> <span class="o">:</span> <span class="n">Base</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"D1"</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="mi">1</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">call</span><span class="p">(</span><span class="n">Base</span> <span class="o">&amp;</span> <span class="n">obj</span><span class="p">){</span>
+    <span class="cm">/*
+    * 因为 D1 派生于 Base 所以 call 也可以接受 D1 类实例
+    * 如果 count 不是虚函数，那么 call 里 obj.count() 会返回 0
+    */</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"As Base, name: "</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="s">"; count : "</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">D1</span> <span class="n">d1</span><span class="p">;</span>
+    <span class="n">call</span><span class="p">(</span><span class="n">d1</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"As D1, name: "</span> <span class="o">&lt;&lt;</span> <span class="n">d1</span><span class="p">.</span><span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="s">"; count: "</span> <span class="o">&lt;&lt;</span> <span class="n">d1</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -480,6 +783,7 @@ int main(){
 
 <p>有的时候我们希望，一个成员变量永远能被改变，即使是 <code class="highlighter-rouge">const function</code>。这个时候我们用关键字 <code class="highlighter-rouge">mutable</code> 来修饰这个变量。</p>
 
+    </div>
 </div>
 
     </div>
