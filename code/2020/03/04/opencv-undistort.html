@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>How Points are Undistorted in opencv?</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <link rel="stylesheet" href="/assets/css/styles/rainbow.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -99,7 +99,7 @@ y_\text{corrected} &= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
 
 <p>However, when I implement above equations to undistort points, I get strange results. The following part is my implementation,</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort_wrong</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort_wrong</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">):</span>
     <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
     <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
@@ -160,7 +160,7 @@ y_\text{distorted} &= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
 
 <p>The following code correctly undistorts points,</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">,</span> <span class="n">iter_num</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">undistort</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">distortion</span><span class="p">,</span> <span class="n">iter_num</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
     <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
