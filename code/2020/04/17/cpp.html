@@ -54,7 +54,7 @@
     <div class="main centre">
         <div class="post">
     <div class="column left" id="side_bar">
-        14 Apr 2020
+        17 Apr 2020
     </div>
 
     <div class="column right">
@@ -63,6 +63,7 @@
       <li><a href="#inline" id="markdown-toc-inline">inline</a></li>
       <li><a href="#在不同源代码中共享函数" id="markdown-toc-在不同源代码中共享函数">在不同源代码中共享函数</a></li>
       <li><a href="#传递指针给函数" id="markdown-toc-传递指针给函数">传递指针给函数</a></li>
+      <li><a href="#没有变量名的参数" id="markdown-toc-没有变量名的参数">没有变量名的参数</a></li>
     </ul>
   </li>
   <li><a href="#指针" id="markdown-toc-指针">指针</a>    <ul>
@@ -75,7 +76,7 @@
       <li><a href="#null-指针" id="markdown-toc-null-指针">null 指针</a></li>
     </ul>
   </li>
-  <li><a href="#struct-结构体" id="markdown-toc-struct-结构体">Struct 结构体</a>    <ul>
+  <li><a href="#结构体" id="markdown-toc-结构体">结构体</a>    <ul>
       <li><a href="#简介" id="markdown-toc-简介">简介</a></li>
       <li><a href="#结构体的指针" id="markdown-toc-结构体的指针">结构体的指针</a></li>
       <li><a href="#结构体和类" id="markdown-toc-结构体和类">结构体和类</a></li>
@@ -97,6 +98,10 @@
       <li><a href="#继承" id="markdown-toc-继承">继承</a></li>
       <li><a href="#虚函数" id="markdown-toc-虚函数">虚函数</a></li>
       <li><a href="#const-function" id="markdown-toc-const-function">const function</a></li>
+    </ul>
+  </li>
+  <li><a href="#其他话题" id="markdown-toc-其他话题">其他话题</a>    <ul>
+      <li><a href="#头文件里放什么" id="markdown-toc-头文件里放什么">头文件里放什么</a></li>
     </ul>
   </li>
 </ul>
@@ -184,6 +189,15 @@ int main(){
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"2 x 3 = "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// a = 6</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<h3 id="没有变量名的参数">没有变量名的参数</h3>
+
+<p>在某些特殊的情况下，我们会写出下面的函数</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">one</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mf">1.0</span><span class="p">;</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个函数 的输入 是一个小数，输出 永远为 1.0。此时，输入的参数 并不会进入 实际的计算，所以我么不需要给它 变量名。这就是有点怪异的 <code class="highlighter-rouge">one(double)</code> 部分的由来。</p>
 
 <h2 id="指针">指针</h2>
 
@@ -339,7 +353,7 @@ int main(){
 <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>  <span class="c1">// 第二种，推荐</span>
 </code></pre></div></div>
 
-<h2 id="struct-结构体">Struct 结构体</h2>
+<h2 id="结构体">结构体</h2>
 
 <h3 id="简介">简介</h3>
 
@@ -669,39 +683,45 @@ int main(){
 
 <p>这里的 <code class="highlighter-rouge">类型</code> 的作用是保护从父类继承的成员（方法 &amp; 特性）。如果 <code class="highlighter-rouge">类型</code> 是 <code class="highlighter-rouge">private</code>，那么子类从父类继承的成员就是 <code class="highlighter-rouge">private</code></p>
 
-<p>例子</p>
+<p><a href="https://stackoverflow.com/a/1372858">例子</a></p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-
-<span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
-    <span class="nl">protected:</span>
-        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nl">public:</span>
-        <span class="kt">void</span> <span class="n">inc</span><span class="p">(){</span><span class="n">a</span><span class="o">++</span><span class="p">;}</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span> 
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="nl">protected:</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">z</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="k">class</span> <span class="nc">Bar</span><span class="o">:</span> <span class="k">public</span> <span class="n">Foo</span><span class="p">{</span>
-    <span class="nl">private:</span>
-        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nl">public:</span>
-        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"b is "</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span>
+<span class="p">{</span>
+    <span class="c1">// x is public</span>
+    <span class="c1">// y is protected</span>
+    <span class="c1">// z is not accessible from B</span>
 <span class="p">};</span>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-    <span class="n">Foo</span> <span class="n">f</span><span class="p">;</span>
-    <span class="n">Bar</span> <span class="n">b</span><span class="p">;</span>
-    <span class="n">b</span><span class="p">.</span><span class="n">inc</span><span class="p">();</span>
-    <span class="n">b</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
-<span class="p">}</span>
+<span class="k">class</span> <span class="nc">C</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">A</span>
+<span class="p">{</span>
+    <span class="c1">// x is protected</span>
+    <span class="c1">// y is protected</span>
+    <span class="c1">// z is not accessible from C</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">D</span> <span class="o">:</span> <span class="k">private</span> <span class="n">A</span>    <span class="c1">// 'private' is default for classes</span>
+<span class="p">{</span>
+    <span class="c1">// x is private</span>
+    <span class="c1">// y is private</span>
+    <span class="c1">// z is not accessible from D</span>
+<span class="p">};</span>
 </code></pre></div></div>
 
 <h3 id="虚函数">虚函数</h3>
 
-<ul>
-  <li>经验规则：如果一个 类 有虚函数，那么这个类需要一个 虚 析构函数</li>
-</ul>
+<blockquote>
+  <p>经验规则：如果一个 类 有虚函数，那么这个类需要一个 虚 析构函数</p>
+</blockquote>
 
 <p>我们可以在 基类 和 继承类 里定义「同名、同类型」的函数。这样的函数叫虚函数。实例使用的函数 来自的地方，是 基类 还是 继承类，在运行时决定。所以这个特性也叫 runtime polymorphism, dynamic dispatch, runtime dispatch。</p>
 
@@ -782,6 +802,19 @@ int main(){
 <p>这样的函数叫 <code class="highlighter-rouge">const function</code></p>
 
 <p>有的时候我们希望，一个成员变量永远能被改变，即使是 <code class="highlighter-rouge">const function</code>。这个时候我们用关键字 <code class="highlighter-rouge">mutable</code> 来修饰这个变量。</p>
+
+<h2 id="其他话题">其他话题</h2>
+
+<h3 id="头文件里放什么">头文件里放什么</h3>
+
+<p>一个 C++ 的项目里 通常有很多 头文件 (<code class="highlighter-rouge">.h</code>, <code class="highlighter-rouge">.hpp</code> 甚至 <code class="highlighter-rouge">.tpp</code>) 和 代码文件 (<code class="highlighter-rouge">.cpp</code>)。什么东西应该被放进 头文件 (head file) 而什么应该被放进 代码文件 (code file) 呢？</p>
+
+<p>我在 Stackoverflow 上看到了一个 <a href="https://stackoverflow.com/a/1945866">很优雅的答案</a>。简而言之，</p>
+
+<ul>
+  <li>在头文件里，我们放入「很多文件 共同需要的 信息」，即实体的 <strong>定义</strong></li>
+  <li>在代码文件里</li>
+</ul>
 
     </div>
 </div>

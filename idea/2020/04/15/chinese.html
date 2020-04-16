@@ -81,15 +81,17 @@ With the space in between, it is so easy to tear apart a sentence into individua
 <p>However, the Chinese equivalent is the following.</p>
 
 <blockquote>
-  <p>这只快速的灰狐狸跳过了这只懒狗</p>
+  <p>这只快速的棕色狐狸跳过了这只懒狗</p>
 </blockquote>
 
 <p>There is no easy way to separate individual words without knowing Chinese very well.
 Which means, separating Chinese words is quite challenging for a computer.
-One typically needs a machine learning algorithm to get following results.</p>
+One typically needs <a href="https://github.com/fxsjy/jieba">a complex algorithm</a> to get following results,</p>
 
 <blockquote>
-  <p>这只 快速的 灰 狐狸 跳 过了 这只 懒 狗</p>
+  <p>这只<small>The</small> 快速的<small>quick</small> 棕色<small>brown</small> 狐狸<small>fox</small></p>
+
+  <p>跳<small>jumps</small> 过了<small>over</small> 这只<small>the</small> 懒<small>lazy</small> 狗<small>dog</small></p>
 </blockquote>
 
 <p>Quite luckily, most skilled Chinese users can perform such separation with their brains quickly.
@@ -102,10 +104,10 @@ The following sentence is an example.</p>
   <p>热力学第二定律变分形式的有益使用不仅为热平衡建立了判据，而且将积分因子 T 与我们实际上设想为温度的性质等同起来</p>
 </blockquote>
 
-<p>My brain simply refuse to process this information. Spliting these words is quite difficult for me.
-Because I am not familar with the jargon in statistical mechanics.</p>
+<p>My brain simply refuse to process this information. Spliting these words is quite difficult for me,
+because I am not familar with the jargon.</p>
 
-<p>The equivalent English version is a bit more accessable even for me.</p>
+<p>The equivalent <a href="https://books.google.co.uk/books/about/Introduction_to_Modern_Statistical_Mecha.html?id=ep5yswEACAAJ&amp;source=kp_book_description&amp;redir_esc=y">English version</a> is a bit more accessable even for me. (It is still horrible.)</p>
 
 <blockquote>
   <p>An instructive use of the variational form of
@@ -115,22 +117,31 @@ factor, T, as the property we really conceive of
 as the temperature</p>
 </blockquote>
 
-<p>However, I discovered that adding a few space in the Chinese sentences makes it a lot more readable.</p>
+<p>However, I discovered that adding quite a few spaces in the Chinese sentences makes it a lot more readable.</p>
 
 <blockquote>
-  <p>热力学第二定律 变分形式的有益使用 不仅为 热平衡 建立了判据，而且将 积分因子 T 与 我们实际上设想为温度的性质 等同起来</p>
+  <p>热力学第二定律
+变分形式的有益使用
+不仅为 热平衡
+建立了判据
+而且将 积分因子 T 与
+我们实际上设想为温度的性质
+等同起来</p>
 </blockquote>
 
-<p>The sentence gets better visually if I use the very elegend Chinese bracket symbol 「」to emphasise the most important part in the sentence.</p>
+<p>The sentence gets better visually if I use the very elegant Chinese bracket symbol 「」to emphasise the most important part.</p>
 
 <blockquote>
-  <p>热力学第二定律 变分形式的有益使用 不仅为 热平衡 建立了判据，而且将 积分因子 T 与「我们实际上设想为温度的性质」等同起来</p>
+  <p>热力学第二定律 变分形式的有益使用 不仅为 热平衡 建立了判据，而且将 积分因子 T 与</p>
+
+  <p>「我们实际上设想为温度的性质」</p>
+
+  <p>等同起来</p>
 </blockquote>
 
 <p>Looking at the above sentence, I immediate realise this is about the statistical definition of temperature.</p>
 
 <p>Generally I am now writing Chinese sentences with a few spaces. It helped me quite well when I am learning something new.</p>
-
 
     </div>
 </div>
