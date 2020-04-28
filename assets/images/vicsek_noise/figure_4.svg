@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g>
+        <g>
+            <g>
+                <path d="M69.562,251.083l70.426,0" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M134.706,245.361l5.282,5.722" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M139.988,251.083l-5.722,5.282" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+            </g>
+            <g>
+                <path d="M69.648,250.863l0,-69.105" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M63.926,187.04l5.722,-5.282" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M69.648,181.758l5.282,5.722" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+            </g>
+            <g>
+                <path d="M69.428,250.863l-21.436,22.329" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M55.778,273.345l-7.786,-0.153" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+                <path d="M47.992,273.192l0.153,-7.785" style="fill:none;stroke:rgb(153,153,153);stroke-width:3px;"/>
+            </g>
+            <text x="17.307px" y="276.183px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(153,153,153);">x</text>
+            <text x="102.003px" y="272.673px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(153,153,153);">y</text>
+            <text x="37.174px" y="210.863px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(153,153,153);">z</text>
+        </g>
+        <g>
+            <text x="108.765px" y="51.901px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:64px;fill:rgb(0,153,102);">s&apos;</text>
+            <g>
+                <g>
+                    <path d="M160.004,226.2l-0.904,-173.787" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+                    <path d="M159.1,52.413l-7.941,22.044" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+                    <path d="M159.1,52.413l8.549,23.492" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+                </g>
+            </g>
+        </g>
+        <g>
+            <text x="255.848px" y="131.247px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:64px;fill:rgb(51,123,204);">s</text>
+            <g>
+                <path d="M161.6,225.276l95.567,-129.141" style="fill:none;stroke:rgb(51,123,204);stroke-width:3px;"/>
+                <path d="M257.167,96.135l-19.563,12.895" style="fill:none;stroke:rgb(51,123,204);stroke-width:3px;"/>
+                <path d="M257.167,96.135l-7.227,23.933" style="fill:none;stroke:rgb(51,123,204);stroke-width:3px;"/>
+            </g>
+        </g>
+        <g>
+            <path d="M162.974,171.87c16.862,-10.835 39.938,2.296 32.277,0" style="fill:none;stroke:rgb(255,51,0);stroke-width:4px;"/>
+            <path d="M181.129,175.08c4.955,-2.901 14.122,-3.21 14.122,-3.21" style="fill:none;stroke:rgb(255,51,0);stroke-width:4px;"/>
+            <path d="M186.024,160.563c2.714,2.487 7.134,7.93 10.74,11.582" style="fill:none;stroke:rgb(255,51,0);stroke-width:4px;"/>
+        </g>
+        <g>
+            <path d="M257.167,96.135l-97.648,36.859" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M177.969,126.03l0.458,19.168l-18.908,6.346" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M159.519,223.762l0,-90.768" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M159.443,132.994l-50.443,-36.859" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M108.924,96.135l4.478,12.681" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M109,96.135l11.395,0.695" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M246.674,92.399l10.493,3.736" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M251.693,105.902l5.474,-9.767" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M166.949,142.102l-7.595,-9.293" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <path d="M151.938,142.102l7.02,-9.293" style="fill:none;stroke:rgb(204,0,51);stroke-width:4px;"/>
+            <g transform="matrix(0.790682,-0.612227,0.612227,0.790682,-149.978,-243.486)">
+                <text x="87.244px" y="495.466px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(204,0,51);">v</text>
+            </g>
+            <g transform="matrix(0.923677,-0.383173,0.383173,0.923677,-52.4502,-187.751)">
+                <text x="20.798px" y="435.66px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(204,0,51);">u</text>
+            </g>
+            <g transform="matrix(0.796177,-0.605064,0.605064,0.796177,-185.882,-320.764)">
+                <text x="-50.731px" y="513.396px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:36px;fill:rgb(204,0,51);">w</text>
+            </g>
+        </g>
+        <text x="160.695px" y="204.638px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:36px;fill:rgb(255,51,0);">θ</text>
+    </g>
+</svg>

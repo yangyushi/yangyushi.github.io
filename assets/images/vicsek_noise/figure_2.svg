@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g>
+        <g>
+            <g>
+                <path d="M144.707,179.257l135,0" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M267.707,166.257l12,13" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M279.707,179.257l-13,12" style="fill:none;stroke:black;stroke-width:3px;"/>
+            </g>
+            <g>
+                <path d="M144.556,179.257l0,-145" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M132.556,47.257l12,-13" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M144.556,34.257l12,13" style="fill:none;stroke:black;stroke-width:3px;"/>
+            </g>
+            <g>
+                <path d="M144.056,178.757l-48.698,50.73" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M113.046,229.833l-17.688,-0.346" style="fill:none;stroke:black;stroke-width:3px;"/>
+                <path d="M95.358,229.487l0.345,-17.688" style="fill:none;stroke:black;stroke-width:3px;"/>
+            </g>
+        </g>
+        <g>
+            <g>
+                <ellipse cx="141.369" cy="175.278" rx="114.469" ry="115.999" style="fill:none;stroke:rgb(204,153,153);stroke-width:2px;"/>
+                <path d="M26.9,175.278c0,0 3.184,41.432 114.469,41c111.285,-0.432 114.469,-37.021 114.469,-37.021" style="fill:none;stroke:rgb(204,153,153);stroke-width:2px;"/>
+                <path d="M255.838,175.278c0,0 -3.184,-41.431 -114.469,-40.999c-111.285,0.432 -114.469,37.021 -114.469,37.021" style="fill:none;stroke:rgb(204,153,153);stroke-width:2px;stroke-dasharray:8,8,0,0;"/>
+            </g>
+            <path d="M144.298,59.279l106.409,0" style="fill:none;stroke:rgb(102,102,102);stroke-width:2px;stroke-dasharray:8,8,0,0;"/>
+            <path d="M144.298,90.279l109.409,0" style="fill:none;stroke:rgb(102,102,102);stroke-width:2px;stroke-dasharray:8,8,0,0;"/>
+            <text x="254.302px" y="90.279px" style="font-family:'Euclid-Italic', 'Euclid', serif;font-style:italic;font-size:48px;fill:rgb(51,51,51);">h</text>
+        </g>
+        <g>
+            <g>
+                <path d="M144.806,179.059l-0.598,-71.039" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+            </g>
+            <path d="M144.599,78.098c42.976,1.085 77.702,8.462 77.5,16.462c-0.202,8 -35.257,13.614 -78.232,12.529c-42.976,-1.085 -77.703,-8.461 -77.501,-16.462c0.202,-8 35.257,-13.614 78.233,-12.529Z" style="fill:rgb(255,102,255);stroke:rgb(0,153,102);stroke-width:2px;"/>
+            <g>
+                <path d="M144.109,89.011l-0.15,-28.787" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+                <path d="M143.959,60.224l-7.94,22.044" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+                <path d="M143.959,60.224l8.549,23.492" style="fill:none;stroke:rgb(0,153,102);stroke-width:3px;"/>
+            </g>
+            <path d="M67.816,87.932c0,0 19.493,-28.371 75.8,-28.651c56.307,-0.28 78.301,34.203 78.301,34.203" style="fill:rgb(255,102,255);fill-opacity:0.51;stroke:rgb(0,153,102);stroke-width:2px;"/>
+        </g>
+        <text x="80.708px" y="48.633px" style="font-family:'Euclid-BoldItalic', 'Euclid', serif;font-weight:700;font-style:italic;font-size:64px;fill:rgb(0,153,102);">s&apos;</text>
+    </g>
+</svg>

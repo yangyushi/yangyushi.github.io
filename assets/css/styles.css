@@ -8,7 +8,7 @@ li a { color: darkslategray; }
 
 li a:active, a:hover { color: tomato; }
 
-h1, h2, h3, h4, h5, h6 { color: plum; margin-bottom: 16px; }
+h1, h2, h3, h4, h5, h6 { color: teal; font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace; padding-top: 1em; padding-bottom: 1em; }
 
 nav { position: absolute; top: 0; left: 50%; transform: translate(-50%, 0%); }
 
@@ -20,19 +20,23 @@ nav a { padding: 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-borde
 
 .current { border: 1px solid #BCBEC0; }
 
-h1 { text-align: center; font-size: 2.25em; padding-bottom: 0.3em; }
+h1 { text-align: center; font-size: 2.0; margin-bottom: 16px; }
 
-h2 { font-size: 1.75em; font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace; }
+h2 { font-size: 1.5em; }
 
 h2:before { content: "## "; }
 
-h3 { font-size: 1.5em; }
+h3 { font-size: 1.25em; }
 
 h3:before { content: "### "; }
 
-h4 { font-size: 1.25em; line-height: 1.2; }
+h4 { font-size: 1.10em; line-height: 1.2; }
+
+h4:before { content: "#### "; }
 
 h5 { font-size: 1em; }
+
+h5:before { content: "##### "; }
 
 h6 { font-size: 1em; color: #777; }
 

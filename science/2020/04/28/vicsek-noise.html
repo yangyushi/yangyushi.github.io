@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Scalar noise of Vicsek model in 3D</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main centre">
+        <div class="post">
+    <div class="column left" id="side_bar">
+        28 Apr 2020
+    </div>
+
+    <div class="column right">
+        <ul id="markdown-toc">
+  <li><a href="#2d-and-3d" id="markdown-toc-2d-and-3d">2D and 3D</a></li>
+  <li><a href="#generating-3d-noise" id="markdown-toc-generating-3d-noise">Generating 3D noise</a>    <ul>
+      <li><a href="#random-vectors" id="markdown-toc-random-vectors">Random Vectors</a></li>
+      <li><a href="#rotation" id="markdown-toc-rotation">Rotation</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>When implementing the vanilla algorithm of Vicsek model from <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.75.1226">Vicsek’s 1995 PRL paper</a> in 3D, one need to rotate a lot of vectors.
+This post introduced my idea of generating such noise.</p>
+
+<hr />
+
+<h2 id="2d-and-3d">2D and 3D</h2>
+
+<p>In the original paper, the noise is implemented by rotating the targeted direction by a random direction. I find the math equation in <a href="http://link.springer.com/10.1140/epjst/e2016-60066-8">this paper</a> being very good addressing such process, as the following.</p>
+
+<script type="math/tex; mode=display">\mathbf{s}_{i}^{t+\Delta t}=\mathcal{R}_{\eta}\left[\frac{\sum_{j} n_{i j}^{t} \mathbf{s}_{j}^{t}}{\left\|\sum_{j} n_{i j}^{t} \mathbf{s}_{j}^{t}\right\|}\right]</script>
+
+<p>The operator $\mathcal{R}_\eta(\mathbf{s})$ is responsible for rotating vector $\mathbf{s}$ around for a magnitude of $\eta$ randomly.</p>
+
+<p>In the 2D case, if the angle of vector $\mathbf{s}$ is $\theta$, then the operator $\mathcal{R}_\eta(\mathbf{s})$ actually does this.</p>
+
+<script type="math/tex; mode=display">\theta \rightarrow \theta + \text{U}(-\pi \eta, \pi\eta)</script>
+
+<p>where $U$ corresponds to a uniform distribution.</p>
+
+<p>In 3D however, things are getting tricker. The following graph shows the effect of $\mathcal{R}_\eta$. The desired effect is to rotate angle $s$ randomly inside the pink region.</p>
+
+<p><img height="200" src="/assets/images/vicsek_noise/figure_1.svg" /></p>
+
+<p>The next chapter will discuss the way to perform this operation.</p>
+
+<h2 id="generating-3d-noise">Generating 3D noise</h2>
+
+<p>The practical way to generate scalar noise in 3D is this,</p>
+
+<ol>
+  <li>Generate uniformly distributed noise as if vector $\mathbf{s}$ is (0, 0, 1).</li>
+  <li>Rotate the generated noise to the direction of $\mathbf{s}$</li>
+</ol>
+
+<h3 id="random-vectors">Random Vectors</h3>
+
+<p>The aim is to generate random vectors pointing uniformly to the pink cap.</p>
+
+<p><img height="200" src="/assets/images/vicsek_noise/figure_2.svg" /></p>
+
+<p>The python code that generating such noise is this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">noise_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">noise_z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">noise_x</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
+<span class="n">noise_y</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">noise_x</span><span class="p">,</span> <span class="n">noise_y</span><span class="p">,</span> <span class="n">noise_z</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+</code></pre></div></div>
+
+<p>The not very obvious code is this line.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here, $\eta$ (<code class="highlighter-rouge">eta</code>) is a measure of noise level ranging from $0$ to $1$. When $\eta = 1$ the pink cap would be the entire unit sphere, and the cap will vanish if $\eta = 0$.</p>
+
+<p>Embarrassingly I learned <a href="https://mathworld.wolfram.com/SpherePointPicking.html">how to pick up points on a sphere</a> just recently at the age of 28, with <a href="https://math.stackexchange.com/a/44691">this extremely helpful stackexchange answer</a>. Basically the idea is if I need the uniform distribution on the pink cap, I will need two uniform distributions.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\theta &\sim \text{U}(-\pi, \pi)\\
+z &\sim \text{U}(1-h, 1)\\
+&\sim \text{U}(1-2\eta, 1)
+\end{aligned} %]]></script>
+
+<p>The relationship between $\eta$ (<code class="highlighter-rouge">eta</code>) and $h$, $h \sim 2\eta$, comes from <a href="https://en.wikipedia.org/wiki/Spherical_cap">the area of the pink cap</a> inside a unit sphere.</p>
+
+<script type="math/tex; mode=display">2 \pi h</script>
+
+<p>where $h$ takes the range between $0$ and $2$.</p>
+
+<h3 id="rotation">Rotation</h3>
+
+<p>Now we have noise vectors around $\mathbf{s}’$, the next step is to find a rotation matrix $\mathbf{R}$ that performs the following transformation.</p>
+
+<script type="math/tex; mode=display">\bf{s = R \cdot s'}</script>
+
+<p><img height="200" src="/assets/images/vicsek_noise/figure_3.svg" /></p>
+
+<p>following <a href="https://math.stackexchange.com/a/897677">this stackexchange answer</a>, it is intuitive to break the rotation into the following parts.</p>
+
+<ol>
+  <li>Transform the basis from $\bf{(x, y, z)}$ to $\bf{(u, v, w)}$.</li>
+  <li>Perform a simple rotation.</li>
+  <li>Transform back from $\bf{(u, v, w)}$ to original basis $\bf{(x, y, z)}$.</li>
+</ol>
+
+<p>The key observation to calculate this rotation is that such rotation is very straightforward in the following $\bf{(u, v, w)}$ basis. It is merely a rotation along $\bf{w}$ axis.</p>
+
+<ul>
+  <li>$\bf{u}$: the <a href="https://en.wikipedia.org/wiki/Vector_projection#Vector_projection">vector projection</a> of $\bf{s}$ on $\bf{s}’$</li>
+  <li>$\bf{v}$: the <a href="https://en.wikipedia.org/wiki/Vector_projection#Vector_rejection_2">vector rejection</a> of $\bf{s}$ on $\bf{s}’$</li>
+  <li>$\bf{w}$: the <a href="https://en.wikipedia.org/wiki/Cross_product">cross product</a> of $\bf{s}$ and $\bf{s}’$</li>
+</ul>
+
+<p><img height="300" src="/assets/images/vicsek_noise/figure_4.svg" /></p>
+
+<p>The rotation angle $\theta$ in the $\bf(u,v,w)$ basis is calculated by $\arccos(\bf{s \cdot s’})$, and the rotation matrix is simply this.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & 1
+\end{pmatrix} %]]></script>
+
+<p>A step-by-step operation tutorial is in <a href="https://math.stackexchange.com/a/897677">this stackexchange answer</a>.</p>
+
+    </div>
+</div>
+
+    </div>
+
+  </body>
+
+</html>
