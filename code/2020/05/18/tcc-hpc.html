@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Running TCC on the HPC</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    18 May 2020
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#general-steps" id="markdown-toc-general-steps">General steps</a></li>
+  <li><a href="#1-using-packages-on-bc" id="markdown-toc-1-using-packages-on-bc">1. Using Packages on BC</a>    <ul>
+      <li><a href="#using-vim-to-edit-a-file" id="markdown-toc-using-vim-to-edit-a-file">Using Vim to edit a file</a></li>
+      <li><a href="#applying-the-modification" id="markdown-toc-applying-the-modification">Applying the modification</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-downloading-tcc-source-code" id="markdown-toc-2-downloading-tcc-source-code">2. Downloading TCC source code</a></li>
+  <li><a href="#3-compiling-tcc" id="markdown-toc-3-compiling-tcc">3. Compiling TCC</a></li>
+  <li><a href="#4-using-tcc" id="markdown-toc-4-using-tcc">4. Using TCC</a></li>
+  <li><a href="#5-using-tcc-inside-python" id="markdown-toc-5-using-tcc-inside-python">5. Using TCC inside Python</a></li>
+</ul>
+
+<hr />
+
+<p>The <a href="https://github.com/royallgroup/TCC">topological cluster classification (TCC)</a> is a novel tool to measure the many-body correlation of the supercooled liquid and the gel systems. It’s <a href="https://royallgroup.github.io/TCC/html/setup.html">documentation</a> about setting it up is good for a laptop. But it need a bit modification to work on an HPC. Here I noted the major steps to make TCC work on the super computer in the university of Bristol, the BlueCrystal.</p>
+
+<hr />
+
+<h2 id="general-steps">General steps</h2>
+
+<ol>
+  <li>Specifying necessary packages in the <code class="highlighter-rouge">.bashrc</code> file.</li>
+  <li>Download the source code of TCC.</li>
+  <li>Compile TCC.</li>
+  <li>Running TCC.</li>
+  <li>Using TCC inside Python.</li>
+</ol>
+
+<h2 id="1-using-packages-on-bc">1. Using Packages on BC</h2>
+
+<p>To use TCC, we need a C language compiler, and the <a href="https://gcc.gnu.org">GCC</a> is a popular option. Then we need the software <a href="https://git-scm.com">git</a> to download the source code of TCC. Finally we need a building tool, the famous <a href="https://cmake.org">CMake</a>, to help us compile the code.</p>
+
+<p>Luckly, all of the softwares are already available on the BlueCrystal in UoB. We just need to “tell” the system that we will be using these tools. We do this by modifying the <code class="highlighter-rouge">.bashrc</code> file inside your <code class="highlighter-rouge">$HOME</code> directory. Typically we will need to append the following lines into <code class="highlighter-rouge">.bashrc</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module add tools/git-2.18.0
+module add languages/gcc-9.1.0
+module add tools/cmake-3.13.4
+</code></pre></div></div>
+
+<p>This task can be challenging if you are not familiar with Vim/Emacs/Nano.</p>
+
+<h3 id="using-vim-to-edit-a-file">Using Vim to edit a file</h3>
+
+<p>Once you logged into the BlueCrystal, you will be in the <code class="highlighter-rouge">$HOME</code> directory. You can use the following command to edit the <code class="highlighter-rouge">.bashrc</code> file</p>
+
+<pre><code class="language-shell=">vi .bashrc
+</code></pre>
+
+<p>Then we will enter the infamous text editor <a href="https://www.vim.org">Vim</a>. If you never used Vim before, think of it having two modes. The default one is a “safe mode” where you can not change the content.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> Then there is an “edit mode” where you can edit things.</p>
+
+<p>Firsty we navigate our cursor to the bottom by pressing <code class="highlighter-rouge">↓</code> button. If you want to be <a href="https://vi.stackexchange.com/questions/9313/why-does-vim-use-hjkl-for-cursor-keys">old-fashioned</a>, press <code class="highlighter-rouge">j</code> for the same movement.</p>
+
+<p>Then we need to go to the edit mode. So press <code class="highlighter-rouge">i</code>, and  type the following lines (you can copy and paste)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module add tools/git-2.18.0
+module add languages/gcc-9.1.0
+module add tools/cmake-3.13.4
+</code></pre></div></div>
+
+<p>Also，if you do not have your own Python<sup id="fnref:python"><a href="#fn:python" class="footnote">2</a></sup> on the blue crystal, I recommand using the latest version (version 3.7.7 in 2020). You get Python 3.7.7 by adding the the following line.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module add languages/python-3.7.7
+</code></pre></div></div>
+
+<p>In addition, I recommond adding the following line into the <code class="highlighter-rouge">.bashrc</code> file. The reason is written in the very long footnote. <sup id="fnref:the_prefix"><a href="#fn:the_prefix" class="footnote">3</a></sup></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/.local/bin
+</code></pre></div></div>
+
+<p>Then you need to press <code class="highlighter-rouge">ESC</code> to go back to the “safe mode”.</p>
+
+<p>This is the end, and you can exit the editor with following options.</p>
+
+<ul>
+  <li>press <code class="highlighter-rouge">:</code> and then input <code class="highlighter-rouge">wq</code> and then press <code class="highlighter-rouge">enter</code></li>
+  <li>press <code class="highlighter-rouge">shift + z</code> twice</li>
+</ul>
+
+<h3 id="applying-the-modification">Applying the modification</h3>
+
+<p>We edited the <code class="highlighter-rouge">.bashrc</code> file, now we have to use command</p>
+
+<pre><code class="language-shell=">source ~/.bashrc
+</code></pre>
+
+<p>to actually apply our modifications.</p>
+
+<h2 id="2-downloading-tcc-source-code">2. Downloading TCC source code</h2>
+
+<p>We will now going to download the source code of TCC from <a href="https://github.com/royallgroup/TCC">GitHub</a>. You can download it via the following command</p>
+
+<pre><code class="language-shell=">git clone https://github.com/royallgroup/TCC
+</code></pre>
+
+<p>After some seconds there will be a folder named <code class="highlighter-rouge">TCC</code> in the current folder. That is it!</p>
+
+<h2 id="3-compiling-tcc">3. Compiling TCC</h2>
+
+<p>Using the following command to compile TCC</p>
+
+<pre><code class="language-shell=">cd TCC
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local/bin ..
+make
+make install
+</code></pre>
+
+<p>The fourth line explictly tells <code class="highlighter-rouge">cmake</code> that we will put the <code class="highlighter-rouge">tcc</code> software in the folder <code class="highlighter-rouge">$HOME/.local/bin</code></p>
+
+<h2 id="4-using-tcc">4. Using TCC</h2>
+
+<p>The normal way to to use the <code class="highlighter-rouge">tcc</code> software is running it directly inside a <strong>project directory</strong>. One example of such directory is <code class="highlighter-rouge">TCC/examples/triclinic</code>. The stucture is</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>triclinic/
+├── box.txt
+├── inputparameters.ini
+├── README.md
+└── tj.xyz
+</code></pre></div></div>
+
+<p>What you need to do is executing the follow commands.</p>
+
+<pre><code class="language-shell=">cd triclinic
+tcc
+</code></pre>
+
+<p>Then the software will be executed and you will get the results.</p>
+
+<p>For more detailed descriptions about the meaning of different files, please go to the <a href="https://royallgroup.github.io/TCC/html/index.html">official documentation of TCC</a>.</p>
+
+<h2 id="5-using-tcc-inside-python">5. Using TCC inside Python</h2>
+
+<p>Peter, Josh and Francesco kindly wrote a python wrapper for <code class="highlighter-rouge">TCC</code>. This means we can run <code class="highlighter-rouge">tcc</code> directly inside our <code class="highlighter-rouge">.py</code> script.</p>
+
+<p>We need firstly install the python module. Now going to the folder <code class="highlighter-rouge">TCC</code>. And type</p>
+
+<pre><code class="language-shell=">python setup.py install --user
+</code></pre>
+
+<p>or</p>
+
+<pre><code class="language-shell=">pip install . --user
+</code></pre>
+
+<p>The above commands will install the TCC wrapper. You can check it by importing the tcc module inside the interactive python console</p>
+
+<pre><code class="language-shell=">YY@BC ~/tmp&gt; python
+Python 3.6.8 (default, Oct 30 2019, 10:39:13) 
+[GCC 7.1.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import tcc_python_scripts
+&gt;&gt;&gt; 
+</code></pre>
+
+<p>The tutorial about this python module is availabel on the <a href="https://royallgroup.github.io/TCC/html/python_scripts.html#">offical documentation</a>.</p>
+
+<p>It is worth mentioning that since we put <code class="highlighter-rouge">tcc</code> into <code class="highlighter-rouge">$HOME/.local/bin</code>, we need specifying it in our python code. It is something like</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">TCCWrapper</span><span class="p">()</span>
+<span class="n">TCC_setup</span><span class="o">.</span><span class="n">set_tcc_executable_directory</span><span class="p">(</span><span class="s">"/newhome/yy17363/.local/bin"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Please notice that you will need to specify the <strong>full absolute path</strong> of the folder that holds the <code class="highlighter-rouge">tcc</code> file. The <code class="highlighter-rouge">yy17363</code> will be different on your account.</p>
+
+<p>You can use the following script to check if your TCC wrapper is working or not.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">tcc_python_scripts.tcc</span> <span class="kn">import</span> <span class="n">wrapper</span>
+
+
+<span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">TCCWrapper</span><span class="p">()</span>
+<span class="c1"># **** modify the following line for your account ****
+</span><span class="n">TCC_setup</span><span class="o">.</span><span class="n">set_tcc_executable_directory</span><span class="p">(</span><span class="s">"/newhome/yy17363/.local/bin"</span><span class="p">)</span>
+<span class="n">TCC_setup</span><span class="o">.</span><span class="n">input_parameters</span><span class="p">[</span><span class="s">'Run'</span><span class="p">][</span><span class="s">'Frames'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># find TCC clusters in a random gas
+# You will get something if you are very lucky
+</span><span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">TCC_setup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Indeed there are 3 different modes in Vim, being the command mode (safe mode), the insert mode (edit mode), and another view mode. These details do not really matter and you do not need to master Vim to get the job done. In case you somehow want to master Vim, I highly recommond <a href="https://www.amazon.co.uk/Practical-Vim-Edit-Speed-Thought-ebook/dp/B018T6ZVPK">this book</a>.</p>
+
+<p>For instance, if there is a software called <code class="highlighter-rouge">wildcat</code> who is being inside some random folder, for instance  <code class="highlighter-rouge">/usr/local/random</code>. Then we will have to type
+<code class="highlighter-rouge">/usr/local/random/wildcat</code> to use the software <code class="highlighter-rouge">wildcat</code>.<br />
+However, since <code class="highlighter-rouge">tcc</code> is inside <code class="highlighter-rouge">/usr/local/bin</code>, and this place is holy and special, we can just use <code class="highlighter-rouge">tcc</code> by typing <code class="highlighter-rouge">tcc</code>.<br />
+While the idea of adding everything into <code class="highlighter-rouge">/usr/local/bin</code> sounds good and tempting, we can not do it on Blue Crystal. This is the rule, so that you won’t put a <code class="highlighter-rouge">python2.7</code> into this place, renaming it to <code class="highlighter-rouge">python3</code> and making everyone miserable.<br />
+A popular options for HPC users are creating their own <code class="highlighter-rouge">/usr/local/bin</code> equivalent. And this place is normally chosen to be <code class="highlighter-rouge">$HOME/.local/bin</code>.<br />
+However, this place is NOT special by default. And we have to make it special by adding <code class="highlighter-rouge">export PATH=$PATH:$HOME/.local/bin</code> into <code class="highlighter-rouge">.bashrc</code>. What we will do next, is to put the <code class="highlighter-rouge">tcc</code> software into <code class="highlighter-rouge">$HOME/.local/bin</code>, and since it is a special folder now, we can use <code class="highlighter-rouge">tcc</code> by just typing <code class="highlighter-rouge">tcc</code>.</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Actually the “safe mode” is called the command mode, and you can change the content of the file inside this mode. But it involves specific command that bind into special keys. For instance you can delete a word by typing <code class="highlighter-rouge">dw</code>, or delete 2 words by typing <code class="highlighter-rouge">d2w</code>.<br /> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:python">
+      <p>The various versions of Python is a real pain currently (2020). It is a good idea to stick to 3.7.7 because it “works” in most cases. But sometimes I find myself being forced to go back to a specifc version. After a lot of pathetic attempt, I decided to follow <a href="https://francescoturci.net">Francesco</a>’s advice to use <a href="https://github.com/pyenv/pyenv">pyenv</a>. It really solved the version issue of Python and you may want to take a look at it if you are suffering too. <a href="#fnref:python" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:the_prefix">
+      <p>Originally TCC is designed to run on a personal computer, typicall with a linux operating system. In this case, softwares will be put into a common directory called <code class="highlighter-rouge">/usr/local/bin</code>. And you can use anything inside <code class="highlighter-rouge">/usr/local/bin</code> by just typing its name.<br /> <a href="#fnref:the_prefix" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
