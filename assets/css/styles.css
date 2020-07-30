@@ -14,7 +14,7 @@ nav { position: absolute; top: 0; left: 50%; transform: translate(-50%, 0%); }
 
 nav ul { width: 500px; font-size: 18px; list-style-type: none; font: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace; }
 
-nav li { width: 200px; float: left; padding: 0% 5% 0% 5%; }
+nav li { float: left; padding: 0% 5% 0% 5%; }
 
 nav a { padding: 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; display: block; text-align: center; }
 
