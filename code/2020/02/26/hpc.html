@@ -67,10 +67,11 @@
 <div class="post center">
     <ul id="markdown-toc">
   <li><a href="#see-file-size-in-mb" id="markdown-toc-see-file-size-in-mb">See file size in MB</a></li>
-  <li><a href="#copy-to-clipboard" id="markdown-toc-copy-to-clipboard">Copy to clipboard</a></li>
+  <li><a href="#copy-file-to-clipboard" id="markdown-toc-copy-file-to-clipboard">Copy file to clipboard</a></li>
   <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
-  <li><a href="#use-large-memory-in-bc3" id="markdown-toc-use-large-memory-in-bc3">Use large memory in BC3</a></li>
+  <li><a href="#use-large-memory-on-bc3" id="markdown-toc-use-large-memory-on-bc3">Use large memory on BC3</a></li>
   <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
+  <li><a href="#display-image-on-bc3" id="markdown-toc-display-image-on-bc3">Display Image on BC3</a></li>
 </ul>
 
 <p>I use the following handy script to make my life easier with the HPC.</p>
@@ -81,7 +82,7 @@
 <span class="nb">du</span> <span class="nt">-sh</span> <span class="nb">.</span>
 </code></pre></div></div>
 
-<h2 id="copy-to-clipboard">Copy to clipboard</h2>
+<h2 id="copy-file-to-clipboard">Copy file to clipboard</h2>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>file | pbcopy
 </code></pre></div></div>
@@ -96,7 +97,7 @@
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
 </code></pre></div></div>
 
-<h2 id="use-large-memory-in-bc3">Use large memory in BC3</h2>
+<h2 id="use-large-memory-on-bc3">Use large memory on BC3</h2>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#PBS -l mem=128gb</span>
 <span class="c">#PBS -q  himem</span>
@@ -107,6 +108,11 @@
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shasum filename
 md5 filename
 openssl md5
+</code></pre></div></div>
+
+<h2 id="display-image-on-bc3">Display Image on BC3</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
 
 </div>
