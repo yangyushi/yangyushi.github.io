@@ -61,11 +61,12 @@
 
     <div class="main">
         <div id="side_bar">
-    26 Feb 2020
+    22 Oct 2020
 </div>
 
 <div class="post center">
     <ul id="markdown-toc">
+  <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
   <li><a href="#see-file-size-in-mb" id="markdown-toc-see-file-size-in-mb">See file size in MB</a></li>
   <li><a href="#copy-file-to-clipboard" id="markdown-toc-copy-file-to-clipboard">Copy file to clipboard</a></li>
   <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
@@ -75,6 +76,29 @@
 </ul>
 
 <p>I use the following handy script to make my life easier with the HPC.</p>
+
+<h2 id="transfer-files">Transfer files</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> LOCAL_PATH ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH
+
+<span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH LOCAL_PATH 
+</code></pre></div></div>
+
+<p>to make my life easier, I store the <code class="highlighter-rouge">username@host</code> into a envirinmental variable. Typically I added something like the following into the <code class="highlighter-rouge">.basrhc</code> file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export myhpc="USER_NAME@bluecrystalp3.bris.ac.uk"
+</code></pre></div></div>
+
+<p>Therefore, the file exchange commands become the following code.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> LOCAL_PATH <span class="nv">$myhpc</span>:REMOTE_PATH
+
+<span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_PATH 
+</code></pre></div></div>
 
 <h2 id="see-file-size-in-mb">See file size in MB</h2>
 
