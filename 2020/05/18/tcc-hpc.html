@@ -77,7 +77,7 @@
 <hr />
 <p data-line="11" class="code-line">The <a href="https://github.com/royallgroup/TCC" data-href="https://github.com/royallgroup/TCC">topological cluster classification (TCC)</a> is a novel tool to measure the many-body correlation of the supercooled liquid and the gel systems. It's <a href="https://royallgroup.github.io/TCC/html/setup.html" data-href="https://royallgroup.github.io/TCC/html/setup.html">documentation</a> about setting it up is good for a laptop. But it need a bit modification to work on an HPC. Here I noted the major steps to make TCC work on the super computer in the university of Bristol, the BlueCrystal.</p>
 <hr />
-<h2 id="general-steps-3" data-line="15" class="code-line">General steps</h2>
+<h2 id="general-steps-4" data-line="15" class="code-line">General steps</h2>
 <ol>
 <li data-line="17" class="code-line">Specifying necessary packages in the <code>.bashrc</code> file.</li>
 <li data-line="18" class="code-line">Download the source code of TCC.</li>
@@ -85,7 +85,7 @@
 <li data-line="20" class="code-line">Running TCC.</li>
 <li data-line="21" class="code-line">Using TCC inside Python.</li>
 </ol>
-<h2 id="1-using-packages-on-bc-3" data-line="23" class="code-line">1. Using Packages on BC</h2>
+<h2 id="1-using-packages-on-bc-4" data-line="23" class="code-line">1. Using Packages on BC</h2>
 <p data-line="25" class="code-line">To use TCC, we need a C language compiler, and the <a href="https://gcc.gnu.org" data-href="https://gcc.gnu.org">GCC</a> is a popular option. Then we need the software <a href="https://git-scm.com" data-href="https://git-scm.com">git</a> to download the source code of TCC. Finally we need a building tool, the famous <a href="https://cmake.org" data-href="https://cmake.org">CMake</a>, to help us compile the code.</p>
 <p data-line="27" class="code-line">Luckly, all of the softwares are already available on the BlueCrystal in UoB. We just need to &quot;tell&quot; the system that we will be using these tools. We do this by modifying the <code>.bashrc</code> file inside your <code>$HOME</code> directory. Typically we will need to append the following lines into <code>.bashrc</code>.</p>
 <pre><code data-line="29" class="code-line"><code><div>module add tools/git-2.18.0
@@ -93,7 +93,7 @@ module add languages/gcc-9.1.0
 module add tools/cmake-3.13.4
 </div></code></code></pre>
 <p data-line="35" class="code-line">This task can be challenging if you are not familiar with Vim/Emacs/Nano.</p>
-<h3 id="using-vim-to-edit-a-file-3" data-line="37" class="code-line">Using Vim to edit a file</h3>
+<h3 id="using-vim-to-edit-a-file-4" data-line="37" class="code-line">Using Vim to edit a file</h3>
 <p data-line="39" class="code-line">Once you logged into the BlueCrystal, you will be in the <code>$HOME</code> directory. You can use the following command to edit the <code>.bashrc</code> file</p>
 <pre><code data-line="41" class="code-line language-shell="><code><div>vi .bashrc
 </div></code></code></pre>
@@ -116,17 +116,17 @@ module add tools/cmake-3.13.4
 <li data-line="75" class="code-line">press <code>:</code> and then input <code>wq</code> and then press <code>enter</code></li>
 <li data-line="76" class="code-line">press <code>shift + z</code> twice</li>
 </ul>
-<h3 id="applying-the-modification-3" data-line="81" class="code-line">Applying the modification</h3>
+<h3 id="applying-the-modification-4" data-line="81" class="code-line">Applying the modification</h3>
 <p data-line="83" class="code-line">We edited the <code>.bashrc</code> file, now we have to use command</p>
 <pre><code data-line="85" class="code-line language-shell="><code><div>source ~/.bashrc
 </div></code></code></pre>
 <p data-line="89" class="code-line">to actually apply our modifications.</p>
-<h2 id="2-downloading-tcc-source-code-3" data-line="91" class="code-line">2. Downloading TCC source code</h2>
+<h2 id="2-downloading-tcc-source-code-4" data-line="91" class="code-line">2. Downloading TCC source code</h2>
 <p data-line="94" class="code-line">We will now going to download the source code of TCC from <a href="https://github.com/royallgroup/TCC" data-href="https://github.com/royallgroup/TCC">GitHub</a>. You can download it via the following command</p>
 <pre><code data-line="96" class="code-line language-shell="><code><div>git clone https://github.com/royallgroup/TCC
 </div></code></code></pre>
 <p data-line="100" class="code-line">After some seconds there will be a folder named <code>TCC</code> in the current folder. That is it!</p>
-<h2 id="3-compiling-tcc-3" data-line="102" class="code-line">3. Compiling TCC</h2>
+<h2 id="3-compiling-tcc-4" data-line="102" class="code-line">3. Compiling TCC</h2>
 <p data-line="104" class="code-line">Using the following command to compile TCC</p>
 <pre><code data-line="106" class="code-line language-shell="><code><div>cd TCC
 mkdir build
@@ -136,7 +136,7 @@ make
 make install
 </div></code></code></pre>
 <p data-line="115" class="code-line">The fourth line explictly tells <code>cmake</code> that we will put the <code>tcc</code> software in the folder <code>$HOME/.local/bin</code></p>
-<h2 id="4-using-tcc-3" data-line="117" class="code-line">4. Using TCC</h2>
+<h2 id="4-using-tcc-4" data-line="117" class="code-line">4. Using TCC</h2>
 <p data-line="119" class="code-line">The normal way to to use the <code>tcc</code> software is running it directly inside a <strong>project directory</strong>. One example of such directory is <code>TCC/examples/triclinic</code>. The stucture is</p>
 <pre><code data-line="121" class="code-line"><code><div>triclinic/
 ├── box.txt
@@ -150,7 +150,7 @@ tcc
 </div></code></code></pre>
 <p data-line="136" class="code-line">Then the software will be executed and you will get the results.</p>
 <p data-line="138" class="code-line">For more detailed descriptions about the meaning of different files, please go to the <a href="https://royallgroup.github.io/TCC/html/index.html" data-href="https://royallgroup.github.io/TCC/html/index.html">official documentation of TCC</a>.</p>
-<h2 id="5-using-tcc-inside-python-3" data-line="140" class="code-line">5. Using TCC inside Python</h2>
+<h2 id="5-using-tcc-inside-python-4" data-line="140" class="code-line">5. Using TCC inside Python</h2>
 <p data-line="142" class="code-line">Peter, Josh and Francesco kindly wrote a python wrapper for <code>TCC</code>. This means we can run <code>tcc</code> directly inside our <code>.py</code> script.</p>
 <p data-line="144" class="code-line">We need firstly install the python module. Now going to the folder <code>TCC</code>. And type</p>
 <pre><code data-line="146" class="code-line language-shell="><code><div>python setup.py install --user

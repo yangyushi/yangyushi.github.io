@@ -1,0 +1,698 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cpp</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    14 Apr 2020
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="7" class="code-line">TOC
+{:toc}</li>
+</ul>
+<hr />
+<p data-line="12" class="code-line">这是我在学习 C++ 的时候记下来的笔记；我主要参考的书籍是<a href="https://www.amazon.co.uk/Programming-Principles-Practice-Using-C/dp/0321992784" data-href="https://www.amazon.co.uk/Programming-Principles-Practice-Using-C/dp/0321992784">这一本</a>。</p>
+<p data-line="14" class="code-line">我写 C++ 主要目的是 加速 Python。</p>
+<hr />
+<h2 id="e587bde695b0-2" data-line="18" class="code-line">函数</h2>
+<h3 id="inline-2" data-line="20" class="code-line">inline</h3>
+<p data-line="22" class="code-line">在定义函数的时候，我们可以尝试在 函数前面 加上 <code>inline</code>。它的作用是把 函数 变成 类似于宏的东西。这样，编译的时候，编译器会直接把 函数部分的代码 复制到 调用函数的地方。</p>
+<p data-line="24" class="code-line"><code>inline</code> 只是一个给编译器的「建议」。对于太长的函数，编译器有可能忽略掉这个建议。</p>
+<p data-line="26" class="code-line">简而言之，对于特别短的函数，<code>inline</code> 有可能让它更快。</p>
+<p data-line="28" class="code-line"><code>inline</code> 还可以用于「躲避」掉对函数的重复定义。比如说，如果我们在头文件 <code>*.h</code> 里定义函数，那么 <code>inline</code> 可以让这个「函数」作为宏被替换进源代码里；这样函数就不会重复定义了。</p>
+<h3 id="e59ca8e4b88de5908ce6ba90e4bba3e7a081e4b8ade585b1e4baabe587bde695b0-2" data-line="30" class="code-line">在不同源代码中共享函数</h3>
+<p data-line="32" class="code-line"><a href="https://stackoverflow.com/a/25274411" data-href="https://stackoverflow.com/a/25274411">参考链接</a></p>
+<p data-line="34" class="code-line">如果我们想要在我们的「项目」下的「不同源代码」里共用一个函数，我们可以通过下面的三个步骤完成</p>
+<p data-line="36" class="code-line">1 - 将函数的定义写进「头文件」</p>
+<pre><code data-line="38" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> FUNCTIONS_H_INCLUDED</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FUNCTIONS_H_INCLUDED</span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span></span>;  <span class="hljs-comment">// Function prototype, its declaration</span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+</div></code></pre>
+<p data-line="47" class="code-line">（其中的 <code>#ifndef</code> 之类的东西叫做 <a href="https://en.wikipedia.org/wiki/Include_guard" data-href="https://en.wikipedia.org/wiki/Include_guard">include gard</a>，用来避免 重复引用头文件 造成的 对同一个函数的 多次定义。注意，include gard 只在「同一个」.cpp 源文件内起作用。）</p>
+<p data-line="49" class="code-line">2 - 在「第一个」源文件里定义函数</p>
+<pre><code data-line="51" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"functions.h"</span></span>
+
+<span class="hljs-comment">// Function definition</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span>
+</span>{
+    <span class="hljs-keyword">return</span> a + b;
+}
+</div></code></pre>
+<p data-line="61" class="code-line">3 - 在「其他源文件」中 <code>include</code> 头文件，使用函数</p>
+<pre><code data-line="63" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"functions.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"add(1, 2) = "</span> &lt;&lt; add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-string">'\n'</span>;
+}
+</div></code></pre>
+<h3 id="e4bca0e98092e68c87e99288e7bb99e587bde695b0-2" data-line="73" class="code-line">传递指针给函数</h3>
+<p data-line="75" class="code-line">C 里传递指针式传递「指针」，<code>* arg</code></p>
+<pre><code data-line="77" class="code-line language-C"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"stdio.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">triple</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *num)</span> </span>{
+    *num = *num * <span class="hljs-number">3</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">int</span> a = <span class="hljs-number">2</span>;
+    triple(&amp;a);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"2 x 3 = %d"</span>, a); <span class="hljs-comment">// a = 6</span>
+}
+</div></code></pre>
+<p data-line="91" class="code-line">C++ 里可以做同样的事情，不过也可以传递「地址」</p>
+<pre><code data-line="93" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">triple</span><span class="hljs-params">(<span class="hljs-keyword">int</span> &amp;num)</span> </span>{
+    num = num * <span class="hljs-number">3</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">int</span> a = <span class="hljs-number">2</span>;
+    triple(a);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"2 x 3 = "</span> &lt;&lt; a; <span class="hljs-comment">// a = 6</span>
+}
+</div></code></pre>
+<h3 id="e6b2a1e69c89e58f98e9878fe5908de79a84e58f82e695b0-2" data-line="107" class="code-line">没有变量名的参数</h3>
+<p data-line="109" class="code-line">在某些特殊的情况下，我们会写出下面的函数</p>
+<pre><code data-line="111" class="code-line language-cpp"><div><span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">one</span><span class="hljs-params">(<span class="hljs-keyword">double</span>)</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span>; }
+</div></code></pre>
+<p data-line="115" class="code-line">这个函数 的输入 是一个小数，输出 永远为 1.0。此时，输入的参数 并不会进入 实际的计算，所以我么不需要给它 变量名。这就是有点怪异的 <code>one(double)</code> 部分的由来。</p>
+<h2 id="e68c87e99288-4" data-line="117" class="code-line">指针</h2>
+<h3 id="e59fbae7a180-2" data-line="119" class="code-line">基础</h3>
+<ul>
+<li data-line="121" class="code-line">声明指向类型的指针 <code>类型 * 指针名</code></li>
+<li data-line="122" class="code-line">获取指针的内容 (dereference) <code>* 指针名</code></li>
+<li data-line="123" class="code-line">我们也可以用 <code>指针名[位移]</code> 来取得地址的内容，<code>[]</code> 叫 subscript operator。</li>
+<li data-line="124" class="code-line"><code>指针名[0]</code> 等价于 <code>* 指针名</code></li>
+<li data-line="125" class="code-line">获取一个对象的地址 <code>&amp; 对象名</code>，<code>&amp;</code> 叫 address of operator</li>
+</ul>
+<p data-line="127" class="code-line">使用 <code>sizeof</code> 函数可以获取 不同对象/指针 占用的内存，下面是一些结果</p>
+<pre><code data-line="129" class="code-line language-cpp"><div><span class="hljs-keyword">uint8_t</span>:  <span class="hljs-number">1</span>  <span class="hljs-comment">// 数据占用的内存</span>
+<span class="hljs-keyword">double</span>:   <span class="hljs-number">8</span>  <span class="hljs-comment">// 数据占用的内存</span>
+*<span class="hljs-keyword">uint8_t</span>: <span class="hljs-number">8</span>  <span class="hljs-comment">// 指针占用的内存</span>
+*<span class="hljs-keyword">double</span>:  <span class="hljs-number">8</span>  <span class="hljs-comment">// 指针占用的内存</span>
+</div></code></pre>
+<h3 id="e5a3b0e6988ee68c87e99288-2" data-line="136" class="code-line">声明指针</h3>
+<p data-line="138" class="code-line">我们可以先「给一个变量赋值」，再「得到指向这个变量的指针」</p>
+<pre><code data-line="140" class="code-line language-cpp"><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> a = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">int</span> * pa = &amp;a;
+}
+</div></code></pre>
+<p data-line="147" class="code-line">如果我们想要「先创建一个指针」，接着「给指针指向的内存赋值」，直觉上我们会写出这样的代码</p>
+<pre><code data-line="149" class="code-line language-cpp"><div><span class="hljs-comment">// 这段代码一定不会编译成功</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> * pa;  <span class="hljs-comment">// 没有初始化，得到一个随机地址；这样的代码永远不应该出现</span>
+    * pa = <span class="hljs-number">1</span>;
+}
+</div></code></pre>
+<p data-line="157" class="code-line">上面的代码首先生成了一个「随机的地址」，之后向这个地址写入了 <code>1</code>。这样是不对的，因为我们有可能改变程序里其他对象的值。</p>
+<p data-line="159" class="code-line">不过，如果我们主动声明「指针指向的变量」，即确定「指针的地址」，那么我们就可以给这个地址赋值了。</p>
+<pre><code data-line="161" class="code-line language-cpp"><div><span class="hljs-comment">// 可以编译成功</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> * pa;
+    <span class="hljs-keyword">int</span> a;
+    pa = &amp;a;
+    *pa = <span class="hljs-number">1</span>;
+}
+</div></code></pre>
+<p data-line="171" class="code-line">还有一种方法是使用 <code>new</code> 主动分配内存</p>
+<pre><code data-line="173" class="code-line language-cpp"><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> * pa = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>; <span class="hljs-comment">// 得到一个 heap 里的随机地址</span>
+    *pa = <span class="hljs-number">1</span>;
+}
+</div></code></pre>
+<h3 id="e58685e5ad98-2" data-line="180" class="code-line">内存</h3>
+<p data-line="182" class="code-line">为了更好的理解指针，我们需要理解 C++ 如何使用 电脑中的内存。</p>
+<table>
+<thead>
+<tr>
+<th>一段 C++ 代码占用的内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code 代码本身占用的内存</td>
+</tr>
+<tr>
+<td>Static Data 声明的全局变量</td>
+</tr>
+<tr>
+<td>Stack 函数使用的内存（函数的参数、临时变量）</td>
+</tr>
+<tr>
+<td>Free store 其他的内存，也叫 heap</td>
+</tr>
+</tbody>
+</table>
+<p data-line="193" class="code-line">如果我们要使用 heap，我们使用关键字 <code>new</code>，比如</p>
+<pre><code data-line="195" class="code-line language-cpp"><div><span class="hljs-keyword">double</span> * p = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[<span class="hljs-number">4</span>];
+</div></code></pre>
+<p data-line="199" class="code-line">此外，我们可以用「变量」来指定「指针指向的内存」的长度</p>
+<pre><code data-line="201" class="code-line language-cpp"><div><span class="hljs-keyword">int</span> n = <span class="hljs-number">4</span>;
+<span class="hljs-keyword">double</span> * p = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[n];
+</div></code></pre>
+<p data-line="206" class="code-line">此外，我们也可以直接通过 <code>{}</code> 给指针指向的内存赋值</p>
+<pre><code data-line="208" class="code-line language-cpp"><div><span class="hljs-keyword">int</span> * p = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">4</span>] {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>};
+</div></code></pre>
+<h3 id="e68c87e99288e4b88de79fa5e98193e58685e5ad98e79a84e995bfe5baa6-2" data-line="212" class="code-line">指针不知道内存的长度</h3>
+<p data-line="214" class="code-line"><code>double * p = new double[2]</code> 在 free store (heap) 区域里分配了 2 个 <code>double</code> 占用的内存，并且返回一个指向这一小块内存的指针 <code>p</code>。但是，指针<strong>不知道</strong>自己指向的内存的长度。</p>
+<p data-line="216" class="code-line">这意味着，我们可以使用所有 free store / heap 里的内存。这样是不对的，会导致神秘的错误，制造最难查的 bug。这种错误的行为叫 out-of-range access。</p>
+<pre><code data-line="218" class="code-line language-py"><div><span class="hljs-meta">... </span>| p[<span class="hljs-number">-2</span>] | p[<span class="hljs-number">-1</span>] | p[<span class="hljs-number">0</span>] | p[<span class="hljs-number">1</span>] | p[<span class="hljs-number">2</span>] | p[<span class="hljs-number">3</span>] | ...
+</div></code></pre>
+<p data-line="222" class="code-line">避免 out-of-range access 的方法是使用 <code>vector</code></p>
+<h3 id="e7bb99e887aae5ae9ae4b989e7b1bbe59e8be58886e9858de58685e5ad98-2" data-line="224" class="code-line">给自定义类型分配内存</h3>
+<p data-line="226" class="code-line">假设我们的自定义类型为 <code>X</code> 并且<strong>有</strong>默认的构造函数，那么我们可以这样</p>
+<pre><code data-line="228" class="code-line language-cpp"><div>X* px1 = <span class="hljs-keyword">new</span> X;  <span class="hljs-comment">// 使用默认构造函数创建一个 X 实例</span>
+X* px1 = <span class="hljs-keyword">new</span> X[<span class="hljs-number">10</span>];  <span class="hljs-comment">// 使用默认构造函数创建 10 个 X 实例</span>
+</div></code></pre>
+<p data-line="233" class="code-line">如果我们的自定义类型为 <code>Y</code> 并且<strong>没有</strong>默认的构造函数，那么我们可以这样</p>
+<pre><code data-line="235" class="code-line language-cpp"><div>Y* py1 = <span class="hljs-keyword">new</span> Y {<span class="hljs-number">1</span>};  <span class="hljs-comment">// 使用参数 1 初始化 1 个 Y 实例</span>
+Y* py2 = <span class="hljs-keyword">new</span> Y[<span class="hljs-number">5</span>] {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};  <span class="hljs-comment">// 使用参数 1-5 初始化 5 个 Y 实例</span>
+</div></code></pre>
+<h3 id="e9878ae694bee58685e5ad98-2" data-line="240" class="code-line">释放内存</h3>
+<p data-line="242" class="code-line">我们需要「手动释放」不需要的指针，来解放这个 指针 对应的 内存。语法如下</p>
+<pre><code data-line="244" class="code-line language-cpp"><div><span class="hljs-keyword">delete</span> p  <span class="hljs-comment">// 释放单个对象占用的内存</span>
+<span class="hljs-keyword">delete</span>[] p  <span class="hljs-comment">// 释放「多个对象组成的数组」所占用的内存</span>
+</div></code></pre>
+<p data-line="249" class="code-line">我们需要「自行抉择」什么时候、如何释放内存。我们可以使用 garbage collector 来自动帮我们做这件事。如果我们不释放内存，我们的程序会在逐渐运行的时候，消耗掉 所有内存 然后被 操作系统 残忍地杀掉。</p>
+<h3 id="null-e68c87e99288-2" data-line="252" class="code-line">null 指针</h3>
+<p data-line="254" class="code-line">如果我们在 创建指针的时候 暂时没有一个「用于初始化」的地址，那么我们<strong>应该</strong>用 <code>nullptr</code> 来 初始化这个指针</p>
+<pre><code data-line="256" class="code-line language-cpp"><div><span class="hljs-keyword">double</span> * p0 = <span class="hljs-literal">nullptr</span>;
+</div></code></pre>
+<p data-line="260" class="code-line">这会将 <code>p0</code> 的地址设定为 <code>0x0</code>。</p>
+<p data-line="262" class="code-line">此外，不同的编译器 对于 没有初始化的指针 有不同的处理。苹果的 <code>clang11</code> 会将 没有初始化的指针 自动设置为 <code>nummptr</code> 但是 <code>g++9.2</code> 不会。</p>
+<p data-line="264" class="code-line">我们可以用 下面两种方法 判断 指针 是否属于 <code>nullptr</code>；我们会这么做的原因是，有的时候我们需要 构建一个指针——它在 某种情况下 有效，指向某个地址；在 另外的情况下 无效，指向 <code>nullptr</code>。</p>
+<pre><code data-line="266" class="code-line language-cpp"><div><span class="hljs-keyword">if</span> (p != <span class="hljs-literal">nullptr</span>);  <span class="hljs-comment">// 第一种</span>
+<span class="hljs-keyword">if</span> (p);  <span class="hljs-comment">// 第二种，推荐</span>
+</div></code></pre>
+<h2 id="e7bb93e69e84e4bd93-2" data-line="271" class="code-line">结构体</h2>
+<h3 id="e7ae80e4bb8b-2" data-line="273" class="code-line">简介</h3>
+<p data-line="275" class="code-line">C++ 里最简单的 结构体 用法</p>
+<pre><code data-line="277" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Date</span> {</span>
+    <span class="hljs-keyword">int</span> year;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> month;
+    <span class="hljs-keyword">short</span> day;
+} birthdays [<span class="hljs-number">2</span>];
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    birthdays[<span class="hljs-number">0</span>].year = <span class="hljs-number">1992</span>;
+    birthdays[<span class="hljs-number">0</span>].month = <span class="hljs-string">"feb"</span>;
+    birthdays[<span class="hljs-number">0</span>].day = <span class="hljs-number">17</span>;
+    birthdays[<span class="hljs-number">1</span>].year = <span class="hljs-number">1989</span>;
+    birthdays[<span class="hljs-number">1</span>].month = <span class="hljs-string">"may"</span>;
+    birthdays[<span class="hljs-number">1</span>].day = <span class="hljs-number">18</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h3 id="e7bb93e69e84e4bd93e79a84e68c87e99288-2" data-line="298" class="code-line">结构体的指针</h3>
+<p data-line="300" class="code-line">我们也可以用指针表示结构体。用指针的时候 <code>pointer-&gt;key</code> 相当于 <code>struct.key</code>。</p>
+<p data-line="302" class="code-line">运算符 <code>-&gt;</code> 的作用是获取「对象」的「成员」。</p>
+<p data-line="304" class="code-line">我们<strong>不该</strong>用 <code>*pointer.key</code>，因为它相当于 <code>*(pointer.key)</code>，将会尝试取出 <code>struct.key</code> 对应的内容。</p>
+<p data-line="306" class="code-line">如果硬要这么用，应该 <code>(*pointer).key</code>。因为 <code>(*pointer)</code> 就是 <code>struct</code></p>
+<pre><code data-line="308" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Date</span> {</span>
+    <span class="hljs-keyword">int</span> year;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> month;
+    <span class="hljs-keyword">short</span> day;
+};
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    Date b_day_yushi;
+    Date * pointer = &amp; b_day_yushi;
+    pointer-&gt;year = <span class="hljs-number">1992</span>;
+    pointer-&gt;month = <span class="hljs-string">"feb"</span>;
+    pointer-&gt;day = <span class="hljs-number">17</span>;
+    <span class="hljs-comment">// 注意三种等效的用法</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; (*pointer).year &lt;&lt; <span class="hljs-string">"-"</span> 
+              &lt;&lt; pointer-&gt;month  &lt;&lt; <span class="hljs-string">"-"</span>
+              &lt;&lt; b_day_yushi.day;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h3 id="e7bb93e69e84e4bd93e5928ce7b1bb-2" data-line="332" class="code-line">结构体和类</h3>
+<p data-line="334" class="code-line">结构体 和 类 在 C++ 中非常接近。不同的是，结构体的成员 的 默认状态 是 public；而 类的成员 的 默认状态 是 private。</p>
+<p data-line="336" class="code-line">我们什么时候应该用 类，什么时候用 结构体 呢？如果我们的 成员/实例的取值 具有一定的「规则」，那么我们就应该用 类。反之则用 结构体。</p>
+<p data-line="338" class="code-line">一个例子是，如果我们要用一个 容器 封装「日期」，那么 表示日期的整数 有额外的 规则：它需要小于 31 并且大于零。由于这个 规则，我们需要写一个 类。这个规则 在 C++ 里很诡异地被称为 invariant。</p>
+<h2 id="e7b1bb-2" data-line="340" class="code-line">类</h2>
+<h3 id="e58e9fe58899-2" data-line="342" class="code-line">原则</h3>
+<ul>
+<li data-line="344" class="code-line">类通过 构造函数 取得 资源。类似地，在 <code>python</code> 里所有的特性都 应该 在</li>
+</ul>
+<h3 id="e4b88de5908ce79a84e696b9e6b395-2" data-line="346" class="code-line">不同的方法</h3>
+<p data-line="348" class="code-line">C++ 中类的方法有三种类型</p>
+<ul>
+<li data-line="350" class="code-line">private ：只有同一个 class 的方法，或该 class 的 friend class 可以访问。</li>
+<li data-line="351" class="code-line">protected ：只有同一个 class 的方法，或该 class 的 friend class，或该 class 的子类可以访问。</li>
+<li data-line="352" class="code-line">public ：任何可以看到这个 class 的地方都可以访问。</li>
+</ul>
+<p data-line="354" class="code-line">方法的默认种类是 private</p>
+<h3 id="e4b880e4ba9be8bf90e7ae97e7aca6e79a84e8afbbe6b395-2" data-line="356" class="code-line">一些运算符的「读法」</h3>
+<ul>
+<li data-line="358" class="code-line"><code>*x</code> 读作: pointed by x （由x指向的）</li>
+<li data-line="359" class="code-line"><code>&amp;x</code> 读作: address of x（x的地址）</li>
+<li data-line="360" class="code-line"><code>x.y</code> 读作: member y of object x （对象x的成员y）</li>
+<li data-line="361" class="code-line"><code>(*x).y</code> 读作: member y of object pointed by x（由x指向的对象的成员y）</li>
+<li data-line="362" class="code-line"><code>x-&gt;y</code> 读作: member y of object pointed by x (同上一个等价)</li>
+<li data-line="363" class="code-line"><code>x[0]</code> 读作: first object pointed by x（由x指向的第一个对象）</li>
+<li data-line="364" class="code-line"><code>x[1]</code> 读作: second object pointed by x（由x指向的第二个对象）</li>
+<li data-line="365" class="code-line"><code>x[n]</code> 读作: (n+1)th object pointed by x（由x指向的第n+1个对象）</li>
+</ul>
+<h3 id="e69e84e980a0e587bde695b0-2" data-line="367" class="code-line">构造函数</h3>
+<ul>
+<li data-line="369" class="code-line">构造函数就是 python 里的 <code>__init__</code></li>
+<li data-line="370" class="code-line">构造函数的格式是 <code>类名::类名</code></li>
+<li data-line="371" class="code-line">构造函数的原型和实现中都没有返回值，也没有void 类型声明。构造函数必须这样写。一个构造函数永远没有返回值，也不用声明void</li>
+<li data-line="372" class="code-line">构造函数可以被重载（为不同的参数写不同的函数）</li>
+<li data-line="373" class="code-line">最好只在 构造函数 里用 <code>new</code> 创建指针</li>
+</ul>
+<p data-line="375" class="code-line">使用构造函数的时候，现代的写法是</p>
+<pre><code data-line="377" class="code-line language-cpp"><div>Foo f{arg_1, arg_2};
+</div></code></pre>
+<p data-line="381" class="code-line">老式的写法是</p>
+<pre><code data-line="383" class="code-line language-cpp"><div><span class="hljs-function">Foo <span class="hljs-title">f</span><span class="hljs-params">(arg_1, arg_2)</span></span>;
+</div></code></pre>
+<p data-line="387" class="code-line">新式写法更好的原因是，它清楚地表明了「类的实例被初始化/构造了」。而传统写法会与函数调用混淆。</p>
+<p data-line="389" class="code-line">应用新式写法，我们发现下面的语句是等价的</p>
+<pre><code data-line="391" class="code-line language-cpp"><div><span class="hljs-keyword">int</span> x = <span class="hljs-number">7</span>;
+<span class="hljs-keyword">int</span> x {<span class="hljs-number">7</span>};
+</div></code></pre>
+<h3 id="e9bb98e8aea4e69e84e980a0e587bde695b0-2" data-line="396" class="code-line">默认构造函数</h3>
+<p data-line="398" class="code-line">没有任何参数的构造函数是默认构造函数。对于类 <code>Y</code>，如果 <code>Y</code> 有默认构造函数，那么 <code>Y y</code> 会直接创建一个对象。</p>
+<p data-line="400" class="code-line">一般来说</p>
+<h3 id="e69e90e69e84e587bde695b0-2" data-line="402" class="code-line">析构函数</h3>
+<ul>
+<li data-line="404" class="code-line">析构函数相当于 python 里的 <code>__del__</code></li>
+<li data-line="405" class="code-line">析构函数的格式是 <code>类名::~类名</code></li>
+<li data-line="406" class="code-line">每一个「拥有资源」的类都应该有析构函数</li>
+</ul>
+<p data-line="408" class="code-line">写下了析构函数之后，当我们离开某一个 scope 后，这个 scope 里的对象会自动被执行析构函数。例子</p>
+<pre><code data-line="410" class="code-line language-cpp"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> {</span>
+    <span class="hljs-keyword">int</span> s;
+    <span class="hljs-keyword">double</span>* elem;
+<span class="hljs-keyword">public</span>:
+    Foo(<span class="hljs-keyword">int</span> s) : s{s}, elem{<span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[s]} {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;s; i++) elem[i] = <span class="hljs-number">0.0</span>;
+    }
+    ~Foo() {<span class="hljs-keyword">delete</span>[] elem;}  <span class="hljs-comment">// 析构函数</span>
+};
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>{
+    Foo f {n};
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">/*
+    * 如果 Foo 没有实现析构函数，会消耗大量内存
+    */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++){
+        func(<span class="hljs-number">10000000</span>);
+    } <span class="hljs-comment">// 离开之后 func 内 Foo 实例占用的内存被自动释放</span>
+}
+</div></code></pre>
+<h3 id="e7949fe68890e69e90e69e84e587bde695b0-2" data-line="435" class="code-line">生成析构函数</h3>
+<p data-line="437" class="code-line">如果某个类的「成员」有析构函数，那么这个类离开 scope 之后，这些「成员的析构函数」会被自动调用。这个行为被称为「编译器为这个类 生成 了一个析构函数」，所以这个不存在的析构函数被称为「生成析构函数」generated destructors。</p>
+<p data-line="439" class="code-line">例子，注意这段代码比上面的代码慢很多</p>
+<pre><code data-line="441" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> {</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; data;
+<span class="hljs-keyword">public</span>:
+    Foo(<span class="hljs-keyword">int</span> s) {<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;s; i++) data.push_back(<span class="hljs-number">0.0</span>);}
+};
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>{
+    Foo f {n};
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">/*
+    * Foo 没有实现析构函数，但没有内存泄漏
+    */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++){
+        func(<span class="hljs-number">10000000</span>);
+    } <span class="hljs-comment">// 离开之后 func 内 Foo.data 占用的内存被自动释放</span>
+}
+</div></code></pre>
+<h3 id="e68c87e99288-5" data-line="464" class="code-line">指针</h3>
+<ul>
+<li data-line="466" class="code-line"><code>类名 * 指针名</code> 会定义一个类的指针。</li>
+<li data-line="467" class="code-line">如果我们想通过指针访问成员，我们需要 <code>指针名-&gt;成员</code></li>
+</ul>
+<h3 id="e8bf90e7ae97e7aca6e9878de8bdbd-2" data-line="469" class="code-line">运算符重载</h3>
+<p data-line="471" class="code-line">我们可以自己定义运算符，它的格式是：</p>
+<p data-line="473" class="code-line"><code>类名 operator 符号 (参数类型 参数名)</code></p>
+<p data-line="475" class="code-line">这个格式类似于函数的定义，只不过没有 <code>operator</code></p>
+<p data-line="477" class="code-line"><code>返回数据类型 函数名 (参数类型 参数名)</code></p>
+<h3 id="this-2" data-line="479" class="code-line">this</h3>
+<p data-line="481" class="code-line"><code>this</code> 仅仅被用在「类的内部」（什么意思？），它表示指向「这个类的某个实例/对象」的指针。</p>
+<p data-line="483" class="code-line">它可以被用来检查参数是否是对象自己</p>
+<pre><code data-line="485" class="code-line language-cpp"><div><span class="hljs-keyword">int</span> FOO::is_self (FOO &amp;object){
+    <span class="hljs-keyword">if</span> (&amp;object == <span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h3 id="e99d99e68081e68890e59198-static-member-2" data-line="492" class="code-line">静态成员 static member</h3>
+<p data-line="494" class="code-line">静态成员的内容不依赖于具体的对象/实例，它感觉像是「属于某个类的全局变量」</p>
+<p data-line="496" class="code-line">静态成员的格式是 <code>static 类型 变量名</code></p>
+<p data-line="498" class="code-line">为了避免静态成员被重复定义，静态成员的定义<strong>必须</strong>在类的定义之外。</p>
+<p data-line="500" class="code-line">例子：记录总共创建了多少实例</p>
+<pre><code data-line="502" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> {</span>
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> n;
+        Foo() {n++;};
+        ~Foo() {n--;};
+};
+
+<span class="hljs-keyword">int</span> Foo::n = <span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span> </span>{
+    Foo a;
+    Foo b;
+    <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"there are "</span> &lt;&lt; a.n &lt;&lt; <span class="hljs-string">" instances of Foo"</span>;
+}
+</div></code></pre>
+<h3 id="friend-2" data-line="523" class="code-line">Friend</h3>
+<p data-line="525" class="code-line">我们在定义类的时候，可以通过加上 <code>friend</code> 关键字来将「函数」或者「类」定义为 Friend。</p>
+<p data-line="527" class="code-line">Friend 可以访问该类的 <code>private</code> 或 <code>protected</code> 的内容。</p>
+<p data-line="529" class="code-line">例子 - friend 函数：<code>a_plus_one</code> 函数可以读写 <code>Foo</code> 的私有变量 <code>a</code></p>
+<pre><code data-line="531" class="code-line language-cpp"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> {</span>
+    <span class="hljs-keyword">private</span>:
+        <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>;
+        <span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-keyword">void</span> <span class="hljs-title">a_plus_one</span><span class="hljs-params">(Foo &amp;f)</span></span>;
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>{<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"a is "</span> &lt;&lt; a &lt;&lt; <span class="hljs-string">"\n"</span>;}
+};
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">a_plus_one</span><span class="hljs-params">(Foo &amp;f)</span></span>{
+    f.a ++;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span> </span>{
+    Foo f;
+    f.show();
+    a_plus_one(f);
+    f.show();
+}
+</div></code></pre>
+<p data-line="552" class="code-line">例子 - friend 类：<code>Bar</code> 的 <code>eat</code> 函数可以获取 <code>Foo</code> 的私有变量 <code>a</code></p>
+<pre><code data-line="554" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> {</span>
+    <span class="hljs-keyword">private</span>:
+        <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bar</span>;</span>
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">inc</span><span class="hljs-params">()</span></span>{a++;}
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>{<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"a is "</span> &lt;&lt; a &lt;&lt; <span class="hljs-string">"\n"</span>;}
+};
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bar</span>{</span>
+    <span class="hljs-keyword">private</span>:
+        <span class="hljs-keyword">int</span> b = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">eat</span><span class="hljs-params">(Foo &amp;f)</span></span>{b = f.a;}
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>{<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"b is "</span> &lt;&lt; b &lt;&lt; <span class="hljs-string">"\n"</span>;}
+};
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span> </span>{
+    Foo f;
+    Bar b;
+    b.show();
+    f.inc();
+    b.eat(f);
+    b.show();
+}
+</div></code></pre>
+<h3 id="e7bba7e689bf-2" data-line="586" class="code-line">继承</h3>
+<p data-line="588" class="code-line">C++ 中有子类的概念，子类继承父类的格式是 <code>class 字类名: 类型 父类名</code></p>
+<p data-line="590" class="code-line">C++ 中也可以多重继承，其格式是 <code>class 字类名: 类型 父类名#1 类型 父类名#2 ...</code></p>
+<p data-line="592" class="code-line">子类不会继承父类的构造函数和析构函数</p>
+<p data-line="594" class="code-line">其中，<code>类型</code> 包括 <code>private</code>, <code>protected</code> 和 <code>public</code>。</p>
+<p data-line="596" class="code-line"><code>protected</code> 下的方法 / 特性不能直接被成员调用，必须通过「这个类的子类的成员」来使用。</p>
+<p data-line="598" class="code-line">这里的 <code>类型</code> 的作用是保护从父类继承的成员（方法 &amp; 特性）。如果 <code>类型</code> 是 <code>private</code>，那么子类从父类继承的成员就是 <code>private</code></p>
+<p data-line="600" class="code-line"><a href="https://stackoverflow.com/a/1372858" data-href="https://stackoverflow.com/a/1372858">例子</a></p>
+<pre><code data-line="602" class="code-line language-cpp"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> 
+{</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> x;
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-keyword">int</span> y;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">int</span> z;
+};
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> :</span> <span class="hljs-keyword">public</span> A
+{
+    <span class="hljs-comment">// x is public</span>
+    <span class="hljs-comment">// y is protected</span>
+    <span class="hljs-comment">// z is not accessible from B</span>
+};
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span> :</span> <span class="hljs-keyword">protected</span> A
+{
+    <span class="hljs-comment">// x is protected</span>
+    <span class="hljs-comment">// y is protected</span>
+    <span class="hljs-comment">// z is not accessible from C</span>
+};
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">D</span> :</span> <span class="hljs-keyword">private</span> A    <span class="hljs-comment">// 'private' is default for classes</span>
+{
+    <span class="hljs-comment">// x is private</span>
+    <span class="hljs-comment">// y is private</span>
+    <span class="hljs-comment">// z is not accessible from D</span>
+};
+</div></code></pre>
+<h3 id="e8999ae587bde695b0-2" data-line="635" class="code-line">虚函数</h3>
+<blockquote data-line="637" class="code-line">
+<p data-line="637" class="code-line">经验规则：如果一个 类 有虚函数，那么这个类需要一个 虚 析构函数</p>
+</blockquote>
+<p data-line="639" class="code-line">我们可以在 基类 和 继承类 里定义「同名、同类型」的函数。这样的函数叫虚函数。实例使用的函数 来自的地方，是 基类 还是 继承类，在运行时决定。所以这个特性也叫 runtime polymorphism, dynamic dispatch, runtime dispatch。</p>
+<p data-line="641" class="code-line">使用虚函数的场景如下。有的时候我们创造了 抽象的基类，和许多不同的 派生类。这个时候我们想要写一个 函数 来 抽象地处理 所有的 派生类。这个时候我们的 函数 及其 调用 大概是这样</p>
+<pre><code data-line="643" class="code-line language-cpp"><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">func</span><span class="hljs-params">(基类 &amp; 实例)</span> </span>{
+    实例.方法();  <span class="hljs-comment">// 对于这个函数而言，它认为这个实例来自基类</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    func(派生类实例);
+}
+</div></code></pre>
+<p data-line="653" class="code-line">此时，在函数 <code>func</code> 内部，函数认为它接受的 参数 是一个「基类的实例」。如果在 基类 里我们使用了 虚函数，那么 C++ 编译器就会自动在 <code>func</code> 内部的 <code>实例.方法()</code> 处调用 派生类 的方法。</p>
+<p data-line="655" class="code-line">下面是一个稍微具体一点的例子</p>
+<pre><code data-line="657" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Base</span> {</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> name = <span class="hljs-string">"B"</span>;
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">()</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;}
+};
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">D1</span> :</span> Base {
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> name = <span class="hljs-string">"D1"</span>;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">()</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;}
+};
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">call</span><span class="hljs-params">(Base &amp; obj)</span></span>{
+    <span class="hljs-comment">/*
+    * 因为 D1 派生于 Base 所以 call 也可以接受 D1 类实例
+    * 如果 count 不是虚函数，那么 call 里 obj.count() 会返回 0
+    */</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"As Base, name: "</span> &lt;&lt; obj.name &lt;&lt; <span class="hljs-string">"; count : "</span> &lt;&lt; obj.count() &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span> </span>{
+    D1 d1;
+    call(d1);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"As D1, name: "</span> &lt;&lt; d1.name &lt;&lt; <span class="hljs-string">"; count: "</span> &lt;&lt; d1.count() &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</div></code></pre>
+<h3 id="const-function-2" data-line="685" class="code-line">const function</h3>
+<p data-line="687" class="code-line"><a href="https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration" data-href="https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration">来源</a></p>
+<p data-line="689" class="code-line">有的时候我们能看到这样的代码</p>
+<pre><code data-line="691" class="code-line language-cpp"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> 
+{</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Bar</span><span class="hljs-params">(<span class="hljs-keyword">int</span> random_arg)</span> <span class="hljs-keyword">const</span>
+    </span>{
+        <span class="hljs-comment">// code</span>
+    }
+};
+</div></code></pre>
+<p data-line="702" class="code-line">这里面的 <code>const</code> 让我十分困惑：它为什么在这里？它的作用是什么？</p>
+<p data-line="704" class="code-line">当我们「使用」一个类的成员函数的时候，我们写出下面这样的代码</p>
+<pre><code data-line="706" class="code-line language-cpp"><div>Foo f;
+f.Bar(<span class="hljs-number">4</span>);
+</div></code></pre>
+<p data-line="711" class="code-line">这等价于</p>
+<pre><code data-line="713" class="code-line language-cpp"><div>Foo f;
+Foo_Bar(<span class="hljs-keyword">const</span> &amp;f, <span class="hljs-number">4</span>)
+</div></code></pre>
+<p data-line="718" class="code-line">所以，<code>int Bar(int random_arg) const</code> 里的 <code>const</code> 保证了成员，或者说 <code>this</code> 是一个常量。这导致了 <code>Bar</code> 这个函数无法更改<strong>任何</strong>成员函数。</p>
+<p data-line="720" class="code-line">这样的函数叫 <code>const function</code></p>
+<p data-line="722" class="code-line">有的时候我们希望，一个成员变量永远能被改变，即使是 <code>const function</code>。这个时候我们用关键字 <code>mutable</code> 来修饰这个变量。</p>
+<h2 id="e585b6e4bb96e8af9de9a298-2" data-line="724" class="code-line">其他话题</h2>
+<h3 id="e5a4b4e69687e4bbb6e9878ce694bee4bb80e4b988-2" data-line="726" class="code-line">头文件里放什么</h3>
+<p data-line="728" class="code-line">一个 C++ 的项目里 通常有很多 头文件 (<code>.h</code>, <code>.hpp</code> 甚至 <code>.tpp</code>) 和 代码文件 (<code>.cpp</code>)。什么东西应该被放进 头文件 (head file) 而什么应该被放进 代码文件 (code file) 呢？</p>
+<p data-line="730" class="code-line">我在 Stackoverflow 上看到了一个 <a href="https://stackoverflow.com/a/1945866" data-href="https://stackoverflow.com/a/1945866">很优雅的答案</a>。简而言之，</p>
+<ul>
+<li data-line="732" class="code-line">在头文件里，我们放入「很多文件 共同需要的 信息」，即 <strong>抽象定义</strong>。</li>
+<li data-line="733" class="code-line">在代码文件里，我们放入「只被这个文件需要的 信息」，即 <strong>具体实现</strong>。</li>
+</ul>
+<h3 id="map-e79a84e8bfade4bba3-2" data-line="735" class="code-line">map 的迭代</h3>
+<blockquote data-line="737" class="code-line">
+<p data-line="737" class="code-line"><code>std:map</code> 里，每个「元素的类型」是 <code>pair</code>，<code>pair.first</code> = 键；<code>pair.second</code> = 值。</p>
+</blockquote>
+<p data-line="739" class="code-line"><code>std::map</code> 可以用</p>
+<pre><code data-line="741" class="code-line language-cpp"><div><span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> item : map_instance) { ... ;}
+</div></code></pre>
+<p data-line="744" class="code-line">的格式迭代。其中，<code>item</code> 的类型是 <a href="https://en.cppreference.com/w/cpp/utility/pair" data-href="https://en.cppreference.com/w/cpp/utility/pair"><code>pair</code></a>。我们可以用 <code>item.first</code> 获取 键；用 <code>item.second</code> 获取 值。一个完整的例子如下</p>
+<pre><code data-line="746" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;map&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-keyword">int</span>&gt; m;
+    m[<span class="hljs-string">"apple"</span>] = <span class="hljs-number">1</span>;
+    m[<span class="hljs-string">"orange"</span>] = <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> item : m) {
+        <span class="hljs-built_in">cout</span> &lt;&lt; item.first &lt;&lt; <span class="hljs-string">" : "</span> &lt;&lt; item.second &lt;&lt; <span class="hljs-built_in">endl</span>;
+    }
+}
+</div></code></pre>
+<h3 id="vector-e4bd9ce4b8ba-map-e79a84e994ae-2" data-line="762" class="code-line">vector 作为 map 的键</h3>
+<blockquote data-line="764" class="code-line">
+<p data-line="764" class="code-line"><code>std::map</code> 里的「键 - 值」映射在创建的时候，内存里存放了完整的「键和值 的数值」。</p>
+</blockquote>
+<p data-line="766" class="code-line">如果我创建了这样的数据结构</p>
+<pre><code data-line="768" class="code-line language-cpp"><div><span class="hljs-built_in">std</span>::<span class="hljs-built_in">map</span>&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;, <span class="hljs-keyword">int</span>&gt;
+</div></code></pre>
+<p data-line="772" class="code-line">我个人比较担心的是，映射里的键 <code>std::vector&lt;int&gt;</code> 是怎么存储在 内存里的？具体而言，如果我用下面的代码 创建了 一个映射</p>
+<pre><code data-line="774" class="code-line language-cpp"><div><span class="hljs-built_in">map</span>&lt; <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;, <span class="hljs-keyword">int</span>&gt; m;
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; a{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+m[a] = <span class="hljs-number">1</span>;
+</div></code></pre>
+<p data-line="780" class="code-line">这个时候, <code>m</code> 里有一个 键，它的类型是 <code>vector&lt;int&gt;</code>。但是我有点担心，它其实是指向 <code>vector&lt;int&gt;</code> 的一个指针。（因为 python 里基本上 <code>list</code> 和「指向 <code>list</code> 的指针」是一个意思）。这一段代码证明了，我的担心是多余的。</p>
+<pre><code data-line="782" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">map</span>&lt; <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;, <span class="hljs-keyword">int</span>&gt; m;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; a{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+    m[a] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// m: {(1, 1, 1): 1}</span>
+    a.clear();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">3</span>; i++) a.push_back(<span class="hljs-number">2</span>);
+    m[a] = <span class="hljs-number">2</span>;  <span class="hljs-comment">// m: {(1, 1, 1): 1, (2, 2, 2): 2}</span>
+    a.clear(); <span class="hljs-comment">// a 被清空之后，m 的键依然等于其他的 vector</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; t1{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; t2{<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>};
+    <span class="hljs-built_in">cout</span> &lt;&lt; m[t1] &lt;&lt; <span class="hljs-built_in">endl</span>; <span class="hljs-comment">// m[t1] -&gt; 1</span>
+    <span class="hljs-built_in">cout</span> &lt;&lt; m[t2] &lt;&lt; <span class="hljs-built_in">endl</span>; <span class="hljs-comment">// m[t2] -&gt; 2</span>
+}
+</div></code></pre>
+<h3 id="vim-e9858de7bdae-2" data-line="804" class="code-line">Vim 配置</h3>
+<p data-line="806" class="code-line">我使用编写 C++ 项目的偏好如下，这并不是值得推荐的习惯。</p>
+<ul>
+<li data-line="808" class="code-line">手写 <code>Makefile</code>。</li>
+<li data-line="809" class="code-line">使用 vim 作为编辑器，搭配插件 <a href="https://github.com/dense-analysis/ale" data-href="https://github.com/dense-analysis/ale">ale</a> 和 <a href="https://github.com/ycm-core/YouCompleteMe" data-href="https://github.com/ycm-core/YouCompleteMe">YouCompleteMe</a>。</li>
+</ul>
+<p data-line="811" class="code-line">在 <a href="https://github.com/dense-analysis/ale" data-href="https://github.com/dense-analysis/ale">ale</a> 进行语法检查的时候，我们需要「告诉」vim 我们的编译选项。由于 不同项目使用的 编译选项 不同，所以我倾向于 在不同项目下 使用不同的 vim 配置。具体的做法如下。</p>
+<p data-line="813" class="code-line">首先，向系统的 <code>vimrc</code> 添加下面两行代码。大部分 Linux 系统下，这个文件处于 <code>$HOME/.vim/vimrc</code>。这两行代码能够让 vim 读取「当前文件夹」下的 配置文件。</p>
+<pre><code data-line="815" class="code-line language-vim"><div><span class="hljs-keyword">set</span> exrc
+<span class="hljs-keyword">set</span> secure
+</div></code></pre>
+<p data-line="820" class="code-line">其次，在 C++ 项目的文件夹里，创建一个 命名为 <code>.vimrc</code> 的文件，加入下面的代码。这一行代码能够让 <a href="https://github.com/dense-analysis/ale" data-href="https://github.com/dense-analysis/ale">ale</a> 分析 <code>Makefile</code>，自动找出需要 include 的文件夹、library 的位置、以及 C++ 标准的版本。</p>
+<pre><code data-line="822" class="code-line language-vim"><div><span class="hljs-keyword">let</span> <span class="hljs-variable">g:ale_c_parse_makefile</span>=<span class="hljs-string">"./Makefile"</span>
+</div></code></pre>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

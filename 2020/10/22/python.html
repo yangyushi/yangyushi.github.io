@@ -1,0 +1,1057 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Python</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    22 Oct 2020
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<hr />
+<p data-line="11" class="code-line">这一篇笔记里 记录了一些 相对高级的 Python 技巧。对它们的理解 能够显著地帮助我 读懂别人的代码，以及分析代码中的错误。</p>
+<hr />
+<h2 id="%E5%B8%B8%E7%94%A8%E7%9A%84%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0" data-line="15" class="code-line">常用的内置函数</h2>
+<p data-line="17" class="code-line">在 Python 里有一些内置函数，在代码里十分常见。掌握了它们的使用以后可以让我们的代码更加 pythonic。</p>
+<h3 id="enumerate" data-line="19" class="code-line">enumerate()</h3>
+<p data-line="21" class="code-line">利用 <code>enumerate()</code> 函数，可以在每次循环中同时得到下标和元素</p>
+<pre><code data-line="23" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: s = <span class="hljs-string">'abcd'</span>
+
+In [<span class="hljs-number">2</span>]: <span class="hljs-keyword">for</span> (i, c) <span class="hljs-keyword">in</span> enumerate(s):
+   ...:     print(<span class="hljs-string">f"Index: <span class="hljs-subst">{i}</span>; Char: <span class="hljs-subst">{c}</span>"</span>)
+   ...: 
+Index: <span class="hljs-number">0</span>; Char: a
+Index: <span class="hljs-number">1</span>; Char: b
+Index: <span class="hljs-number">2</span>; Char: c
+Index: <span class="hljs-number">3</span>; Char: d
+</div></code></pre>
+<h3 id="zip" data-line="35" class="code-line">zip()</h3>
+<p data-line="37" class="code-line">利用 <code>zip()</code> 函数，可以在每次循环时从各个序列分别取出一个元素</p>
+<pre><code data-line="39" class="code-line language-py"><div>In [<span class="hljs-number">3</span>]: la = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+In [<span class="hljs-number">4</span>]: lb = [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+
+In [<span class="hljs-number">5</span>]: lc = [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]
+
+In [<span class="hljs-number">6</span>]: <span class="hljs-keyword">for</span> (a, b, c) <span class="hljs-keyword">in</span> zip(la, lb, lc):
+   ...:     print(a, b, c)
+   ...: 
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>
+<span class="hljs-number">3</span> <span class="hljs-number">6</span> <span class="hljs-number">9</span>
+</div></code></pre>
+<h3 id="filter" data-line="54" class="code-line">filter()</h3>
+<p data-line="56" class="code-line"><code>filter()</code> 函数的第一个参数是一个函数对象。它也是将作为参数的函数对象作用于多个元素。如果函数对象返回的是 <code>True</code>，则该次的元素被储存于返回的表中。 <code>filter</code> 通过读入的函数来筛选数据。Python 3 中，<code>filter()</code> 返回的不是表，而是循环对象。</p>
+<pre><code data-line="58" class="code-line language-python"><div><span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+f = <span class="hljs-keyword">lambda</span> x: <span class="hljs-literal">True</span> <span class="hljs-keyword">if</span> x[<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0.5</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">False</span>  <span class="hljs-comment"># function to filter small y scatters</span>
+
+scatter = list((random.random(), random.random()) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">50</span>))
+sx = [a[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> scatter]
+sy = [a[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> scatter]  <span class="hljs-comment"># get x and y value lists for plot</span>
+
+scatter_filt = list(filter(f, scatter)) 
+<span class="hljs-comment"># drop the elements in "scatter" if they yield Flase in funciton "f"</span>
+sfx = [a[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> scatter_filt]
+sfy = [a[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> scatter_filt]  <span class="hljs-comment"># get x and y value lists for plot</span>
+
+fig, ax = plt.subplots(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>)
+ax[<span class="hljs-number">0</span>].scatter(sx, sy, color=<span class="hljs-string">'b'</span>), ax[<span class="hljs-number">0</span>].axis([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-0.1</span>,<span class="hljs-number">1.1</span>])
+ax[<span class="hljs-number">1</span>].scatter(sfx, sfy, color=<span class="hljs-string">'r'</span>), ax[<span class="hljs-number">1</span>].axis([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-0.1</span>,<span class="hljs-number">1.1</span>])
+plt.show()
+</div></code></pre>
+<p data-line="79" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/filter.svg" alt="" class="loading" id="image-hash--2090556642" /></p>
+<p data-line="81" class="code-line">(上图: 原始数据；下图：经过 <code>filter</code> 处理之后的数据（所有小于 0.5 的值都被扔掉）。)</p>
+<h3 id="reduce" data-line="83" class="code-line">reduce()</h3>
+<p data-line="85" class="code-line"><code>reduce</code> 函数的第一个参数也是函数，但有一个要求，就是这个函数自身能接收两个参数。reduce可以累进地将函数作用于各个参数。</p>
+<p data-line="87" class="code-line">python2：</p>
+<pre><code data-line="89" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span><span class="hljs-params">(x, y)</span>:</span> <span class="hljs-keyword">return</span> x + y
+
+In [<span class="hljs-number">2</span>]: l = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+
+In [<span class="hljs-number">3</span>]: print(reduce(f, l))
+<span class="hljs-number">15</span>
+</div></code></pre>
+<p data-line="98" class="code-line">python3：</p>
+<pre><code data-line="100" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> reduce
+
+In [<span class="hljs-number">2</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span><span class="hljs-params">(x, y)</span>:</span> <span class="hljs-keyword">return</span> x + y
+
+In [<span class="hljs-number">3</span>]: l = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+
+In [<span class="hljs-number">4</span>]: print(reduce(f, l))
+<span class="hljs-number">15</span>
+</div></code></pre>
+<h2 id="%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B" data-line="111" class="code-line">动态类型</h2>
+<h3 id="%E6%A6%82%E5%BF%B5" data-line="114" class="code-line">概念</h3>
+<p data-line="116" class="code-line">Python 里一个变量的类型是可以改变的。比如说 <code>var</code> 可以在某一个地方是 <code>int</code> 然而在另一个地方是 <code>list</code>。这样的特性在「静态语言」，譬如 C 和 C++ 里，是不被支持的。在 C++ 里，如果 <code>var</code> 被创建成了 <code>int</code>，那么它就必须永远是 <code>int</code>。这个特性叫「动态类型」。</p>
+<p data-line="118" class="code-line">Python 中的变量是「对象」。对象的「真正的内容」被储存在内存中。但我们并不能直接接触到这些对象的「内容」。我们在程序中写的对象名(变量名)，只是指向这一对象的<strong>引用 (reference)</strong>。</p>
+<p data-line="120" class="code-line"><strong>引用和对象分离</strong>，是动态类型的核心。引用可以随时指向一个新的对象：</p>
+<h3 id="%E4%BE%8B%E5%AD%90%E7%BB%99%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88" data-line="122" class="code-line">例子：给变量赋值的时候发生了什么</h3>
+<p data-line="124" class="code-line">例一：</p>
+<pre><code data-line="126" class="code-line language-python"><div>a = <span class="hljs-number">3</span>
+a = <span class="hljs-string">"3"</span>
+</div></code></pre>
+<p data-line="131" class="code-line">第一个语句中，3 是储存在内存中的一个整数对象。通过赋值，<strong>引用 a 指向对象 3</strong>。
+第二个语句中，内存中建立对象 &quot;3&quot;，是一个字符串 (string)。<strong>引用 a 指向了 &quot;3&quot;</strong>。此时，对象 3 不再有引用指向它。</p>
+<ul>
+<li data-line="134" class="code-line">Python 会自动将 没有引用 指向的对象 销毁 (destruct)，释放相应内存。</li>
+<li data-line="135" class="code-line">对于小的整数和短字符串，Python 会「缓存」这些对象，而不是频繁的建立和销毁。</li>
+</ul>
+<p data-line="137" class="code-line">例二：</p>
+<pre><code data-line="139" class="code-line language-python"><div>a = <span class="hljs-number">5</span>
+b = a
+a = a + <span class="hljs-number">2</span>
+</div></code></pre>
+<p data-line="145" class="code-line">通过前两个句子，我们让 a, b 指向<strong>同一个整数对象 5</strong> ( b = a 的含义是让引用 b 指向引用 a 所指的那一个对象)。
+第三个句子对引用 a 重新赋值，让 a 指向一个新的对象 7。此时 a, b 分别指向不同的对象。</p>
+<p data-line="148" class="code-line">我们看到，即使是多个引用指向同一个对象，如果一个引用值发生变化，那么实际上是让这个引用指向一个新的引用，并不影响其他的引用的指向。从效果上看，就是各个引用各自独立，互不影响。</p>
+<h3 id="%E4%BE%8B%E5%AD%90%E5%A4%9A%E4%B8%AA%E5%8F%98%E9%87%8F%E5%BC%95%E7%94%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%88%97%E8%A1%A8" data-line="150" class="code-line">例子：多个变量引用同一个列表</h3>
+<pre><code data-line="152" class="code-line language-python"><div>L1= [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+L2 = L1
+L3 = L1
+
+<span class="hljs-comment"># inmutable </span>
+L1 = <span class="hljs-number">1</span>
+print(L1, L2, L3)
+<span class="hljs-meta">&gt;&gt;&gt; </span>(<span class="hljs-number">1</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+
+<span class="hljs-comment"># mutable</span>
+L2[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+print(L1, L2, L3)
+<span class="hljs-meta">&gt;&gt;&gt; </span>(<span class="hljs-number">1</span>, [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]) <span class="hljs-comment"># wtf?</span>
+</div></code></pre>
+<p data-line="168" class="code-line">我们不再对 <code>L2</code> 这一引用赋值，而是对 <code>L2</code> <strong>所指向的表</strong>的元素赋值。结果是，<code>L3</code> 也同时发生变化。</p>
+<p data-line="170" class="code-line">原因何在呢？因为 <code>L2</code>, <code>L3</code> 的指向没有发生变化，依然指向那个表。表实际上是包含了多个<strong>引用</strong>的对象（每个<strong>引用</strong>是一个元素，比如 <code>L1[0]</code>, <code>L1[1]</code>, ...，每个引用指向一个对象，比如 <code>1</code>, <code>2</code>, <code>3</code>)。而 <code>L2[0] = 0</code> 这一赋值操作，并不是改变 <code>L2</code> 的指向，而是对<code>L2[0]</code>, 也就是表对象的一个元素，进行操作，所以所有指向该对象的引用都受到影响。</p>
+<h3 id="%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92" data-line="173" class="code-line">动态类型和参数传递</h3>
+<p data-line="175" class="code-line">Python 里有一个很讨厌的地方，那就是函数在得到「不可变对象」和「可变对象」的时候，这个函数会表现出不同的行为。</p>
+<p data-line="177" class="code-line">这个问题是 Python 的特性，我们并没有「解决它」的办法。一个人唯一能做的就是理解背后的机理，来避免程序中的错误。</p>
+<h4 id="%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1-immutable" data-line="179" class="code-line">不可变对象 (immutable)</h4>
+<pre><code data-line="181" class="code-line language-python"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span><span class="hljs-params">(x)</span>:</span>
+    x = <span class="hljs-number">100</span>
+    print(x)
+
+a = <span class="hljs-number">1</span>
+foo(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">100</span>
+print(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">1</span>
+</div></code></pre>
+<p data-line="193" class="code-line">参数 <code>x</code> 是一个新的引用，指向 <code>a</code> 所指的对象。如果参数是不可变 (immutable) 的对象，<code>a</code> 和 <code>x</code> 的引用之间相互独立。对参数 <code>x</code> 的操作不会影响引用 <code>a</code>。这样的传递类似于 C 语言中的值传递。</p>
+<h4 id="%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1" data-line="195" class="code-line">可变对象</h4>
+<pre><code data-line="197" class="code-line language-python"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span><span class="hljs-params">(x)</span>:</span>
+    x[<span class="hljs-number">0</span>] = <span class="hljs-number">100</span>
+    print(x)
+
+b = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+f(b)
+<span class="hljs-meta">&gt;&gt;&gt; </span>[<span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+print(b)
+<span class="hljs-meta">&gt;&gt;&gt; </span>[<span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+</div></code></pre>
+<p data-line="209" class="code-line">如果传递的是可变 (mutable) 的对象，那么改变函数参数，有可能改变原对象。所有指向原对象的引用都会受影响，编程的时候要对此问题留心。</p>
+<h2 id="%E5%87%BD%E6%95%B0%E4%B9%9F%E6%98%AF%E4%B8%80%E7%A7%8D%E5%AF%B9%E8%B1%A1" data-line="211" class="code-line">函数也是一种对象</h2>
+<p data-line="213" class="code-line">任何一个有 <code>__call__()</code> 特殊方法的对象都被当作是函数</p>
+<pre><code data-line="215" class="code-line language-python"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sample</span><span class="hljs-params">()</span>:</span>
+   ....:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, index)</span>:</span>
+   ....:         print(<span class="hljs-string">"making sample #{i}"</span>.format(i=index))
+   ....:         <span class="hljs-keyword">return</span> <span class="hljs-string">"sample_{i}"</span>.format(i=index)
+   ....:     
+
+In [<span class="hljs-number">2</span>]: s1 = Sample()
+
+In [<span class="hljs-number">3</span>]: s1(<span class="hljs-number">0</span>)
+making sample <span class="hljs-comment">#0</span>
+Out[<span class="hljs-number">3</span>]: <span class="hljs-string">'sample_0'</span>
+
+In [<span class="hljs-number">4</span>]: map(s1, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>])
+Out[<span class="hljs-number">4</span>]: &lt;map at <span class="hljs-number">0x103d5e080</span>&gt;
+
+In [<span class="hljs-number">5</span>]: list(map(s1, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]))
+making sample <span class="hljs-comment">#1</span>
+making sample <span class="hljs-comment">#2</span>
+making sample <span class="hljs-comment">#3</span>
+making sample <span class="hljs-comment">#4</span>
+making sample <span class="hljs-comment">#5</span>
+Out[<span class="hljs-number">5</span>]: [<span class="hljs-string">'sample_1'</span>, <span class="hljs-string">'sample_2'</span>, <span class="hljs-string">'sample_3'</span>, <span class="hljs-string">'sample_4'</span>, <span class="hljs-string">'sample_5'</span>]
+</div></code></pre>
+<h2 id="%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8" data-line="240" class="code-line">上下文管理器</h2>
+<p data-line="242" class="code-line">上下文管理器 (context manager) 是 Python2.5 开始支持的一种语法，用于规定某个对象的使用范围。一旦进入或者离开该使用范围，会有特殊操作被调用 (比如为对象分配或者释放内存)。它的语法形式是:  <code>with...as...</code></p>
+<p data-line="244" class="code-line">例子：</p>
+<pre><code data-line="246" class="code-line language-python"><div><span class="hljs-keyword">with</span> open(<span class="hljs-string">"File_name"</span>) <span class="hljs-keyword">as</span> f:
+    <span class="hljs-comment"># do something and f is closed after this</span>
+</div></code></pre>
+<p data-line="251" class="code-line">下面的代码是一个简单的「上下文管理器」在管理「文件对象」时的应用</p>
+<pre><code data-line="253" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: f = open(<span class="hljs-string">'new.txt'</span>, <span class="hljs-string">'w'</span>)
+
+In [<span class="hljs-number">2</span>]: f.closed
+Out[<span class="hljs-number">2</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">3</span>]: f.close()
+
+In [<span class="hljs-number">4</span>]: f.closed
+Out[<span class="hljs-number">4</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">5</span>]: <span class="hljs-keyword">with</span> open(<span class="hljs-string">'new.txt'</span>, <span class="hljs-string">'w'</span>) <span class="hljs-keyword">as</span> f:
+   ...:     print(f.closed)
+   ...: 
+<span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">6</span>]: f.closed
+Out[<span class="hljs-number">6</span>]: <span class="hljs-literal">True</span>
+</div></code></pre>
+<h3 id="%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88" data-line="273" class="code-line">发生了什么</h3>
+<p data-line="275" class="code-line">当我们使用上下文管理器的语法时，我们实际上要求 Python 在进入程序块之前调用对象的 <code>__enter__()</code> 方法，在结束程序块的时候调用 <code>__exit__()</code>方法。</p>
+<p data-line="277" class="code-line">对于<strong>文件对象 f</strong> 来说，它定义了 <code>__enter__()</code> 和 <code>__exit__()</code> 方法 (可以通过 <code>dir(f)</code> 看到)。在 <code>f</code> 的 <code>__exit__()</code> 方法中，有<code>self.close()</code>语句。所以在使用上下文管理器时，我们就不用「特意地」关闭 <code>f</code> 文件了。</p>
+<h3 id="%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8" data-line="279" class="code-line">自定义上下文管理器</h3>
+<p data-line="281" class="code-line">下面的代码构建了一个带有「上下文管理器」的「类」, 并且在上下文中「使用」了它。</p>
+<pre><code data-line="283" class="code-line language-py"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ranter</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">"you are ugly"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__enter__</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">"god bless you"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__exit__</span><span class="hljs-params">(self, exc_type, exc_value, traceback)</span>:</span>
+        print(<span class="hljs-string">"good luck"</span>)
+
+<span class="hljs-keyword">with</span> ranter() <span class="hljs-keyword">as</span> r:
+    <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<p data-line="298" class="code-line">下面是我们得到的结果。注意三个 <code>print</code> 结果的顺序。</p>
+<pre><code data-line="301" class="code-line language-py"><div>you are ugly
+god bless you
+good luck
+</div></code></pre>
+<h2 id="%E9%97%AD%E5%8C%85" data-line="307" class="code-line">闭包</h2>
+<p data-line="309" class="code-line">闭包 (closure) 是「函数式编程」的重要的语法结构。「函数式编程」是一种编程范式。在<strong>面向过程</strong>编程中，我们见到过「函数」(function)；在<strong>面向对象</strong>编程中，我们见过「对象」(object)。「函数」和「对象」的根本目的是 以某种逻辑方式 组织代码，并提高 代码的 可重复使用性(reusability)。「闭包」也是一种组织代码的结构，它同样提高了代码的可重复使用性。</p>
+<p data-line="311" class="code-line">不同的语言实现「闭包」的方式不同。Python 以「函数对象」为基础，为闭包这一 语法结构 提供支持。Python 中的一切「东西」都是对象，包括「函数」本身，也是一个对象。在「函数对象」中，我们像使用一个普通对象一样使用 它。比如更改「函数对象」的名字，或者将「函数对象」作为「参数」传递给另一个函数。</p>
+<h3 id="%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F" data-line="313" class="code-line">函数对象的作用域</h3>
+<p data-line="315" class="code-line">和其他对象一样，函数对象也有其存活的范围 (scope) ，也就是函数对象的作用域。函数对象是使用 <code>def</code> 语句定义的，函数对象的作用域与 <code>def</code> 所在的层级相同。</p>
+<p data-line="317" class="code-line">下面的示例代码中，我们在 <code>line_conf</code> 函数的 范围内 定义的函数 <code>line</code>，就只能在 <code>line_conf</code> 的 范围内 使用。在 <code>line_conf</code> 外使用 <code>line</code> 会导致错误。</p>
+<pre><code data-line="319" class="code-line language-py"><div>In [<span class="hljs-number">8</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">line_conf</span><span class="hljs-params">(x)</span>:</span>
+   ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">line</span><span class="hljs-params">(x)</span>:</span>
+   ...:         <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * x + <span class="hljs-number">1</span>
+   ...: 
+
+In [<span class="hljs-number">9</span>]: line(<span class="hljs-number">5</span>)  <span class="hljs-comment"># 在 line_conf 的范围外使用，导致错误</span>
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-9</span><span class="hljs-number">-8</span>c1cc91cfe00&gt; <span class="hljs-keyword">in</span> &lt;module&gt;
+----&gt; <span class="hljs-number">1</span> line(<span class="hljs-number">5</span>)  <span class="hljs-comment"># error because line is inside line_conf</span>
+
+NameError: name <span class="hljs-string">'line'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined
+
+In [<span class="hljs-number">10</span>]: line_conf()  <span class="hljs-comment"># 在 line_conf 内, line 被正确的「创建」和「摧毁」</span>
+
+In [<span class="hljs-number">11</span>]: line(<span class="hljs-number">5</span>)  <span class="hljs-comment"># 在 line_conf 的范围外使用，导致错误</span>
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-11</span>-c0da0624920b&gt; <span class="hljs-keyword">in</span> &lt;module&gt;
+----&gt; <span class="hljs-number">1</span> line(<span class="hljs-number">5</span>)  <span class="hljs-comment"># error again because line is inside line_conf</span>
+
+NameError: name <span class="hljs-string">'line'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined
+</div></code></pre>
+<h3 id="e997ade58c85-1" data-line="344" class="code-line">闭包</h3>
+<p data-line="346" class="code-line">一个「函数」和它的「环境变量」合在一起，就构成了一个「<strong>闭包</strong>」。下面是一个「闭包」的例子。</p>
+<pre><code data-line="348" class="code-line language-py"><div>In [<span class="hljs-number">13</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">line_conf</span><span class="hljs-params">(a, b)</span>:</span>
+    ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">line</span><span class="hljs-params">(x)</span>:</span>
+    ...:         <span class="hljs-keyword">return</span> a * x + b
+    ...:     <span class="hljs-keyword">return</span> line
+    ...: 
+
+In [<span class="hljs-number">14</span>]: line = line_conf(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
+
+In [<span class="hljs-number">15</span>]: line(<span class="hljs-number">1</span>)
+Out[<span class="hljs-number">15</span>]: <span class="hljs-number">2</span>
+</div></code></pre>
+<p data-line="361" class="code-line">Python 中的闭包是一个包含有「环境变量的值」的「函数对象」。这些「环境变量的值」被保存在函数对象的 <code>__closure__</code> 属性中。比如上面代码中的 <code>line</code> 就有两个整数对象被保存在 <code>__closure__</code> 里。</p>
+<pre><code data-line="363" class="code-line"><code><div>In [16]: line.__closure__
+Out[16]: 
+(&lt;cell at 0x10a9d3e90: int object at 0x10876bda0&gt;,
+ &lt;cell at 0x10a9d3690: int object at 0x10876bd60&gt;)
+</div></code></code></pre>
+<h2 id="%E8%A3%85%E9%A5%B0%E5%99%A8" data-line="372" class="code-line">装饰器</h2>
+<h3 id="e8a385e9a5b0e599a8-1" data-line="374" class="code-line">装饰器</h3>
+<p data-line="376" class="code-line">装饰器 (decorator) 是一种高级 Python 语法。装饰器可以对一个函数、方法或者类进行加工。在 Python 中，我们有多种方法对函数和类进行加工，比如在 Python 闭包中，我们见到函数对象作为某一个函数的返回结果。相对于其它方式，装饰器语法简单，代码可读性高。</p>
+<p data-line="378" class="code-line">在函数定义之前调用 <code>@decorator</code>，我们实际上将该函数传递给 <code>decorator</code>，并将 <code>decorator</code>返回的对象赋给原来的函数名。</p>
+<pre><code data-line="380" class="code-line language-py"><div>In [<span class="hljs-number">20</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decorator</span><span class="hljs-params">(F)</span>:</span>
+    ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_F</span><span class="hljs-params">(a, b)</span>:</span>  <span class="hljs-comment"># 打印「被装饰的函数」的参数</span>
+    ...:         print(<span class="hljs-string">f"The input is <span class="hljs-subst">{a}</span> and <span class="hljs-subst">{b}</span>"</span>)
+    ...:         <span class="hljs-keyword">return</span> F(a, b)
+    ...:     <span class="hljs-keyword">return</span> new_F
+    ...: 
+
+In [<span class="hljs-number">21</span>]: @decorator  <span class="hljs-comment"># 使用装饰器</span>
+    ...: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dist_sq</span><span class="hljs-params">(a, b)</span>:</span>
+    ...:     <span class="hljs-keyword">return</span> a**<span class="hljs-number">2</span> + b**<span class="hljs-number">2</span>
+    ...: 
+
+In [<span class="hljs-number">22</span>]: dist_sq(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+The input <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># 装饰器的「效果」</span>
+Out[<span class="hljs-number">22</span>]: <span class="hljs-number">25</span>
+</div></code></pre>
+<h3 id="%E5%90%AB%E5%8F%82%E8%A3%85%E9%A5%B0%E5%99%A8" data-line="398" class="code-line">含参装饰器</h3>
+<p data-line="400" class="code-line">装饰器的语法允许我们调用 <code>decorator</code> 时，提供其它参数，比如 <code>@decorator(par)</code>。这样，就为装饰器的编写和使用提供了更大的灵活性。</p>
+<pre><code data-line="402" class="code-line language-py"><div>In [<span class="hljs-number">24</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dec_with_par</span><span class="hljs-params">(parameter=<span class="hljs-string">""</span>)</span>:</span>  <span class="hljs-comment"># 比单纯的「装饰器」更多一层</span>
+    ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decorator</span><span class="hljs-params">(func)</span>:</span>
+    ...:         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_func</span><span class="hljs-params">(a, b)</span>:</span>
+    ...:             print(parameter)
+    ...:             print(<span class="hljs-string">f"the input is <span class="hljs-subst">{a}</span> and <span class="hljs-subst">{b}</span>"</span>)
+    ...:             <span class="hljs-keyword">return</span> func(a, b)
+    ...:         <span class="hljs-keyword">return</span> new_func
+    ...:     <span class="hljs-keyword">return</span> decorator
+    ...: 
+
+In [<span class="hljs-number">25</span>]: @dec_with_par(<span class="hljs-string">"calculate squared sum"</span>)  <span class="hljs-comment"># 使用「含参数的装饰器」</span>
+    ...: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dist_sq</span><span class="hljs-params">(a, b)</span>:</span>
+    ...:     <span class="hljs-keyword">return</span> a**<span class="hljs-number">2</span> + b**<span class="hljs-number">2</span>
+    ...: 
+
+In [<span class="hljs-number">26</span>]: dist_sq(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+calculate squared sum  <span class="hljs-comment"># 参数起作用</span>
+the input <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span>   <span class="hljs-comment"># 装饰器起作用</span>
+Out[<span class="hljs-number">26</span>]: <span class="hljs-number">25</span>            <span class="hljs-comment"># 函数的输出结果</span>
+</div></code></pre>
+<h4 id="%E8%A3%85%E9%A5%B0%E7%B1%BB" data-line="424" class="code-line">装饰类</h4>
+<p data-line="426" class="code-line">在 <code>Python 2.6</code> 以后，装饰器被拓展到类。一个装饰器可以接收一个类，并返回一个类，从而起到加工类的效果。</p>
+<pre><code data-line="429" class="code-line language-py"><div>In [<span class="hljs-number">28</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decorator</span><span class="hljs-params">(old_class)</span>:</span>
+    ...:     <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">new_class</span>:</span>
+    ...:         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+    ...:             old_class.__init__(self)
+    ...:             self.version = <span class="hljs-string">"new"</span>
+    ...:     <span class="hljs-keyword">return</span> new_class
+    ...: 
+
+In [<span class="hljs-number">29</span>]: @decorator  <span class="hljs-comment"># 使用「类」的装饰器</span>
+    ...: <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">bird</span>:</span>
+    ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+    ...:         self.name = <span class="hljs-string">"bird"</span>
+    ...: 
+
+In [<span class="hljs-number">30</span>]: crow = bird()
+
+In [<span class="hljs-number">31</span>]: crow.name
+Out[<span class="hljs-number">31</span>]: <span class="hljs-string">'bird'</span>
+
+In [<span class="hljs-number">32</span>]: crow.version   <span class="hljs-comment"># 装饰器的作用</span>
+Out[<span class="hljs-number">32</span>]: <span class="hljs-string">'new'</span>
+</div></code></pre>
+<h2 id="%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86" data-line="454" class="code-line">内存管理</h2>
+<h3 id="%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8" data-line="456" class="code-line">对象的内存使用</h3>
+<p data-line="458" class="code-line">对于赋值语句 <code>a = 1</code>，整数 <code>1</code> 为一个对象。而 <code>a</code> 是一个引用。利用赋值语句，引用 <code>a</code> 指向对象 <code>1</code> 。</p>
+<p data-line="460" class="code-line">为了探索对象在内存的存储，我们可以求助于 Python 的内置函数 <code>id()</code> 。它用于返回对象的身份(identity)。其实，这里所谓的身份，就是该对象的<strong>内存地址</strong>。</p>
+<pre><code data-line="462" class="code-line language-py"><div>In [<span class="hljs-number">34</span>]: a = <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">35</span>]: id(a)  <span class="hljs-comment"># 十进制 内存地址</span>
+Out[<span class="hljs-number">35</span>]: <span class="hljs-number">4436966784</span>
+
+In [<span class="hljs-number">36</span>]: hex(id(a))  <span class="hljs-comment"># 十六进制 内存地址</span>
+Out[<span class="hljs-number">36</span>]: <span class="hljs-string">'0x10876bd80'</span>
+</div></code></pre>
+<p data-line="472" class="code-line">Python 会缓存整数和短小的字符这类对象，以便重复使用。当我们创建多个<strong>等于 1 的引用</strong>时，实际上是让所有这些引用指向同一个对象：</p>
+<pre><code data-line="474" class="code-line language-py"><div>In [<span class="hljs-number">37</span>]: a = <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">38</span>]: b = <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">39</span>]: id(a), id(b)
+Out[<span class="hljs-number">39</span>]: (<span class="hljs-number">4436966784</span>, <span class="hljs-number">4436966784</span>)
+</div></code></pre>
+<p data-line="483" class="code-line">为了检验「两个引用 是否指向 同一个对象」，我们可以用 <code>is</code> 关键字。<code>is</code> 用于判断两个引用所指的对象是否相同。</p>
+<pre><code data-line="485" class="code-line language-py"><div>In [<span class="hljs-number">40</span>]: a, b = <span class="hljs-number">1</span>, <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">41</span>]: a <span class="hljs-keyword">is</span> b  <span class="hljs-comment"># 得到 True 因为 Python 会缓存小整数</span>
+Out[<span class="hljs-number">41</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">42</span>]: a, b = <span class="hljs-number">12345</span>, <span class="hljs-number">12345</span>
+
+In [<span class="hljs-number">43</span>]: a <span class="hljs-keyword">is</span> b  <span class="hljs-comment"># 得到 False 因为 Python 不会缓存大的整数</span>
+Out[<span class="hljs-number">43</span>]: <span class="hljs-literal">False</span>
+</div></code></pre>
+<h3 id="%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0" data-line="498" class="code-line">引用计数</h3>
+<p data-line="500" class="code-line">在 Python 中，每个对象都有存有指向该对象的引用总数，即「引用计数」(reference count)。当一个对象 <code>A</code> 被另一个对象 <code>B</code> 引用时，<code>A</code> 的 引用计数 将增加 1。</p>
+<p data-line="502" class="code-line">我们可以使用 <code>sys</code> 包中的<code>getrefcount()</code>，来查看某个对象的引用计数。需要注意的是，当使用某个「引用」作为参数，传递给 <code>getrefcount()</code> 时，参数实际上创建了一个临时的引用。因此，<code>getrefcount()</code> 所得到的结果，会永远比期望的多 1。</p>
+<pre><code data-line="505" class="code-line language-py"><div>In [<span class="hljs-number">45</span>]: <span class="hljs-keyword">from</span> sys <span class="hljs-keyword">import</span> getrefcount
+
+In [<span class="hljs-number">46</span>]: a = []  <span class="hljs-comment"># a 被引用一次</span>
+
+In [<span class="hljs-number">47</span>]: getrefcount(a)  <span class="hljs-comment"># 得到 1 + 1 的结果</span>
+Out[<span class="hljs-number">47</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">48</span>]: b = [a]  <span class="hljs-comment"># b 增加了 1 次 a 的引用</span>
+
+In [<span class="hljs-number">49</span>]: getrefcount(a)
+Out[<span class="hljs-number">49</span>]: <span class="hljs-number">3</span>
+
+In [<span class="hljs-number">50</span>]: c = [a, a, a]  <span class="hljs-comment"># c 增加了 3 次 a 的引用</span>
+
+In [<span class="hljs-number">51</span>]: getrefcount(a)
+Out[<span class="hljs-number">51</span>]: <span class="hljs-number">6</span>
+</div></code></pre>
+<h3 id="%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AF%B9%E8%B1%A1" data-line="524" class="code-line">「引用对象」的对象</h3>
+<p data-line="526" class="code-line">Python 的一个容器对象(container)，比如表、词典等，可以包含多个对象。实际上，「容器」中包含的并不是「对象」本身，是指向各个「对象」的「引用」。</p>
+<p data-line="528" class="code-line">我们也可以自定义一个对象，并引用其它对象:</p>
+<pre><code data-line="530" class="code-line language-py"><div>In [<span class="hljs-number">53</span>]: <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">from_obj</span><span class="hljs-params">(object)</span>:</span>
+    ...:     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, to_obj)</span>:</span>
+    ...:         self.to_obj = to_obj
+    ...: 
+
+In [<span class="hljs-number">54</span>]: b = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+In [<span class="hljs-number">55</span>]: a = from_obj(b)  <span class="hljs-comment"># 创建一个「引用了 b」的对象 a</span>
+
+In [<span class="hljs-number">56</span>]: id(a.to_obj), id(b)  <span class="hljs-comment"># a 的 to_obj 是 b 的「引用」</span>
+Out[<span class="hljs-number">56</span>]: (<span class="hljs-number">4474875808</span>, <span class="hljs-number">4474875808</span>)
+
+In [<span class="hljs-number">57</span>]: getrefcount(b)  <span class="hljs-comment"># 三次引用：b + a.to_obj + getrefcount()</span>
+Out[<span class="hljs-number">57</span>]: <span class="hljs-number">3</span>
+</div></code></pre>
+<p data-line="547" class="code-line">使用「对象」来「引用对象」，是 Python 代码最基本的构成方式。即使是 <code>a = 1</code> 这一赋值方式，实际上是让一个「词典对象」的一个「键元素」(取值为 <code>&quot;a&quot;</code>) 来引用一个「整数对象」(取值为 <code>1</code>)。</p>
+<p data-line="549" class="code-line">这个「词典对象」，记录了所有的全局引用。我们可以通过内置函数<code>globals()</code> 来查看该词典：</p>
+<pre><code data-line="551" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: a = <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">2</span>]: globals()
+Out[<span class="hljs-number">2</span>]: 
+{<span class="hljs-string">'__name__'</span>: <span class="hljs-string">'__main__'</span>,
+ <span class="hljs-string">'__doc__'</span>: <span class="hljs-string">'Automatically created module for IPython interactive environment'</span>,
+ <span class="hljs-string">'__package__'</span>: <span class="hljs-literal">None</span>,
+ ...
+ <span class="hljs-string">'_ii'</span>: <span class="hljs-string">''</span>,
+ <span class="hljs-string">'_iii'</span>: <span class="hljs-string">''</span>,
+ <span class="hljs-string">'_i1'</span>: <span class="hljs-string">'a = 1'</span>,
+ <span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>,  <span class="hljs-comment"># 注意这里！</span>
+ <span class="hljs-string">'_i2'</span>: <span class="hljs-string">'globals()'</span>}
+</div></code></pre>
+<h3 id="%E5%BC%95%E7%94%A8%E7%8E%AF" data-line="568" class="code-line">引用环</h3>
+<p data-line="570" class="code-line">两个对象可能相互引用，从而构成所谓的「引用环」</p>
+<pre><code data-line="572" class="code-line language-py"><div>In [<span class="hljs-number">26</span>]: a = []
+
+In [<span class="hljs-number">27</span>]: b = [a]
+
+In [<span class="hljs-number">28</span>]: a.append(b)
+
+In [<span class="hljs-number">29</span>]: a
+Out[<span class="hljs-number">29</span>]: [[[...]]]
+
+In [<span class="hljs-number">30</span>]: b
+Out[<span class="hljs-number">30</span>]: [[[...]]]
+
+In [<span class="hljs-number">31</span>]: getrefcount(a)
+Out[<span class="hljs-number">31</span>]: <span class="hljs-number">9</span>
+
+In [<span class="hljs-number">32</span>]: getrefcount(b)
+Out[<span class="hljs-number">32</span>]: <span class="hljs-number">9</span>
+</div></code></pre>
+<p data-line="592" class="code-line">即使是一个对象，只需要自己引用自己，也能构成引用环。</p>
+<pre><code data-line="594" class="code-line language-py"><div>In [<span class="hljs-number">34</span>]: a = []
+
+In [<span class="hljs-number">35</span>]: a.append(a)
+
+In [<span class="hljs-number">36</span>]: a
+Out[<span class="hljs-number">36</span>]: [[...]]
+
+In [<span class="hljs-number">37</span>]: a[<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">37</span>]: [[...]]
+
+In [<span class="hljs-number">38</span>]: a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">38</span>]: [[...]]
+
+In [<span class="hljs-number">39</span>]: a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">39</span>]: [[...]]
+
+In [<span class="hljs-number">40</span>]: a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">40</span>]: [[...]]
+
+In [<span class="hljs-number">41</span>]: getrefcount(a)
+Out[<span class="hljs-number">41</span>]: <span class="hljs-number">28</span>
+</div></code></pre>
+<h3 id="%E5%BC%95%E7%94%A8%E5%87%8F%E5%B0%91" data-line="619" class="code-line">引用减少</h3>
+<p data-line="621" class="code-line">某个对象的引用计数可能减少。比如，可以使用 <code>del</code> 关键字删除某个引用</p>
+<pre><code data-line="623" class="code-line language-py"><div>In [<span class="hljs-number">3</span>]: a = []
+
+In [<span class="hljs-number">4</span>]: b = [a]
+
+In [<span class="hljs-number">5</span>]: c = [a, a, a]
+
+In [<span class="hljs-number">6</span>]: getrefcount(a)  <span class="hljs-number">6</span> = a + b + <span class="hljs-number">3</span> * c + getrefcount
+Out[<span class="hljs-number">6</span>]: <span class="hljs-number">6</span>
+
+In [<span class="hljs-number">7</span>]: <span class="hljs-keyword">del</span>(a)  <span class="hljs-comment"># 删除 a 这个「引用」</span>
+
+In [<span class="hljs-number">8</span>]: getrefcount(b[<span class="hljs-number">0</span>])  <span class="hljs-comment"># b[0] 指向的「空列表」还存在</span>
+Out[<span class="hljs-number">8</span>]: <span class="hljs-number">5</span>
+
+In [<span class="hljs-number">9</span>]: b[<span class="hljs-number">0</span>].append(<span class="hljs-string">"a?"</span>) <span class="hljs-comment"># 修改这个「空列表」 依然会影响 c</span>
+
+In [<span class="hljs-number">10</span>]: c
+Out[<span class="hljs-number">10</span>]: [[<span class="hljs-string">'a?'</span>], [<span class="hljs-string">'a?'</span>], [<span class="hljs-string">'a?'</span>]]
+</div></code></pre>
+<p data-line="644" class="code-line"><code>del</code> 也可以用于删除容器元素中的元素</p>
+<pre><code data-line="646" class="code-line language-py"><div>In [<span class="hljs-number">12</span>]: a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+In [<span class="hljs-number">13</span>]: <span class="hljs-keyword">del</span>(a[<span class="hljs-number">2</span>])
+
+In [<span class="hljs-number">14</span>]: a
+Out[<span class="hljs-number">14</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+</div></code></pre>
+<h3 id="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6" data-line="656" class="code-line">垃圾回收</h3>
+<p data-line="658" class="code-line">Python 会启动「垃圾回收」 (garbage collection)，将没用的对象清除。
+从基本原理上，当 Python 的某个对象的引用计数降为 0 时，说明没有任何引用指向该对象，该对象就成为要被回收的垃圾了。</p>
+<p data-line="661" class="code-line">例子：</p>
+<pre><code data-line="663" class="code-line"><code><div>In [16]: a = [1, 2, 3]
+
+In [17]: del(a)
+</div></code></code></pre>
+<p data-line="669" class="code-line"><code>del(a)</code> 后，已经没有任何引用指向之前建立的 <code>[1, 2, 3]</code> 这个表。用户不可能通过任何方式接触或者动用这个对象。这个对象如果继续待在内存里，就成了累赘。当「垃圾回收」启动时，Python 扫描到这个「引用计数」为 <code>0</code> 的对象，就将它所占据的内存清空。</p>
+<p data-line="671" class="code-line">然而，「垃圾回收」时，Python 不能进行其它的任务。频繁的「垃圾回收」将大大降低 Python 的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，Python 只会在特定条件下，自动启动「垃圾回收」。当 Python 运行时，会记录其中的 「<strong>分配对象</strong>」 (object allocation) 和 「<strong>取消分配对象</strong>」 (object deallocation) 的次数。当两者的差值高于某个阈值时，「垃圾回收」才会启动。</p>
+<p data-line="673" class="code-line">我们可以通过 <code>gc</code> 模块的 <code>get_threshold()</code> 方法，查看该阈值:</p>
+<pre><code data-line="675" class="code-line language-py"><div>In [<span class="hljs-number">18</span>]: <span class="hljs-keyword">import</span> gc
+
+In [<span class="hljs-number">19</span>]: gc.get_threshold()
+Out[<span class="hljs-number">19</span>]: (<span class="hljs-number">700</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>)
+</div></code></pre>
+<p data-line="682" class="code-line">返回 <code>(700, 10, 10)</code>，后面的两个 <code>10</code> 是与分代回收相关的阈值。<code>700</code> 即是垃圾回收启动的阈值。可以通过 <code>gc</code> 中的 <code>set_threshold()</code> 方法重新设置这个值。我们也可以手动启动垃圾回收，即使用 <code>gc.collect()</code>。</p>
+<h3 id="%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6" data-line="684" class="code-line">分代回收</h3>
+<p data-line="686" class="code-line">Python 同时采用了「分代 (generation) 回收」的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
+<p data-line="688" class="code-line">Python 将所有的对象分为 0，1，2 三代。所有的新建对象都是 0 代对象。<strong>当某一代对象经历过垃圾回收，依然存活，那么它就被归入下一代对象。</strong></p>
+<p data-line="690" class="code-line">垃圾回收启动时，一定会扫描所有的 0 代对象。如果 0 代经过一定次数垃圾回收，那么就启动对 0 代和 1 代的扫描清理。当 1 代也经历了一定次数的垃圾回收后，那么会启动对 0，1，2，即对所有对象进行扫描。</p>
+<p data-line="692" class="code-line">这两个次数即上面</p>
+<pre><code data-line="694" class="code-line language-py"><div>In [<span class="hljs-number">18</span>]: <span class="hljs-keyword">import</span> gc
+
+In [<span class="hljs-number">19</span>]: gc.get_threshold()
+Out[<span class="hljs-number">19</span>]: (<span class="hljs-number">700</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>)
+</div></code></pre>
+<p data-line="701" class="code-line"><code>get_threshold()</code> 返回的 <code>(700, 10, 10)</code> 返回的两个 <code>10</code>。也就是说，每 <code>10</code> 次 0 代垃圾回收，会配合 1 次 1 代的垃圾回收；而每 10 次 1 代的垃圾回收，才会有 1 次的 2 代垃圾回收。</p>
+<p data-line="703" class="code-line">我们可以用 <code>set_threshold()</code> 来调整这个阈值：</p>
+<pre><code data-line="705" class="code-line language-py"><div>In [<span class="hljs-number">20</span>]: gc.set_threshold(<span class="hljs-number">700</span>, <span class="hljs-number">10</span>, <span class="hljs-number">2</span>)
+
+In [<span class="hljs-number">21</span>]: gc.get_threshold()
+Out[<span class="hljs-number">21</span>]: (<span class="hljs-number">700</span>, <span class="hljs-number">10</span>, <span class="hljs-number">2</span>)
+</div></code></pre>
+<h3 id="%E5%9B%9E%E6%94%B6%E5%AD%A4%E7%AB%8B%E7%9A%84%E5%BC%95%E7%94%A8%E7%8E%AF" data-line="712" class="code-line">回收孤立的引用环</h3>
+<p data-line="714" class="code-line">引用环的存在会给上面的垃圾回收机制带来很大的困难。这些引用环可能构成<strong>无法使用，但引用计数不为 0</strong> 的一些对象。</p>
+<p data-line="716" class="code-line">上面我们先创建了两个表对象，并引用对方，构成一个引用环。删除了 <code>a，b</code> 引用之后，这两个对象不可能再从程序中调用，就没有什么用处了。但是由于引用环的存在，这两个对象的引用计数都没有降到0，不会被垃圾回收。</p>
+<p data-line="718" class="code-line">孤立的引用环：
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688127207112.png" alt="" class="loading" id="image-hash--937262713" /></p>
+<p data-line="722" class="code-line">为了回收这样的引用环，Python 复制每个对象的引用计数，可以记为 <code>gc_ref</code>。假设，每个对象 <code>i</code>，该计数为 <code>gc_ref_i</code>。Python 会遍历所有的对象 <code>i</code>。对于每个对象 <code>i</code> 引用的对象 <code>j</code>，将相应的 <code>gc_ref_j</code> 减 1。</p>
+<p data-line="724" class="code-line">遍历后的结果：
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688127267504.png" alt="" class="loading" id="image-hash-331177716" /></p>
+<p data-line="727" class="code-line">在结束遍历后，<code>gc_ref</code> 不为 0 的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
+<h2 id="os-%E6%A0%87%E5%87%86%E5%BA%93" data-line="729" class="code-line">OS 标准库</h2>
+<h3 id="ospath" data-line="731" class="code-line">os.path</h3>
+<p data-line="733" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688271229059.jpg" alt="" class="loading" id="image-hash-710705047" /></p>
+<h3 id="%E8%BF%9B%E7%A8%8B%E4%BF%A1%E6%81%AF" data-line="735" class="code-line">进程信息</h3>
+<p data-line="737" class="code-line">os 包中相关函数如下：</p>
+<ol>
+<li data-line="739" class="code-line"><code>uname()</code> 返回操作系统相关信息。类似于 Linux 上的 uname 命令。</li>
+<li data-line="740" class="code-line"><code>mask()</code> 设置该进程创建文件时的权限 mask。类似于 Linux 上的 umask 命令</li>
+<li data-line="741" class="code-line"><code>get()</code> 查询
+<ol>
+<li data-line="742" class="code-line"><code>uid, euid, resuid, gid, egid, resgid</code> ：权限相关，其中<code>resuid</code> 主要用来返回 <code>saved UID</code></li>
+<li data-line="743" class="code-line"><code>pid, pgid, ppid, sid</code>：进程相关</li>
+</ol>
+</li>
+<li data-line="744" class="code-line"><code>put()</code> 设置
+<ol>
+<li data-line="745" class="code-line"><code>euid, egid</code>： 用于更改 <code>euid，egid</code>。</li>
+<li data-line="746" class="code-line"><code>uid, gid</code>  ： 改变进程的 <code>uid, gid</code>。只有 super user 才有权改变。</li>
+<li data-line="747" class="code-line"><code>pgid, sid</code> ： 改变进程所在的进程组(process group)和会话(session)。</li>
+</ol>
+</li>
+<li data-line="748" class="code-line"><code>getenviron()</code>：获得进程的环境变量</li>
+<li data-line="749" class="code-line"><code>setenviron()</code>：更改进程的环境变量</li>
+</ol>
+<h3 id="%E5%85%B6%E5%AE%83%E6%96%B9%E6%B3%95" data-line="751" class="code-line">其它方法</h3>
+<p data-line="753" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688278874617.jpg" alt="" class="loading" id="image-hash-180102730" />
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688279433882.jpg" alt="" class="loading" id="image-hash--1962927870" /></p>
+<h2 id="pickle" data-line="756" class="code-line">Pickle</h2>
+<p data-line="758" class="code-line">在之前对 Python 对象的介绍中，我提到过 Python “一切皆对象” 的哲学，在 Python 中，无论是变量还是函数，都是一个对象。当 Python 运行时，对象存储在内存中，随时等待系统的调用。然而，内存里的数据会随着计算机关机和消失，如何将对象保存到文件，并储存在硬盘上呢？</p>
+<p data-line="760" class="code-line">计算机的内存中存储的对象，是二进制的序列 (当然，在Linux眼中，是文本流)。我们可以直接将某个对象所对应位置的数据抓取下来，转换成文本流 (这个过程叫做 serialize)，然后将文本流存入到文件中。</p>
+<p data-line="762" class="code-line">由于 Python 在创建对象时，要参考对象的类定义，所以当我们从文本中读取对象时，必须在手边要有该对象的类定义，才能重建这一对象。</p>
+<p data-line="764" class="code-line">从文件读取对象时，对于 Python 的内建对象 (比如说整数、词典、表等等)，由于其类定义已经载入内存，所以不需要我们再在程序中定义类。对于用户自行定义的对象，就必须要先定义类，然后才能从文件中载入对象。</p>
+<p data-line="766" class="code-line">使用 <code>pickle.dumps()</code> 方法可以将对象转换成字符串 (也就是文本流)。随后我们可以用普通文本的存储方法来将该字符串储存在文件(文本文件的输入输出)。
+当然，我们也可以使用 <code>pickle.dump()</code> 的方法，将上面两部合二为一:</p>
+<p data-line="769" class="code-line">例子：</p>
+<p data-line="771" class="code-line">存储对象</p>
+<p data-line="773" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688350564776.jpg" alt="" class="loading" id="image-hash-279626017" /></p>
+<p data-line="775" class="code-line">读取对象</p>
+<p data-line="777" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688470496446.jpg" alt="" class="loading" id="image-hash-50728034" /></p>
+<p data-line="779" class="code-line">crow.pkl 的内容：</p>
+<p data-line="781" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688471306175.jpg" alt="set w200" class="loading" id="image-hash--745068652" /></p>
+<h2 id="subprocess" data-line="783" class="code-line">Subprocess</h2>
+<p data-line="785" class="code-line">当我们运行 python 的时候，我们都是在创建并运行一个进程。一个进程可以 fork 一个子进程，并让这个子进程 exec 另外一个程序。在 Python 中，我们通过标准库中的 subprocess 包来 fork 一个子进程，并运行一个外部的程序。
+subprocess 包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外 subprocess 还提供了一些管理标准流 (standard stream) 和管道 (pipe) 的工具，从而在进程间使用文本通信。</p>
+<p data-line="788" class="code-line">使用 subprocess 包中的函数创建子进程的时候，要注意:</p>
+<ol>
+<li data-line="790" class="code-line">在创建子进程之后，父进程是否暂停，并等待子进程运行。</li>
+<li data-line="791" class="code-line">函数返回什么</li>
+<li data-line="792" class="code-line">当 <code>returncode</code> 不为0时，父进程如何处理。</li>
+</ol>
+<ul>
+<li data-line="794" class="code-line">
+<p data-line="794" class="code-line">subprocess.call()
+父进程等待子进程完成
+返回退出信息(<code>returncode</code>，相当于<code>exit code</code>)</p>
+</li>
+<li data-line="798" class="code-line">
+<p data-line="798" class="code-line">subprocess.check_call()
+父进程等待子进程完成，返回 <code>0</code>
+检查退出信息，如果 <code>returncode</code> 不为 0 ，则举出错误 <code>subprocess.CalledProcessError</code>，该对象包含有 <code>returncode</code> 属性，可用 <code>try...except...</code>来检查。</p>
+</li>
+<li data-line="802" class="code-line">
+<p data-line="802" class="code-line">subprocess.check_output()
+父进程等待子进程完成
+返回子进程向标准输出的输出结果
+检查退出信息，如果 <code>returncode</code> 不为0，则举出错误 <code>subprocess.CalledProcessError</code> ，该对象包含有 <code>returncode</code> 属性和 <code>output</code> 属性，<code>output</code> 属性为标准输出的输出结果，可用<code>try...except...</code> 来检查。</p>
+</li>
+</ul>
+<p data-line="807" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688919993790.jpg" alt="" class="loading" id="image-hash--299391924" />
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688925667153.jpg" alt="" class="loading" id="image-hash-1678971460" /></p>
+<h3 id="popen" data-line="811" class="code-line">Popen()</h3>
+<p data-line="813" class="code-line">实际上，我们上面的三个函数都是基于 <code>Popen()</code> 的封装 (wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向 <code>Popen</code> 类，该类生成的对象用来代表子进程。
+与上面的封装不同，<code>Popen</code> 对象创建后，主程序不会自动等待子进程完成。我们必须调用对象的 <code>wait()</code> 方法，父进程才会等待 (也就是阻塞 block)：</p>
+<p data-line="816" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688941895108.jpg" alt="" class="loading" id="image-hash--314596885" />
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688942427561.jpg" alt="" class="loading" id="image-hash-1347763486" /></p>
+<p data-line="819" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688943187159.jpg" alt="" class="loading" id="image-hash--1390727955" />
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688943737614.jpg" alt="" class="loading" id="image-hash--2099054362" /></p>
+<h3 id="%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%87%E6%9C%AC%E6%B5%81%E6%8E%A7%E5%88%B6" data-line="822" class="code-line">子进程的文本流控制</h3>
+<p data-line="824" class="code-line">子进程的标准输入，标准输出和标准错误也可以通过如下属性表示:
+<code>child.stdin</code> ,<code>child.stdout</code>, <code>child.stderr</code></p>
+<ul>
+<li data-line="827" class="code-line">我们可以在 <code>Popen()</code> 建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用 <code>subprocess.PIPE</code> 将多个子进程的输入和输出连接在一起，构成管道(pipe):</li>
+</ul>
+<p data-line="829" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688949284845.jpg" alt="" class="loading" id="image-hash-1467723801" /></p>
+<p data-line="831" class="code-line"><code>subprocess.PIPE</code> 实际上为文本流提供一个缓存区。<code>child_1</code> 的<code>stdout</code> 将文本输出到缓存区，随后 <code>child_2</code> 的 <code>stdin</code> 从该 <code>PIPE</code> 中将文本读取走。<code>child_2</code> 的输出文本也被存放在 <code>PIPE</code> 中，直到 <code>communicate()</code> 方法从 <code>PIPE</code> 中读取出 <code>PIPE</code> 中的文本。</p>
+<ul>
+<li data-line="833" class="code-line">我们还可以利用 <code>communicate()</code> 方法来使用 <code>PIPE</code> 给子进程输入</li>
+</ul>
+<p data-line="835" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688953147700.jpg" alt="" class="loading" id="image-hash--1743164630" /></p>
+<h2 id="%E5%BE%AA%E7%8E%AF%E5%99%A8" data-line="837" class="code-line">循环器</h2>
+<p data-line="839" class="code-line">在循环对象和函数对象中，我们了解了循环器(iterator)的功能。循环器是对象的容器，包含有多个对象。通过调用循环器的 <code>next()</code> 方法 (Python 3 中 的 <code>__next__()</code> 方法)，循环器将依次返回一个对象。直到所有的对象遍历穷尽，循环器将举出 <code>StopIteration</code> 错误。</p>
+<p data-line="841" class="code-line">标准库中的 <code>itertools</code> 包提供了更加灵活的生成循环器的工具。这些工具的输入大都是已有的循环器。另一方面，这些工具完全可以自行使用 Python 实现，该包只是提供了一种比较标准、高效的实现方式。这也符合 Python “只有且最好只有解决方案”的理念。</p>
+<h3 id="%E6%97%A0%E7%A9%B7%E5%BE%AA%E7%8E%AF%E5%99%A8" data-line="843" class="code-line">无穷循环器</h3>
+<ul>
+<li data-line="845" class="code-line">
+<p data-line="845" class="code-line"><code>count(a, b)</code>: 从 <code>a</code> 开始的整数循环器，每次增加 <code>b</code>
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688989307808.jpg" alt="" class="loading" id="image-hash--110974640" /></p>
+</li>
+<li data-line="848" class="code-line">
+<p data-line="848" class="code-line"><code>cycle('abc')</code>: 重复序列的元素，得到 <code>a, b, c, a, b, c...</code>
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688990709066.jpg" alt="" class="loading" id="image-hash--924766512" /></p>
+</li>
+<li data-line="851" class="code-line">
+<p data-line="851" class="code-line"><code>repeat(x)</code>: 重复 x，构成无穷循环器
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14688998492739.jpg" alt="" class="loading" id="image-hash-1606515160" /></p>
+</li>
+</ul>
+<h3 id="%E5%87%BD%E6%95%B0%E5%BC%8F%E5%B7%A5%E5%85%B7" data-line="854" class="code-line">函数式工具</h3>
+<p data-line="856" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689001855182.jpg" alt="" class="loading" id="image-hash-167516019" /></p>
+<p data-line="858" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689004981840.jpg" alt="" class="loading" id="image-hash-1167607717" /></p>
+<h3 id="%E7%BB%84%E5%90%88%E5%B7%A5%E5%85%B7" data-line="860" class="code-line">组合工具</h3>
+<p data-line="862" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689759629957.jpg" alt="" class="loading" id="image-hash--106078264" /></p>
+<h3 id="groupby" data-line="864" class="code-line">group_by()</h3>
+<p data-line="866" class="code-line">将 <code>key</code> 函数作用于原循环器的各个元素。根据 <code>key</code> 函数结果，将拥有相同函数结果的元素分到一个新的循环器。每个新的循环器以函数返回结果为标签。</p>
+<p data-line="868" class="code-line">这就好像一群人的身高作为循环器。我们可以使用这样一个 <code>key</code> 函数: 如果身高大于180，返回 <code>&quot;tall&quot;</code>；如果身高底于 160，返回 <code>&quot;short&quot;</code>;中间的返回 <code>&quot;medium&quot;</code>:</p>
+<p data-line="870" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689766885778.jpg" alt="" class="loading" id="image-hash--1627060247" /></p>
+<p data-line="872" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689767128827.jpg" alt="" class="loading" id="image-hash-1883273229" /></p>
+<h2 id="%E6%95%B0%E6%8D%AE%E5%BA%93-sqlite3" data-line="874" class="code-line">数据库 (sqlite3)</h2>
+<p data-line="876" class="code-line">Python 自带一个轻量级的关系型数据库 SQLite。这一数据库使用 SQL 语言。SQLite 作为后端数据库，可以搭配 Python 建网站，或者制作有数据存储需求的工具。SQLite 还在其它领域有广泛的应用，比如 HTML5 和移动端。Python 标准库中的 <code>sqlite3</code> 提供该数据库的接口。</p>
+<h3 id="%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93" data-line="878" class="code-line">创建数据库</h3>
+<p data-line="880" class="code-line">我将创建一个简单的关系型数据库，为一个书店存储书的分类和价格。数据库中包含两个表：<code>category</code> 用于记录分类，<code>book</code> 用于记录某个书的信息。一本书归属于某一个分类，因此 <code>book</code> 有一个外键(foreign key)，指向 <code>catogory</code> 表的主键 id。</p>
+<p data-line="882" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14689768887235.png" alt="" class="loading" id="image-hash--1995174867" /></p>
+<p data-line="884" class="code-line">(<code>sqlite3</code> 只是一个 SQLite 的接口。想要熟练的使用 SQLite 数据库，还需要学习更多的关系型数据库的知识。)</p>
+<p data-line="886" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690629064106.jpg" alt="" class="loading" id="image-hash-1028637983" /></p>
+<p data-line="889" class="code-line">SQLite 的数据库是一个磁盘上的文件，如上面的 <code>test.db</code>，因此整个数据库可以方便的移动或复制。<code>test.db</code> 一开始不存在，所以 SQLite 将自动创建一个新文件。</p>
+<p data-line="891" class="code-line">利用 <code>execute()</code> 命令，我执行了两个 SQL 命令，创建数据库中的两个表。创建完成后，保存并断开数据库连接。</p>
+<h3 id="%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE" data-line="893" class="code-line">插入数据</h3>
+<p data-line="895" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690663459025.jpg" alt="" class="loading" id="image-hash--243876249" /></p>
+<p data-line="897" class="code-line">结果：</p>
+<p data-line="899" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690859939367.jpg" alt="" class="loading" id="image-hash--2035289750" /></p>
+<p data-line="901" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690860051164.jpg" alt="set w500" class="loading" id="image-hash-994774510" /></p>
+<h3 id="%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE" data-line="904" class="code-line">选择数据</h3>
+<p data-line="906" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690870220285.jpg" alt="" class="loading" id="image-hash-1061101481" /></p>
+<h3 id="%E6%9B%B4%E6%96%B0%E5%92%8C%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE" data-line="908" class="code-line">更新和删除数据</h3>
+<p data-line="910" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14690882693434.jpg" alt="" class="loading" id="image-hash--392650096" /></p>
+<h3 id="%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E8%A1%A8%E5%92%8C%E5%88%A0%E9%99%A4%E8%A1%A8" data-line="912" class="code-line">查看所有表和删除表</h3>
+<p data-line="914" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14691524891657.jpg" alt="" class="loading" id="image-hash--2135042889" /></p>
+<h2 id="%E7%BD%91%E7%BB%9C" data-line="916" class="code-line">网络</h2>
+<h3 id="%E6%89%8B%E5%86%99-python-%E6%9C%8D%E5%8A%A1%E5%99%A8" data-line="918" class="code-line">手写 Python 服务器</h3>
+<p data-line="920" class="code-line">在当今 Python 服务器框架 (framework, 比如Django, Twisted, web.py等等) 横行的时代，从底层的 socket 开始写服务器似乎是一个出力不讨好的笨方法。框架的意义在于掩盖底层的细节，提供一套对于开发人员更加友好的 API，并处理诸如 MVC 的布局问题。框架允许我们快速的构建一个成型而且成熟的 Python 服务器。然而，框架本身也是依赖于底层(比如 socket)。对于底层 socket 的了解，不仅可以帮助我们更好的使用框架，更可以让我们明白框架是如何设计的。更进一步，如果拥有良好的底层 socket 编程知识和其他系统编程知识，你完全可以设计并开发一款自己的框架。如果你可以从底层 socket 开始，实现一个完整的 Python 服务器，支持用户层的协议，并处理好诸如 MVC (Model-View-Control)、多线程 (threading) 等问题，并整理出一套清晰的函数或者类，作为接口 (API) 呈现给用户，你就相当于设计了一个框架。</p>
+<p data-line="922" class="code-line">socket 接口是实际上是操作系统提供的系统调用。socket 的使用并不局限于 Python 语言，你可以用 C 或者 JAVA 来写出同样的 socket 服务器，而所有语言使用 socket 的方式都类似 (Apache 就是使用 C 实现的服务器)。而你不能跨语言的使用框架。框架的好处在于帮你处理了一些细节，从而实现快速开发，但同时受到 Python 本身性能的限制。我们已经看到，许多成功的网站都是利用动态语言 (比如 Python, Ruby 或者 PHP，比如 twitter 和 facebook)快速开发，在网站成功之后，将代码转换成诸如 C 和 JAVA 这样一些效率比较高的语言，从而让服务器能更有效率的面对每天亿万次的请求。在这样一些时间，底层的重要性，就远远超过了框架。</p>
+<h4 id="tcpip-%E5%92%8C-socket" data-line="924" class="code-line">TCP/IP 和 socket</h4>
+<p data-line="926" class="code-line">我们需要对网络传输，特别是 TCP/IP 协议和 socket 有一定的了解。socket 是<strong>进程间通信</strong>的一种方法，它是基于网络传输协议的上层接口。socket 有许多种类型，比如基于 TCP 协议或者 UDP 协议(两种网络传输协议)。其中又以 <strong>TCP socket</strong> 最为常用。</p>
+<p data-line="928" class="code-line">TCP socket 与双向管道 (duplex PIPE) 有些类似，一个进程向 socket 的一端写入或读取文本流，而另一个进程可以从 socket 的另一端读取或写入，比较特别是，这两个建立 socket 通信的进程可以分别属于两台不同的计算机。</p>
+<p data-line="930" class="code-line">所谓的 TCP 协议，就是规定了一些通信的守则，以便在网络环境下能够有效实现上述进程间通信过程。双向管道 (duplex PIPE) 存活于同一台电脑中，所以不必区分两个进程的所在计算机的地址，而socket 必须包含有地址信息，以便实现网络通信。一个 socket 包含四个地址信息: 两台计算机的 <strong>IP 地址</strong>和两个进程所使用的 <strong>端口(port)</strong>。<strong>IP 地址用于定位计算机，而 port 用于定位进程</strong> (一台计算机上可以有多个进程分别使用不同的端口)。</p>
+<p data-line="932" class="code-line">一个 TCP socket 连接的网络
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14691529250224.jpg" alt="set w500" class="loading" id="image-hash-497550715" /></p>
+<h4 id="tcp-socket" data-line="935" class="code-line">TCP socket</h4>
+<p data-line="937" class="code-line">在互联网上，我们可以让某台计算机作为服务器。</p>
+<ul>
+<li data-line="939" class="code-line">服务器开放自己的端口，被动等待其他计算机连接。</li>
+<li data-line="940" class="code-line">当其他计算机作为客户，主动使用 socket 连接到服务器的时候，服务器就开始为客户提供服务。</li>
+</ul>
+<p data-line="942" class="code-line">在 Python 中，我们使用标准库中的 <code>socket</code> 包来进行底层的 socket 编程。</p>
+<p data-line="944" class="code-line">首先是服务器端，我们使用 <code>bind()</code> 方法来赋予 socket 以固定的地址和端口，并使用 <code>listen()</code> 方法来被动的监听该端口。当有客户尝试用 <code>connect()</code> 方法连接的时候，服务器使用 <code>accept()</code> 接受连接，从而建立一个连接的 socket：</p>
+<p data-line="946" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14692397234972.jpg" alt="" class="loading" id="image-hash-541418121" /></p>
+<p data-line="948" class="code-line">然后用另一台电脑作为客户，我们主动使用 <code>connect()</code> 方法来搜索服务器端的 IP 地址和端口，以便客户可以找到服务器，并建立连接:</p>
+<p data-line="950" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14692398454845.jpg" alt="" class="loading" id="image-hash--1939122449" /></p>
+<p data-line="952" class="code-line">在上面的例子中，我们对 <code>socket</code> 的两端都可以调用 recv() 方法来接收信息，调用 <code>sendall()</code> 方法来发送信息。这样，我们就可以在分处于两台计算机的两个进程间进行通信了。当通信结束的时候，我们使用 <code>close()</code> 方法来关闭 <code>socket</code> 连接。</p>
+<ol>
+<li data-line="954" class="code-line">
+<p data-line="954" class="code-line">如果在同一台计算机中运行这个程序，需要两个线程 (两个 shell 标签页)，一个先运行 server，并且允许程序传人网络:
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14692399232426.jpg" alt="set w500" class="loading" id="image-hash-1769826545" />
+再运行 client，就可以看到对话
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14692402486248.jpg" alt="set w300" class="loading" id="image-hash-128443985" />
+此时运行 server 的标签页也会返回信息
+<img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14692403066467.jpg" alt="set w350" class="loading" id="image-hash-268830419" /></p>
+</li>
+<li data-line="961" class="code-line">
+<p data-line="961" class="code-line">如果再两台计算机中运行这个程序，运行 client 的计算机中的 <code>HOST</code> 需要改成运行 server 的计算机的 IP 地址</p>
+</li>
+</ol>
+<h3 id="%E5%9F%BA%E4%BA%8E-tcp-socket-%E7%9A%84-http-%E6%9C%8D%E5%8A%A1%E5%99%A8" data-line="963" class="code-line">基于 TCP socket 的 HTTP 服务器</h3>
+<h4 id="%E4%BB%A3%E7%A0%81" data-line="965" class="code-line">代码</h4>
+<p data-line="967" class="code-line">上面的例子中，我们已经可以使用 TCP socket 来为两台远程计算机建立连接。然而，socket 传输自由度太高，从而带来很多安全和兼容的问题。我们往往利用一些应用层的协议 (比如 HTTP 协议) 来规定 socket  使用规则，以及所传输信息的格式。</p>
+<p data-line="969" class="code-line">HTTP 协议利用请求-回应 (request-response) 的方式来使用 TCP socket。客户端向服务器发一段文本作为 request，服务器端在接收到 request 之后，向客户端发送一段文本作为 response。在完成了这样一次 request-response 交易之后，TCP socket 被废弃。下次的 request 将建立新的 socket。request 和 response 本质上说是两个文本，只是 HTTP 协议对这两个文本都有一定的格式要求。</p>
+<p data-line="971" class="code-line">现在，我们写出一个HTTP服务器端：</p>
+<pre><code data-line="973" class="code-line language-python"><div><span class="hljs-keyword">import</span> socket
+
+<span class="hljs-comment"># Address</span>
+HOST = <span class="hljs-string">''</span>
+PORT = <span class="hljs-number">8000</span>
+
+<span class="hljs-comment"># HTTP response</span>
+text_content = <span class="hljs-string">"""\
+HTTP/1.x 200 OK
+Content-Type: text/html
+
+&lt;head&gt;
+&lt;title&gt;Python Server&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;p&gt;Page from Python server&lt;/p&gt;
+&lt;IMG src="test.jpg"/&gt;
+&lt;form name="input" action="/" method="post"&gt;
+First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;&lt;br&gt;
+&lt;p&gt;value = {value}&lt;/p&gt;
+&lt;/html&gt;
+"""</span>
+
+<span class="hljs-comment"># Read picture, put into HTTP format</span>
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'test.jpg'</span>, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> f:
+    pic_content = <span class="hljs-string">b'HTTP/1.x 200 OK\n'</span>+\
+                  <span class="hljs-string">b'Content-Type: image/jpeg\n\n'</span>
+    pic_content += f.read()
+
+<span class="hljs-comment"># Configure socket</span>
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+
+<span class="hljs-comment"># Forever server</span>
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    <span class="hljs-comment"># 3: maximum number of requests waiting</span>
+    s.listen(<span class="hljs-number">3</span>)
+    conn, addr = s.accept()
+    request = conn.recv(<span class="hljs-number">1024</span>).decode(<span class="hljs-string">'utf-8'</span>)
+    method = request.split(<span class="hljs-string">' '</span>)[<span class="hljs-number">0</span>]
+    url = request.split(<span class="hljs-string">' '</span>)[<span class="hljs-number">1</span>]
+
+    <span class="hljs-comment"># deal with GET method</span>
+    <span class="hljs-keyword">if</span> method == <span class="hljs-string">'GET'</span>:
+        <span class="hljs-comment"># URL</span>
+        <span class="hljs-keyword">if</span> url == <span class="hljs-string">'/test.jpg'</span>:
+            content = pic_content
+        <span class="hljs-keyword">else</span>:
+            content = text_content.format(value=<span class="hljs-string">''</span>).encode(<span class="hljs-string">'utf-8'</span>)
+        print(<span class="hljs-string">"Connected by: "</span>, addr)
+        print(<span class="hljs-string">"Request is: "</span>, request)
+        conn.sendall(content)
+
+    <span class="hljs-comment"># deal with POST method</span>
+    <span class="hljs-keyword">if</span> method == <span class="hljs-string">'POST'</span>:
+        form = request.split(<span class="hljs-string">'\r\n'</span>)
+        idx = form.index(<span class="hljs-string">''</span>) <span class="hljs-comment"># find the emplt line</span>
+        entry = form[idx:] <span class="hljs-comment"># main content of the request</span>
+        value = entry[<span class="hljs-number">-1</span>].split(<span class="hljs-string">'='</span>)[<span class="hljs-number">-1</span>]
+        print(value)
+        response = text_content.format(value=value).encode(<span class="hljs-string">'utf-8'</span>)
+        conn.sendall(response)
+
+    <span class="hljs-comment"># close connection</span>
+    conn.close()
+</div></code></pre>
+<h4 id="%E6%B7%B1%E5%85%A5-http-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%A3%E7%A0%81" data-line="1043" class="code-line">深入 HTTP 服务器代码</h4>
+<p data-line="1045" class="code-line">如我们上面所看到的，服务器会根据 request 向客户传输的两条信息 <code>text_content</code> 和 <code>pic_content</code> 中的一条，作为 response 文本。整个 response 分为起始行 (start line), 头信息 (head) 和主体 (body) 三部分。起始行就是第一行:</p>
+<p data-line="1047" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14694296411055.jpg" alt="set w150" class="loading" id="image-hash-162019872" /></p>
+<p data-line="1049" class="code-line">它实际上又由空格分为三个片段，<code>HTTP/1.x</code> 表示所使用的 HTTP 版本，200 表示状态 (status code)，200 是 HTTP 协议规定的，表示服务器正常接收并处理请求，OK 是供人来阅读的 status code。</p>
+<p data-line="1051" class="code-line">头信息跟随起始行，它和主体之间有一个空行。这里的 <code>text_content</code> 或者 <code>pic_content</code> 都只有一行的头信息，<code>text_content</code> 用来表示主体信息的类型为html文本：</p>
+<p data-line="1053" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14694296109789.jpg" alt="set w200" class="loading" id="image-hash-1328768354" /></p>
+<p data-line="1055" class="code-line">而 <code>pic_content</code> 的头信息 (Content-Type: image/jpg) 说明主体的类型为 jpg 图片 (image/jpg):</p>
+<p data-line="1057" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14694295707885.jpg" alt="set w300" class="loading" id="image-hash--655172390" /></p>
+<p data-line="1059" class="code-line">我们并没有写客户端程序，后面我们会用浏览器作为客户端。request 由客户端程序发给服务器。尽管 request 也可以像 response 那样分为三部分，request 的格式与 response 的格式并不相同。request 由客户发送给服务器，比如下面是一个request：</p>
+<p data-line="1061" class="code-line"><code>GET /test.jpg HTTP/1.x Accept: text/*</code></p>
+<p data-line="1064" class="code-line">起始行可以分为三部分，第一部分为请求方法 (request method)，第二部分是 URL，第三部分为 HTTP 版本。request method 可以有 GET， PUT， POST， DELETE， HEAD。最常用的为 GET 和 POST。GET 是请求服务器发送资源给客户，POST 是请求服务器接收客户送来的数据。当我们打开一个网页时，我们通常是使用 GET 方法；当我们填写表格并提交时，我们通常使用 POST 方法。第二部分为 URL，它通常指向一个资源(服务器上的资源或者其它地方的资源)。像现在这样，就是指向当前服务器的当前目录的 <code>test.jpg</code>。</p>
+<p data-line="1066" class="code-line">按照 HTTP 协议的规定，服务器需要根据请求执行一定的操作。正如我们在服务器程序中看到的，我们的 Python 程序先检查了 request 的方法，随后根据 URL 的不同，来生成不同的 response (<code>text_content</code> 或者 <code>pic_content</code>)。随后，这个 response 被发送回给客户端。</p>
+<h4 id="%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%9E%E9%AA%8C" data-line="1068" class="code-line">使用浏览器实验</h4>
+<p data-line="1070" class="code-line">为了配合上面的服务器程序，应该在放置Python程序的文件夹里，保存了一个 <code>test.jpg</code> 图片文件。我们在终端运行上面的 Python 程序，作为服务器端，再打开一个浏览器作为客户端。在浏览器的地址栏输入：127.0.0.1:8000，得到下面的结果:</p>
+<p data-line="1072" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14694298709357.jpg" alt="set w300" class="loading" id="image-hash-1507969979" /></p>
+<p data-line="1074" class="code-line">从终端，我们可以看到，浏览器实际上发出了两个请求:</p>
+<p data-line="1076" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14694301293007.jpg" alt="" class="loading" id="image-hash-1264309748" /></p>
+<h3 id="%E4%BD%BF%E7%94%A8-socketserver" data-line="1078" class="code-line">使用 socketserver</h3>
+<p data-line="1080" class="code-line">在上面使用 socket 的过程中，我们先设置了socket 的类型，然后依次调用 <code>bind(), listen(), accept()</code>，最后使用 <code>while</code> 循环来让服务器不断的接受请求。上面的这些步骤可以通过 <code>socketserver</code> 包来简化。</p>
+<pre><code data-line="1082" class="code-line language-python"><div><span class="hljs-keyword">import</span> socketserver
+
+HOST, PORT  = <span class="hljs-string">''</span>, <span class="hljs-number">8000</span>
+text_content = <span class="hljs-string">'''
+HTTP/1.x 200 OK
+Content-Type: text/html
+
+&lt;head&gt;
+&lt;title&gt;python server&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;p&gt;A Python Server!&lt;/p&gt;
+&lt;IMG src="test.jpg"/&gt;
+&lt;form name="input" action="/" method="POST"&gt;
+First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;&lt;br&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/html&gt;
+'''</span>
+
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'test.jpg'</span>, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> f:
+    pic_content = <span class="hljs-string">'\nHTTP/1.x 200 OK\n'</span> +\
+                <span class="hljs-string">'Content-Type: image/jpg\n\n'</span>
+    pic_content = pic_content.encode(<span class="hljs-string">'utf-8'</span>)  <span class="hljs-comment"># str → binary</span>
+    pic_content += f.read()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">My_tcp_handler</span><span class="hljs-params">(socketserver.BaseRequestHandler)</span>:</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># self.request is the TCP socket connected to the client</span>
+        request = self.request.recv(<span class="hljs-number">1024</span>).decode(<span class="hljs-string">'utf-8'</span>)  <span class="hljs-comment"># binary → str</span>
+        print(<span class="hljs-string">"Connected by {addr}"</span>.format(addr=self.client_address[<span class="hljs-number">0</span>]))
+        print(<span class="hljs-string">"request is"</span>, request)
+        method = request.split(<span class="hljs-string">' '</span>)[<span class="hljs-number">0</span>]
+        src = request.split(<span class="hljs-string">' '</span>)[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">if</span> method == <span class="hljs-string">'GET'</span>:
+            <span class="hljs-keyword">if</span> src == <span class="hljs-string">'/test.jpg'</span>:
+                content = pic_content
+            <span class="hljs-keyword">else</span>:
+                content = text_content
+                content = content.encode(<span class="hljs-string">'utf-8'</span>)  <span class="hljs-comment"># str → binary</span>
+            self.request.sendall(content)
+        <span class="hljs-keyword">if</span> method == <span class="hljs-string">'POST'</span>:
+            form = request.split(<span class="hljs-string">'\r\n'</span>)
+            idx = form.index(<span class="hljs-string">''</span>)
+            entry = form[idx:]
+            value = entry[<span class="hljs-number">-1</span>].split(<span class="hljs-string">'='</span>)[<span class="hljs-number">-1</span>]
+            response = text_content + <span class="hljs-string">'\n &lt;p&gt;'</span>+ value + <span class="hljs-string">'&lt;/p&gt;'</span>
+            response = response.encode(<span class="hljs-string">'utf-8'</span>)  <span class="hljs-comment"># str → binary</span>
+            self.request.sendall(response)
+
+server = socketserver.TCPServer((HOST, PORT), My_tcp_handler)
+server.serve_forever()
+</div></code></pre>
+<p data-line="1139" class="code-line">我建立了一个 <code>TCPServer</code> 对象，即一个使用 TCP socket 的服务器。在建立 <code>TCPServe</code> 的同时，设置该服务器的 IP 地址和端口。使用 <code>server_forever()</code> 方法来让服务器不断工作 (就像原始程序中的 <code>while</code> 循环一样)。</p>
+<p data-line="1141" class="code-line">我们传递给 <code>TCPServer</code> 一个 <code>My_tcp_handler</code> 类。这个类定义了如何操作 <code>socket</code>。<code>My_tcp_handler</code> 继承自 <code>BaseRequestHandler</code> 。改写 <code>handler()</code> 方法，来具体规定不同情况下服务器的操作。</p>
+<p data-line="1143" class="code-line">在 <code>handler()</code> 中，通过 <code>self.request</code> 来查询通过 <code>socket</code> 进入服务器的请求 (正如我们在 <code>handler()</code> 中对 socket 进行 <code>recv()</code> 和 <code>sendall()</code> 操作)，还使用 <code>self.address</code> 来引用 socket 的客户端地址。</p>
+<p data-line="1145" class="code-line">经过 <code>socketserver</code> 的改造之后，代码还是不够简单。 我们上面的通信基于 <code>TCP</code> 协议，而不是 <code>HTTP</code> 协议。因此，我们必须手动的解析 <code>HTTP</code> 协议。下面，我们将建立基于HTTP协议的服务器。</p>
+<h3 id="httpserver" data-line="1147" class="code-line">http.server</h3>
+<h4 id="simplehttprequesthandler-%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%9D%A5%E5%9B%9E%E5%BA%94%E8%AF%B7%E6%B1%82" data-line="1149" class="code-line">SimpleHTTPRequestHandler: 使用静态文件来回应请求</h4>
+<p data-line="1151" class="code-line">HTTP 协议基于 TCP 协议，但增加了更多的规范。这些规范，虽然限制了 TCP 协议的功能，但大大提高了信息封装和提取的方便程度。</p>
+<p data-line="1153" class="code-line">对于一个 HTTP 请求 (request) 来说，它包含有两个重要信息：</p>
+<ol>
+<li data-line="1155" class="code-line">请求方法</li>
+<li data-line="1156" class="code-line">URL。</li>
+</ol>
+<p data-line="1158" class="code-line">例子，刚才的 server 分析：</p>
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>URL</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/</td>
+<td>发送 text_content</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/text.jpg</td>
+<td>发送 pic_content</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/</td>
+<td>分析request主体中包含的 value</td>
+</tr>
+</tbody>
+</table>
+<p data-line="1166" class="code-line">根据请求方法和URL的不同，一个大型的 HTTP 服务器可以应付成千上万种不同的请求。在 Python 中，我们可以使用 http.server 包来规定针对不同请求的操作。其中，SimpleHTTPServer 可以用于处理 GET 方法和 HEAD 方法的请求。它读取 request 中的 URL 地址，找到对应的静态文件，分析文件类型，用 HTTP 协议将文件发送给客户。</p>
+<p data-line="1168" class="code-line">我在当前目录下生成 index.html 文件:</p>
+<pre><code data-line="1170" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>WOW<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Wow, Python Server<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">IMG</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"test.jpg"</span>/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"input"</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"post"</span>&gt;</span>
+First name:<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"firstname"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Submit"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</div></code></pre>
+<p data-line="1184" class="code-line">使用 http.server 包中的类 SimpleHTTPRequestHandler 写服务器：</p>
+<pre><code data-line="1186" class="code-line language-python"><div><span class="hljs-keyword">import</span> socketserver
+<span class="hljs-keyword">import</span> http.server <span class="hljs-keyword">as</span> http_server
+
+HOST = <span class="hljs-string">''</span>
+PORT = <span class="hljs-number">8000</span>
+
+<span class="hljs-comment"># Create the server</span>
+handler = http_server.SimpleHTTPRequestHandler
+server = socketserver.TCPServer((HOST, PORT), handler)
+<span class="hljs-comment"># Start the server</span>
+server.serve_forever()
+</div></code></pre>
+<p data-line="1199" class="code-line">运行结果与之前的一样。</p>
+<h4 id="cgihttpserver%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%88%96%E8%80%85cgi%E6%9D%A5%E5%9B%9E%E5%BA%94%E8%AF%B7%E6%B1%82" data-line="1201" class="code-line">CGIHTTPServer：使用静态文件或者CGI来回应请求</h4>
+<p data-line="1203" class="code-line">CGIHTTPRequestHandler 类继承自 SimpleHTTPRequestHandler 类，所以可以用来代替上面的例子，来提供静态文件的服务。此外，CGIHTTPRequestHandler类还可以用来运行CGI脚本。</p>
+<p data-line="1205" class="code-line">先看看什么是 CGI (Common Gateway Interface)。CGI 是服务器和应用脚本之间的一套接口标准。它的功能是让服务器程序运行脚本程序，将程序的输出作为 response 发送给客户。总体的效果，是<strong>允许服务器动态的生成回复内容，而不必局限于静态文件</strong>。</p>
+<p data-line="1207" class="code-line">支持 CGI 的服务器程接收到客户的请求，根据请求中的 URL，运行对应的脚本文件。服务器会将 HTTP 请求的信息和 socket 信息传递给脚本文件，并等待脚本的输出。脚本的输出封装成合法的 HTTP 回复，发送给客户。CGI可以充分发挥服务器的可编程性，让服务器变得“更聪明”。</p>
+<p data-line="1209" class="code-line">服务器和 CGI 脚本之间的通信要符合 CGI 标准。CGI 的实现方式有很多，比如说使用 Apache 服务器与 Perl 写的CGI脚本，或者 Python 服务器与 shell 写的CGI脚本。</p>
+<p data-line="1211" class="code-line">为了使用 CGI，我们需要使用 http.server 包中的 HTTPServer 类来构建服务器。Python服务器的改动很简单。</p>
+<pre><code data-line="1213" class="code-line language-python"><div><span class="hljs-keyword">import</span> http.server
+<span class="hljs-keyword">from</span> http.server <span class="hljs-keyword">import</span> BaseHTTPRequestHandler
+<span class="hljs-keyword">from</span> http.server <span class="hljs-keyword">import</span> CGIHTTPRequestHandler
+
+HOST = <span class="hljs-string">''</span>
+PORT = <span class="hljs-number">8000</span>
+
+<span class="hljs-comment"># Create the server</span>
+handler = BaseHTTPRequestHandler
+server = http.server.HTTPServer((HOST, PORT), handler)
+server.serve_forever()
+</div></code></pre>
+<p data-line="1226" class="code-line"><code>CGIHTTPRequestHandler</code> 默认当前目录下的 cgi-bin 和 ht-bin 文件夹中的文件为 CGI 脚本，而存放于其他地方的文件被认为是静态文件。因此，我们需要修改一下 index.html，将其中 <code>form</code> 元素指向的 <code>action</code> 改为 <code>cgi-bin/post.py</code>。</p>
+<pre><code data-line="1228" class="code-line"><code><div>&lt;head&gt;
+&lt;title&gt;WOW&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;p&gt;Wow, Python Server&lt;/p&gt;
+&lt;IMG src=&quot;test.jpg&quot;/&gt;
+&lt;form name=&quot;input&quot; action=&quot;cgi-bin/post.py&quot; method=&quot;post&quot;&gt;
+First name:&lt;input type=&quot;text&quot; name=&quot;firstname&quot;&gt;&lt;br&gt;
+&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+&lt;/html&gt;
+</div></code></code></pre>
+<p data-line="1242" class="code-line">我创建一个cgi-bin的文件夹，并在cgi-bin中放入如下post.py文件，也就是我们的CGI脚本：</p>
+<pre><code data-line="1244" class="code-line language-python"><div><span class="hljs-comment">#!/usr/bin/env python3  # 这一行是必要的，指定脚本的解释器</span>
+<span class="hljs-keyword">import</span> cgi
+
+form = cgi.FieldStorage()
+
+print(<span class="hljs-string">"Content-Type: text/html"</span>)
+print()  <span class="hljs-comment"># 这个空行是必要的，作为首部的终止</span>
+print(<span class="hljs-string">"&lt;p&gt;Hello world!&lt;/p&gt;"</span>)
+print(<span class="hljs-string">"&lt;p&gt;"</span> + repr(form[<span class="hljs-string">'firstname'</span>]) + <span class="hljs-string">"&lt;/p&gt;"</span>)
+</div></code></pre>
+<p data-line="1256" class="code-line">(post.py需要有执行权限，chmod +x cgi-bin/post.py)</p>
+<p data-line="1258" class="code-line">第一行说明了脚本所使用的语言，即 Python。 cgi 包用于提取请求中包含的表格信息。脚本只负责将所有的结果输出到标准输出 (使用print)。<code>CGIHTTPRequestHandler</code> 会收集这些输出，封装成 HTTP 回复，传送给客户端。</p>
+<p data-line="1260" class="code-line">对于 POST 方法的请求，它的 URL 需要指向一个 CGI 脚本 (也就是在 cgi-bin 或者 ht-bin 中的文件)。<code>CGIHTTPRequestHandler</code> 继承自 <code>SimpleHTTPRequestHandler</code>，所以也可以处理 GET 方法和 HEAD 方法的请求。如果 URL 指向CGI脚本时，服务器将脚本的运行结果传送到客户端；当此时URL 指向静态文件时，服务器将文件的内容传送到客户端。</p>
+<h2 id="django" data-line="1262" class="code-line">Django</h2>
+<h3 id="%E5%90%AF%E5%8A%A8" data-line="1264" class="code-line">启动</h3>
+<p data-line="1266" class="code-line">在命令行使用下面的命令创建项目：</p>
+<p data-line="1268" class="code-line"><code>django-admin.py startproject mysite</code></p>
+<p data-line="1270" class="code-line">在当前目录下，将生成mysite文件夹。其文件树结构如下:</p>
+<p data-line="1272" class="code-line"><img src="/Users/yushi/Dropbox/Ivan/build_blog/assets/images/py_intro/14699732974772.jpg" alt="" class="loading" id="image-hash--2046296254" /></p>
+<p data-line="1274" class="code-line">进入 <code>mysite</code> 目录，启动服务器：</p>
+<p data-line="1276" class="code-line"><code>python manage.py runserver 8000</code></p>
+<p data-line="1278" class="code-line">上面的8000为端口号。如果不说明，那么端口号默认为8000。</p>
+<p data-line="1280" class="code-line">打开浏览器，访问 <a href="http://127.0.0.1:8000" data-href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>，可以看到服务器已经在运行：</p>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

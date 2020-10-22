@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Block Ruby</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    16 Feb 2017
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<h2 id="block-e698afe4bb80e4b988-1" data-line="9" class="code-line">Block 是什么</h2>
+<p data-line="11" class="code-line">A block is a chunk of code that you associate with a method call. While the method runs, it can invoke (execute) the block one or more times. Methods and blocks work in tandem to process your data. Blocks are a way of encapsulating or packaging statements up and using them wherever you need them. They turn up all over Ruby code.</p>
+<p data-line="13" class="code-line">一段 block 是一大段代码，你使用方法的时候会用到这段代码。这个方法可以执行这段代码一次或者多次。方法和 block 在处理你的数据的时候会串联工作。Block 是一种封装语句的方式，你可以在任何需要的时候使用这些语句。</p>
+<h3 id="block-e79a84e4bdbfe794a8e59cbae699af-1" data-line="15" class="code-line">Block 的使用场景</h3>
+<p data-line="17" class="code-line">Imagine if, for all the methods you have to write for the rest of your career, someone else wrote half of the code for you. For free. They’d write all the tedious stuff at the beginning and end, and just leave a little blank space in the middle for you to insert your code, the clever code, the code that runs your business.</p>
+<p data-line="19" class="code-line">假设你写的所有方法，其实只有一小部分是重要的。这样的话，把其他繁琐的部分都可以交给别人代写，而你自己只写其中最聪明的部分，这样是不是很棒？Block 就能够实现这一点。</p>
+<h3 id="e5ae9ae4b989e4b880e4b8aae68ea5e58f97-block-e79a84e696b9e6b395-1" data-line="21" class="code-line">定义一个接受 block 的方法</h3>
+<p data-line="23" class="code-line">Blocks and methods work in tandem. In fact, you can’t have a block without also having a method to accept it.</p>
+<p data-line="25" class="code-line">Block 和方法需要一起运行。你不能只定义 Block 而不定义接受这个 Block 的方法。</p>
+<pre><code data-line="27" class="code-line language-ruby"><div><span class="hljs-comment">#!/usr/bin/env ruby</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_method</span><span class="hljs-params">(&amp;my_block)</span></span>
+    puts <span class="hljs-string">"We're in the method"</span>
+    my_block.call  <span class="hljs-comment"># execute the block</span>
+    puts <span class="hljs-string">"We're in the method"</span>
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="e4bdbfe794a8e8bf99e4b8aae696b9e6b395-1" data-line="37" class="code-line">使用这个方法</h3>
+<pre><code data-line="39" class="code-line language-ruby"><div>my_method <span class="hljs-keyword">do</span>
+    puts <span class="hljs-string">"We're in the block!"</span>
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="e5b8b8e8a781e997aee9a298-1" data-line="45" class="code-line">常见问题</h3>
+<blockquote data-line="47" class="code-line">
+<p data-line="47" class="code-line">我能定义 block 一次，之后在不同的方法中重复使用它吗？</p>
+</blockquote>
+<p data-line="49" class="code-line">是的。但是实际上你不应该这么做。</p>
+<blockquote data-line="51" class="code-line">
+<p data-line="51" class="code-line">一个方法能够使用多个 block 吗？</p>
+</blockquote>
+<p data-line="53" class="code-line">不能</p>
+<h2 id="e7bb99-block-e4bca0e98092e58f82e695b0-1" data-line="55" class="code-line">给 Block 传递参数</h2>
+<p data-line="57" class="code-line">You can have a block accept one or more parameters from the method by defining them between vertical bar (|) characters at the start of the block。
+我们可以给 Block 传递参数。这只需要在定义 Block 前把参数放在 | 竖线里：</p>
+<pre><code data-line="60" class="code-line language-ruby"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">give</span><span class="hljs-params">(&amp;my_block)</span></span>
+    my_block.call(<span class="hljs-string">"alpha"</span>, <span class="hljs-string">"beta"</span>)
+<span class="hljs-keyword">end</span>
+
+give <span class="hljs-keyword">do</span> <span class="hljs-params">|a, b|</span>
+    puts <span class="hljs-string">"My method gave me"</span>
+    puts a, b
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h2 id="yield-1" data-line="71" class="code-line">yield</h2>
+<p data-line="73" class="code-line">使用 <code>yield</code> 可以简化代码：</p>
+<pre><code data-line="75" class="code-line language-ruby"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">twice</span><span class="hljs-params">(&amp;block)</span></span>
+    block.call
+    block.call
+<span class="hljs-keyword">end</span>
+<span class="hljs-comment"># is equivalent to</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">twice</span><span class="hljs-params">(&amp;block)</span></span>
+    <span class="hljs-keyword">yield</span>
+    <span class="hljs-keyword">yield</span>
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<p data-line="87" class="code-line">yield 也可以处理带参数的 block</p>
+<pre><code data-line="89" class="code-line language-ruby"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">give</span><span class="hljs-params">(&amp;block)</span></span>
+    block.call(<span class="hljs-string">"p1"</span>, <span class="hljs-string">"p2"</span>)
+<span class="hljs-keyword">end</span>
+<span class="hljs-comment"># is equivalent to</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">give</span><span class="hljs-params">(&amp;block)</span></span>
+    <span class="hljs-keyword">yield</span>(<span class="hljs-string">"p1"</span>, <span class="hljs-string">"p2"</span>)
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h2 id="e4b8a4e7a78de5ae9ae4b989-block-e79a84e696b9e6b395-1" data-line="99" class="code-line">两种定义 block 的方法</h2>
+<p data-line="101" class="code-line">在定义一个 block 的时候，我们可以选择使用 <code>do...end</code> 的方法，也可以选择使用大括号：</p>
+<pre><code data-line="103" class="code-line language-ruby"><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hello</span><span class="hljs-params">(&amp;block)</span></span>
+    print <span class="hljs-string">"hello "</span>
+    <span class="hljs-keyword">yield</span> <span class="hljs-string">"world!"</span>
+<span class="hljs-keyword">end</span>
+
+hello <span class="hljs-keyword">do</span> <span class="hljs-params">|a|</span>
+    puts a
+<span class="hljs-keyword">end</span>
+<span class="hljs-comment"># is equivalent to</span>
+hello { <span class="hljs-params">|a|</span> print a }
+</div></code></pre>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

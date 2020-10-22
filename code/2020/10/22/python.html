@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Python Introduction</title>
+    <title>进阶 Python 特性</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
@@ -53,17 +53,29 @@
 
     <div class="main">
         <div id="side_bar">
-    27 Oct 2017
+    22 Oct 2020
 </div>
 
 <div class="post center">
     <ul id="markdown-toc">
-  <li><a href="#enumerate" id="markdown-toc-enumerate">enumerate()</a></li>
-  <li><a href="#zip" id="markdown-toc-zip">zip()</a></li>
-  <li><a href="#filter" id="markdown-toc-filter">filter()</a></li>
-  <li><a href="#reduce" id="markdown-toc-reduce">reduce()</a></li>
-  <li><a href="#动态类型" id="markdown-toc-动态类型">动态类型</a></li>
-  <li><a href="#动态类型和参数传递" id="markdown-toc-动态类型和参数传递">动态类型和参数传递</a></li>
+  <li><a href="#常用的内置函数" id="markdown-toc-常用的内置函数">常用的内置函数</a>    <ul>
+      <li><a href="#enumerate" id="markdown-toc-enumerate">enumerate()</a></li>
+      <li><a href="#zip" id="markdown-toc-zip">zip()</a></li>
+      <li><a href="#filter" id="markdown-toc-filter">filter()</a></li>
+      <li><a href="#reduce" id="markdown-toc-reduce">reduce()</a></li>
+    </ul>
+  </li>
+  <li><a href="#动态类型" id="markdown-toc-动态类型">动态类型</a>    <ul>
+      <li><a href="#概念" id="markdown-toc-概念">概念</a></li>
+      <li><a href="#例子给变量赋值的时候发生了什么" id="markdown-toc-例子给变量赋值的时候发生了什么">例子：给变量赋值的时候发生了什么</a></li>
+      <li><a href="#例子多个变量引用同一个列表" id="markdown-toc-例子多个变量引用同一个列表">例子：多个变量引用同一个列表</a></li>
+      <li><a href="#动态类型和参数传递" id="markdown-toc-动态类型和参数传递">动态类型和参数传递</a>        <ul>
+          <li><a href="#不可变对象-immutable" id="markdown-toc-不可变对象-immutable">不可变对象 (immutable)</a></li>
+          <li><a href="#可变对象" id="markdown-toc-可变对象">可变对象</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
   <li><a href="#函数也是一种对象" id="markdown-toc-函数也是一种对象">函数也是一种对象</a></li>
   <li><a href="#上下文管理器" id="markdown-toc-上下文管理器">上下文管理器</a>    <ul>
       <li><a href="#发生了什么" id="markdown-toc-发生了什么">发生了什么</a></li>
@@ -86,7 +98,7 @@
   <li><a href="#内存管理" id="markdown-toc-内存管理">内存管理</a>    <ul>
       <li><a href="#对象的内存使用" id="markdown-toc-对象的内存使用">对象的内存使用</a></li>
       <li><a href="#引用计数" id="markdown-toc-引用计数">引用计数</a></li>
-      <li><a href="#对象引用对象" id="markdown-toc-对象引用对象">对象引用对象</a></li>
+      <li><a href="#引用对象的对象" id="markdown-toc-引用对象的对象">「引用对象」的对象</a></li>
       <li><a href="#引用环" id="markdown-toc-引用环">引用环</a></li>
       <li><a href="#引用减少" id="markdown-toc-引用减少">引用减少</a></li>
       <li><a href="#垃圾回收" id="markdown-toc-垃圾回收">垃圾回收</a></li>
@@ -147,26 +159,55 @@
   </li>
 </ul>
 
-<h2 id="enumerate">enumerate()</h2>
+<hr />
+
+<p>这一篇笔记里 记录了一些 相对高级的 Python 技巧。对它们的理解 能够显著地帮助我 读懂别人的代码，以及分析代码中的错误。</p>
+
+<hr />
+
+<h2 id="常用的内置函数">常用的内置函数</h2>
+
+<p>在 Python 里有一些内置函数，在代码里十分常见。掌握了它们的使用以后可以让我们的代码更加 pythonic。</p>
+
+<h3 id="enumerate">enumerate()</h3>
 
 <p>利用 <code class="highlighter-rouge">enumerate()</code> 函数，可以在每次循环中同时得到下标和元素</p>
 
-<p><img src="/assets/images/py_intro/14663150754382.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">'abcd'</span>
 
-<h2 id="zip">zip()</h2>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Index: {i}; Char: {c}"</span><span class="p">)</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="n">Index</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">a</span>
+<span class="n">Index</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">b</span>
+<span class="n">Index</span><span class="p">:</span> <span class="mi">2</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">c</span>
+<span class="n">Index</span><span class="p">:</span> <span class="mi">3</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">d</span>
+</code></pre></div></div>
+
+<h3 id="zip">zip()</h3>
 
 <p>利用 <code class="highlighter-rouge">zip()</code> 函数，可以在每次循环时从各个序列分别取出一个元素</p>
 
-<p><img src="/assets/images/py_intro/14663152539118.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">la</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 
-<h2 id="filter">filter()</h2>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">lb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">lc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">la</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">lc</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">7</span>
+<span class="mi">2</span> <span class="mi">5</span> <span class="mi">8</span>
+<span class="mi">3</span> <span class="mi">6</span> <span class="mi">9</span>
+</code></pre></div></div>
+
+<h3 id="filter">filter()</h3>
 
 <p><code class="highlighter-rouge">filter()</code> 函数的第一个参数是一个函数对象。它也是将作为参数的函数对象作用于多个元素。如果函数对象返回的是 <code class="highlighter-rouge">True</code>，则该次的元素被储存于返回的表中。 <code class="highlighter-rouge">filter</code> 通过读入的函数来筛选数据。Python 3 中，<code class="highlighter-rouge">filter()</code> 返回的不是表，而是循环对象。</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">'MacOSX'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="bp">False</span>  <span class="c1"># function to filter small y scatters
 </span>
@@ -185,28 +226,47 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/py_intro/14663205598518.jpg" alt="" /></p>
+<p><img src="/assets/images/py_intro/filter.svg" alt="" /></p>
 
-<h2 id="reduce">reduce()</h2>
+<p>(上图: 原始数据；下图：经过 <code class="highlighter-rouge">filter</code> 处理之后的数据（所有小于 0.5 的值都被扔掉）。)</p>
+
+<h3 id="reduce">reduce()</h3>
 
 <p><code class="highlighter-rouge">reduce</code> 函数的第一个参数也是函数，但有一个要求，就是这个函数自身能接收两个参数。reduce可以累进地将函数作用于各个参数。</p>
 
 <p>python2：</p>
 
-<p><img src="/assets/images/py_intro/14663216593394.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-<p>python3：
-<img src="/assets/images/py_intro/14663230614539.jpg" alt="" /></p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="nb">reduce</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="mi">15</span>
+</code></pre></div></div>
+
+<p>python3：</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="nb">reduce</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="nb">reduce</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="mi">15</span>
+</code></pre></div></div>
 
 <h2 id="动态类型">动态类型</h2>
 
-<blockquote>
-  <p>动态类型 (dynamic typing) 是 Python 一个重要的核心概念。我们之前说过，Python 的变量 (variable) 不需要声明，而在赋值时，变量可以重新赋值为任意值。这些都与动态类型的概念相关。</p>
-</blockquote>
+<h3 id="概念">概念</h3>
 
-<p>在我们接触的对象中，有一类特殊的对象，是用于存储数据的。常见的该类对象包括各种数字，字符串，表，词典。在C语言中，我们称这样一些数据结构为变量。而在Python中，这些是对象。
-对象是储存在内存中的实体。但我们并不能直接接触到该对象。我们在程序中写的对象名，只是指向这一对象的<strong>引用 (reference)</strong>。
-<strong>引用和对象分离</strong>，是动态类型的核心。引用可以随时指向一个新的对象：</p>
+<p>Python 里一个变量的类型是可以改变的。比如说 <code class="highlighter-rouge">var</code> 可以在某一个地方是 <code class="highlighter-rouge">int</code> 然而在另一个地方是 <code class="highlighter-rouge">list</code>。这样的特性在「静态语言」，譬如 C 和 C++ 里，是不被支持的。在 C++ 里，如果 <code class="highlighter-rouge">var</code> 被创建成了 <code class="highlighter-rouge">int</code>，那么它就必须永远是 <code class="highlighter-rouge">int</code>。这个特性叫「动态类型」。</p>
+
+<p>Python 中的变量是「对象」。对象的「真正的内容」被储存在内存中。但我们并不能直接接触到这些对象的「内容」。我们在程序中写的对象名(变量名)，只是指向这一对象的<strong>引用 (reference)</strong>。</p>
+
+<p><strong>引用和对象分离</strong>，是动态类型的核心。引用可以随时指向一个新的对象：</p>
+
+<h3 id="例子给变量赋值的时候发生了什么">例子：给变量赋值的时候发生了什么</h3>
 
 <p>例一：</p>
 
@@ -218,8 +278,8 @@
 第二个语句中，内存中建立对象 “3”，是一个字符串 (string)。<strong>引用 a 指向了 “3”</strong>。此时，对象 3 不再有引用指向它。</p>
 
 <ul>
-  <li>Python 会自动将没有引用指向的对象销毁(destruct)，释放相应内存。</li>
-  <li>对于小的整数和短字符串，Python 会缓存这些对象，而不是频繁的建立和销毁。</li>
+  <li>Python 会自动将 没有引用 指向的对象 销毁 (destruct)，释放相应内存。</li>
+  <li>对于小的整数和短字符串，Python 会「缓存」这些对象，而不是频繁的建立和销毁。</li>
 </ul>
 
 <p>例二：</p>
@@ -232,11 +292,9 @@
 <p>通过前两个句子，我们让 a, b 指向<strong>同一个整数对象 5</strong> ( b = a 的含义是让引用 b 指向引用 a 所指的那一个对象)。
 第三个句子对引用 a 重新赋值，让 a 指向一个新的对象 7。此时 a, b 分别指向不同的对象。</p>
 
-<ul>
-  <li>我们看到，即使是多个引用指向同一个对象，如果一个引用值发生变化，那么实际上是让这个引用指向一个新的引用，并不影响其他的引用的指向。从效果上看，就是各个引用各自独立，互不影响。</li>
-</ul>
+<p>我们看到，即使是多个引用指向同一个对象，如果一个引用值发生变化，那么实际上是让这个引用指向一个新的引用，并不影响其他的引用的指向。从效果上看，就是各个引用各自独立，互不影响。</p>
 
-<p>例三：</p>
+<h3 id="例子多个变量引用同一个列表">例子：多个变量引用同一个列表</h3>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">L1</span><span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">L2</span> <span class="o">=</span> <span class="n">L1</span>
@@ -257,11 +315,13 @@
 
 <p>原因何在呢？因为 <code class="highlighter-rouge">L2</code>, <code class="highlighter-rouge">L3</code> 的指向没有发生变化，依然指向那个表。表实际上是包含了多个<strong>引用</strong>的对象（每个<strong>引用</strong>是一个元素，比如 <code class="highlighter-rouge">L1[0]</code>, <code class="highlighter-rouge">L1[1]</code>, …，每个引用指向一个对象，比如 <code class="highlighter-rouge">1</code>, <code class="highlighter-rouge">2</code>, <code class="highlighter-rouge">3</code>)。而 <code class="highlighter-rouge">L2[0] = 0</code> 这一赋值操作，并不是改变 <code class="highlighter-rouge">L2</code> 的指向，而是对<code class="highlighter-rouge">L2[0]</code>, 也就是表对象的一个元素，进行操作，所以所有指向该对象的引用都受到影响。</p>
 
-<h2 id="动态类型和参数传递">动态类型和参数传递</h2>
+<h3 id="动态类型和参数传递">动态类型和参数传递</h3>
 
-<ol>
-  <li>不可变对象 (immutable)</li>
-</ol>
+<p>Python 里有一个很讨厌的地方，那就是函数在得到「不可变对象」和「可变对象」的时候，这个函数会表现出不同的行为。</p>
+
+<p>这个问题是 Python 的特性，我们并没有「解决它」的办法。一个人唯一能做的就是理解背后的机理，来避免程序中的错误。</p>
+
+<h4 id="不可变对象-immutable">不可变对象 (immutable)</h4>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span>
@@ -276,9 +336,7 @@
 
 <p>参数 <code class="highlighter-rouge">x</code> 是一个新的引用，指向 <code class="highlighter-rouge">a</code> 所指的对象。如果参数是不可变 (immutable) 的对象，<code class="highlighter-rouge">a</code> 和 <code class="highlighter-rouge">x</code> 的引用之间相互独立。对参数 <code class="highlighter-rouge">x</code> 的操作不会影响引用 <code class="highlighter-rouge">a</code>。这样的传递类似于 C 语言中的值传递。</p>
 
-<ol>
-  <li>可变对象</li>
-</ol>
+<h4 id="可变对象">可变对象</h4>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
@@ -331,36 +389,117 @@
     <span class="c1"># do something and f is closed after this
 </span></code></pre></div></div>
 
-<p><img src="/assets/images/py_intro/14678144170043.jpg" alt="" /></p>
+<p>下面的代码是一个简单的「上下文管理器」在管理「文件对象」时的应用</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'new.txt'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">f</span><span class="o">.</span><span class="n">closed</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="bp">False</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">f</span><span class="o">.</span><span class="n">closed</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="bp">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'new.txt'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">closed</span><span class="p">)</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="bp">False</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">f</span><span class="o">.</span><span class="n">closed</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="bp">True</span>
+</code></pre></div></div>
 
 <h3 id="发生了什么">发生了什么</h3>
 
 <p>当我们使用上下文管理器的语法时，我们实际上要求 Python 在进入程序块之前调用对象的 <code class="highlighter-rouge">__enter__()</code> 方法，在结束程序块的时候调用 <code class="highlighter-rouge">__exit__()</code>方法。</p>
 
-<p>对于<strong>文件对象 f</strong> 来说，它定义了 <code class="highlighter-rouge">__enter__()</code> 和 <code class="highlighter-rouge">__exit__()</code> 方法 (可以通过 <code class="highlighter-rouge">dir(f)</code> 看到)。在 f 的 <code class="highlighter-rouge">__exit__()</code> 方法中，有<code class="highlighter-rouge">self.close()</code>语句。所以在使用上下文管理器时，我们就不用明文关闭 f 文件了。</p>
+<p>对于<strong>文件对象 f</strong> 来说，它定义了 <code class="highlighter-rouge">__enter__()</code> 和 <code class="highlighter-rouge">__exit__()</code> 方法 (可以通过 <code class="highlighter-rouge">dir(f)</code> 看到)。在 <code class="highlighter-rouge">f</code> 的 <code class="highlighter-rouge">__exit__()</code> 方法中，有<code class="highlighter-rouge">self.close()</code>语句。所以在使用上下文管理器时，我们就不用「特意地」关闭 <code class="highlighter-rouge">f</code> 文件了。</p>
 
 <h3 id="自定义上下文管理器">自定义上下文管理器</h3>
 
-<p><img src="/assets/images/py_intro/14685473336289.jpg" alt="" />
-<img src="/assets/images/py_intro/14685473506611.jpg" alt="" /></p>
+<p>下面的代码构建了一个带有「上下文管理器」的「类」, 并且在上下文中「使用」了它。</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ranter</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"you are ugly"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"god bless you"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"good luck"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">ranter</span><span class="p">()</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>下面是我们得到的结果。注意三个 <code class="highlighter-rouge">print</code> 结果的顺序。</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">you</span> <span class="n">are</span> <span class="n">ugly</span>
+<span class="n">god</span> <span class="n">bless</span> <span class="n">you</span>
+<span class="n">good</span> <span class="n">luck</span>
+</code></pre></div></div>
 
 <h2 id="闭包">闭包</h2>
 
-<p>闭包 (closure) 是函数式编程的重要的语法结构。函数式编程是一种编程范式。在<strong>面向过程</strong>编程中，我们见到过函数(function)；在<strong>面向对象</strong>编程中，我们见过对象(object)。函数和对象的根本目的是以某种逻辑方式组织代码，并提高代码的可重复使用性(reusability)。闭包也是一种组织代码的结构，它同样提高了代码的可重复使用性。</p>
+<p>闭包 (closure) 是「函数式编程」的重要的语法结构。「函数式编程」是一种编程范式。在<strong>面向过程</strong>编程中，我们见到过「函数」(function)；在<strong>面向对象</strong>编程中，我们见过「对象」(object)。「函数」和「对象」的根本目的是 以某种逻辑方式 组织代码，并提高 代码的 可重复使用性(reusability)。「闭包」也是一种组织代码的结构，它同样提高了代码的可重复使用性。</p>
 
-<p>不同的语言实现闭包的方式不同。Python 以函数对象为基础，为闭包这一语法结构提供支持的 (我们在特殊方法与多范式中，已经多次看到Python使用对象来实现一些特殊的语法)。Python一切皆对象，函数这一语法结构也是一个对象。在函数对象中，我们像使用一个普通对象一样使用函数对象，比如更改函数对象的名字，或者将函数对象作为参数进行传递。</p>
+<p>不同的语言实现「闭包」的方式不同。Python 以「函数对象」为基础，为闭包这一 语法结构 提供支持。Python 中的一切「东西」都是对象，包括「函数」本身，也是一个对象。在「函数对象」中，我们像使用一个普通对象一样使用 它。比如更改「函数对象」的名字，或者将「函数对象」作为「参数」传递给另一个函数。</p>
 
 <h3 id="函数对象的作用域">函数对象的作用域</h3>
 
-<p>和其他对象一样，函数对象也有其存活的范围，也就是函数对象的作用域。函数对象是使用 <code class="highlighter-rouge">def</code> 语句定义的，函数对象的作用域与 <code class="highlighter-rouge">def</code> 所在的层级相同。比如下面代码，我们在 <code class="highlighter-rouge">line_conf</code> 函数的隶属范围内定义的函数 <code class="highlighter-rouge">line</code>，就只能在 <code class="highlighter-rouge">line_conf</code> 的隶属范围内调用。(同样，如果使用 <code class="highlighter-rouge">lambda</code> 定义函数，那么函数对象的作用域与 <code class="highlighter-rouge">lambda</code> 所在的层级相同。)</p>
+<p>和其他对象一样，函数对象也有其存活的范围 (scope) ，也就是函数对象的作用域。函数对象是使用 <code class="highlighter-rouge">def</code> 语句定义的，函数对象的作用域与 <code class="highlighter-rouge">def</code> 所在的层级相同。</p>
 
-<p><img src="/assets/images/py_intro/14686434333772.jpg" alt="" /></p>
+<p>下面的示例代码中，我们在 <code class="highlighter-rouge">line_conf</code> 函数的 范围内 定义的函数 <code class="highlighter-rouge">line</code>，就只能在 <code class="highlighter-rouge">line_conf</code> 的 范围内 使用。在 <code class="highlighter-rouge">line_conf</code> 外使用 <code class="highlighter-rouge">line</code> 会导致错误。</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">line_conf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>         <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+   <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">line</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># 在 line_conf 的范围外使用，导致错误
+</span><span class="o">---------------------------------------------------------------------------</span>
+<span class="nb">NameError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="mi">8</span><span class="n">c1cc91cfe00</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">line</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># error because line is inside line_conf
+</span>
+<span class="nb">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s">'line'</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">line_conf</span><span class="p">()</span>  <span class="c1"># 在 line_conf 内, line 被正确的「创建」和「摧毁」
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">line</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># 在 line_conf 的范围外使用，导致错误
+</span><span class="o">---------------------------------------------------------------------------</span>
+<span class="nb">NameError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="n">c0da0624920b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">line</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># error again because line is inside line_conf
+</span>
+<span class="nb">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s">'line'</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</code></pre></div></div>
 
 <h3 id="闭包-1">闭包</h3>
 
-<p>一个函数和它的环境变量合在一起，就构成了一个闭包(closure)。在 Python 中，所谓的闭包是一个包含有环境变量取值的函数对象。环境变量取值被保存在函数对象的 <code class="highlighter-rouge">__closure__</code> 属性中。</p>
+<p>一个「函数」和它的「环境变量」合在一起，就构成了一个「<strong>闭包</strong>」。下面是一个「闭包」的例子。</p>
 
-<p><img src="/assets/images/py_intro/14686621441832.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">line_conf</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">line</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">line</span> <span class="o">=</span> <span class="n">line_conf</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Python 中的闭包是一个包含有「环境变量的值」的「函数对象」。这些「环境变量的值」被保存在函数对象的 <code class="highlighter-rouge">__closure__</code> 属性中。比如上面代码中的 <code class="highlighter-rouge">line</code> 就有两个整数对象被保存在 <code class="highlighter-rouge">__closure__</code> 里。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [16]: line.__closure__
+Out[16]: 
+(&lt;cell at 0x10a9d3e90: int object at 0x10876bda0&gt;,
+ &lt;cell at 0x10a9d3690: int object at 0x10876bd60&gt;)
+</code></pre></div></div>
 
 <h2 id="装饰器">装饰器</h2>
 
@@ -370,19 +509,74 @@
 
 <p>在函数定义之前调用 <code class="highlighter-rouge">@decorator</code>，我们实际上将该函数传递给 <code class="highlighter-rouge">decorator</code>，并将 <code class="highlighter-rouge">decorator</code>返回的对象赋给原来的函数名。</p>
 
-<p><img src="/assets/images/py_intro/14686637910809.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">F</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">new_F</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>  <span class="c1"># 打印「被装饰的函数」的参数
+</span>    <span class="o">...</span><span class="p">:</span>         <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"The input is {a} and {b}"</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="k">return</span> <span class="n">F</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">new_F</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="o">@</span><span class="n">decorator</span>  <span class="c1"># 使用装饰器
+</span>    <span class="o">...</span><span class="p">:</span> <span class="k">def</span> <span class="nf">dist_sq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]:</span> <span class="n">dist_sq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">The</span> <span class="nb">input</span> <span class="ow">is</span> <span class="mi">3</span> <span class="ow">and</span> <span class="mi">4</span>  <span class="c1"># 装饰器的「效果」
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">22</span><span class="p">]:</span> <span class="mi">25</span>
+</code></pre></div></div>
 
 <h3 id="含参装饰器">含参装饰器</h3>
 
 <p>装饰器的语法允许我们调用 <code class="highlighter-rouge">decorator</code> 时，提供其它参数，比如 <code class="highlighter-rouge">@decorator(par)</code>。这样，就为装饰器的编写和使用提供了更大的灵活性。</p>
 
-<p><img src="/assets/images/py_intro/14688055923520.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">dec_with_par</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s">""</span><span class="p">):</span>  <span class="c1"># 比单纯的「装饰器」更多一层
+</span>    <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>             <span class="k">print</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>             <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"the input is {a} and {b}"</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="k">return</span> <span class="n">new_func</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">decorator</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="o">@</span><span class="n">dec_with_par</span><span class="p">(</span><span class="s">"calculate squared sum"</span><span class="p">)</span>  <span class="c1"># 使用「含参数的装饰器」
+</span>    <span class="o">...</span><span class="p">:</span> <span class="k">def</span> <span class="nf">dist_sq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">dist_sq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">calculate</span> <span class="n">squared</span> <span class="nb">sum</span>  <span class="c1"># 参数起作用
+</span><span class="n">the</span> <span class="nb">input</span> <span class="ow">is</span> <span class="mi">3</span> <span class="ow">and</span> <span class="mi">4</span>   <span class="c1"># 装饰器起作用
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="mi">25</span>            <span class="c1"># 函数的输出结果
+</span></code></pre></div></div>
 
 <h4 id="装饰类">装饰类</h4>
 
 <p>在 <code class="highlighter-rouge">Python 2.6</code> 以后，装饰器被拓展到类。一个装饰器可以接收一个类，并返回一个类，从而起到加工类的效果。</p>
 
-<p><img src="/assets/images/py_intro/14688062970661.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">old_class</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">class</span> <span class="nc">new_class</span><span class="p">:</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>             <span class="n">old_class</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s">"new"</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">new_class</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="o">@</span><span class="n">decorator</span>  <span class="c1"># 使用「类」的装饰器
+</span>    <span class="o">...</span><span class="p">:</span> <span class="k">class</span> <span class="nc">bird</span><span class="p">:</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"bird"</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="n">crow</span> <span class="o">=</span> <span class="n">bird</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="n">crow</span><span class="o">.</span><span class="n">name</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="s">'bird'</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">crow</span><span class="o">.</span><span class="n">version</span>   <span class="c1"># 装饰器的作用
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="s">'new'</span>
+</code></pre></div></div>
 
 <h2 id="内存管理">内存管理</h2>
 
@@ -392,77 +586,214 @@
 
 <p>为了探索对象在内存的存储，我们可以求助于 Python 的内置函数 <code class="highlighter-rouge">id()</code> 。它用于返回对象的身份(identity)。其实，这里所谓的身份，就是该对象的<strong>内存地址</strong>。</p>
 
-<p><img src="/assets/images/py_intro/14688082813243.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># 十进制 内存地址
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="mi">4436966784</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>  <span class="c1"># 十六进制 内存地址
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="s">'0x10876bd80'</span>
+</code></pre></div></div>
 
 <p>Python 会缓存整数和短小的字符这类对象，以便重复使用。当我们创建多个<strong>等于 1 的引用</strong>时，实际上是让所有这些引用指向同一个对象：</p>
 
-<p><img src="/assets/images/py_intro/14688084190608.jpg" alt="set w300" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
 
-<p>为了检验两个引用指向同一个对象，我们可以用 <code class="highlighter-rouge">is</code> 关键字。<code class="highlighter-rouge">is</code> 用于判断两个引用所指的对象是否相同。</p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
 
-<p><img src="/assets/images/py_intro/14688087618015.jpg" alt="set w500" /></p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="p">(</span><span class="mi">4436966784</span><span class="p">,</span> <span class="mi">4436966784</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>为了检验「两个引用 是否指向 同一个对象」，我们可以用 <code class="highlighter-rouge">is</code> 关键字。<code class="highlighter-rouge">is</code> 用于判断两个引用所指的对象是否相同。</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>  <span class="c1"># 得到 True 因为 Python 会缓存小整数
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="bp">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">12345</span><span class="p">,</span> <span class="mi">12345</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>  <span class="c1"># 得到 False 因为 Python 不会缓存大的整数
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="bp">False</span>
+</code></pre></div></div>
 
 <h3 id="引用计数">引用计数</h3>
 
-<p>在 Python 中，每个对象都有存有指向该对象的引用总数，即引用计数(reference count)。当一个对象 <code class="highlighter-rouge">A</code> 被另一个对象 <code class="highlighter-rouge">B</code> 引用时，<code class="highlighter-rouge">A</code> 的引用计数将增加 1。</p>
+<p>在 Python 中，每个对象都有存有指向该对象的引用总数，即「引用计数」(reference count)。当一个对象 <code class="highlighter-rouge">A</code> 被另一个对象 <code class="highlighter-rouge">B</code> 引用时，<code class="highlighter-rouge">A</code> 的 引用计数 将增加 1。</p>
 
-<p>我们可以使用 <code class="highlighter-rouge">sys</code> 包中的<code class="highlighter-rouge">getrefcount()</code>，来查看某个对象的引用计数。需要注意的是，当使用某个引用作为参数，传递给 <code class="highlighter-rouge">getrefcount()</code> 时，参数实际上创建了一个临时的引用。因此，<code class="highlighter-rouge">getrefcount()</code> 所得到的结果，会比期望的多 1。</p>
+<p>我们可以使用 <code class="highlighter-rouge">sys</code> 包中的<code class="highlighter-rouge">getrefcount()</code>，来查看某个对象的引用计数。需要注意的是，当使用某个「引用」作为参数，传递给 <code class="highlighter-rouge">getrefcount()</code> 时，参数实际上创建了一个临时的引用。因此，<code class="highlighter-rouge">getrefcount()</code> 所得到的结果，会永远比期望的多 1。</p>
 
-<p><img src="/assets/images/py_intro/14688098943832.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">getrefcount</span>
 
-<h3 id="对象引用对象">对象引用对象</h3>
+<span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a 被引用一次
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># 得到 1 + 1 的结果
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="mi">2</span>
 
-<p>Python 的一个容器对象(container)，比如表、词典等，可以包含多个对象。实际上，容器对象中包含的并不是元素对象本身，是指向各个元素对象的引用。
-我们也可以自定义一个对象，并引用其它对象:</p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">48</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>  <span class="c1"># b 增加了 1 次 a 的引用
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">49</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">49</span><span class="p">]:</span> <span class="mi">3</span>
 
-<p><img src="/assets/images/py_intro/14688093706108.jpg" alt="" /></p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">50</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>  <span class="c1"># c 增加了 3 次 a 的引用
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">51</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">51</span><span class="p">]:</span> <span class="mi">6</span>
+</code></pre></div></div>
 
-<p>对象引用对象，是 Python 最基本的构成方式。即使是 <code class="highlighter-rouge">a = 1</code> 这一赋值方式，实际上是让词典的一个键值 <code class="highlighter-rouge">"a"</code> 的元素引用整数对象 <code class="highlighter-rouge">1</code>。该词典对象用于记录所有的全局引用。该词典引用了整数对象 <code class="highlighter-rouge">1</code>。我们可以通过内置函数<code class="highlighter-rouge">globals()</code> 来查看该词典：</p>
+<h3 id="引用对象的对象">「引用对象」的对象</h3>
 
-<p><img src="/assets/images/py_intro/14688096821183.jpg" alt="" /></p>
+<p>Python 的一个容器对象(container)，比如表、词典等，可以包含多个对象。实际上，「容器」中包含的并不是「对象」本身，是指向各个「对象」的「引用」。</p>
+
+<p>我们也可以自定义一个对象，并引用其它对象:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">53</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">from_obj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_obj</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">to_obj</span> <span class="o">=</span> <span class="n">to_obj</span>
+    <span class="o">...</span><span class="p">:</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">54</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">55</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">from_obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># 创建一个「引用了 b」的对象 a
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_obj</span><span class="p">),</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># a 的 to_obj 是 b 的「引用」
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="p">(</span><span class="mi">4474875808</span><span class="p">,</span> <span class="mi">4474875808</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">57</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># 三次引用：b + a.to_obj + getrefcount()
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">57</span><span class="p">]:</span> <span class="mi">3</span>
+</code></pre></div></div>
+
+<p>使用「对象」来「引用对象」，是 Python 代码最基本的构成方式。即使是 <code class="highlighter-rouge">a = 1</code> 这一赋值方式，实际上是让一个「词典对象」的一个「键元素」(取值为 <code class="highlighter-rouge">"a"</code>) 来引用一个「整数对象」(取值为 <code class="highlighter-rouge">1</code>)。</p>
+
+<p>这个「词典对象」，记录了所有的全局引用。我们可以通过内置函数<code class="highlighter-rouge">globals()</code> 来查看该词典：</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="nb">globals</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> 
+<span class="p">{</span><span class="s">'__name__'</span><span class="p">:</span> <span class="s">'__main__'</span><span class="p">,</span>
+ <span class="s">'__doc__'</span><span class="p">:</span> <span class="s">'Automatically created module for IPython interactive environment'</span><span class="p">,</span>
+ <span class="s">'__package__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+ <span class="o">...</span>
+ <span class="s">'_ii'</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span>
+ <span class="s">'_iii'</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span>
+ <span class="s">'_i1'</span><span class="p">:</span> <span class="s">'a = 1'</span><span class="p">,</span>
+ <span class="s">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># 注意这里！
+</span> <span class="s">'_i2'</span><span class="p">:</span> <span class="s">'globals()'</span><span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="引用环">引用环</h3>
 
-<p>两个对象可能相互引用，从而构成所谓的引用环</p>
+<p>两个对象可能相互引用，从而构成所谓的「引用环」</p>
 
-<p><img src="/assets/images/py_intro/14688115012287.jpg" alt="set w300" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">a</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">[[[</span><span class="o">...</span><span class="p">]]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="n">b</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="p">[[[</span><span class="o">...</span><span class="p">]]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="mi">9</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="mi">9</span>
+</code></pre></div></div>
 
 <p>即使是一个对象，只需要自己引用自己，也能构成引用环。</p>
 
-<p><img src="/assets/images/py_intro/14688115567884.jpg" alt="set w250" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">a</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="p">[[</span><span class="o">...</span><span class="p">]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="p">[[</span><span class="o">...</span><span class="p">]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="p">[[</span><span class="o">...</span><span class="p">]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="p">[[</span><span class="o">...</span><span class="p">]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="p">[[</span><span class="o">...</span><span class="p">]]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="mi">28</span>
+</code></pre></div></div>
 
 <h3 id="引用减少">引用减少</h3>
 
 <p>某个对象的引用计数可能减少。比如，可以使用 <code class="highlighter-rouge">del</code> 关键字删除某个引用</p>
 
-<p><img src="/assets/images/py_intro/14688106836423.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="mi">6</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">getrefcount</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="mi">6</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="k">del</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># 删除 a 这个「引用」
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">getrefcount</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># b[0] 指向的「空列表」还存在
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="mi">5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"a?"</span><span class="p">)</span> <span class="c1"># 修改这个「空列表」 依然会影响 c
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">c</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="p">[[</span><span class="s">'a?'</span><span class="p">],</span> <span class="p">[</span><span class="s">'a?'</span><span class="p">],</span> <span class="p">[</span><span class="s">'a?'</span><span class="p">]]</span>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">del</code> 也可以用于删除容器元素中的元素</p>
 
-<p><img src="/assets/images/py_intro/14688107620791.jpg" alt="set w300" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="k">del</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">a</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
 
 <h3 id="垃圾回收">垃圾回收</h3>
 
-<p>Python 会启动垃圾回收 (garbage collection)，将没用的对象清除。
+<p>Python 会启动「垃圾回收」 (garbage collection)，将没用的对象清除。
 从基本原理上，当 Python 的某个对象的引用计数降为 0 时，说明没有任何引用指向该对象，该对象就成为要被回收的垃圾了。</p>
 
 <p>例子：</p>
 
-<p><img src="/assets/images/py_intro/14688117160582.jpg" alt="set w300" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [16]: a = [1, 2, 3]
 
-<p><code class="highlighter-rouge">del(a)</code> 后，已经没有任何引用指向之前建立的 <code class="highlighter-rouge">[1, 2, 3]</code> 这个表。用户不可能通过任何方式接触或者动用这个对象。这个对象如果继续待在内存里，就成了不健康的脂肪。当垃圾回收启动时，Python 扫描到这个引用计数为 <code class="highlighter-rouge">0</code> 的对象，就将它所占据的内存清空。</p>
+In [17]: del(a)
+</code></pre></div></div>
 
-<p>然而，垃圾回收时，Python 不能进行其它的任务。频繁的垃圾回收将大大降低Python 的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，Python 只会在特定条件下，自动启动垃圾回收。当 Python 运行时，会记录其中<strong>分配对象</strong> (object allocation) 和<strong>取消分配对象</strong> (object deallocation) 的次数。当两者的差值高于某个阈值时，垃圾回收才会启动。</p>
+<p><code class="highlighter-rouge">del(a)</code> 后，已经没有任何引用指向之前建立的 <code class="highlighter-rouge">[1, 2, 3]</code> 这个表。用户不可能通过任何方式接触或者动用这个对象。这个对象如果继续待在内存里，就成了累赘。当「垃圾回收」启动时，Python 扫描到这个「引用计数」为 <code class="highlighter-rouge">0</code> 的对象，就将它所占据的内存清空。</p>
+
+<p>然而，「垃圾回收」时，Python 不能进行其它的任务。频繁的「垃圾回收」将大大降低 Python 的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，Python 只会在特定条件下，自动启动「垃圾回收」。当 Python 运行时，会记录其中的 「<strong>分配对象</strong>」 (object allocation) 和 「<strong>取消分配对象</strong>」 (object deallocation) 的次数。当两者的差值高于某个阈值时，「垃圾回收」才会启动。</p>
 
 <p>我们可以通过 <code class="highlighter-rouge">gc</code> 模块的 <code class="highlighter-rouge">get_threshold()</code> 方法，查看该阈值:</p>
 
-<p><img src="/assets/images/py_intro/14688121244730.jpg" alt="set w300" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">gc</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_threshold</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>返回 <code class="highlighter-rouge">(700, 10, 10)</code>，后面的两个 <code class="highlighter-rouge">10</code> 是与分代回收相关的阈值。<code class="highlighter-rouge">700</code> 即是垃圾回收启动的阈值。可以通过 <code class="highlighter-rouge">gc</code> 中的 <code class="highlighter-rouge">set_threshold()</code> 方法重新设置这个值。我们也可以手动启动垃圾回收，即使用 <code class="highlighter-rouge">gc.collect()</code>。</p>
 
 <h3 id="分代回收">分代回收</h3>
 
-<p>Python 同时采用了分代 (generation) 回收的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
+<p>Python 同时采用了「分代 (generation) 回收」的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
 
 <p>Python 将所有的对象分为 0，1，2 三代。所有的新建对象都是 0 代对象。<strong>当某一代对象经历过垃圾回收，依然存活，那么它就被归入下一代对象。</strong></p>
 
@@ -470,13 +801,21 @@
 
 <p>这两个次数即上面</p>
 
-<p><img src="/assets/images/py_intro/14688121244730.jpg" alt="set w300" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">gc</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_threshold</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">get_threshold()</code> 返回的 <code class="highlighter-rouge">(700, 10, 10)</code> 返回的两个 <code class="highlighter-rouge">10</code>。也就是说，每 <code class="highlighter-rouge">10</code> 次 0 代垃圾回收，会配合 1 次 1 代的垃圾回收；而每 10 次 1 代的垃圾回收，才会有 1 次的 2 代垃圾回收。</p>
 
 <p>我们可以用 <code class="highlighter-rouge">set_threshold()</code> 来调整这个阈值：</p>
 
-<p><img src="/assets/images/py_intro/14688125650066.jpg" alt="" /></p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">gc</span><span class="o">.</span><span class="n">set_threshold</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_threshold</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h3 id="回收孤立的引用环">回收孤立的引用环</h3>
 

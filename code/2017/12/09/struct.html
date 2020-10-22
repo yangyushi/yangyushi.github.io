@@ -63,7 +63,11 @@
   <li><a href="#unpack" id="markdown-toc-unpack">unpack</a></li>
 </ul>
 
-<p>the struct module in python allow us to work with binary data.</p>
+<hr />
+
+<p>The struct module in python allow us to work with binary data.</p>
+
+<hr />
 
 <h2 id="pack">pack</h2>
 
@@ -72,7 +76,7 @@
 Return a bytes object containing the values v1, v2, … packed according to the format string fmt. The arguments must match the values required by the format exactly.</p>
 </blockquote>
 
-<p><code class="highlighter-rouge">pack</code> 方法可以把数值按照格式打包成二进制数据：</p>
+<p>we can use <code class="highlighter-rouge">pack</code> method to encode numerical data into formatted binary data.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">packed_data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">'iif'</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">)</span> <span class="c1"># iif → int, int, float
 </span><span class="k">print</span><span class="p">(</span><span class="n">packed_data</span><span class="p">)</span>

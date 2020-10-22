@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Struct</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    09 Dec 2017
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<hr />
+<p data-line="11" class="code-line">The struct module in python allow us to work with binary data.</p>
+<hr />
+<h2 id="pack-5" data-line="15" class="code-line">pack</h2>
+<blockquote data-line="17" class="code-line">
+<p data-line="17" class="code-line"><code>struct.pack(fmt, v1, v2, ...)</code>
+Return a bytes object containing the values v1, v2, … packed according to the format string fmt. The arguments must match the values required by the format exactly.</p>
+</blockquote>
+<p data-line="20" class="code-line">we can use <code>pack</code> method to encode numerical data into formatted binary data.</p>
+<pre><code data-line="22" class="code-line language-python"><div>packed_data = struct.pack(<span class="hljs-string">'iif'</span>, <span class="hljs-number">6</span>, <span class="hljs-number">19</span>, <span class="hljs-number">4.7</span>) <span class="hljs-comment"># iif → int, int, float</span>
+print(packed_data)
+<span class="hljs-string">b'\x06\x00\x00\x00\x13\x00\x00\x00ff\x96@'</span>
+</div></code></pre>
+<h2 id="calcsize-5" data-line="28" class="code-line">calcsize</h2>
+<blockquote data-line="30" class="code-line">
+<p data-line="30" class="code-line"><code>struct.calcsize(fmt)</code>
+Return the size of the struct (and hence of the bytes object produced by pack(fmt, ...)) corresponding to the format string fmt.</p>
+</blockquote>
+<pre><code data-line="33" class="code-line language-python"><div>print(struct.calcsize(<span class="hljs-string">'c'</span>))
+print(struct.calcsize(<span class="hljs-string">'i'</span>))
+print(struct.calcsize(<span class="hljs-string">'f'</span>))
+print(struct.calcsize(<span class="hljs-string">'cif'</span>))
+
+<span class="hljs-number">1</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">12</span>
+</div></code></pre>
+<h2 id="unpack-5" data-line="45" class="code-line">unpack</h2>
+<blockquote data-line="47" class="code-line">
+<p data-line="47" class="code-line"><code>struct.unpack(fmt, buffer)</code>
+Unpack from the buffer buffer (presumably packed by pack(fmt, ...)) according to the format string fmt. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().</p>
+</blockquote>
+<pre><code data-line="50" class="code-line language-python"><div>data = struct.unpack(<span class="hljs-string">'iif'</span>, <span class="hljs-string">b'\x06\x00\x00\x00\x13\x00\x00\x00ff\x96@'</span>)
+print(data)
+(<span class="hljs-number">6</span>, <span class="hljs-number">19</span>, <span class="hljs-number">4.699999809265137</span>)
+</div></code></pre>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

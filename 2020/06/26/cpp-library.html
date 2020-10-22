@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cpp Library</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    26 Jun 2020
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<h2 id="introduction-3" data-line="9" class="code-line">Introduction</h2>
+<p data-line="11" class="code-line">At a newbe to C++, I was very very very confused about the eco-system of C family. Quite often I find myself in the following situation.</p>
+<ol>
+<li data-line="13" class="code-line">I want to use a open source library/software.</li>
+<li data-line="14" class="code-line">I downloaded the source file.</li>
+<li data-line="15" class="code-line">The default compile options does not work.</li>
+<li data-line="16" class="code-line">I gave up.</li>
+</ol>
+<p data-line="18" class="code-line">Then I found <a href="https://stackoverflow.com/a/10358977/4116538" data-href="https://stackoverflow.com/a/10358977/4116538">this answer</a>, which greatly improved my understanding about the library in C++.
+This is my own note about how to create static &amp; dynamical libries.</p>
+<p data-line="22" class="code-line">Why this matters? I think 99% times a failed compile is because of wrong library path configuration.
+Once I understand how the C++ library works, I am more confident to fix the path by myself.</p>
+<h3 id="the-code-we-have-3" data-line="25" class="code-line">The code we have</h3>
+<p data-line="27" class="code-line">The example code in three files</p>
+<ol>
+<li data-line="29" class="code-line"><code>hello_world.h</code></li>
+<li data-line="30" class="code-line"><code>hello_world.cpp</code></li>
+<li data-line="31" class="code-line"><code>main.cpp</code></li>
+</ol>
+<p data-line="33" class="code-line">The goal is to create a library for <code>hello_world</code> so that <code>main.cpp</code> can use the library.</p>
+<h3 id="the-source-code-3" data-line="35" class="code-line">The source code</h3>
+<p data-line="37" class="code-line"><code>hello_world.h</code></p>
+<pre><code data-line="39" class="code-line language-cpp"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">hello</span>{</span>
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">printHelloWorld</span><span class="hljs-params">()</span></span>;
+};
+</div></code></pre>
+<p data-line="46" class="code-line"><code>hello_world.cpp</code></p>
+<pre><code data-line="48" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"hello_world.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">void</span> hello::printHelloWorld(){
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Hello World!"</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+}
+</div></code></pre>
+<p data-line="57" class="code-line"><code>main.cpp</code></p>
+<pre><code data-line="59" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"hello_world.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    hello h;
+    h.printHelloWorld();
+}
+</div></code></pre>
+<h2 id="compile-withwithout-the-library-3" data-line="68" class="code-line">Compile with/without the library</h2>
+<h3 id="normal-way-to-compile-3" data-line="70" class="code-line">Normal Way to Compile</h3>
+<p data-line="72" class="code-line">I wrote down the normal way to compile C++ code in a file named <code>compile.sh</code>, with following content</p>
+<pre><code data-line="74" class="code-line language-sh"><div>g++ main.cpp hello_world.cpp -o out
+./out
+rm out
+</div></code></pre>
+<p data-line="80" class="code-line">Calling <code>bash compile.sh</code> would print <code>Hello World!</code></p>
+<h3 id="use-static-library-3" data-line="82" class="code-line">Use Static Library</h3>
+<p data-line="84" class="code-line">The static library is an <strong>archive</strong> of object files <code>(*.o)</code> that are <strong>linked inside</strong> your final executables.</p>
+<p data-line="86" class="code-line">I wrote down the compile code in a file named <code>static.sh</code>, with following content</p>
+<pre><code data-line="88" class="code-line language-sh"><div>g++ -c hello_world.cpp  <span class="hljs-comment"># compile hello_world.cpp -&gt; hello_world.o</span>
+ar rcs libhello_world.a hello_world.o  <span class="hljs-comment"># create *.a library</span>
+g++ main.cpp libhello_world.a -o out  <span class="hljs-comment"># use library to compile instead of *.cpp</span>
+./out
+rm *.a
+rm out
+</div></code></pre>
+<p data-line="97" class="code-line">Calling <code>bash static.sh</code> would print <code>Hello World!</code> and create a static library <code>libhello_world.a</code>.</p>
+<h3 id="use-shared-library-3" data-line="99" class="code-line">Use Shared Library</h3>
+<p data-line="101" class="code-line">The shared libraries instead are loaded dynamically <strong>at run time</strong>.</p>
+<p data-line="103" class="code-line">I wrote down the compile code in a file named <code>dynamical.sh</code>, with following content</p>
+<pre><code data-line="105" class="code-line language-sh"><div>g++ -fPIC -c hello_world.cpp  <span class="hljs-comment"># compile hello_world.cpp &amp; enable share -&gt; hello_world.o</span>
+g++ -shared -o libhello_world.so hello_world.o  <span class="hljs-comment"># create *.so shared library</span>
+g++ main.cpp -L . -l hello_world -o out
+./out
+rm *.o
+rm out
+</div></code></pre>
+<p data-line="114" class="code-line">Calling <code>bash dynamical.sh</code> would print <code>Hello World!</code> and create a shared library <code>libhello_world.so</code>.</p>
+<p data-line="116" class="code-line">This line needs more words,</p>
+<pre><code data-line="118" class="code-line language-sh"><div>g++ main.cpp -L . -l hello_world -o out
+</div></code></pre>
+<ul>
+<li data-line="122" class="code-line"><code>-L .</code> means &quot;looking for libraries inside the current folder <code>.</code>&quot;</li>
+<li data-line="123" class="code-line"><code>-l hello_world</code> means &quot;looking for a library named <code>libhello_world.so</code>&quot;. Yes, the prefix <code>lib</code> and suffix <code>.so</code> were deliberately ignored.</li>
+</ul>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

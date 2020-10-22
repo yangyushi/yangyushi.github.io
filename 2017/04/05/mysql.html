@@ -1,0 +1,523 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mysql</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    05 Apr 2017
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<h2 id="%E7%AE%80%E4%BB%8B" data-line="9" class="code-line">简介</h2>
+<h3 id="%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8Csql%E4%BB%8B%E7%BB%8D" data-line="10" class="code-line">数据库和SQL介绍</h3>
+<ul>
+<li data-line="11" class="code-line">数据库（Database）是按照数据结构来组织、存储和管理数据的仓库</li>
+<li data-line="12" class="code-line">结构化查询语言(Structured Query Language)简称SQL，是上世纪70年代由IBM公司开发，用于对数据库进行操作的语言。</li>
+</ul>
+<h3 id="mysql-%E4%BB%8B%E7%BB%8D" data-line="14" class="code-line">MySQL 介绍</h3>
+<ul>
+<li data-line="15" class="code-line">MySQL是一个DBMS（数据库管理系统），由瑞典MySQLAB公司开发，目前属于Oracle公司</li>
+<li data-line="16" class="code-line">MySQL是关系型数据库管理系统（关联数据库：将数据保存在不同的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性。）</li>
+</ul>
+<h3 id="%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4" data-line="18" class="code-line">一些基本命令</h3>
+<ul>
+<li data-line="20" class="code-line">打开服务</li>
+</ul>
+<pre><code data-line="22" class="code-line language-bash"><div>sudo service mysql start <span class="hljs-comment">#打开 MySQL</span>
+mysql -u root <span class="hljs-comment">#使用 root 登陆</span>
+</div></code></pre>
+<ul>
+<li data-line="27" class="code-line">查看数据库</li>
+</ul>
+<pre><code data-line="29" class="code-line language-bash"><div>mysql&gt; show databases; <span class="hljs-comment"># 注意分号</span>
+</div></code></pre>
+<ul>
+<li data-line="33" class="code-line">连接数据库</li>
+</ul>
+<pre><code data-line="35" class="code-line language-bash"><div>mysql&gt; use database_name
+</div></code></pre>
+<ul>
+<li data-line="39" class="code-line">查看表</li>
+</ul>
+<pre><code data-line="41" class="code-line language-bash"><div>mysql&gt; show tables; <span class="hljs-comment"># 注意分号</span>
+</div></code></pre>
+<ul>
+<li data-line="45" class="code-line">退出</li>
+</ul>
+<pre><code data-line="47" class="code-line language-bash"><div>mysql&gt; <span class="hljs-built_in">exit</span>
+</div></code></pre>
+<h2 id="%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5" data-line="51" class="code-line">创建一个数据库并插入语句</h2>
+<h3 id="%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%A1%A8" data-line="53" class="code-line">数据库和表</h3>
+<ul>
+<li data-line="55" class="code-line">
+<p data-line="55" class="code-line">数据表（table）简称表，它是数据库最重要的组成部分之一</p>
+</li>
+<li data-line="56" class="code-line">
+<p data-line="56" class="code-line">数据库只是一个框架，表才是实质内容。</p>
+</li>
+<li data-line="57" class="code-line">
+<p data-line="57" class="code-line">一个数据库中一般会有多张表，这些各自独立的表通过建立关系被联接起来，才成为可以交叉查阅、一目了然的数据库</p>
+</li>
+<li data-line="58" class="code-line">
+<p data-line="58" class="code-line">下面是一个表的例子</p>
+  <table>
+  <tr>
+  	<td>ID</td><td>Name</td><td>Gender</td>
+  </tr>
+  <tr>
+  	<td>054</td><td>Leo</td><td>Male</td>
+  </tr>
+  <tr>
+  	<td>055</td><td>Ken</td><td>Male</td>
+  </tr>
+  <tr>
+  	<td>056</td><td>Lily</td><td>Female</td>
+  	</tr>
+  </table>
+</li>
+</ul>
+<h3 id="mysql-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B" data-line="75" class="code-line">MySQL 中的数据类型</h3>
+<table>
+<tr><th>数据类型</th><th>大小(字节)</th><th>用途</th><th>格式</th></tr>
+<tr><td>INT</td><td>4</td><td>整数</td><td></td></tr>
+<tr><td>FLOAT</td><td>4</td><td>单精度浮点数</td><td></td></tr>
+<tr><td>DOUBLE</td><td>4</td><td>双精度浮点数</td><td></td></tr>
+<tr><td>ENUM</td><td></td><td>单选,比如性别</td><td>ENUM('a','b','c')</td></tr>
+<tr><td>SET</td><td></td><td>多选</td><td>SET('1','2','3')</td></tr>
+<tr><td>DATE</td><td>3</td><td>日期</td><td>YYYY-MM-DD</td></tr>
+<tr><td>TIME</td><td>3</td><td>时间点或持续时间</td><td>HH:MM:SS</td></tr>
+<tr><td>YEAR</td><td>1</td><td>年份值</td><td>YYYY</td></tr>
+<tr><td>CHAR</td><td>0~255</td><td>定长字符串</td><td></td></tr>
+<tr><td>VARCHAR</td><td>0~255</td><td>变长字符串</td><td></td></tr>
+<tr><td>TEXT</td><td>0~65535</td><td>长文本数据</td><td></td></tr>
+</table>
+<h3 id="%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%A1%A8" data-line="92" class="code-line">创建数据库和表</h3>
+<pre><code data-line="94" class="code-line language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> db_name; <span class="hljs-comment"># 一般将保留字大写，变量小写</span>
+<span class="hljs-keyword">USE</span> db_name;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> table_name(
+col_1_name <span class="hljs-built_in">INT</span>(<span class="hljs-number">10</span>),
+col_2_name <span class="hljs-built_in">CHAR</span>(<span class="hljs-number">20</span>),
+col_3_name <span class="hljs-built_in">CHAR</span>(<span class="hljs-number">10</span>)
+);
+</div></code></pre>
+<h3 id="%E5%90%91%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE" data-line="104" class="code-line">向表中插入数据</h3>
+<pre><code data-line="106" class="code-line language-sql"><div><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> table_name(col_1_name, col_2_name, ...) <span class="hljs-keyword">VALUES</span> (c_1, c_2, ...);
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> table_name; <span class="hljs-comment"># 查看表</span>
+</div></code></pre>
+<p data-line="111" class="code-line">注意：</p>
+<ol>
+<li data-line="113" class="code-line"><code>col_1_name</code> 必须是 <code>table_name</code> 中有的列，否则报错</li>
+<li data-line="114" class="code-line"><code>INSERT</code> 时可以缺省某一列，此时这一列会被 <code>NULL</code> 填充</li>
+</ol>
+<h2 id="%E7%BA%A6%E6%9D%9F" data-line="116" class="code-line">约束</h2>
+<h3 id="%E4%B8%BB%E9%94%AE" data-line="118" class="code-line">主键</h3>
+<ul>
+<li data-line="120" class="code-line">
+<p data-line="120" class="code-line"><strong>主键</strong> (PRIMARY KEY) 是用于约束表中的一行，作为这一行的标识符</p>
+</li>
+<li data-line="121" class="code-line">
+<p data-line="121" class="code-line">在一张表中通过<strong>主键</strong>就能准确定位到一行</p>
+</li>
+<li data-line="122" class="code-line">
+<p data-line="122" class="code-line">行中的主键<strong>不能有重复</strong>且<strong>不能为空</strong></p>
+</li>
+<li data-line="123" class="code-line">
+<p data-line="123" class="code-line">定义主键</p>
+<ul>
+<li data-line="124" class="code-line">
+<p data-line="124" class="code-line">方法 1</p>
+<pre><code data-line="126" class="code-line language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> table_name(
+col_1 <span class="hljs-built_in">INT</span>(<span class="hljs-number">10</span>) PRIMARY <span class="hljs-keyword">KEY</span>,
+col_2 ...,
+);
+</div></code></pre>
+</li>
+<li data-line="132" class="code-line">
+<p data-line="132" class="code-line">方法 2</p>
+<pre><code data-line="134" class="code-line language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> table_name(
+col_1 <span class="hljs-built_in">INT</span>(<span class="hljs-number">10</span>),
+col_2 ...,
+<span class="hljs-keyword">CONSTRAINT</span> Prim_key_name PRIMARY <span class="hljs-keyword">KEY</span>(col_1) <span class="hljs-comment">#Prim_key_name 为自定义名</span>
+);
+</div></code></pre>
+</li>
+</ul>
+</li>
+<li data-line="141" class="code-line">
+<p data-line="141" class="code-line">定义复合主键</p>
+<pre><code data-line="143" class="code-line language-sql"><div>CONSTRAINT Prim_key_name PRIMARY KEY(col_1, col_2)
+</div></code></pre>
+</li>
+</ul>
+<h3 id="%E9%BB%98%E8%AE%A4%E5%80%BC%E7%BA%A6%E6%9D%9F" data-line="147" class="code-line">默认值约束</h3>
+<pre><code data-line="149" class="code-line language-sql"><div>col INT(10) DEFAULT 'default_value',
+</div></code></pre>
+<h3 id="%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F" data-line="153" class="code-line">唯一约束</h3>
+<pre><code data-line="155" class="code-line language-sql"><div>UNIQUE(col),
+</div></code></pre>
+<h3 id="%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F" data-line="159" class="code-line">外键约束</h3>
+<ul>
+<li data-line="161" class="code-line">
+<p data-line="161" class="code-line"><strong>每个外键必须 REFERENCES (参考) 另一个表的主键</strong>，被外键约束的列，取值必须在它参考的列中有对应值。</p>
+</li>
+<li data-line="163" class="code-line">
+<p data-line="163" class="code-line">在 <code>INSERT</code> 时，如果被外键约束的值没有在参考列中有对应，则INSERT失败</p>
+</li>
+<li data-line="164" class="code-line">
+<p data-line="164" class="code-line">创建外键约束</p>
+<pre><code data-line="166" class="code-line language-sql"><div>CONSTRAINT key_name FOREIGN KEY(col) REFERENCES ref_tb(ref_col),
+<span class="hljs-comment"># key_name - 外键名</span>
+<span class="hljs-comment"># col - 被约束的列</span>
+<span class="hljs-comment"># ref_db 参考列所在的表</span>
+<span class="hljs-comment"># ref_col 参考列</span>
+</div></code></pre>
+</li>
+</ul>
+<h3 id="%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F" data-line="174" class="code-line">非空约束</h3>
+<ul>
+<li data-line="176" class="code-line">
+<p data-line="176" class="code-line">在MySQL中违反非空约束，不会报错，只会有警告</p>
+</li>
+<li data-line="177" class="code-line">
+<p data-line="177" class="code-line">输入为空时，用 0 填充</p>
+</li>
+<li data-line="178" class="code-line">
+<p data-line="178" class="code-line">例子</p>
+<pre><code data-line="180" class="code-line language-sql"><div>col INT(10) NOT NULL,
+</div></code></pre>
+</li>
+</ul>
+<h2 id="select%E8%AF%AD%E5%8F%A5%E8%AF%A6%E8%A7%A3" data-line="184" class="code-line">SELECT语句详解</h2>
+<h3 id="%E5%9F%BA%E6%9C%AC-select-%E8%AF%AD%E5%8F%A5" data-line="186" class="code-line">基本 SELECT 语句</h3>
+<p data-line="188" class="code-line">格式：</p>
+<pre><code data-line="190" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> 要查询的列名 <span class="hljs-keyword">FROM</span> 表名字 <span class="hljs-keyword">WHERE</span> 限制条件;
+</div></code></pre>
+<h3 id="%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6" data-line="194" class="code-line">限制条件</h3>
+<ul>
+<li data-line="196" class="code-line">
+<p data-line="196" class="code-line"><code>WHERE</code> 后面的条件可以通过 <code>OR</code> 或 <code>AND</code> 连接</p>
+</li>
+<li data-line="198" class="code-line">
+<p data-line="198" class="code-line">可通过 <code>IN</code> 和 <code>NOT IN</code> 来筛选 “在” 或 “不在” 某个范围内的结果</p>
+<ul>
+<li data-line="199" class="code-line">例子：查询在部门＃3 或部门＃4 的员工</li>
+</ul>
+<pre><code data-line="201" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">name</span>,age <span class="hljs-keyword">FROM</span> employee <span class="hljs-keyword">WHERE</span> in_dpt <span class="hljs-keyword">IN</span> (<span class="hljs-string">'dpt3'</span>,<span class="hljs-string">'dpt4'</span>);
+</div></code></pre>
+</li>
+<li data-line="205" class="code-line">
+<p data-line="205" class="code-line"><code>Like</code> 与通配符</p>
+<ul>
+<li data-line="206" class="code-line">
+<p data-line="206" class="code-line">关键字 <code>LIKE</code> 在 SQL 语句中和通配符一起使用，通配符代表未知字符。</p>
+</li>
+<li data-line="207" class="code-line">
+<p data-line="207" class="code-line">SQL中的通配符是 <code>_</code> 和 <code>%</code></p>
+<ul>
+<li data-line="208" class="code-line"><code>_</code> 代表一个未指定字符</li>
+<li data-line="209" class="code-line"><code>%</code> 代表不定个未指定字符</li>
+</ul>
+</li>
+<li data-line="210" class="code-line">
+<p data-line="210" class="code-line">语法 <code>WHERE 限制条件 LIKE 通配符</code></p>
+<ul>
+<li data-line="211" class="code-line">例子：查询电话号码以 10 开头的员工</li>
+</ul>
+<pre><code data-line="213" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">name</span>,phone <span class="hljs-keyword">FROM</span> employee <span class="hljs-keyword">WHERE</span> phone <span class="hljs-keyword">LIKE</span> <span class="hljs-string">'10%'</span>;
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E5%AF%B9%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F" data-line="217" class="code-line">对结果排序</h3>
+<p data-line="219" class="code-line">格式</p>
+<pre><code data-line="221" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> 要查询的列名 <span class="hljs-keyword">FROM</span> 表名字 <span class="hljs-keyword">WHERE</span> 限制条件 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> 排序列 <span class="hljs-keyword">ASC</span>/<span class="hljs-keyword">DESC</span>;
+</div></code></pre>
+<p data-line="225" class="code-line">其中，<code>ASC</code> 为升序，<code>DESC</code> 为降序；默认为升序</p>
+<h3 id="%E4%BD%BF%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E8%BF%9B%E8%A1%8C%E8%AE%A1%E7%AE%97" data-line="227" class="code-line">使用内置函数进行计算</h3>
+<table>
+<tr>
+<td>函数名</td><td>COUNT</td><td>SUM</td><td>AVG</td><td>MAX</td><td>MIN</td>
+</tr>
+<tr>
+<td>功能</td><td>计数</td><td>求和</td><td>均值</td><td>最大值</td><td>最小值</td>
+</tr>
+</table>
+<p data-line="238" class="code-line">语法：</p>
+<pre><code data-line="240" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> FUNC(<span class="hljs-keyword">col</span>) <span class="hljs-keyword">AS</span> new_name <span class="hljs-keyword">FROM</span> table_name;
+<span class="hljs-comment"># As new_name 可省略，作用是给 FUNC(col) 重命名</span>
+</div></code></pre>
+<p data-line="245" class="code-line">例子：</p>
+<pre><code data-line="247" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">MAX</span>(salary) <span class="hljs-keyword">AS</span> richest, <span class="hljs-keyword">MIN</span>(salary) <span class="hljs-keyword">AS</span> easiest <span class="hljs-keyword">FROM</span> employee;
+</div></code></pre>
+<h3 id="%E5%AD%90%E6%9F%A5%E8%AF%A2" data-line="251" class="code-line">子查询</h3>
+<p data-line="253" class="code-line">查询结果可以作为更高一级查询的范围</p>
+<p data-line="255" class="code-line">例子：</p>
+<pre><code data-line="257" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> col_1, col_2 <span class="hljs-keyword">WHERE</span> col_1 <span class="hljs-keyword">IN</span> (<span class="hljs-keyword">SELECT</span> col_3 <span class="hljs-keyword">FROM</span> table_name);
+</div></code></pre>
+<p data-line="261" class="code-line">这段语句</p>
+<ul>
+<li data-line="263" class="code-line">先求出 <code>SELECT col_3 FROM table_name</code> 的结果</li>
+<li data-line="264" class="code-line">再判断 <code>col_1</code> 是否在该结果中</li>
+<li data-line="265" class="code-line">最终输出符合条件的 <code>col_1</code>, <code>col_2</code></li>
+</ul>
+<h3 id="%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2" data-line="267" class="code-line">连接查询</h3>
+<p data-line="269" class="code-line">例子：</p>
+<pre><code data-line="271" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">id</span>,<span class="hljs-keyword">name</span>,people_num
+<span class="hljs-keyword">FROM</span> employee,department
+<span class="hljs-keyword">WHERE</span> employee.in_dpt = department.dpt_name
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-keyword">id</span>;
+</div></code></pre>
+<p data-line="278" class="code-line">等价于</p>
+<pre><code data-line="280" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">id</span>,<span class="hljs-keyword">name</span>,people_num
+<span class="hljs-keyword">FROM</span> employee <span class="hljs-keyword">JOIN</span> department
+<span class="hljs-keyword">ON</span> employee.in_dpt = department.dpt_name
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-keyword">id</span>;
+</div></code></pre>
+<p data-line="287" class="code-line">作用是输出工号，姓名以及所在部门的人数</p>
+<h2 id="%E4%BF%AE%E6%94%B9%E4%B8%8E%E5%88%A0%E9%99%A4" data-line="289" class="code-line">修改与删除</h2>
+<h3 id="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4" data-line="291" class="code-line">基本命令</h3>
+<ul>
+<li data-line="293" class="code-line">
+<p data-line="293" class="code-line">删除数据库</p>
+<pre><code data-line="295" class="code-line language-sql"><div><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">DATABASE</span> db_name;
+</div></code></pre>
+</li>
+<li data-line="298" class="code-line">
+<p data-line="298" class="code-line">删除表</p>
+<pre><code data-line="300" class="code-line language-sql"><div><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> table_name;
+</div></code></pre>
+</li>
+<li data-line="304" class="code-line">
+<p data-line="304" class="code-line">重命名表</p>
+<pre><code data-line="306" class="code-line language-sql"><div><span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TABLE</span> 原名 <span class="hljs-keyword">TO</span> 新名字;
+
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 原名 <span class="hljs-keyword">RENAME</span> 新名;
+
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 原名 <span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TO</span> 新名;
+</div></code></pre>
+</li>
+</ul>
+<h3 id="%E5%AF%B9%E5%88%97%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9" data-line="314" class="code-line">对列进行修改</h3>
+<ul>
+<li data-line="316" class="code-line">
+<p data-line="316" class="code-line">增加一列</p>
+<pre><code data-line="318" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> 列名字 数据类型 约束; <span class="hljs-comment"># 方法一</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">ADD</span> 列名字 数据类型 约束; <span class="hljs-comment"># 方法二</span>
+</div></code></pre>
+<ul>
+<li data-line="323" class="code-line">在指定位置增加一列: 语句最后加上 <code>AFTER col_1</code></li>
+<li data-line="324" class="code-line">指定添加到第一列: 使用 <code>FIRST</code> 关键词</li>
+</ul>
+</li>
+<li data-line="326" class="code-line">
+<p data-line="326" class="code-line">删除一列</p>
+<pre><code data-line="328" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">COLUMN</span> 列名字 数据类型 约束; <span class="hljs-comment"># 方法一</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">DROP</span> 列名字 数据类型 约束; <span class="hljs-comment"># 方法二</span>
+</div></code></pre>
+</li>
+<li data-line="333" class="code-line">
+<p data-line="333" class="code-line">重命名一列</p>
+<pre><code data-line="335" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">CHANGE</span> 旧列名 新列名 数据类型 约束;
+</div></code></pre>
+</li>
+<li data-line="339" class="code-line">
+<p data-line="339" class="code-line">改变一列的数据类型</p>
+<pre><code data-line="341" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">MODIFY</span> 列名 新数据类型;
+</div></code></pre>
+</li>
+<li data-line="345" class="code-line">
+<p data-line="345" class="code-line">改变一列的内容</p>
+<pre><code data-line="347" class="code-line language-sql"><div><span class="hljs-keyword">UPDATE</span> 表名字 <span class="hljs-keyword">SET</span> 列<span class="hljs-number">1</span>=值<span class="hljs-number">1</span>,列<span class="hljs-number">2</span>=值<span class="hljs-number">2</span> <span class="hljs-keyword">WHERE</span> 条件;
+</div></code></pre>
+<ul>
+<li data-line="351" class="code-line">如果这里没有 WHERE 的话，会把 列1 的所有值设置为 值1，把 列2 的所有值设置为 值2</li>
+</ul>
+</li>
+</ul>
+<h2 id="%E5%85%B6%E4%BB%96" data-line="353" class="code-line">其他</h2>
+<h3 id="%E7%B4%A2%E5%BC%95" data-line="355" class="code-line">索引</h3>
+<blockquote data-line="357" class="code-line">
+<p data-line="357" class="code-line">索引是一种与表有关的结构，它的作用相当于书的目录，可以根据目录中的页码快速找到所需的内容。 当表中有大量记录时，若要对表进行查询，没有索引的情况是全表搜索：将所有记录一一取出，和查询条件进行一一对比，然后返回满足条件的记录。这样做会消耗大量数据库系统时间，并造成大量磁盘I/O操作。 而如果在表中已<strong>建立索引</strong>，在索引中找到符合查询条件的索引值，通过索引值就可以快速找到表中的数据，可以<strong>大大加快查询速度</strong>。</p>
+</blockquote>
+<blockquote data-line="359" class="code-line">
+<p data-line="359" class="code-line">索引的效果是加快查询速度，当表中数据不够多的时候是感受不出它的效果的。</p>
+</blockquote>
+<blockquote data-line="361" class="code-line">
+<p data-line="361" class="code-line">在使用 SELECT 语句查询的时候，语句中 WHERE 里面的条件，会自动判断有没有可用的索引。</p>
+</blockquote>
+<ul>
+<li data-line="363" class="code-line">建立索引</li>
+</ul>
+<pre><code data-line="365" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名字 <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">INDEX</span> 索引名 (列名);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> 索引名 <span class="hljs-keyword">ON</span> 表名字 (列名);
+</div></code></pre>
+<p data-line="370" class="code-line">例子：在 employee 中建立两个索引,</p>
+<p data-line="372" class="code-line"><img src="media/14601908933848/14651243074371.jpg" alt="set w500" class="loading" id="image-hash--287122560" /></p>
+<pre><code data-line="374" class="code-line language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> employee <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">INDEX</span> idx_id (<span class="hljs-keyword">id</span>); 
+<span class="hljs-comment"># 在 employee 表的 id 列上建立名为 idx_id 的索引</span>
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_name <span class="hljs-keyword">ON</span> employee (<span class="hljs-keyword">name</span>);
+<span class="hljs-comment"># 在 employee 表的 name 列上建立名为 idx_name 的索引</span>
+
+<span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">INDEX</span> <span class="hljs-keyword">FROM</span> 表名字  <span class="hljs-comment"># 查看索引</span>
+</div></code></pre>
+<h3 id="%E8%A7%86%E5%9B%BE" data-line="384" class="code-line">视图</h3>
+<blockquote data-line="386" class="code-line">
+<p data-line="386" class="code-line">视图是从一个或多个表中导出来的表，是一种虚拟存在的表。它就像一个窗口，通过这个窗口可以看到系统专门提供的数据，这样，用户可以不用看到整个数据库中的数据，而只关心对自己有用的数据。</p>
+</blockquote>
+<blockquote data-line="388" class="code-line">
+<ul>
+<li data-line="388" class="code-line">数据库中只存放了视图的定义，而<strong>没有存放视图中的数据</strong>，这些数据存放在原来的表中；</li>
+<li data-line="389" class="code-line">使用视图查询数据时，数据库系统会从原来的表中取出对应的数据；</li>
+<li data-line="390" class="code-line">视图中的数据依赖于原来表中的数据，一旦表中数据发生改变，显示在视图中的数据也会发生改变；</li>
+<li data-line="391" class="code-line">在使用视图的时候，可以把它当作一张表。</li>
+</ul>
+</blockquote>
+<blockquote data-line="393" class="code-line">
+<p data-line="393" class="code-line">视图也可以建立在多张表上，只需在 SELECT 语句中使用子查询或连接查询。</p>
+</blockquote>
+<ul>
+<li data-line="395" class="code-line">创建视图</li>
+</ul>
+<pre><code data-line="397" class="code-line language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> 视图名(列a,列b,列c) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> 列<span class="hljs-number">1</span>,列<span class="hljs-number">2</span>,列<span class="hljs-number">3</span> <span class="hljs-keyword">FROM</span> 表名字;
+</div></code></pre>
+<ul>
+<li data-line="401" class="code-line">例子: 从 employee 表中创建视图</li>
+</ul>
+<p data-line="403" class="code-line"><img src="media/14601908933848/14651255970651.jpg" alt="set w500" class="loading" id="image-hash--1296618111" /></p>
+<pre><code data-line="406" class="code-line language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> v_emp(v_name, v_age, v_phone) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">name</span>, age, phone <span class="hljs-keyword">FROM</span> employee;
+
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> v_emp;
+</div></code></pre>
+<p data-line="412" class="code-line">结果：</p>
+<p data-line="414" class="code-line"><img src="media/14601908933848/14651257965621.jpg" alt="set w250" class="loading" id="image-hash-1250130560" /></p>
+<h3 id="%E5%AF%BC%E5%85%A5" data-line="416" class="code-line">导入</h3>
+<blockquote data-line="418" class="code-line">
+<p data-line="418" class="code-line">导入操作，可以把一个文件里的数据保存进一张表。</p>
+</blockquote>
+<ul>
+<li data-line="420" class="code-line">语句</li>
+</ul>
+<pre><code data-line="422" class="code-line language-sql"><div><span class="hljs-keyword">LOAD</span> <span class="hljs-keyword">DATA</span> <span class="hljs-keyword">INFILE</span> <span class="hljs-string">'文件路径'</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">TABLE</span> 表名字;
+</div></code></pre>
+<ul>
+<li data-line="426" class="code-line">例子</li>
+</ul>
+<blockquote data-line="428" class="code-line">
+<p data-line="428" class="code-line">在 /tmp/SQL6 目录下有一个名为 in.txt 的文件，我们尝试把这个文件中的数据导入数据库 mysql_shiyan 的 employee 表中。</p>
+</blockquote>
+<p data-line="430" class="code-line">文件内容</p>
+<p data-line="432" class="code-line"><img src="media/14601908933848/14651271214134.jpg" alt="set w400" class="loading" id="image-hash--625927208" /></p>
+<p data-line="434" class="code-line">导入前的数据库</p>
+<p data-line="436" class="code-line"><img src="media/14601908933848/14651269384787.jpg" alt="set w400" class="loading" id="image-hash--1033540661" /></p>
+<p data-line="438" class="code-line">命令：</p>
+<pre><code data-line="440" class="code-line language-sql"><div>LOAT DATA INFILE '/tmp/SQL6/in.txt' INTO TABLE employee;
+</div></code></pre>
+<p data-line="444" class="code-line">导入之后的数据库</p>
+<p data-line="446" class="code-line"><img src="media/14601908933848/14651272132909.jpg" alt="set w400" class="loading" id="image-hash-1986832238" /></p>
+<h3 id="%E5%AF%BC%E5%87%BA" data-line="448" class="code-line">导出</h3>
+<blockquote data-line="450" class="code-line">
+<p data-line="450" class="code-line">导出与导入是相反的过程，是把数据库某个表中的数据保存到一个文件之中。</p>
+</blockquote>
+<pre><code data-line="452" class="code-line language-sql"><div><span class="hljs-keyword">SELECT</span> 列<span class="hljs-number">1</span>，列<span class="hljs-number">2</span> ... <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">OUTFILE</span> <span class="hljs-string">'文件路径和文件名'</span> <span class="hljs-keyword">FROM</span> 表名字;
+</div></code></pre>
+<h3 id="%E5%A4%87%E4%BB%BD" data-line="456" class="code-line">备份</h3>
+<blockquote data-line="458" class="code-line">
+<p data-line="458" class="code-line">备份与导出的区别：</p>
+</blockquote>
+<blockquote data-line="460" class="code-line">
+<ul>
+<li data-line="460" class="code-line">导出: 只保存数据库中的数据</li>
+<li data-line="461" class="code-line">备份: 把数据库的结构，包括数据、约束、索引、视图等全部另存为一个文件</li>
+</ul>
+</blockquote>
+<blockquote data-line="463" class="code-line">
+<p data-line="463" class="code-line">mysqldump 是 MySQL 用于备份数据库的实用程序。它主要产生一个 SQL 脚本文件，其中包含从头重新创建数据库所必需的命令 CREATE TABLE INSERT 等。</p>
+</blockquote>
+<p data-line="465" class="code-line">语句：</p>
+<pre><code data-line="467" class="code-line language-bash"><div>mysqldump -u root 数据库名&gt;备份文件名;   <span class="hljs-comment">#备份整个数据库</span>
+
+mysqldump -u root 数据库名 表名字&gt;备份文件名;  <span class="hljs-comment">#备份整个表</span>
+</div></code></pre>
+<h3 id="%E6%81%A2%E5%A4%8D" data-line="473" class="code-line">恢复</h3>
+<pre><code data-line="475" class="code-line language-bash"><div><span class="hljs-built_in">source</span> sql文件＋路径 <span class="hljs-comment"># 方法一，恢复以前的数据库</span>
+
+mysql -u root 新数据库名 &lt; sql文件＋路径 <span class="hljs-comment"># 方法二，将以前的数据库恢复到特定的数据库名里</span>
+</div></code></pre>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

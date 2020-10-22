@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pybind11</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            My Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About Me
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    13 Sep 2019
+</div>
+
+<div class="post center">
+    &lt;!doctype html&gt;
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css" />
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css" />
+
+</head>
+<body class="markdown-body">
+
+<ul>
+<li data-line="6" class="code-line">TOC
+{:toc}</li>
+</ul>
+<hr />
+<p data-line="11" class="code-line">Python 中速度慢的代码可以在 C++ 中重写，并且被直接引用到 Python 里。这样通常可以让代码的速度提高一个数量级。这一篇博客介绍了怎么样使用 <code>pybind11</code> ，将 C++ 代码转化成一个 Python 模块。</p>
+<hr />
+<p data-line="15" class="code-line"><a href="http://people.duke.edu/~ccc14/cspy/18G_C++_Python_pybind11.html" data-href="http://people.duke.edu/~ccc14/cspy/18G_C++_Python_pybind11.html">参考资料</a></p>
+<h2 id="%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-pybindr11" data-line="17" class="code-line">为什么用 pybindr11</h2>
+<p data-line="19" class="code-line">我想要使用 C++ 来加速我的代码里慢的部分。理想状态下，我希望把我手头现有的「所有」Python 代码都写成对应的 C++ 版本，然后在 Python 脚本里使用 C++ 版本的 wrapper。</p>
+<p data-line="21" class="code-line">同时，我希望保留下最初的 Python 版本。比如，如果我有一个叫做 <code>correlation.py</code> 模块，模块里有一些类和函数，我希望编写一个 <code>c_correlation.cpp</code> 的 wrapper，暴露「相同」的 api 给用户。</p>
+<p data-line="23" class="code-line">在 <code>import</code> 的时候，我希望达到这样的效果</p>
+<pre><code data-line="25" class="code-line language-py"><div><span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">import</span> c_correlation <span class="hljs-keyword">as</span> corr
+<span class="hljs-keyword">except</span> ImportError:
+    <span class="hljs-keyword">import</span> correlation <span class="hljs-keyword">as</span> corr
+</div></code></pre>
+<p data-line="32" class="code-line">在我的 <code>c_corrlation.cpp</code> 文件里，我最需要完成的是 Pyhton 和 C++ 数据类型的转换。十分幸运的是，<code>pybind11</code> 可以自动地帮助我将 <code>List</code>, <code>Dict</code> 和 <code>numpy.ndarray</code> 转换成相应的 C++ 数据结构。</p>
+<p data-line="34" class="code-line">我认为这个也是大家使用 <code>pybind11</code> 的意义；否则的话我们总是可以直接用 C 语言扩展 CPython 代码。</p>
+<h2 id="%E5%AE%89%E8%A3%85-pybind11-%E5%92%8C-eigen" data-line="36" class="code-line">安装 pybind11 和 eigen</h2>
+<p data-line="38" class="code-line">pybinder11 和 eigen 需要自己下载安装。在 2019 年照着教程安装它们并不是很困难的事情。</p>
+<h2 id="%E4%BD%BF%E7%94%A8-pybind11" data-line="40" class="code-line">使用 pybind11</h2>
+<p data-line="42" class="code-line">下面的三个小节列举了三种用法。如果你着急，看方法三。</p>
+<h3 id="%E4%BD%BF%E7%94%A8-cpp-%E5%87%BD%E6%95%B0" data-line="44" class="code-line">使用 cpp 函数</h3>
+<p data-line="46" class="code-line">最简单的情况，我们将 Python 里的代码复制一份到 C++ 里，再处理这些数据。例如，我们可以写一个 <code>func.cpp</code> 的函数来处理数据，并且写一个对应的头文件。</p>
+<pre><code data-line="48" class="code-line language-cpp"><div><span class="hljs-comment">// func.cpp</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>{
+    <span class="hljs-keyword">return</span> i + j;
+};
+
+<span class="hljs-comment">// func.hpp</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>;
+</div></code></pre>
+<p data-line="58" class="code-line">同时我们写一个 <code>wrap.py</code> 的文件</p>
+<pre><code data-line="60" class="code-line language-cpp"><div><span class="hljs-comment">//wrap.cpp</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"funcs.hpp"</span></span>
+
+<span class="hljs-keyword">namespace</span> py = pybind11;
+
+PYBIND11_MODULE(wrap, m) {
+    m.doc() = <span class="hljs-string">"pybind11 example plugin"</span>;
+    m.def(<span class="hljs-string">"add"</span>, &amp;add, <span class="hljs-string">"Add two numbers"</span>, <span class="hljs-string">"i"</span>_a=<span class="hljs-number">1</span>, <span class="hljs-string">"j"</span>_a=<span class="hljs-number">2</span>); <span class="hljs-comment">// default initial values</span>
+}
+</div></code></pre>
+<p data-line="73" class="code-line">之后，我们在目录下执行编译</p>
+<pre><code data-line="75" class="code-line language-sh"><div>g++ -O3 -Wall -shared -std=c++11 -fPIC \
+`python3 -m pybind11 --includes` \
+-I/usr/<span class="hljs-built_in">local</span>/include \
+`python3-config --ldflags` \
+-o wrap`python3-config --extension-suffix` \
+funcs.cpp wrap.cpp
+</div></code></pre>
+<p data-line="84" class="code-line">最终就会得到一个名为 <code>wrap.cpython-37m-darwin.so</code> 的文件。我们可以在 <code>python</code> 里直接执行</p>
+<pre><code data-line="86" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">import</span> wrap
+In [<span class="hljs-number">2</span>]: wrap.add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+Out[<span class="hljs-number">2</span>]: <span class="hljs-number">3</span>
+</div></code></pre>
+<h3 id="%E7%94%A8-setuppy-%E7%AE%80%E5%8C%96%E7%BC%96%E8%AF%91" data-line="92" class="code-line">用 <a href="http://setup.py" data-href="http://setup.py">setup.py</a> 简化编译</h3>
+<p data-line="94" class="code-line">我们可以写一个 <code>setup.py</code>，这样用户就可以用</p>
+<pre><code data-line="96" class="code-line language-sh"><div>python setup.py build_ext -i
+</div></code></pre>
+<p data-line="100" class="code-line">来编译需要的 <code>wrap</code> 模块。文件 <code>setup.py</code> 的内容如下</p>
+<pre><code data-line="102" class="code-line language-py"><div><span class="hljs-keyword">import</span> os, sys
+<span class="hljs-keyword">from</span> distutils.core <span class="hljs-keyword">import</span> setup, Extension
+<span class="hljs-keyword">from</span> distutils <span class="hljs-keyword">import</span> sysconfig
+
+cpp_args = [<span class="hljs-string">'-std=c++11'</span>, <span class="hljs-string">'-stdlib=libc++'</span>, <span class="hljs-string">'-mmacosx-version-min=10.7'</span>]
+
+ext_modules = [
+    Extension(
+    <span class="hljs-string">'wrap'</span>,
+        [<span class="hljs-string">'funcs.cpp'</span>, <span class="hljs-string">'func_wrap.cpp'</span>],
+        include_dirs=[<span class="hljs-string">'pybind11/include'</span>],
+    language=<span class="hljs-string">'c++'</span>,
+    extra_compile_args = cpp_args,
+    ),
+]
+
+setup(
+    name=<span class="hljs-string">'wrap'</span>,
+    version=<span class="hljs-string">'0.0.1'</span>,
+    author=<span class="hljs-string">'Yushi Yang'</span>,
+    author_email=<span class="hljs-string">'yushi.yang@bristol.ac.uk'</span>,
+    description=<span class="hljs-string">'Example'</span>,
+    ext_modules=ext_modules,
+)
+</div></code></pre>
+<p data-line="129" class="code-line">最终得到的东西和之前是一样的。</p>
+<h3 id="%E4%BD%BF%E7%94%A8-cppimport" data-line="131" class="code-line">使用 cppimport</h3>
+<p data-line="133" class="code-line">比起 <code>setup.py</code>，在开发的时候更加方便的选择是 <code>cppimport</code>。它让我们在更改 c++ 代码之后，不需重复地使用 <code>python setup.py build_ext -i</code> 来编译。</p>
+<p data-line="135" class="code-line">为了使用它，我们需要更改我们的 <code>wrap.cpp</code> 文件。作为对比，我们创建一个 <code>ez_wrap.cpp</code></p>
+<pre><code data-line="137" class="code-line language-cpp"><div><span class="hljs-comment">//ez_wrap.cpp</span>
+
+&lt;%
+cfg[<span class="hljs-string">'compiler_args'</span>] = [<span class="hljs-string">'-std=c++11'</span>, <span class="hljs-string">'-stdlib=libc++'</span>, <span class="hljs-string">'-mmacosx-version-min=10.7'</span>]
+cfg[<span class="hljs-string">'sources'</span>] = [<span class="hljs-string">'funcs.cpp'</span>]
+setup_pybind11(cfg)
+%&gt;
+
+#include &lt;pybind11/pybind11.h&gt;
+#include &lt;pybind11/stl.h&gt;
+#include <span class="hljs-string">"funcs.hpp"</span>
+
+<span class="hljs-keyword">namespace</span> py = pybind11;
+
+PYBIND11_MODULE(ez_wrap, m) { <span class="hljs-comment">// 注意这里</span>
+    m.doc() = <span class="hljs-string">"pybind11 example plugin"</span>;
+    m.def(<span class="hljs-string">"add"</span>, &amp;add, <span class="hljs-string">"Add two numbers"</span>, py::arg(<span class="hljs-string">"i"</span>)=<span class="hljs-number">1</span>, py::arg(<span class="hljs-string">"j"</span>)=<span class="hljs-number">2</span>);
+}
+</div></code></pre>
+<p data-line="158" class="code-line">代码最开始的标记就是为了 <code>cppimport</code> 服务的。在我们使用 <code>pip install cppimport</code> 之后，我们可以「直接」导入我们的 c++ 模块。</p>
+<pre><code data-line="160" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">import</span> cppimport
+In [<span class="hljs-number">2</span>]: wrap = cppimport.imp(<span class="hljs-string">"ez_wrap"</span>)
+In [<span class="hljs-number">3</span>]: wrap.add()
+Out[<span class="hljs-number">3</span>]: <span class="hljs-number">3</span>
+</div></code></pre>
+<p data-line="167" class="code-line">要注意的是，<code>PYBIND11_MODULE(ez_wrap, m)</code> 里第一个变量的名字，需要和文件名 <code>ez_wrap.cpp</code> 的前缀一致，否则会得到下面的警告</p>
+<pre><code data-line="169" class="code-line"><code><div>ImportError: dynamic module does not define module export function (PyInit_ez_wrap)
+</div></code></code></pre>
+<h2 id="%E4%BD%BF%E7%94%A8-numpy" data-line="173" class="code-line">使用 numpy</h2>
+<p data-line="175" class="code-line"><code>pybind11</code> 可以让 c++ 代码处理 <code>numpy</code> 数组。每一个 <code>numpy</code> 数组都实现了 <code>Pyhton</code> 中的 <code>buffer protocol</code>。简而言之，通过一些特殊的协议，我们可以在内存中开辟一块「连续的」区域来存储我们的数据，并且共享这块数据的指针。<a href="https://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/" data-href="https://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/">这个博客</a>里有一个对 <code>buffer protocol</code> 的简单介绍。</p>
+<p data-line="177" class="code-line">如果我们想把一个 <code>Python</code> 里的 <code>np.ndarray</code> 读取到 c++ 里，我们只需要使用它的 <code>request</code> 放法，得到下面的结构体</p>
+<pre><code data-line="179" class="code-line language-c"><div><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">buffer_info</span> {</span>
+    <span class="hljs-keyword">void</span> *ptr;
+    <span class="hljs-keyword">size_t</span> itemsize;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> format;
+    <span class="hljs-keyword">int</span> ndim;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">size_t</span>&gt; shape;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">size_t</span>&gt; strides;
+};
+</div></code></pre>
+<p data-line="190" class="code-line">这里面的 <code>ptr</code> 指向数据块；我们可以用它「直接」访问存储与 <code>numpy</code> 里的数据。</p>
+<h3 id="%E5%AF%BC%E5%85%A5%E5%A4%B4%E6%96%87%E4%BB%B6" data-line="192" class="code-line">导入头文件</h3>
+<p data-line="194" class="code-line">我们需要导入 <code>numpy</code> 对应的头文件来使用相关的功能。</p>
+<pre><code data-line="196" class="code-line language-cpp"><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/numpy.h&gt;</span></span>
+</div></code></pre>
+<h3 id="%E4%BF%AE%E6%94%B9%E5%B7%B2%E6%9C%89%E6%95%B0%E7%BB%84" data-line="200" class="code-line">修改已有数组</h3>
+<p data-line="202" class="code-line">下面的例子是读取一个 <code>numpy</code> 数组并且改变这个数组：将每个数字换成它的一倍。</p>
+<pre><code data-line="204" class="code-line language-cpp"><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">arr_db</span><span class="hljs-params">(py::<span class="hljs-keyword">array_t</span>&lt;<span class="hljs-keyword">double</span>&gt; xs)</span></span>{
+    py::buffer_info info = xs.request();
+    <span class="hljs-keyword">auto</span> ptr = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">double</span> *&gt;(info.ptr);
+    <span class="hljs-keyword">int</span> n = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> r : info.shape){
+        n *= r;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++){
+        *ptr++ *= <span class="hljs-number">2</span>;
+    }
+}
+</div></code></pre>
+<p data-line="218" class="code-line">我们可以在 Python 里导入这个模块</p>
+<pre><code data-line="220" class="code-line language-py"><div>In [<span class="hljs-number">4</span>]: cnp = cppimport.imp(<span class="hljs-string">"cnp"</span>)
+
+In [<span class="hljs-number">5</span>]: a = np.random.random((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))
+
+In [<span class="hljs-number">6</span>]: a
+Out[<span class="hljs-number">6</span>]: 
+array([[<span class="hljs-number">0.49394052</span>, <span class="hljs-number">0.14228716</span>],
+       [<span class="hljs-number">0.13781544</span>, <span class="hljs-number">0.51710877</span>]])
+       
+In [<span class="hljs-number">7</span>]: cnp.arr_db(a)
+
+In [<span class="hljs-number">8</span>]: a
+Out[<span class="hljs-number">8</span>]: 
+array([[<span class="hljs-number">0.98788103</span>, <span class="hljs-number">0.28457432</span>],
+       [<span class="hljs-number">0.27563088</span>, <span class="hljs-number">1.03421754</span>]])
+</div></code></pre>
+<h3 id="%E8%BF%94%E5%9B%9E%E6%96%B0%E6%95%B0%E7%BB%84" data-line="238" class="code-line">返回新数组</h3>
+<p data-line="240" class="code-line">下面的例子是读取一个 <code>numpy</code> 数组并且计算每一个数字的平方。这个函数不会改变已有的数组，而是会返回一个新数组。
+（这段代码有一点不好：输入数组可以是 n 维的，不过返回的数组是 1 维。）</p>
+<pre><code data-line="243" class="code-line language-cpp"><div>py::<span class="hljs-keyword">array_t</span>&lt;<span class="hljs-keyword">double</span>&gt; arr_sqr(py::<span class="hljs-keyword">array_t</span>&lt;<span class="hljs-keyword">double</span>&gt; arr){
+    py::buffer_info buf_1 = arr.request();
+
+    <span class="hljs-keyword">auto</span> result = py::<span class="hljs-keyword">array_t</span>&lt;<span class="hljs-keyword">double</span>&gt;(buf_1.size);
+
+    py::buffer_info buf_2 = result.request();
+
+    <span class="hljs-keyword">double</span> *ptr_1 = (<span class="hljs-keyword">double</span> *) buf_1.ptr,
+           *ptr_2 = (<span class="hljs-keyword">double</span> *) buf_2.ptr;
+
+    <span class="hljs-keyword">int</span> max_index = <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> d = <span class="hljs-number">0</span>; d &lt; buf_1.ndim; d++) {
+        max_index *= buf_1.shape[d];
+    }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; max_index; i++){
+        *ptr_2 = *ptr_1 * *ptr_1;
+        ptr_1++;
+        ptr_2++;
+    }
+
+    <span class="hljs-keyword">return</span> result;
+}
+</div></code></pre>
+<p data-line="270" class="code-line">我们可以在 Python 里导入这个模块。</p>
+<pre><code data-line="272" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">import</span> cppimport
+In [<span class="hljs-number">2</span>]: cnp = cppimport.imp(<span class="hljs-string">"cnp"</span>)
+In [<span class="hljs-number">3</span>]: <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+In [<span class="hljs-number">4</span>]: test = np.random.random((<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>))
+In [<span class="hljs-number">5</span>]: np.allclose(np.power(test, <span class="hljs-number">2</span>).ravel(), cnp.arr_sqr(test))
+Out[<span class="hljs-number">5</span>]: <span class="hljs-literal">True</span>
+</div></code></pre>
+<h2 id="%E4%BD%BF%E7%94%A8-eigen" data-line="281" class="code-line">使用 eigen</h2>
+<p data-line="283" class="code-line">在 C++ 里，我们可以用库 <code>Eigen</code> 来完成线性代数计算。更棒的是，我们可以直接把 <code>Python</code> 里的 <code>numpy</code> 数组直接转化成 <code>Eigen</code> 里对应的数据结构。</p>
+<p data-line="285" class="code-line">在使用 <code>eigen</code> 的时候，我们需要引入 <code>pybind11</code> 的 <code>eigen</code> 模块，以及我们实际使用的 <code>Eigen</code> 库。</p>
+<p data-line="287" class="code-line">下面是利用 <code>eigen</code> 库计算矩阵的逆和行列式的例子。</p>
+<pre><code data-line="289" class="code-line language-cpp"><div><span class="hljs-comment">//eig.cpp</span>
+&lt;%
+cfg[<span class="hljs-string">'compiler_args'</span>] = [<span class="hljs-string">'-std=c++11'</span>, <span class="hljs-string">'-stdlib=libc++'</span>, <span class="hljs-string">'-mmacosx-version-min=10.7'</span>]
+setup_pybind11(cfg)
+%&gt;
+
+#include &lt;pybind11/pybind11.h&gt;
+#include &lt;pybind11/eigen.h&gt;
+#include &lt;Eigen/LU&gt;
+
+<span class="hljs-keyword">namespace</span> py = pybind11;
+
+
+<span class="hljs-comment">// input numpy array output number</span>
+<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">det</span><span class="hljs-params">(Eigen::MatrixXd arr)</span></span>{
+    <span class="hljs-keyword">return</span> arr.determinant();
+}
+
+
+<span class="hljs-comment">// input numpy array output numpy array</span>
+Eigen::<span class="hljs-function">MatrixXd <span class="hljs-title">inv</span><span class="hljs-params">(Eigen::MatrixXd arr)</span></span>{
+    <span class="hljs-keyword">return</span> arr.inverse();
+}
+
+
+<span class="hljs-comment">// example of using Eigen</span>
+
+PYBIND11_MODULE(eig, m) {
+    m.doc() = <span class="hljs-string">"pybind11 example plugin"</span>;
+    m.def(<span class="hljs-string">"det"</span>, &amp;det);
+    m.def(<span class="hljs-string">"inv"</span>, &amp;inv);
+}
+</div></code></pre>
+<p data-line="324" class="code-line">我们可以直接引用这个模块</p>
+<pre><code data-line="326" class="code-line language-py"><div>In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">import</span> cppimport
+
+In [<span class="hljs-number">2</span>]: <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+In [<span class="hljs-number">3</span>]: eig = cppimport.imp(<span class="hljs-string">'eig'</span>)
+
+In [<span class="hljs-number">4</span>]: a = np.random.random((<span class="hljs-number">10</span>, <span class="hljs-number">10</span>))
+
+In [<span class="hljs-number">5</span>]: np.allclose(np.linalg.inv(a), eig.inv(a))
+Out[<span class="hljs-number">5</span>]: <span class="hljs-literal">True</span>
+</div></code></pre>
+
+</body></html>
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
