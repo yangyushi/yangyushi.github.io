@@ -35,7 +35,7 @@
         <a href=/
             
         >
-            My Notebook
+            Notes
         </a>
         </li>
         
@@ -43,7 +43,7 @@
         <a href=/about.html
             
         >
-            About Me
+            About
         </a>
         </li>
         
@@ -114,6 +114,7 @@
   </li>
   <li><a href="#pickle" id="markdown-toc-pickle">Pickle</a></li>
   <li><a href="#subprocess" id="markdown-toc-subprocess">Subprocess</a>    <ul>
+      <li><a href="#subprocess-中常用的功能" id="markdown-toc-subprocess-中常用的功能"><code class="highlighter-rouge">subprocess</code> 中常用的功能。</a></li>
       <li><a href="#popen" id="markdown-toc-popen">Popen()</a></li>
       <li><a href="#子进程的文本流控制" id="markdown-toc-子进程的文本流控制">子进程的文本流控制</a></li>
     </ul>
@@ -140,7 +141,6 @@
         </ul>
       </li>
       <li><a href="#基于-tcp-socket-的-http-服务器" id="markdown-toc-基于-tcp-socket-的-http-服务器">基于 TCP socket 的 HTTP 服务器</a>        <ul>
-          <li><a href="#代码" id="markdown-toc-代码">代码</a></li>
           <li><a href="#深入-http-服务器代码" id="markdown-toc-深入-http-服务器代码">深入 HTTP 服务器代码</a></li>
           <li><a href="#使用浏览器实验" id="markdown-toc-使用浏览器实验">使用浏览器实验</a></li>
         </ul>
@@ -151,10 +151,6 @@
           <li><a href="#cgihttpserver使用静态文件或者cgi来回应请求" id="markdown-toc-cgihttpserver使用静态文件或者cgi来回应请求">CGIHTTPServer：使用静态文件或者CGI来回应请求</a></li>
         </ul>
       </li>
-    </ul>
-  </li>
-  <li><a href="#django" id="markdown-toc-django">Django</a>    <ul>
-      <li><a href="#启动" id="markdown-toc-启动">启动</a></li>
     </ul>
   </li>
 </ul>
@@ -821,15 +817,50 @@ In [17]: del(a)
 
 <p>引用环的存在会给上面的垃圾回收机制带来很大的困难。这些引用环可能构成<strong>无法使用，但引用计数不为 0</strong> 的一些对象。</p>
 
-<p>上面我们先创建了两个表对象，并引用对方，构成一个引用环。删除了 <code class="highlighter-rouge">a，b</code> 引用之后，这两个对象不可能再从程序中调用，就没有什么用处了。但是由于引用环的存在，这两个对象的引用计数都没有降到0，不会被垃圾回收。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = []
+b = [a]
+a.append(b)
+</code></pre></div></div>
 
-<p>孤立的引用环：
-<img src="/assets/images/py_intro/14688127207112.png" alt="" /></p>
+<p>使用上面这样的代码，我们会创建了两个 列表对象，分别为 <code class="highlighter-rouge">[[[...]]]</code> 和 <code class="highlighter-rouge">[[[...]]]</code>。这两个 对象 相互引用，构成一个「引用环」。如果我们使用 <code class="highlighter-rouge">del(a)</code> 和 <code class="highlighter-rouge">del(b)</code> 删除 <code class="highlighter-rouge">a，b</code> 这两个「引用」之后，这两个「列表对象」不可能再从程序中调用，所以它们应该被销毁。但是由于引用环的存在，这两个对象的「引用计数」都没有降到 0，不会被垃圾回收。下面的图片分别给出了「非孤立引用环」和「孤立引用环」的例子。</p>
+
+<pre class="asciiart">
+     其它的对象
+       ▼
+     ┌───┐
+  ┌──│ 1 │──┐             ┌────────┐
+  │  └───┘  │             │        │
+  ▼         ▼             │        ▼ 
+┌───┐     ┌───┐         ┌───┐    ┌───┐
+│ 1 │────▶│ 2 │         │ 1 │    │ 1 │
+└───┘     └───┘         └───┘    └───┘
+            │             ▲        │
+     ┌───┐  │             │        │
+     │ 1 │◀─┘             └────────┘
+     └───┘                孤立的引用环
+	非孤立的引用环
+</pre>
 
 <p>为了回收这样的引用环，Python 复制每个对象的引用计数，可以记为 <code class="highlighter-rouge">gc_ref</code>。假设，每个对象 <code class="highlighter-rouge">i</code>，该计数为 <code class="highlighter-rouge">gc_ref_i</code>。Python 会遍历所有的对象 <code class="highlighter-rouge">i</code>。对于每个对象 <code class="highlighter-rouge">i</code> 引用的对象 <code class="highlighter-rouge">j</code>，将相应的 <code class="highlighter-rouge">gc_ref_j</code> 减 1。</p>
 
-<p>遍历后的结果：
-<img src="/assets/images/py_intro/14688127267504.png" alt="" /></p>
+<p>遍历后的结果（盒子外面的数字代表 <code class="highlighter-rouge">gc_ref</code>）：</p>
+
+<pre class="asciiart">
+   其它的对象
+       ▼
+     ┌───┐ 1
+  ┌──│ 1 │──┐             ┌────────┐
+  │  └───┘  │             │        │
+  ▼         ▼             │  0     ▼  0
+┌───┐ 0   ┌───┐ 0       ┌───┐    ┌───┐
+│ 1 │────▶│ 2 │         │ 1 │    │ 1 │
+└───┘     └───┘         └───┘    └───┘
+            │             ▲        │
+   0 ┌───┐  │             │        │
+     │ 1 │◀─┘             └────────┘
+     └───┘                孤立的引用环
+	非孤立的引用环
+</pre>
 
 <p>在结束遍历后，<code class="highlighter-rouge">gc_ref</code> 不为 0 的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
 
@@ -837,7 +868,39 @@ In [17]: del(a)
 
 <h3 id="ospath">os.path</h3>
 
-<p><img src="/assets/images/py_intro/14688271229059.jpg" alt="" /></p>
+<p>在使用 Python 操作文件的路径的时候，使用 <code class="highlighter-rouge">os.path</code> 模块可以让代码更容易 跨平台 使用。下面的例子里，我列举了 <code class="highlighter-rouge">os.path</code> 的常用功能。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">path</span> <span class="o">=</span> <span class="s">"/Users/yushi/Desktop/Folder/file.txt"</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 查询路径中的 文件名
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="s">'file.txt'</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 查询路径中的 目录
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="s">'/Users/yushi/Desktop/Folder'</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 将路径分割成「文件名」和「目录」
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">(</span><span class="s">'/Users/yushi/Desktop/Folder'</span><span class="p">,</span> <span class="s">'file.txt'</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查路径是否存在
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="bp">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查「路径所指向的文件」的大小
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="mi">12</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getatime</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查 上一次读取的时间
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="mf">1604155505.98391</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查 上一次修改的时间
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="mf">1604155338.653522</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查 路径是否「指向文件」
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="bp">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># 检查 路径是否「指向文件夹」
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="bp">False</span>
+</code></pre></div></div>
 
 <h3 id="进程信息">进程信息</h3>
 
@@ -865,42 +928,63 @@ In [17]: del(a)
 
 <h3 id="其它方法">其它方法</h3>
 
-<p><img src="/assets/images/py_intro/14688278874617.jpg" alt="" />
-<img src="/assets/images/py_intro/14688279433882.jpg" alt="" /></p>
+<p>下面的代码里列举了一些有用/常用的命令。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">'folder'</span><span class="p">)</span>      <span class="c1"># 创建名为 folder 的文件夹
+</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span>         <span class="c1"># 查看当前文件夹下的文件
+</span><span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="s">'folder'</span><span class="p">)</span>      <span class="c1"># 删除名为 folder 的文件夹
+</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>       <span class="c1"># 删除名为 file 的文件
+</span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="s">'file/folder'</span><span class="p">)</span>  <span class="c1"># 查询文件夹/文件的详细信息
+</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>             <span class="c1"># 获取当前目录
+</span><span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span>             <span class="c1"># 创建软链接，从 path_2 指向 path_1
+</span>  <span class="s">'path_1'</span><span class="p">,</span> <span class="s">'path_2'</span>
+<span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="pickle">Pickle</h2>
 
-<p>在之前对 Python 对象的介绍中，我提到过 Python “一切皆对象” 的哲学，在 Python 中，无论是变量还是函数，都是一个对象。当 Python 运行时，对象存储在内存中，随时等待系统的调用。然而，内存里的数据会随着计算机关机和消失，如何将对象保存到文件，并储存在硬盘上呢？</p>
+<p>在 Python 中，无论是「变量」还是「函数」，都是一个「对象」。当 Python 运行时，这些「对象」存储在内存中，随时等待系统的调用。然而，内存里的数据会随着计算机关机和消失。不过我们可以把这些「对象」储存在硬盘上，这样我们可以在下一次启动程序的时候使用这些对象。</p>
 
-<p>计算机的内存中存储的对象，是二进制的序列 (当然，在Linux眼中，是文本流)。我们可以直接将某个对象所对应位置的数据抓取下来，转换成文本流 (这个过程叫做 serialize)，然后将文本流存入到文件中。</p>
+<p>计算机内存中的「对象」是 二进制的序列。我们可以直接将 某个对象 所对应位置的 数据 抓取下来，转换成文本流 (这个过程叫做 serialize)，然后将 文本流 存入到文件中。</p>
 
-<p>由于 Python 在创建对象时，要参考对象的类定义，所以当我们从文本中读取对象时，必须在手边要有该对象的类定义，才能重建这一对象。</p>
+<p>由于 Python 在创建对象时，要参考 「对象的类」的定义，所以当我们从文本中读取对象时，必须在手边要有该「对象的类的定义」，才能重建这一对象。</p>
 
-<p>从文件读取对象时，对于 Python 的内建对象 (比如说整数、词典、表等等)，由于其类定义已经载入内存，所以不需要我们再在程序中定义类。对于用户自行定义的对象，就必须要先定义类，然后才能从文件中载入对象。</p>
+<p>从文件读取对象时，对于 Python 的内建对象 (比如说整数、词典、表等等)，由于其「类的定义」已经载入内存，所以不需要我们再在程序中定义类。对于「用户自行定义」的对象，就必须要先「定义类」，然后才能从文件中载入对象。</p>
 
-<p>使用 <code class="highlighter-rouge">pickle.dumps()</code> 方法可以将对象转换成字符串 (也就是文本流)。随后我们可以用普通文本的存储方法来将该字符串储存在文件(文本文件的输入输出)。
-当然，我们也可以使用 <code class="highlighter-rouge">pickle.dump()</code> 的方法，将上面两部合二为一:</p>
+<p>使用 <code class="highlighter-rouge">pickle.dumps()</code> 方法可以将对象转换成字符串 (也就是文本流)。下面的代码展示了这个过程。</p>
 
-<p>例子：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">pickle</span>
 
-<p>存储对象</p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">bird</span><span class="p">():</span> <span class="n">has_egg</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c1"># 定义一个类
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">crow</span> <span class="o">=</span> <span class="n">bird</span><span class="p">()</span>
 
-<p><img src="/assets/images/py_intro/14688350564776.jpg" alt="" /></p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">crow_str</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">crow</span><span class="p">)</span>  <span class="c1"># 将 对象 转化成 字符串
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">crow_str</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">b</span><span class="s">'</span><span class="se">\x80\x03</span><span class="s">c__main__</span><span class="se">\n</span><span class="s">bird</span><span class="se">\n</span><span class="s">q</span><span class="se">\x00</span><span class="s">)</span><span class="se">\x81</span><span class="s">q</span><span class="se">\x01</span><span class="s">.'</span>
+</code></pre></div></div>
 
-<p>读取对象</p>
+<p>之后，我们可以将这个字符串（<code class="highlighter-rouge">crow_str</code>）存储到硬盘上。当然，我们也可以使用 <code class="highlighter-rouge">pickle.dump()</code> 的方法，将上面两部合二为一。下面的代码展示了这个过程。</p>
 
-<p><img src="/assets/images/py_intro/14688470496446.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">starling</span> <span class="o">=</span> <span class="n">bird</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'starling.pkl'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>  <span class="c1"># 注意这里的 wb - 表示用二进制写入
+</span>	<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">starling</span><span class="p">)</span>
+</code></pre></div></div>
 
-<p>crow.pkl 的内容：</p>
+<p>我们可以使用 <code class="highlighter-rouge">pickle.load</code> 来读取硬盘上存储的对象。下面的代码展示了这个过程。</p>
 
-<p><img src="/assets/images/py_intro/14688471306175.jpg" alt="set w200" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'starling.pkl'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+  <span class="n">starling</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="subprocess">Subprocess</h2>
 
-<p>当我们运行 python 的时候，我们都是在创建并运行一个进程。一个进程可以 fork 一个子进程，并让这个子进程 exec 另外一个程序。在 Python 中，我们通过标准库中的 subprocess 包来 fork 一个子进程，并运行一个外部的程序。
-subprocess 包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外 subprocess 还提供了一些管理标准流 (standard stream) 和管道 (pipe) 的工具，从而在进程间使用文本通信。</p>
+<p>当我们运行 Python 的时候，我们都是在创建并运行一个进程。一个进程可以 <code class="highlighter-rouge">fork</code> 一个子进程，并让这个子进程 <code class="highlighter-rouge">exec</code> 另外一个程序。在 Python 中，我们通过标准库中的 <code class="highlighter-rouge">subprocess</code> 包来 fork 一个子进程，并运行一个外部的程序。</p>
 
-<p>使用 subprocess 包中的函数创建子进程的时候，要注意:</p>
+<p>在 <code class="highlighter-rouge">subprocess</code> 包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外 <code class="highlighter-rouge">subprocess</code> 还提供了一些管理标准流 (standard stream) 和管道 (pipe) 的工具，从而在进程间使用文本通信。</p>
+
+<p>使用 <code class="highlighter-rouge">subprocess</code> 包中的函数创建子进程的时候，要注意:</p>
 
 <ol>
   <li>在创建子进程之后，父进程是否暂停，并等待子进程运行。</li>
@@ -908,100 +992,181 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
   <li>当 <code class="highlighter-rouge">returncode</code> 不为0时，父进程如何处理。</li>
 </ol>
 
-<ul>
-  <li>
-    <p>subprocess.call()
-父进程等待子进程完成
-返回退出信息(<code class="highlighter-rouge">returncode</code>，相当于<code class="highlighter-rouge">exit code</code>)</p>
-  </li>
-  <li>
-    <p>subprocess.check_call()
-父进程等待子进程完成，返回 <code class="highlighter-rouge">0</code>
-检查退出信息，如果 <code class="highlighter-rouge">returncode</code> 不为 0 ，则举出错误 <code class="highlighter-rouge">subprocess.CalledProcessError</code>，该对象包含有 <code class="highlighter-rouge">returncode</code> 属性，可用 <code class="highlighter-rouge">try...except...</code>来检查。</p>
-  </li>
-  <li>
-    <p>subprocess.check_output()
-父进程等待子进程完成
-返回子进程向标准输出的输出结果
-检查退出信息，如果 <code class="highlighter-rouge">returncode</code> 不为0，则举出错误 <code class="highlighter-rouge">subprocess.CalledProcessError</code> ，该对象包含有 <code class="highlighter-rouge">returncode</code> 属性和 <code class="highlighter-rouge">output</code> 属性，<code class="highlighter-rouge">output</code> 属性为标准输出的输出结果，可用<code class="highlighter-rouge">try...except...</code> 来检查。</p>
-  </li>
-</ul>
+<h3 id="subprocess-中常用的功能"><code class="highlighter-rouge">subprocess</code> 中常用的功能。</h3>
 
-<p><img src="/assets/images/py_intro/14688919993790.jpg" alt="" />
-<img src="/assets/images/py_intro/14688925667153.jpg" alt="" /></p>
+<p>执行一个 shell 命令</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"-l"</span><span class="p">])</span>  <span class="c1"># 父进程等待子进程 ls -l 完成
+</span><span class="n">total</span> <span class="mi">8</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">yushi</span>  <span class="n">staff</span>  <span class="mi">12</span> <span class="mi">31</span> <span class="n">Oct</span> <span class="mi">14</span><span class="p">:</span><span class="mi">42</span> <span class="nb">file</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="mi">0</span>  <span class="c1"># 返回退出信息(`returncode`，相当于`exit code`)
+</span></code></pre></div></div>
+
+<p>捕捉 shell 命令的错误，作为 Python 中的 <code class="highlighter-rouge">CalledProcessError</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">"rm"</span><span class="p">,</span> <span class="s">"NotExist"</span><span class="p">])</span>
+<span class="n">rm</span><span class="p">:</span> <span class="n">NotExist</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="nb">file</span> <span class="ow">or</span> <span class="n">directory</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="mi">1</span>  <span class="c1"># 普通的 call 不会将 shell 命令的错误 当作 Python 的错误
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">"rm"</span><span class="p">,</span> <span class="s">"NotExist"</span><span class="p">])</span>
+<span class="n">rm</span><span class="p">:</span> <span class="n">NotExist</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="nb">file</span> <span class="ow">or</span> <span class="n">directory</span> <span class="c1"># shell 命令的错误 被捕捉成为 Python 的错误
+</span><span class="o">---------------------------------------------------------------------------</span>
+<span class="n">CalledProcessError</span>                        <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">18</span><span class="o">-</span><span class="mi">58</span><span class="n">fd7028ae38</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">"rm"</span><span class="p">,</span> <span class="s">"NotExist"</span><span class="p">])</span>
+
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span><span class="o">/</span><span class="n">subprocess</span><span class="o">.</span><span class="n">py</span> <span class="ow">in</span> <span class="n">check_call</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="mi">361</span>         <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="mi">362</span>             <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="o">--&gt;</span> <span class="mi">363</span>         <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+    <span class="mi">364</span>     <span class="k">return</span> <span class="mi">0</span>
+    <span class="mi">365</span> 
+
+<span class="n">CalledProcessError</span><span class="p">:</span> <span class="n">Command</span> <span class="s">'['</span><span class="n">rm</span><span class="s">', '</span><span class="n">NotExist</span><span class="s">']'</span> <span class="n">returned</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="nb">exit</span> <span class="n">status</span> <span class="mf">1.</span>
+</code></pre></div></div>
+
+<p>获得 shell 命令的输出</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"."</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">b</span><span class="s">'file.txt</span><span class="se">\n</span><span class="s">'</span>
+</code></pre></div></div>
 
 <h3 id="popen">Popen()</h3>
 
-<p>实际上，我们上面的三个函数都是基于 <code class="highlighter-rouge">Popen()</code> 的封装 (wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向 <code class="highlighter-rouge">Popen</code> 类，该类生成的对象用来代表子进程。
-与上面的封装不同，<code class="highlighter-rouge">Popen</code> 对象创建后，主程序不会自动等待子进程完成。我们必须调用对象的 <code class="highlighter-rouge">wait()</code> 方法，父进程才会等待 (也就是阻塞 block)：</p>
+<p>实际上，我们上面的三个函数都是基于 <code class="highlighter-rouge">Popen()</code> 的封装 (wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向 <code class="highlighter-rouge">Popen</code> 类，该类生成的对象用来代表子进程。</p>
 
-<p><img src="/assets/images/py_intro/14688941895108.jpg" alt="" />
-<img src="/assets/images/py_intro/14688942427561.jpg" alt="" /></p>
+<p>与上面的封装不同，<code class="highlighter-rouge">Popen</code> 对象创建后，主程序不会自动等待子进程完成。下面的代码展示了这个特性。</p>
 
-<p><img src="/assets/images/py_intro/14688943187159.jpg" alt="" />
-<img src="/assets/images/py_intro/14688943737614.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 文件 popen.py
+</span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">child</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span>
+    <span class="s">"Ping"</span><span class="p">,</span> <span class="s">"-c"</span><span class="p">,</span> <span class="s">"3"</span><span class="p">,</span> <span class="s">"www.google.com"</span>
+<span class="p">])</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"parent process is printing"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 输出结果</span>
+
+<span class="o">&gt;</span> python3 popen.py  <span class="c"># 执行脚本</span>
+parent process is printing  <span class="c"># 父进程没有等待 Popen 执行的 子进程</span>
+
+<span class="o">&gt;</span> PING www.google.com <span class="o">(</span>216.58.210.228<span class="o">)</span>: 56 data bytes  <span class="c"># 子进程</span>
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>19.960 ms
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>20.350 ms
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>20.164 ms
+
+<span class="nt">---</span> www.google.com ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev <span class="o">=</span> 19.960/20.158/20.350/0.159 ms
+</code></pre></div></div>
+
+<p>我们必须调用对象的 <code class="highlighter-rouge">wait()</code> 方法，父进程才会等待 (也就是阻塞 block)：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">child</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span>
+    <span class="s">"Ping"</span><span class="p">,</span> <span class="s">"-c"</span><span class="p">,</span> <span class="s">"3"</span><span class="p">,</span> <span class="s">"www.google.com"</span>
+<span class="p">])</span>
+<span class="n">child</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>  <span class="c1"># 阻塞父进程
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"parent process is printing"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 输出结果</span>
+
+<span class="o">&gt;</span> python3 popen.py <span class="c"># 执行脚本</span>
+PING www.google.com <span class="o">(</span>216.58.210.228<span class="o">)</span>: 56 data bytes
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>20.355 ms
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>21.098 ms
+64 bytes from 216.58.210.228: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>116 <span class="nb">time</span><span class="o">=</span>20.192 ms
+
+<span class="nt">---</span> www.google.com ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev <span class="o">=</span> 20.192/20.548/21.098/0.394 ms
+parent process is printing  <span class="c"># 父进程 在 子进程结束之后 继续运行</span>
+</code></pre></div></div>
 
 <h3 id="子进程的文本流控制">子进程的文本流控制</h3>
 
-<p>子进程的标准输入，标准输出和标准错误也可以通过如下属性表示:
-<code class="highlighter-rouge">child.stdin</code> ,<code class="highlighter-rouge">child.stdout</code>, <code class="highlighter-rouge">child.stderr</code></p>
+<p>子进程的标准输入，标准输出和标准错误也可以通过如下属性表示：<code class="highlighter-rouge">child.stdin</code> ,<code class="highlighter-rouge">child.stdout</code>, <code class="highlighter-rouge">child.stderr</code></p>
 
-<ul>
-  <li>我们可以在 <code class="highlighter-rouge">Popen()</code> 建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用 <code class="highlighter-rouge">subprocess.PIPE</code> 将多个子进程的输入和输出连接在一起，构成管道(pipe):</li>
-</ul>
+<p>我们可以在 <code class="highlighter-rouge">Popen()</code> 建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用 <code class="highlighter-rouge">subprocess.PIPE</code> 将多个子进程的输入和输出连接在一起，构成管道。下面的代码展示了这个过程。</p>
 
-<p><img src="/assets/images/py_intro/14688949284845.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">child_1</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"-l"</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">child_2</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">"wc"</span><span class="p">],</span> <span class="n">stdin</span><span class="o">=</span><span class="n">child_1</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">out</span> <span class="o">=</span> <span class="n">child_2</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">out</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">(</span><span class="n">b</span><span class="s">'       4      29     167</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">subprocess.PIPE</code> 实际上为文本流提供一个缓存区。<code class="highlighter-rouge">child_1</code> 的<code class="highlighter-rouge">stdout</code> 将文本输出到缓存区，随后 <code class="highlighter-rouge">child_2</code> 的 <code class="highlighter-rouge">stdin</code> 从该 <code class="highlighter-rouge">PIPE</code> 中将文本读取走。<code class="highlighter-rouge">child_2</code> 的输出文本也被存放在 <code class="highlighter-rouge">PIPE</code> 中，直到 <code class="highlighter-rouge">communicate()</code> 方法从 <code class="highlighter-rouge">PIPE</code> 中读取出 <code class="highlighter-rouge">PIPE</code> 中的文本。</p>
 
-<ul>
-  <li>我们还可以利用 <code class="highlighter-rouge">communicate()</code> 方法来使用 <code class="highlighter-rouge">PIPE</code> 给子进程输入</li>
-</ul>
+<p>我们还可以利用 <code class="highlighter-rouge">communicate()</code> 方法来使用 <code class="highlighter-rouge">PIPE</code> 给子进程「输入」</p>
 
-<p><img src="/assets/images/py_intro/14688953147700.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">"cat"</span><span class="p">],</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">b</span><span class="s">"Hello</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>  <span class="c1"># 相当于 echo Hello | cat
+</span><span class="n">Hello</span>  <span class="c1"># cat 的结果：打印输入
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>  <span class="c1"># 没有 stdout 和 stderr
+</span></code></pre></div></div>
 
 <h2 id="循环器">循环器</h2>
 
 <p>在循环对象和函数对象中，我们了解了循环器(iterator)的功能。循环器是对象的容器，包含有多个对象。通过调用循环器的 <code class="highlighter-rouge">next()</code> 方法 (Python 3 中 的 <code class="highlighter-rouge">__next__()</code> 方法)，循环器将依次返回一个对象。直到所有的对象遍历穷尽，循环器将举出 <code class="highlighter-rouge">StopIteration</code> 错误。</p>
 
-<p>标准库中的 <code class="highlighter-rouge">itertools</code> 包提供了更加灵活的生成循环器的工具。这些工具的输入大都是已有的循环器。另一方面，这些工具完全可以自行使用 Python 实现，该包只是提供了一种比较标准、高效的实现方式。这也符合 Python “只有且最好只有解决方案”的理念。</p>
+<p>标准库中的 <code class="highlighter-rouge">itertools</code> 包提供了更加灵活的生成循环器的工具。下面介绍的函数，返回的结果都是 循环器，而不是列表。</p>
 
 <h3 id="无穷循环器">无穷循环器</h3>
 
-<ul>
-  <li>
-    <p><code class="highlighter-rouge">count(a, b)</code>: 从 <code class="highlighter-rouge">a</code> 开始的整数循环器，每次增加 <code class="highlighter-rouge">b</code>
-<img src="/assets/images/py_intro/14688989307808.jpg" alt="" /></p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">cycle('abc')</code>: 重复序列的元素，得到 <code class="highlighter-rouge">a, b, c, a, b, c...</code>
-<img src="/assets/images/py_intro/14688990709066.jpg" alt="" /></p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">repeat(x)</code>: 重复 x，构成无穷循环器
-<img src="/assets/images/py_intro/14688998492739.jpg" alt="" /></p>
-  </li>
-</ul>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>    <span class="c1">#  从 0 开始的整数循环器，每次增加 3 -&gt; [0, 3, 6, 9, 12, ...]
+</span><span class="n">cycle</span><span class="p">(</span><span class="s">'abc'</span><span class="p">)</span>   <span class="c1">#  重复序列的元素 -&gt; ['a', 'b', 'c', 'a', 'b', 'c', ...]
+</span><span class="n">repeat</span><span class="p">(</span><span class="s">'x'</span><span class="p">)</span>    <span class="c1">#  重复 x，构成无穷循环器 -&gt; ['x', 'x', ...]
+</span></code></pre></div></div>
 
 <h3 id="函数式工具">函数式工具</h3>
 
-<p><img src="/assets/images/py_intro/14689001855182.jpg" alt="" /></p>
-
-<p><img src="/assets/images/py_intro/14689004981840.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>          <span class="c1"># -&gt; 2, 4, 6
+</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>       <span class="c1"># -&gt; 3, 4
+</span><span class="n">filterflase</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># -&gt; 1, 2
+</span></code></pre></div></div>
 
 <h3 id="组合工具">组合工具</h3>
 
-<p><img src="/assets/images/py_intro/14689759629957.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chain</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>  <span class="c1"># [1, 2, 3, 4, 5, 6]
+</span><span class="n">product</span><span class="p">(</span><span class="s">'ab'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>   <span class="c1"># [('a', 1), ('a', 2), ('b', 1), ('b', 2)]
+</span><span class="n">permutations</span><span class="p">(</span><span class="s">'abc'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># [('a', 'b'), ('a', 'c'), ('b', 'a'), ('b', 'c'), ('c', 'a'), ('c', 'b')]
+</span><span class="n">combinations</span><span class="p">(</span><span class="s">'abc'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># [('a', 'b'), ('a', 'c'), ('b', 'c')]
+</span><span class="n">combinations_with_replacement</span><span class="p">(</span><span class="s">'ab'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># [('a', 'a'), ('a', 'b'), ('b', 'b')]
+</span></code></pre></div></div>
 
 <h3 id="group_by">group_by()</h3>
 
 <p>将 <code class="highlighter-rouge">key</code> 函数作用于原循环器的各个元素。根据 <code class="highlighter-rouge">key</code> 函数结果，将拥有相同函数结果的元素分到一个新的循环器。每个新的循环器以函数返回结果为标签。</p>
 
-<p>这就好像一群人的身高作为循环器。我们可以使用这样一个 <code class="highlighter-rouge">key</code> 函数: 如果身高大于180，返回 <code class="highlighter-rouge">"tall"</code>；如果身高底于 160，返回 <code class="highlighter-rouge">"short"</code>;中间的返回 <code class="highlighter-rouge">"medium"</code>:</p>
+<p>下面的代码展示了这个函数的作用。</p>
 
-<p><img src="/assets/images/py_intro/14689766885778.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">rank</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="s">"C"</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span> <span class="k">return</span> <span class="s">"B"</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="s">"A"</span>
+   <span class="o">...</span><span class="p">:</span> 
 
-<p><img src="/assets/images/py_intro/14689767128827.jpg" alt="" /></p>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">rank</span><span class="p">):</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="n">C</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">B</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">A</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</code></pre></div></div>
 
 <h2 id="数据库-sqlite3">数据库 (sqlite3)</h2>
 
@@ -1009,13 +1174,37 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
 
 <h3 id="创建数据库">创建数据库</h3>
 
-<p>我将创建一个简单的关系型数据库，为一个书店存储书的分类和价格。数据库中包含两个表：<code class="highlighter-rouge">category</code> 用于记录分类，<code class="highlighter-rouge">book</code> 用于记录某个书的信息。一本书归属于某一个分类，因此 <code class="highlighter-rouge">book</code> 有一个外键(foreign key)，指向 <code class="highlighter-rouge">catogory</code> 表的主键 id。</p>
+<p>我将创建一个简单的「关系型」数据库，为一个书店存储书的分类和价格。数据库中包含两个表：<code class="highlighter-rouge">category</code> 用于记录分类，<code class="highlighter-rouge">book</code> 用于记录某个书的信息。一本书归属于某一个分类，因此 <code class="highlighter-rouge">book</code> 有一列 category，指向 <code class="highlighter-rouge">catogory</code> 表的 id。这就是这两张表的「关系」。</p>
 
-<p><img src="/assets/images/py_intro/14689768887235.png" alt="" /></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="err">第一张表</span>      <span class="err">第二张表</span>
+<span class="n">category</span>   <span class="o">|</span>   <span class="n">book</span>
+<span class="o">*</span><span class="n">id</span> <span class="nb">INT</span>    <span class="o">|</span>   <span class="n">id</span> <span class="nb">INT</span>
+<span class="n">name</span> <span class="nb">TEXT</span>  <span class="o">|</span>   <span class="n">name</span> <span class="nb">TEXT</span>
+           <span class="o">|</span>   <span class="n">price</span> <span class="nb">REAL</span>
+           <span class="o">|</span>   <span class="o">*</span><span class="n">category</span> <span class="nb">INT</span>  <span class="err">对应</span> <span class="n">category</span> <span class="err">表的</span> <span class="n">id</span>
+</code></pre></div></div>
 
 <p>(<code class="highlighter-rouge">sqlite3</code> 只是一个 SQLite 的接口。想要熟练的使用 SQLite 数据库，还需要学习更多的关系型数据库的知识。)</p>
 
-<p><img src="/assets/images/py_intro/14690629064106.jpg" alt="" /></p>
+<p>下面的代码展示了如何使用 <code class="highlighter-rouge">sqlite3</code> 创建表 <code class="highlighter-rouge">category</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">"test.db"</span><span class="p">)</span>  <span class="c1"># 创建文件 test.db
+</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'''</span><span class="se">\
+</span><span class="s">   ...: CREATE TABLE category(
+   ...:     id INT PRIMARY KEY,
+   ...:     name TEXT)'''</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="p">)</span>  <span class="c1"># 用 SQL 语句新建一张表
+</span><span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a1d1ce0</span><span class="o">&gt;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>SQLite 的数据库是一个磁盘上的文件，如上面的 <code class="highlighter-rouge">test.db</code>，因此整个数据库可以方便的移动或复制。<code class="highlighter-rouge">test.db</code> 一开始不存在，所以 SQLite 将自动创建一个新文件。</p>
 
@@ -1023,31 +1212,124 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
 
 <h3 id="插入数据">插入数据</h3>
 
-<p><img src="/assets/images/py_intro/14690663459025.jpg" alt="" /></p>
+<p>下面的代码展示了，不同的，向表中插入数据的方法。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 连接到数据库
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">"test.db"</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># 最原始的方法
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">"INSERT INTO category VALUES (1, 'science')"</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a2427a0</span><span class="o">&gt;</span>
+
+ <span class="c1"># 插入 Python 中的变量
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">"INSERT INTO category VALUES</span><span class="se">\
+</span><span class="s">    ...:            (?, ?)"</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">"philosophy"</span><span class="p">))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a2427a0</span><span class="o">&gt;</span>
+
+<span class="c1"># 批量插入 Python 中的变量
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">categories</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">"medicine"</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">"novel"</span><span class="p">)]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s">"INSERT INTO category VALUES (?, ?)"</span><span class="p">,</span> <span class="n">categories</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a2427a0</span><span class="o">&gt;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>结果：</p>
 
-<p><img src="/assets/images/py_intro/14690859939367.jpg" alt="" /></p>
-
-<p><img src="/assets/images/py_intro/14690860051164.jpg" alt="set w500" /></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">id</span> | name
+1  | science
+2  | philosophy
+3  | medicine
+4  | novel
+</code></pre></div></div>
 
 <h3 id="选择数据">选择数据</h3>
 
-<p><img src="/assets/images/py_intro/14690870220285.jpg" alt="" /></p>
+<p>下面的代码展示了，从数据库里检索数据的方法。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 连接数据库
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">'test.db'</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># 执行数据库的 选择 命令
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT * FROM category'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a3721f0</span><span class="o">&gt;</span>
+
+<span class="c1"># 读取返回的第一项
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'science'</span><span class="p">)</span>
+
+<span class="c1"># 读取返回的所有项目
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'philosophy'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'medicine'</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'novel'</span><span class="p">)]</span>
+
+<span class="c1"># 迭代数据库的检索结果
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT name FROM category'</span><span class="p">):</span>
+    <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="o">...</span><span class="p">:</span> 
+<span class="p">(</span><span class="s">'science'</span><span class="p">,)</span>
+<span class="p">(</span><span class="s">'philosophy'</span><span class="p">,)</span>
+<span class="p">(</span><span class="s">'medicine'</span><span class="p">,)</span>
+<span class="p">(</span><span class="s">'novel'</span><span class="p">,)</span>
+</code></pre></div></div>
 
 <h3 id="更新和删除数据">更新和删除数据</h3>
 
-<p><img src="/assets/images/py_intro/14690882693434.jpg" alt="" /></p>
+<p>下面的代码展示了，修改和删除 数据库里的数据的方法。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 连接数据库
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">'test.db'</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># 将 id 为 3 的种类名称改为 metaphysics
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'UPDATE category SET name=? WHERE id=?;'</span><span class="p">,</span> <span class="p">(</span><span class="s">'metaphysics'</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x1042c32d0</span><span class="o">&gt;</span>
+<span class="c1"># 结果
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT * FROM category'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x1042c32d0</span><span class="o">&gt;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'science'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'philosophy'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'metaphysics'</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'novel'</span><span class="p">)]</span>
+
+<span class="c1"># 删除 id 为 4 的行
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'DELETE FROM category WHERE id=4;'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x1042c32d0</span><span class="o">&gt;</span>
+<span class="c1"># 结果
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT * FROM category'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x1042c32d0</span><span class="o">&gt;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'science'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'philosophy'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'metaphysics'</span><span class="p">)]</span>
+</code></pre></div></div>
 
 <h3 id="查看所有表和删除表">查看所有表和删除表</h3>
 
-<p><img src="/assets/images/py_intro/14691524891657.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 连接数据库
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]:</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">'test.db'</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># 查询 test.db 数据库里所有的表
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT name FROM sqlite_master WHERE type="table";'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a31df10</span><span class="o">&gt;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="p">[(</span><span class="s">'category'</span><span class="p">,)]</span>
+
+<span class="c1"># 删除表 category
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'DROP TABLE category;'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a31df10</span><span class="o">&gt;</span>
+
+<span class="c1"># 结果
+</span><span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT name FROM sqlite_master WHERE type="table";'</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="n">at</span> <span class="mh">0x10a31df10</span><span class="o">&gt;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="p">[]</span>
+</code></pre></div></div>
 
 <h2 id="网络">网络</h2>
 
 <h3 id="手写-python-服务器">手写 Python 服务器</h3>
 
-<p>在当今 Python 服务器框架 (framework, 比如Django, Twisted, web.py等等) 横行的时代，从底层的 socket 开始写服务器似乎是一个出力不讨好的笨方法。框架的意义在于掩盖底层的细节，提供一套对于开发人员更加友好的 API，并处理诸如 MVC 的布局问题。框架允许我们快速的构建一个成型而且成熟的 Python 服务器。然而，框架本身也是依赖于底层(比如 socket)。对于底层 socket 的了解，不仅可以帮助我们更好的使用框架，更可以让我们明白框架是如何设计的。更进一步，如果拥有良好的底层 socket 编程知识和其他系统编程知识，你完全可以设计并开发一款自己的框架。如果你可以从底层 socket 开始，实现一个完整的 Python 服务器，支持用户层的协议，并处理好诸如 MVC (Model-View-Control)、多线程 (threading) 等问题，并整理出一套清晰的函数或者类，作为接口 (API) 呈现给用户，你就相当于设计了一个框架。</p>
+<p>在当今 Python 服务器框架 (framework, 比如Django, Twisted, web.py等等) 横行的时代，从底层的 socket 开始写服务器似乎是一个出力不讨好的笨方法。框架的意义在于掩盖底层的细节，提供一套对于开发人员更加友好的 API，并处理诸如 MVC 的布局问题。框架允许我们快速的构建一个成型而且成熟的 Python 服务器。框架于底层的套接字 socket。了解 socket，可以帮助我们更好的使用和设计框架。从底层 socket 开始，实现一个完整的 Python 服务器，支持用户层的协议，并处理好诸如 MVC (Model-View-Control)、多线程 (threading) 等问题，并整理出一套清晰的函数或者类，作为接口呈现给用户，你就相当于设计了一个框架。</p>
 
 <p>socket 接口是实际上是操作系统提供的系统调用。socket 的使用并不局限于 Python 语言，你可以用 C 或者 JAVA 来写出同样的 socket 服务器，而所有语言使用 socket 的方式都类似 (Apache 就是使用 C 实现的服务器)。而你不能跨语言的使用框架。框架的好处在于帮你处理了一些细节，从而实现快速开发，但同时受到 Python 本身性能的限制。我们已经看到，许多成功的网站都是利用动态语言 (比如 Python, Ruby 或者 PHP，比如 twitter 和 facebook)快速开发，在网站成功之后，将代码转换成诸如 C 和 JAVA 这样一些效率比较高的语言，从而让服务器能更有效率的面对每天亿万次的请求。在这样一些时间，底层的重要性，就远远超过了框架。</p>
 
@@ -1057,10 +1339,27 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
 
 <p>TCP socket 与双向管道 (duplex PIPE) 有些类似，一个进程向 socket 的一端写入或读取文本流，而另一个进程可以从 socket 的另一端读取或写入，比较特别是，这两个建立 socket 通信的进程可以分别属于两台不同的计算机。</p>
 
-<p>所谓的 TCP 协议，就是规定了一些通信的守则，以便在网络环境下能够有效实现上述进程间通信过程。双向管道 (duplex PIPE) 存活于同一台电脑中，所以不必区分两个进程的所在计算机的地址，而socket 必须包含有地址信息，以便实现网络通信。一个 socket 包含四个地址信息: 两台计算机的 <strong>IP 地址</strong>和两个进程所使用的 <strong>端口(port)</strong>。<strong>IP 地址用于定位计算机，而 port 用于定位进程</strong> (一台计算机上可以有多个进程分别使用不同的端口)。</p>
+<p>所谓的 TCP 协议，就是规定了一些通信的守则，以便在网络环境下能够有效实现上述进程间通信过程。双向管道 (duplex PIPE) 存活于同一台电脑中，所以不必区分两个进程的所在计算机的地址，而socket 必须包含有地址信息，以便实现网络通信。</p>
 
-<p>一个 TCP socket 连接的网络
-<img src="/assets/images/py_intro/14691529250224.jpg" alt="set w500" /></p>
+<p>一个 socket 包含四个地址信息: 两台计算机的 <strong>IP 地址</strong>和两个进程所使用的 <strong>端口(port)</strong>。<strong>IP 地址用于定位计算机，而 port 用于定位进程</strong> (一台计算机上可以有多个进程分别使用不同的端口)。</p>
+
+<p>一个 TCP socket 连接的网络的结构如下。</p>
+
+<pre class="asciiart">
+               IP 1
+          ┌─┐┌──────┐┌────┐             
+          │═││░░░░░░││port│◀─────────┐  
+          │═││░░░░░░│└────┘          │  
+          └─┘╧══════╧                ▼  
+    IP 2                   IP 3   ┌────┐
+┌─┐┌──────┐┌────┐      ┌─┐┌──────┐│port│
+│═││░░░░░░││port│      │═││░░░░░░│├────┤
+│═││░░░░░░│└────┘      │═││░░░░░░││port│
+└─┘╧══════╧   │        └─┘╧══════╧└────┘
+              │                      ▲  
+              │                      │  
+              └──────────────────────┘    
+</pre>
 
 <h4 id="tcp-socket">TCP socket</h4>
 
@@ -1075,31 +1374,81 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
 
 <p>首先是服务器端，我们使用 <code class="highlighter-rouge">bind()</code> 方法来赋予 socket 以固定的地址和端口，并使用 <code class="highlighter-rouge">listen()</code> 方法来被动的监听该端口。当有客户尝试用 <code class="highlighter-rouge">connect()</code> 方法连接的时候，服务器使用 <code class="highlighter-rouge">accept()</code> 接受连接，从而建立一个连接的 socket：</p>
 
-<p><img src="/assets/images/py_intro/14692397234972.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 文件: server.py
+</span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="c1"># address
+</span><span class="n">HOST</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
+
+<span class="c1"># configure socket
+</span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>     <span class="c1"># 使用 IPv4
+</span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span>  <span class="c1"># 使用 TCP
+</span><span class="p">)</span>
+<span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+
+<span class="c1"># passively wait with 3 maximum connections
+</span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># accept and establish connection
+</span><span class="n">client_conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+<span class="c1"># receive message
+</span><span class="n">request</span> <span class="o">=</span> <span class="n">client_conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"the request of client is: {request}, connected by: {addr}"</span><span class="p">)</span>
+
+<span class="c1"># send message
+</span><span class="n">client_conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">b</span><span class="s">'Yes'</span><span class="p">)</span>
+
+<span class="c1"># close connection
+</span><span class="n">client_conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>然后用另一台电脑作为客户，我们主动使用 <code class="highlighter-rouge">connect()</code> 方法来搜索服务器端的 IP 地址和端口，以便客户可以找到服务器，并建立连接:</p>
 
-<p><img src="/assets/images/py_intro/14692398454845.jpg" alt="" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 文件 client.py
+</span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="c1"># address
+</span><span class="n">HOST</span> <span class="o">=</span> <span class="s">'127.0.0.1'</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">b</span><span class="s">'can you hear me'</span>
+
+<span class="c1"># configure socket
+</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+
+<span class="c1"># send request &amp; get reply
+</span><span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">reply</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"the reply is {reply}"</span><span class="p">)</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>在上面的例子中，我们对 <code class="highlighter-rouge">socket</code> 的两端都可以调用 recv() 方法来接收信息，调用 <code class="highlighter-rouge">sendall()</code> 方法来发送信息。这样，我们就可以在分处于两台计算机的两个进程间进行通信了。当通信结束的时候，我们使用 <code class="highlighter-rouge">close()</code> 方法来关闭 <code class="highlighter-rouge">socket</code> 连接。</p>
 
-<ol>
-  <li>
-    <p>如果在同一台计算机中运行这个程序，需要两个线程 (两个 shell 标签页)，一个先运行 server，并且允许程序传人网络:
-<img src="/assets/images/py_intro/14692399232426.jpg" alt="set w500" />
-再运行 client，就可以看到对话
-<img src="/assets/images/py_intro/14692402486248.jpg" alt="set w300" />
-此时运行 server 的标签页也会返回信息
-<img src="/assets/images/py_intro/14692403066467.jpg" alt="set w350" /></p>
-  </li>
-  <li>
-    <p>如果再两台计算机中运行这个程序，运行 client 的计算机中的 <code class="highlighter-rouge">HOST</code> 需要改成运行 server 的计算机的 IP 地址</p>
-  </li>
-</ol>
+<p>如果在同一台计算机中运行这个程序，需要两个线程 (两个 shell 标签页)，一个先运行 server，并且允许程序传人网络:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> python3 server.py
+</code></pre></div></div>
+
+<p>再运行 client，就可以看到对话</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> python3 client.py 
+the reply is b<span class="s1">'Yes'</span>
+</code></pre></div></div>
+
+<p>此时运行 server 的标签页也会返回信息</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/D/Folder&gt; python3 server.py
+the request of client is: b<span class="s1">'can you hear me'</span>, connected by: <span class="o">(</span><span class="s1">'127.0.0.1'</span>, 52595<span class="o">)</span>  <span class="c"># 服务器端的信息</span>
+</code></pre></div></div>
+
+<p>如果再两台计算机中运行这个程序，运行 client 的计算机中的 <code class="highlighter-rouge">HOST</code> 需要改成运行 server 的计算机的 IP 地址</p>
 
 <h3 id="基于-tcp-socket-的-http-服务器">基于 TCP socket 的 HTTP 服务器</h3>
-
-<h4 id="代码">代码</h4>
 
 <p>上面的例子中，我们已经可以使用 TCP socket 来为两台远程计算机建立连接。然而，socket 传输自由度太高，从而带来很多安全和兼容的问题。我们往往利用一些应用层的协议 (比如 HTTP 协议) 来规定 socket  使用规则，以及所传输信息的格式。</p>
 
@@ -1115,26 +1464,31 @@ subprocess 包中定义有数个创建子进程的函数，这些函数分别以
 
 <span class="c1"># HTTP response
 </span><span class="n">text_content</span> <span class="o">=</span> <span class="s">"""</span><span class="se">\
-</span><span class="s">HTTP/1.x 200 OK
+</span><span class="s">HTTP/1.1 200 OK
 Content-Type: text/html
 
 &lt;head&gt;
-&lt;title&gt;Python Server&lt;/title&gt;
+&lt;title&gt;Custom Python Server&lt;/title&gt;
 &lt;/head&gt;
+
 &lt;html&gt;
-&lt;p&gt;Page from Python server&lt;/p&gt;
-&lt;IMG src="test.jpg"/&gt;
+&lt;p&gt;Try again?&lt;/p&gt;
+&lt;img src="test.jpg" width="200px"&gt;&lt;/img&gt;
+&lt;br&gt;
+
 &lt;form name="input" action="/" method="post"&gt;
-First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
-&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;&lt;br&gt;
-&lt;p&gt;value = {value}&lt;/p&gt;
+    Your Response: &lt;input type="text" name="response"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Respond!"&gt;
+&lt;/form&gt;
+
+&lt;p&gt;Response = {value}&lt;/p&gt;
+
 &lt;/html&gt;
 """</span>
 
 <span class="c1"># Read picture, put into HTTP format
-</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.jpg'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">pic_content</span> <span class="o">=</span> <span class="n">b</span><span class="s">'HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
+</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.png'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pic_content</span> <span class="o">=</span> <span class="n">b</span><span class="s">'HTTP/1.1 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
                   <span class="n">b</span><span class="s">'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
     <span class="n">pic_content</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
@@ -1165,10 +1519,11 @@ First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
     <span class="c1"># deal with POST method
 </span>    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\r\n</span><span class="s">'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">''</span><span class="p">)</span> <span class="c1"># find the emplt line
 </span>        <span class="n">entry</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span> <span class="c1"># main content of the request
 </span>        <span class="n">value</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'='</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"your response is"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">text_content</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
@@ -1178,26 +1533,47 @@ First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
 
 <h4 id="深入-http-服务器代码">深入 HTTP 服务器代码</h4>
 
-<p>如我们上面所看到的，服务器会根据 request 向客户传输的两条信息 <code class="highlighter-rouge">text_content</code> 和 <code class="highlighter-rouge">pic_content</code> 中的一条，作为 response 文本。整个 response 分为起始行 (start line), 头信息 (head) 和主体 (body) 三部分。起始行就是第一行:</p>
+<p>如我们上面所看到的，服务器会根据 request 向客户传输的两条信息 <code class="highlighter-rouge">text_content</code> 和 <code class="highlighter-rouge">pic_content</code> 中的一条，作为 response 文本。整个 response 分为</p>
 
-<p><img src="/assets/images/py_intro/14694296411055.jpg" alt="set w150" /></p>
+<ol>
+  <li>起始行 (start line),</li>
+  <li>头信息 (head) 和</li>
+  <li>主体 (body)</li>
+</ol>
 
-<p>它实际上又由空格分为三个片段，<code class="highlighter-rouge">HTTP/1.x</code> 表示所使用的 HTTP 版本，200 表示状态 (status code)，200 是 HTTP 协议规定的，表示服务器正常接收并处理请求，OK 是供人来阅读的 status code。</p>
+<p>三部分。起始行就是第一行:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+</code></pre></div></div>
+
+<p>它实际上又由空格分为三个片段，<code class="highlighter-rouge">HTTP/1.1</code> 表示所使用的 HTTP 版本，200 表示状态 (status code)，200 是 HTTP 协议规定的，表示服务器正常接收并处理请求，OK 是供人来阅读的 status code。</p>
 
 <p>头信息跟随起始行，它和主体之间有一个空行。这里的 <code class="highlighter-rouge">text_content</code> 或者 <code class="highlighter-rouge">pic_content</code> 都只有一行的头信息，<code class="highlighter-rouge">text_content</code> 用来表示主体信息的类型为html文本：</p>
 
-<p><img src="/assets/images/py_intro/14694296109789.jpg" alt="set w200" /></p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Type: text/html
+</code></pre></div></div>
 
 <p>而 <code class="highlighter-rouge">pic_content</code> 的头信息 (Content-Type: image/jpg) 说明主体的类型为 jpg 图片 (image/jpg):</p>
 
-<p><img src="/assets/images/py_intro/14694295707885.jpg" alt="set w300" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pic_content</span> <span class="o">=</span> <span class="n">b</span><span class="s">'HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
+              <span class="n">b</span><span class="s">'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
+</code></pre></div></div>
 
 <p>我们并没有写客户端程序，后面我们会用浏览器作为客户端。request 由客户端程序发给服务器。尽管 request 也可以像 response 那样分为三部分，request 的格式与 response 的格式并不相同。request 由客户发送给服务器，比如下面是一个request：</p>
 
-<p><code class="highlighter-rouge">GET /test.jpg HTTP/1.x
-Accept: text/*</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">jpg</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.</span><span class="n">x</span>
+<span class="n">Accept</span><span class="p">:</span> <span class="n">text</span><span class="o">/*</span>
+</code></pre></div></div>
 
-<p>起始行可以分为三部分，第一部分为请求方法 (request method)，第二部分是 URL，第三部分为 HTTP 版本。request method 可以有 GET， PUT， POST， DELETE， HEAD。最常用的为 GET 和 POST。GET 是请求服务器发送资源给客户，POST 是请求服务器接收客户送来的数据。当我们打开一个网页时，我们通常是使用 GET 方法；当我们填写表格并提交时，我们通常使用 POST 方法。第二部分为 URL，它通常指向一个资源(服务器上的资源或者其它地方的资源)。像现在这样，就是指向当前服务器的当前目录的 <code class="highlighter-rouge">test.jpg</code>。</p>
+<p>起始行可以分为三部分，</p>
+
+<ol>
+  <li>请求方法 (request method)</li>
+  <li>URL</li>
+  <li>HTTP 版本</li>
+</ol>
+
+<p>其中，request method 可以有 GET， PUT， POST， DELETE， HEAD。最常用的为 GET 和 POST。GET 是请求服务器发送资源给客户，POST 是请求服务器接收客户送来的数据。当我们打开一个网页时，我们通常是使用 GET 方法；当我们填写表格并提交时，我们通常使用 POST 方法。第二部分为 URL，它通常指向一个资源(服务器上的资源或者其它地方的资源)。像现在这样，就是指向当前服务器的当前目录的 <code class="highlighter-rouge">test.jpg</code>。</p>
 
 <p>按照 HTTP 协议的规定，服务器需要根据请求执行一定的操作。正如我们在服务器程序中看到的，我们的 Python 程序先检查了 request 的方法，随后根据 URL 的不同，来生成不同的 response (<code class="highlighter-rouge">text_content</code> 或者 <code class="highlighter-rouge">pic_content</code>)。随后，这个 response 被发送回给客户端。</p>
 
@@ -1205,11 +1581,22 @@ Accept: text/*</code></p>
 
 <p>为了配合上面的服务器程序，应该在放置Python程序的文件夹里，保存了一个 <code class="highlighter-rouge">test.jpg</code> 图片文件。我们在终端运行上面的 Python 程序，作为服务器端，再打开一个浏览器作为客户端。在浏览器的地址栏输入：127.0.0.1:8000，得到下面的结果:</p>
 
-<p><img src="/assets/images/py_intro/14694298709357.jpg" alt="set w300" /></p>
+<p><img width="100px" src="/assets/images/py_intro/client.png" /></p>
 
 <p>从终端，我们可以看到，浏览器实际上发出了两个请求:</p>
 
-<p><img src="/assets/images/py_intro/14694301293007.jpg" alt="" /></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 第一次 GET 请求网页</span>
+Connected by:  <span class="o">(</span><span class="s1">'127.0.0.1'</span>, 54364<span class="o">)</span>
+Request is:  GET / HTTP/1.1
+Host: 127.0.0.1:8000
+...
+
+<span class="c"># 第二次 GET 请求图片资源</span>
+Connected by:  <span class="o">(</span><span class="s1">'127.0.0.1'</span>, 54365<span class="o">)</span>
+Request is:  GET /test.png HTTP/1.1
+Host: 127.0.0.1:8000
+...
+</code></pre></div></div>
 
 <h3 id="使用-socketserver">使用 socketserver</h3>
 
@@ -1310,13 +1697,13 @@ First name:&lt;input type="text" name="firstname"&gt;&lt;br&gt;
     </tr>
     <tr>
       <td>GET</td>
-      <td>/text.jpg</td>
+      <td>/text.png</td>
       <td>发送 pic_content</td>
     </tr>
     <tr>
       <td>POST</td>
       <td>/</td>
-      <td>分析request主体中包含的 value</td>
+      <td>分析 request 主体中包含的 value</td>
     </tr>
   </tbody>
 </table>
@@ -1411,27 +1798,6 @@ First name:<span class="nt">&lt;input</span> <span class="na">type=</span><span 
 <p>第一行说明了脚本所使用的语言，即 Python。 cgi 包用于提取请求中包含的表格信息。脚本只负责将所有的结果输出到标准输出 (使用print)。<code class="highlighter-rouge">CGIHTTPRequestHandler</code> 会收集这些输出，封装成 HTTP 回复，传送给客户端。</p>
 
 <p>对于 POST 方法的请求，它的 URL 需要指向一个 CGI 脚本 (也就是在 cgi-bin 或者 ht-bin 中的文件)。<code class="highlighter-rouge">CGIHTTPRequestHandler</code> 继承自 <code class="highlighter-rouge">SimpleHTTPRequestHandler</code>，所以也可以处理 GET 方法和 HEAD 方法的请求。如果 URL 指向CGI脚本时，服务器将脚本的运行结果传送到客户端；当此时URL 指向静态文件时，服务器将文件的内容传送到客户端。</p>
-
-<h2 id="django">Django</h2>
-
-<h3 id="启动">启动</h3>
-
-<p>在命令行使用下面的命令创建项目：</p>
-
-<p><code class="highlighter-rouge">django-admin.py startproject mysite</code></p>
-
-<p>在当前目录下，将生成mysite文件夹。其文件树结构如下:</p>
-
-<p><img src="/assets/images/py_intro/14699732974772.jpg" alt="" /></p>
-
-<p>进入 <code class="highlighter-rouge">mysite</code> 目录，启动服务器：</p>
-
-<p><code class="highlighter-rouge">python manage.py runserver 8000</code></p>
-
-<p>上面的8000为端口号。如果不说明，那么端口号默认为8000。</p>
-
-<p>打开浏览器，访问 http://127.0.0.1:8000，可以看到服务器已经在运行：</p>
-
 
 </div>
 

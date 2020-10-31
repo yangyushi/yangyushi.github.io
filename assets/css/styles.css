@@ -20,27 +20,38 @@ nav a { padding: 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-borde
 
 .current { border-radius: 0; border-bottom: 2px solid lightgray; }
 
-h1 { text-align: left; font-size: 2.0; margin-bottom: 32px; }
+.post h1 { text-align: left; font-size: 2.0; margin-bottom: 32px; }
 
-h2 { font-size: 1.5em; margin-bottom: 24px; }
+.post h2 { font-size: 1.5em; margin-bottom: 24px; }
 
-h2:before { content: "## "; color: lightgray; position: relative; }
+.post h2:before { content: "## "; color: lightgray; position: relative; }
 
-h3 { font-size: 1.25em; }
+.post h3 { font-size: 1.25em; }
 
-h3:before { content: "### "; color: lightgray; position: relative; }
+.post h3:before { content: "### "; color: lightgray; position: relative; }
 
-h4 { font-size: 1.10em; line-height: 1.2; }
+.post h4 { font-size: 1.10em; line-height: 1.2; }
 
-h4:before { content: "#### "; color: lightgray; position: relative; }
+.post h4:before { content: "#### "; color: lightgray; position: relative; }
 
-h5 { font-size: 1em; }
+.post h5 { font-size: 1em; }
 
-h5:before { content: "##### "; color: lightgray; position: relative; }
+.post h5:before { content: "##### "; color: lightgray; position: relative; }
 
-h6 { font-size: 1em; color: #777; }
+.post h6 { font-size: 1em; color: #777; }
 
-code { border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border: 1px solid #BCBEC0; padding: 2px; font: 12px Monaco,Consolas,"Andale  Mono","DejaVu Sans Mono",monospace; line-height: 2; color: teal; }
+code { border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border: 1px solid #BCBEC0; padding: 2px; font: 12px Consolas, Monaco, "Andale  Mono","DejaVu Sans Mono",monospace; line-height: 2; color: teal; }
+
+table { color: #333; /* Lighten up font color */ font-family: Helvetica, Arial, sans-serif; /* Nicer font */ width: 100%; border-collapse: collapse; border-spacing: 1; }
+
+table td, th { border: 1px solid #CCC; height: 30px; }
+
+/* Make cells a bit taller */
+table th { background: #F3F3F3; /* Light grey background */ font-weight: bold; /* Make sure they're bold */ }
+
+table td { background: #FAFAFA; /* Lighter grey background */ text-align: center; /* Center our text */ }
+
+.asciiart { border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border: 1px solid #BCBEC0; padding: 12px; font: 12px Consolas, Monaco, "Andale  Mono","DejaVu Sans Mono",monospace; line-height: 1; color: teal; }
 
 blockquote { position: relative; padding-left: 1em; border-left: 0.2em solid teal; font: 16px Monaco,Consolas,"Andale  Mono","DejaVu Sans Mono",monospace; font-weight: 100; }
 

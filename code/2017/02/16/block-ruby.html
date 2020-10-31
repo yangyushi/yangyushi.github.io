@@ -35,7 +35,7 @@
         <a href=/
             
         >
-            My Notebook
+            Notes
         </a>
         </li>
         
@@ -43,7 +43,7 @@
         <a href=/about.html
             
         >
-            About Me
+            About
         </a>
         </li>
         
@@ -120,18 +120,9 @@
 
 <h2 id="给-block-传递参数">给 Block 传递参数</h2>
 
-<table>
-  <tbody>
-    <tr>
-      <td>You can have a block accept one or more parameters from the method by defining them between vertical bar (</td>
-      <td>) characters at the start of the block。</td>
-    </tr>
-    <tr>
-      <td>我们可以给 Block 传递参数。这只需要在定义 Block 前把参数放在</td>
-      <td>竖线里：</td>
-    </tr>
-  </tbody>
-</table>
+<p>You can have a block accept one or more parameters from the method by defining them between vertical bar (<code class="highlighter-rouge">|</code>) characters at the start of the block。</p>
+
+<p>我们可以给 Block 传递参数。这只需要在定义 Block 前把参数放在 <code class="highlighter-rouge">|</code> 竖线里：</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_block</span><span class="p">)</span>
     <span class="n">my_block</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="s2">"beta"</span><span class="p">)</span>
