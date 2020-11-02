@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pair distances with PBC (Python)</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    02 Nov 2020
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#pair-distances-with-pbc" id="markdown-toc-pair-distances-with-pbc">Pair distances with PBC</a></li>
+  <li><a href="#the-straightforward-way" id="markdown-toc-the-straightforward-way">The Straightforward Way</a></li>
+  <li><a href="#a-faster-implementation" id="markdown-toc-a-faster-implementation">A Faster Implementation</a></li>
+  <li><a href="#another-good-implementation" id="markdown-toc-another-good-implementation">Another Good Implementation</a></li>
+  <li><a href="#compare" id="markdown-toc-compare">Compare</a></li>
+</ul>
+
+<hr />
+
+<p>If we want to simulate a system, either with molecular dynamics or Monte-Carlo sampling, we often use the periodic boundary condition (PBC) to fix the volume fraction of the system. There are many ways to implement the PBC especially in Python, and this note introduced 3 different implementations.</p>
+
+<hr />
+
+<h2 id="pair-distances-with-pbc">Pair distances with PBC</h2>
+
+<p>When we are simulating a system, the particles in the system often interact with different forms of pairwise potentials like the <a href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">Lennard-Jones potential</a>. One crutial step for the calculation of the potential energy, hence the forces on each particles, is determing the pairwise distances.</p>
+
+<p>With PBC, we have the following situation</p>
+
+<pre class="asciiart">
+┌───────────────────────┳━━━━━━━━━━━━━━━━━━━━━━━┳───────────────────────┐
+│   i'              j'  ┃   i               j   ┃   i"              j"  │
+│   ○               ○   ┃   ●               ●   ┃   ○               ○   │
+└───────────────────┼───┻━━━╋━━━━━━━━━━━━━━━╋━━━┻───────────────────────┘
+                    └ d_ij'─┴──── d_ij ─────┘   
+
+
+	    ( box size: L = d_ij' + d_ij )
+
+</pre>
+
+<p>where the distance of <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">j</code> are <code class="highlighter-rouge">d_ij</code>.</p>
+
+<p>The particles labeled with <code class="highlighter-rouge">i', i", j', j"</code> are the <strong>equivalences</strong> of  <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">j</code> in the neighbour boxes, as the result of the PBC. Here, since <code class="highlighter-rouge">d_ij'</code> is smaller than <code class="highlighter-rouge">d_ij</code>, we should select <code class="highlighter-rouge">d_ij'</code> as the distance instead of <code class="highlighter-rouge">d_ij</code>, for the calculation of short-ranged interaction like LJ. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<h2 id="the-straightforward-way">The Straightforward Way</h2>
+
+<p>The most straightforward way is to do exactly what was discussed inside a for loop. Me and Fergus exhibited this method in <a href="https://github.com/FJMOORE/Hard-Sphere-Monte-Carlo">our pedagogical code</a>. Here is a “minimal” code for the relevant part.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span>  <span class="c1"># 100 particles in 3D
+</span><span class="n">box</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># size of box
+</span><span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+
+<span class="n">pair_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+        <span class="n">dist_nd_sq</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">dist_1d</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">d</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">dist_1d</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">box</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):</span>  <span class="c1"># check if d_ij &gt; box_size / 2
+</span>                <span class="n">dist_1d</span> <span class="o">=</span> <span class="n">box</span> <span class="o">-</span> <span class="n">dist_1d</span>
+            <span class="n">dist_nd_sq</span> <span class="o">+=</span> <span class="n">dist_1d</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">pair_distances</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_nd_sq</span>
+<span class="n">pair_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pair_distances</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>However, this is quite slow because we are using Python. The above code taks about 5000 ms on my computer.</p>
+
+<h2 id="a-faster-implementation">A Faster Implementation</h2>
+
+<p>Inspired by <a href="https://francescoturci.net/2016/03/16/clustering-and-periodic-boundaries/">Francesco’s post</a>, we can use the very fast function <code class="highlighter-rouge">pdist</code> from package <code class="highlighter-rouge">scipy</code> to calculate the pair distances. The “minimal” code is presented here.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">pdist</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span>  <span class="c1"># 100 particles in 3D
+</span><span class="n">box</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+
+<span class="n">dist_nd_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># to match the result of pdist
+</span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="n">pos_1d</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[:,</span> <span class="n">d</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>  <span class="c1"># shape (N, 1)
+</span>    <span class="n">dist_1d</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">pos_1d</span><span class="p">)</span>  <span class="c1"># shape (N * (N - 1) // 2, )
+</span>    <span class="n">dist_1d</span><span class="p">[</span><span class="n">dist_1d</span> <span class="o">&gt;</span> <span class="n">box</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">-=</span> <span class="n">box</span>
+    <span class="n">dist_nd_sq</span> <span class="o">+=</span> <span class="n">dist_1d</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># d^2 = dx^2 + dy^2 + dz^2
+</span><span class="n">dist_nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dist_nd_sq</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>It is significantly faster than the straightforward way, and it taks about 800 ms on my computer.</p>
+
+<h2 id="another-good-implementation">Another Good Implementation</h2>
+
+<p>There is also another good implementation from the <a href="https://github.com/Allen-Tildesley/examples/blob/master/python_examples/md_lj_module.py#L121">example python code</a> from <a href="https://books.google.co.uk/books?id=WFExDwAAQBAJ">Allen &amp; Tildesley’s book</a>. The “minimal” code is presented here, where I</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span>  <span class="c1"># 1000 particles in 3D
+</span><span class="n">box</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+
+<span class="n">pair_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="n">pos_in_box</span> <span class="o">=</span> <span class="n">positions</span> <span class="o">/</span> <span class="n">box</span>  <span class="c1"># convert the unit to box
+</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="n">pos_1d</span> <span class="o">=</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="n">d</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>  <span class="c1"># shape (N, 1)
+</span>    <span class="n">pair_shift_1d</span> <span class="o">=</span> <span class="n">pos_1d</span> <span class="o">-</span> <span class="n">pos_1d</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># shape (N, N)
+</span>    <span class="n">pair_shift_1d</span> <span class="o">=</span> <span class="n">pair_shift_1d</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">pair_shift_1d</span><span class="p">)</span>
+    <span class="n">pair_shift</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair_shift_1d</span>
+
+<span class="n">dist_nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pair_shift</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">box</span>  <span class="c1"># conver the unit back
+</span></code></pre></div></div>
+
+<p>It is less efficient comparing with the previous solution, taking about 900 ms on my computer. However, we have access to the pairwise shift during the calculation, which is a plus for implementing strange agent-based models.</p>
+
+<p>In addition, we can write the code into a more compact form thanks to the <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">broadcasting rules</a> of <code class="highlighter-rouge">numpy</code>, like the following example.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span>  <span class="c1"># 1000 particles in 3D
+</span><span class="n">box</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+
+<span class="n">pos_in_box</span> <span class="o">=</span> <span class="n">positions</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">box</span>  <span class="c1"># convert the unit to box, shape (dim, N)
+</span><span class="n">pair_shift</span> <span class="o">=</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># tricky broadcasting
+</span><span class="n">pair_shift</span> <span class="o">=</span> <span class="n">pair_shift</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">pair_shift</span><span class="p">)</span>
+<span class="n">dist_nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pair_shift</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">box</span>  <span class="c1"># conver the unit back
+</span></code></pre></div></div>
+
+<p>(What a beautiful, elegant and annoying way to write Python code!)</p>
+
+<h2 id="compare">Compare</h2>
+
+<p>I compared the three different methods with <a href="https://gist.github.com/yangyushi/1d031dea79f1be43d3cafc6079e3fe45">the code on my gist</a>, and they give identical results. The efficency varies a lot. And the second method is the most efficent one.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3.8901 s spent by method 1
+0.0230 s spent by method 2
+0.0747 s spent by method 3
+Getting identical results? True
+</code></pre></div></div>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Actually, in a straightforward calculation, we should take all the distances from all the image boxes created by the PBC. This would lead to infinite amount of distances, which can nevertheless be handled with methods such as the <a href="https://en.wikipedia.org/wiki/Ewald_summation">Ewald sum</a>. <br /><br /> However the calculation is much easier for short ranged interactions such as LJ interaction. This is because we only consider particles whose distance is smaller than a cutoff value, <code class="highlighter-rouge">r_cut</code>, and <code class="highlighter-rouge">r_cut</code> is typically much smaller than half of the box length, <code class="highlighter-rouge">L / 2</code>.<br /><br />Going back to the diagram, this means <code class="highlighter-rouge">d_ij</code> itself will definitely be ignored because it is larger that <code class="highlighter-rouge">L / 2</code>. However, the existence of PBC forces us to especially take care of the situation where <code class="highlighter-rouge">d_ij &gt; L / 2</code> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
