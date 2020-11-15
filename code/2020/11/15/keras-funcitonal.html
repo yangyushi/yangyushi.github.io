@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Keras 里的函数式 API</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    15 Nov 2020
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#面向对象-api" id="markdown-toc-面向对象-api">面向对象 API</a></li>
+  <li><a href="#函数式-api" id="markdown-toc-函数式-api">函数式 API</a></li>
+  <li><a href="#深入理解" id="markdown-toc-深入理解">深入理解</a></li>
+  <li><a href="#附录没有输入的模型" id="markdown-toc-附录没有输入的模型">附录：没有输入的模型</a></li>
+</ul>
+
+<hr />
+
+<p>深度学习库 Tensorflow 2 里的 Keras 模块提供了函数式<small>（泛函）</small> 风格的 应用程序接口 (API)。这让我们可以用相当不同的风格，构建出同样的神经网络模型。这个笔记比较了两种风格，基于对应的 <a href="https://www.tensorflow.org/guide/keras/functional">tensorflow 文档</a>。</p>
+
+<hr />
+
+<h2 id="面向对象-api">面向对象 API</h2>
+
+<p>Keras 里我们可以用下面的代码创建模型。这里的代码是过程式的（普通的）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">),</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer1"</span><span class="p">),</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer2"</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer3"</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>这一块代码相当容易理解。我调用了 <code class="highlighter-rouge">tf.keras.layers</code> 里的函数（<code class="highlighter-rouge">Dense</code>），得到了不同的三个「层」。之后 <code class="highlighter-rouge">Sequential</code> 函数把这些「层」依序连接起来，得到了结果。这个模型的 <code class="highlighter-rouge">summary</code> 如下，</p>
+
+<pre class="asciiart">
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+layer1 (Dense)               (None, 2)                 12        
+_________________________________________________________________
+layer2 (Dense)               (None, 3)                 9         
+_________________________________________________________________
+layer3 (Dense)               (None, 4)                 16        
+=================================================================
+Total params: 37
+Trainable params: 37
+Non-trainable params: 0
+_________________________________________________________________
+
+</pre>
+
+<p>第一层的参数是 <strong>12</strong> 的原因是我们有 <strong>2</strong> 个神经元，每个神经元 连接了 <strong>5</strong> 个输入，所有总共有 $2 \times 5 = 10$ 个 权重值。再加上 <strong>2</strong> 个属于神经元的偏差，最终得到 <strong>12</strong> 个参数。</p>
+
+<h2 id="函数式-api">函数式 API</h2>
+
+<p>Keras 同时也允许我们把 同样的代码 用<a href="https://zh.wikipedia.org/wiki/函数式编程">函数式风格</a>写出来。写法如下，</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer1"</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer2"</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer3"</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>这会得到同样的模型。</p>
+
+<h2 id="深入理解">深入理解</h2>
+
+<p>在面向对象 API 里，我们的使用的语法如下</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+  <span class="p">[</span><span class="err">输入</span><span class="p">,</span> <span class="err">第一层</span><span class="p">,</span> <span class="err">第二层</span><span class="p">,</span> <span class="err">第三层</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>其中，我们使用函数得到了不同「层」，我把我得到的东西想象成对象。下面是我们得到「第一层」的语句。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">第一层</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"layer1"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这样的想象是对的，不过 <code class="highlighter-rouge">tf.keras.layers</code> 里的函数返回给我们的实际上是，另一个函数。下面的代码解释了这个行为。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">l1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">l3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">l3</span><span class="p">(</span><span class="n">l2</span><span class="p">(</span><span class="n">l1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>  <span class="c1"># shape 1, 4
+</span></code></pre></div></div>
+
+<p>我们可以用 数学公式 表示最后一行代码</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+x_1 &= l_1(x)\\
+x_2 &= l_2(x_1)\\
+y &= l_3(x_2)
+\end{aligned} %]]></script>
+
+<h2 id="附录没有输入的模型">附录：没有输入的模型</h2>
+
+<p>在我创建模型的时候，我通常会指定输入数据的形状。譬如，下面的代码 将 输入数据 固定为 5 个数字。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>但是，我也可以创造一个没有输入的模型。一个最简单的例子如下，</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>此时，我们不能直接使用 <code class="highlighter-rouge">model.summary()</code> 来得到模型的描述。因为我们不知道 输入数据的结构，因而无法确定 模型中 参数的数目。同时我会得到这样的错误警告：</p>
+
+<pre class="asciiart">
+ValueError: This model has not yet been built. Build the model
+first by calling `build()` or calling `fit()` with some data, or
+specify an `input_shape` argument in the first layer(s) for automatic build.
+</pre>
+
+<p>当我“使用”过一次模型之后，模型的输入就会被确定。譬如，下面的代码片段可以顺利执行。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>我们「不能」将模型套用在「形状不同的输入」上。譬如，下面的代码会产生错误。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1">#  顺利执行，模型的输入被固定为 5
+</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1">#  程序报错
+</span></code></pre></div></div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
