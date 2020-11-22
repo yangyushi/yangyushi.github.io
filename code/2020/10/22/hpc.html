@@ -65,6 +65,7 @@
   <li><a href="#use-large-memory-on-bc3" id="markdown-toc-use-large-memory-on-bc3">Use large memory on BC3</a></li>
   <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
   <li><a href="#display-image-on-bc3" id="markdown-toc-display-image-on-bc3">Display Image on BC3</a></li>
+  <li><a href="#configure-vim-compilation" id="markdown-toc-configure-vim-compilation">Configure Vim Compilation</a></li>
 </ul>
 
 <hr />
@@ -82,9 +83,9 @@ scp <span class="nt">-r</span> LOCAL_PATH ab12345@bluecrystalp3.bris.ac.uk:REMOT
 scp <span class="nt">-r</span> ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH LOCAL_PATH 
 </code></pre></div></div>
 
-<p>to make my life easier, I store the <code class="highlighter-rouge">username@host</code> into a envirinmental variable. Typically I added something like the following into the <code class="highlighter-rouge">.basrhc</code> file.</p>
+<p>to make my life easier, I store the <code class="language-plaintext highlighter-rouge">username@host</code> into a envirinmental variable. Typically I added something like the following into the <code class="language-plaintext highlighter-rouge">.basrhc</code> file.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export myhpc="USER_NAME@bluecrystalp3.bris.ac.uk"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export myhpc="USER_NAME@bluecrystalp3.bris.ac.uk"
 </code></pre></div></div>
 
 <p>Therefore, the file exchange commands become the following code.</p>
@@ -107,7 +108,7 @@ scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>file | pbcopy
 </code></pre></div></div>
 
-<p>If using ubuntu, put the following in <code class="highlighter-rouge">.bashrc</code>,</p>
+<p>If using ubuntu, put the following in <code class="language-plaintext highlighter-rouge">.bashrc</code>,</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
 </code></pre></div></div>
@@ -134,6 +135,18 @@ openssl md5
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
+
+<h2 id="configure-vim-compilation">Configure Vim Compilation</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--with-features</span><span class="o">=</span>huge <span class="se">\</span>
+            <span class="nt">--enable-multibyte</span> <span class="se">\</span>
+            <span class="nt">--enable-rubyinterp</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+            <span class="nt">--enable-python3interp</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+            <span class="nt">--with-python3-config-dir</span><span class="o">=</span><span class="si">$(</span>python3-config <span class="nt">--configdir</span><span class="si">)</span> <span class="se">\</span>
+            <span class="nt">--enable-cscope</span> <span class="se">\</span>
+            <span class="nt">--prefix</span><span class="o">=</span>/usr/local
+</code></pre></div></div>
+
 
 </div>
 

@@ -73,7 +73,7 @@
 
 <p>the distance between $\vec{L}$ and $\vec{p}$ is</p>
 
-<script type="math/tex; mode=display">\vec{v} \times (\vec{a} - \vec{p})</script>
+\[\vec{v} \times (\vec{a} - \vec{p})\]
 
 <p>See the representation</p>
 
@@ -81,7 +81,7 @@
 
 <p>The meaning of $\times$</p>
 
-<script type="math/tex; mode=display">\vec{a} \times \vec{b} = |\vec{a}| |\vec{b}| \sin(\theta) \; \vec{n}</script>
+\[\vec{a} \times \vec{b} = |\vec{a}| |\vec{b}| \sin(\theta) \; \vec{n}\]
 
 <p>$n$ is the normal of the line.</p>
 
@@ -91,7 +91,7 @@
 
 <p>空间中任意一点 $\mathbf{x} = (x, y, z)$ 到第 $i$ 条线的距离 $D$ 是</p>
 
-<script type="math/tex; mode=display">\bf{D_i} = \ (\bf{x} - \bf{a_i}) \times \bf{v_i}\</script>
+\[\bf{D_i} = \ (\bf{x} - \bf{a_i}) \times \bf{v_i}\\]
 
 <table>
   <tbody>
@@ -107,48 +107,45 @@
 
 <p>让我们回忆起矢量运算的一个著名等式</p>
 
-<script type="math/tex; mode=display">\begin{align}
+\[\begin{align}
 (\bf{a} \times \bf{b}) \cdot (\bf{a} \times \bf{b}) =
 ||\bf{a}||^2 \; ||\bf{b}||^2 - (\bf{a} \cdot \bf{b})^2
-\end{align}</script>
+\end{align}\]
 
 <p>这样我们可以计算出</p>
 
-<script type="math/tex; mode=display">\bf{D_i}^2 = || \bf{x} - \bf{a_i} ||^2 \; || \bf{v_i}^2|| - 
-||\ (\bf{x} - \bf{a_i}) \cdot \bf{v_i}\ ||^2</script>
+\[\bf{D_i}^2 = || \bf{x} - \bf{a_i} ||^2 \; || \bf{v_i}^2|| - 
+||\ (\bf{x} - \bf{a_i}) \cdot \bf{v_i}\ ||^2\]
 
 <p>所以，对于「所有的直线」，点 $\bf{x}$ 到这些点的距离的平方和，我们称之为 $\bf{F(x)}$。$\bf{F(x)}$ 是一个标量场（scalar field）——它的输入是一个三维矢量，输出是一个数字——我把它想象成类似三维空间里的温度的东西。</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\bf{F(x)} &= \sum_i{\bf{D_i}^2} 
-\\ &= \sum_i{\left(|| \bf{x} - \bf{a_i} ||^2 \; || \bf{v_i}^2|| - 
+\[\begin{align}
+\bf{F(x)} &amp;= \sum_i{\bf{D_i}^2} 
+\\ &amp;= \sum_i{\left(|| \bf{x} - \bf{a_i} ||^2 \; || \bf{v_i}^2|| - 
 ||\ (\bf{x} - \bf{a_i}) \cdot \bf{v_i}\ ||^2 \right)}
-\end{align} %]]></script>
+\end{align}\]
 
 <p>如果我们要找到「距离最短」的点，我们相当于在找矢量场 $\bf{F(x)}$ 里「温度最低的位置」。理智告诉我这个 $\bf{F(x)}$ 只有一个最小值（因为它其实是很多线的交叉点），而没有最大值；所以说，如果我们要找最小值，我们只用找梯度（$\nabla \bf{F}$）为零的点就可以了：</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
+\[\begin{aligned}
 \nabla \bf{F}
-&= \sum_i {2\bf{v_i}^2(\bf{x} - \bf{a_i}) - 2 \bf{v_i} \left( (\bf{x} - \bf{a_i}) \cdot \bf{v_i} \right)} \\
-&= 0
-\end{aligned} %]]></script>
+&amp;= \sum_i {2\bf{v_i}^2(\bf{x} - \bf{a_i}) - 2 \bf{v_i} \left( (\bf{x} - \bf{a_i}) \cdot \bf{v_i} \right)} \\
+&amp;= 0
+\end{aligned}\]
 
 <p>实际上，我们会需要求出对应的 $\bf{x}$。对于 3 个相机的情况，如果我们展开上面的公式，并且化简，我们「最终」可以得到</p>
 
-<script type="math/tex; mode=display">\begin{align}
+\[\begin{align}
 \sum{\mathbf{T}_i} \cdot \mathbf{x} = \sum{\mathbf{T}_i \cdot \mathbf{a}_i}
-\end{align}</script>
+\end{align}\]
 
 <p>其中，$\mathbf{T}_i$ 是</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{pmatrix}
--v_2^2 - v_3^2 & v_1 v_2 & v_1 v_3 \\
-v_1v_2 & -v_1^2 - v_3^2 & v_2 v_3 \\
-v_1v_3 & v_2 v_3 & -v_1^2 - v_2^2
-\end{pmatrix} %]]></script>
+\[\begin{pmatrix}
+-v_2^2 - v_3^2 &amp; v_1 v_2 &amp; v_1 v_3 \\
+v_1v_2 &amp; -v_1^2 - v_3^2 &amp; v_2 v_3 \\
+v_1v_3 &amp; v_2 v_3 &amp; -v_1^2 - v_2^2
+\end{pmatrix}\]
 
 </div>
 

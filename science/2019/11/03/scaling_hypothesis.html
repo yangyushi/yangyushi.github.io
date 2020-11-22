@@ -74,27 +74,26 @@
 
 <p>让我们定义</p>
 
-<script type="math/tex; mode=display">\chi= \frac{\partial M}{\partial T}</script>
+\[\chi= \frac{\partial M}{\partial T}\]
 
 <p>并且使用约化温度 $t$</p>
 
-<script type="math/tex; mode=display">t = \frac{(T - T_c)}{T_c}</script>
+\[t = \frac{(T - T_c)}{T_c}\]
 
 <p>一切准备就绪，现在让我们来看下面被人类观测到的，「真实」的关系。</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-M_{H \rightarrow 0^+} &\sim (-t)^\beta \\[1em]
-M(H, T_c) &\sim H^{1/\delta} \\[1em]
-\chi(0, T) &\sim t^{-\gamma} & t \rightarrow 0^+ \\[1em]
-\chi(0, T) &\sim t^{-\gamma'} & t \rightarrow 0^-
-\end{align} %]]></script>
+\[\begin{align}
+M_{H \rightarrow 0^+} &amp;\sim (-t)^\beta \\[1em]
+M(H, T_c) &amp;\sim H^{1/\delta} \\[1em]
+\chi(0, T) &amp;\sim t^{-\gamma} &amp; t \rightarrow 0^+ \\[1em]
+\chi(0, T) &amp;\sim t^{-\gamma'} &amp; t \rightarrow 0^-
+\end{align}\]
 
 <h2 id="标度律假设-scaling-hypothesis">标度律假设 Scaling Hypothesis</h2>
 
 <p>我们作出如下的假设</p>
 
-<script type="math/tex; mode=display">\frac{H}{kT_c} = M\ |M|^{\delta-1} \; h_s(t\ |M|^{-1/\beta})</script>
+\[\frac{H}{kT_c} = M\ |M|^{\delta-1} \; h_s(t\ |M|^{-1/\beta})\]
 
 <p>其中 $h_s$ 叫做 scaling function。它是一个单调递增的函数。在  $-x_0$ 处取值为 0。它大概长这样。</p>
 
@@ -106,40 +105,37 @@ M(H, T_c) &\sim H^{1/\delta} \\[1em]
 
 <p>当 $H = 0$ 并且 $t &lt; 0$ 时</p>
 
-<script type="math/tex; mode=display">\frac{0}{kT_c} = M\ |M|^{\delta-1} \; h_s(t\ |M|^{-1/\beta})</script>
+\[\frac{0}{kT_c} = M\ |M|^{\delta-1} \; h_s(t\ |M|^{-1/\beta})\]
 
 <p>若 $M \neq 0$，那么 $h_s(\dots)$ 必然为 0。 由于 $t &lt; 0$， $h_s(\dots)$ 里一定是一个负数。我们叫它 $-x_0$。那么我们可以推导出上面的第一个关系，</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-h_x(-x_0) &= 0 \\
-t\ |M|^{1/\beta} &= -x_0\\
-\rightarrow |M_0| &= x_0 (-t)^\beta & \text{relation (1)} 
-\end{aligned} %]]></script>
+\[\begin{aligned}
+h_x(-x_0) &amp;= 0 \\
+t\ |M|^{1/\beta} &amp;= -x_0\\
+\rightarrow |M_0| &amp;= x_0 (-t)^\beta &amp; \text{relation (1)} 
+\end{aligned}\]
 
 <h2 id="通过标度律推导关系-2">通过标度律推导关系 2</h2>
 
 <p>当 $T \rightarrow T_c$ 时，$t \rightarrow 0$, $h_s(\dots) \rightarrow h_s(0)$。这个时候我们可以推导出第二个关系，</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\frac{H_{t\rightarrow0}}{kT_c}&=
+\[\begin{aligned}
+\frac{H_{t\rightarrow0}}{kT_c}&amp;=
 M |M|^{\delta - 1}\;h_s(0) \\
-\rightarrow H_{t\rightarrow0} &= kT_c\,h_s(0)\;M^{\delta} & \text{relation (2)}
-\end{aligned} %]]></script>
+\rightarrow H_{t\rightarrow0} &amp;= kT_c\,h_s(0)\;M^{\delta} &amp; \text{relation (2)}
+\end{aligned}\]
 
 <h2 id="通过标度律推导关系-3-4">通过标度律推导关系 3, 4</h2>
 
 <p>当我们计算 $\partial H / \partial M$ 的时候，我们可以推导出第三个关系，</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-（kT_c\chi）^{-1} &= |M|^{\delta - 1} \left[ \delta h_x(x) - \beta^{-1}\ x\ \frac{\partial h_s(x)}{\partial x}
-\right] & (x=t|M|^{-1/\beta}) \\[1em]
-\rightarrow \chi^{-1} &\sim
-|M_{H=0}|^{\delta - 1} & (H=0 \rightarrow h_x(-x_0)=0) \\[1em]
-\rightarrow \chi &\sim (-t)^{-\beta(\delta - 1)} & \text{relation (3)}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+（kT_c\chi）^{-1} &amp;= |M|^{\delta - 1} \left[ \delta h_x(x) - \beta^{-1}\ x\ \frac{\partial h_s(x)}{\partial x}
+\right] &amp; (x=t|M|^{-1/\beta}) \\[1em]
+\rightarrow \chi^{-1} &amp;\sim
+|M_{H=0}|^{\delta - 1} &amp; (H=0 \rightarrow h_x(-x_0)=0) \\[1em]
+\rightarrow \chi &amp;\sim (-t)^{-\beta(\delta - 1)} &amp; \text{relation (3)}
+\end{aligned}\]
 
 <p>推导出的结果预言了，$\gamma’ = \beta(\delta - 1)$</p>
 
@@ -147,27 +143,25 @@ M |M|^{\delta - 1}\;h_s(0) \\
 
 <p>“真正称职的物理学家”能够推导出</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-h_s(x) &\sim x^{\beta(\gamma - 1)} & (x\rightarrow \infty)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+h_s(x) &amp;\sim x^{\beta(\gamma - 1)} &amp; (x\rightarrow \infty)
+\end{aligned}\]
 
 <p>由此可以推导出</p>
 
-<script type="math/tex; mode=display">\gamma = \gamma' = \beta(\delta - 1)</script>
+\[\gamma = \gamma' = \beta(\delta - 1)\]
 
 <h2 id="标度律作出的预言">标度律作出的预言</h2>
 
 <p>总之，scaling hypothesis 作出了下面的预言</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\alpha + 2 \beta + \gamma' &= 2 \\
-\nu &= \nu' \\
-(2-\eta)\nu &= \gamma\\
-\mu + \nu &= 2 - \alpha\\
-d \nu &= 2 - \alpha & (d \text{ is the dimension})
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\alpha + 2 \beta + \gamma' &amp;= 2 \\
+\nu &amp;= \nu' \\
+(2-\eta)\nu &amp;= \gamma\\
+\mu + \nu &amp;= 2 - \alpha\\
+d \nu &amp;= 2 - \alpha &amp; (d \text{ is the dimension})
+\end{aligned}\]
 
 <p>这些都有实验和理论验证。具体的 $h_s(x)$ 的函数的「样子」也有数值求解。总之这个假设看上去是真的。</p>
 

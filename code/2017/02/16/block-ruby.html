@@ -120,9 +120,9 @@
 
 <h2 id="给-block-传递参数">给 Block 传递参数</h2>
 
-<p>You can have a block accept one or more parameters from the method by defining them between vertical bar (<code class="highlighter-rouge">|</code>) characters at the start of the block。</p>
+<p>You can have a block accept one or more parameters from the method by defining them between vertical bar (<code class="language-plaintext highlighter-rouge">|</code>) characters at the start of the block。</p>
 
-<p>我们可以给 Block 传递参数。这只需要在定义 Block 前把参数放在 <code class="highlighter-rouge">|</code> 竖线里：</p>
+<p>我们可以给 Block 传递参数。这只需要在定义 Block 前把参数放在 <code class="language-plaintext highlighter-rouge">|</code> 竖线里：</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_block</span><span class="p">)</span>
     <span class="n">my_block</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="s2">"beta"</span><span class="p">)</span>
@@ -136,7 +136,7 @@
 
 <h2 id="yield">yield</h2>
 
-<p>使用 <code class="highlighter-rouge">yield</code> 可以简化代码：</p>
+<p>使用 <code class="language-plaintext highlighter-rouge">yield</code> 可以简化代码：</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">twice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
     <span class="n">block</span><span class="p">.</span><span class="nf">call</span>
@@ -162,7 +162,7 @@
 
 <h2 id="两种定义-block-的方法">两种定义 block 的方法</h2>
 
-<p>在定义一个 block 的时候，我们可以选择使用 <code class="highlighter-rouge">do...end</code> 的方法，也可以选择使用大括号：</p>
+<p>在定义一个 block 的时候，我们可以选择使用 <code class="language-plaintext highlighter-rouge">do...end</code> 的方法，也可以选择使用大括号：</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
     <span class="nb">print</span> <span class="s2">"hello "</span>

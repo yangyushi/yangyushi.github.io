@@ -68,32 +68,32 @@
 
 <p>On my personal working PC, I always wanted to use the latest vim that build from the source. Also, I want to be able to edit a file by clicking the file icon.</p>
 
-<p>To do it, the idea is make a <code class="highlighter-rouge">.desktop</code> file in the <code class="highlighter-rouge">~/.local/share/applications</code> folder. Inside the file, write something like,</p>
+<p>To do it, the idea is make a <code class="language-plaintext highlighter-rouge">.desktop</code> file in the <code class="language-plaintext highlighter-rouge">~/.local/share/applications</code> folder. Inside the file, write something like,</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "vim %F"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "vim %F"
 </code></pre></div></div>
 
 <p>This is the <a href="https://help.ubuntu.com/community/UnityLaunchersAndDesktopFiles#Using_a_text_editor">standard way to create a desktop file</a> and <em>should</em> work in principle. <em>However</em>, it is not enough: the desktop <em>will not start up</em>. Typically, one needs to handle following issues.</p>
 
 <h2 id="preventing-the-terminal-from-close">Preventing the terminal from close</h2>
 
-<p>In the <code class="highlighter-rouge">.desktop</code> file, change <code class="highlighter-rouge">Exec</code> to the following,</p>
+<p>In the <code class="language-plaintext highlighter-rouge">.desktop</code> file, change <code class="language-plaintext highlighter-rouge">Exec</code> to the following,</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "vim %F;exec $SHELL"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "vim %F;exec $SHELL"
 </code></pre></div></div>
 
-<p>The extra <code class="highlighter-rouge">$SHELL</code> is used to prevent the terminal from closing. The source is <a href="https://askubuntu.com/questions/20330/how-to-run-a-script-without-closing-the-terminal">here</a></p>
+<p>The extra <code class="language-plaintext highlighter-rouge">$SHELL</code> is used to prevent the terminal from closing. The source is <a href="https://askubuntu.com/questions/20330/how-to-run-a-script-without-closing-the-terminal">here</a></p>
 
 <h2 id="inherit-custom-environment">Inherit custom environment</h2>
 
-<p>In the <code class="highlighter-rouge">.desktop</code> file, change <code class="highlighter-rouge">Exec</code> to the following,</p>
+<p>In the <code class="language-plaintext highlighter-rouge">.desktop</code> file, change <code class="language-plaintext highlighter-rouge">Exec</code> to the following,</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "source ~/.bashrc &amp;&amp; vim %F;exec $SHELL"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exec=bash -c "source ~/.bashrc &amp;&amp; vim %F;exec $SHELL"
 </code></pre></div></div>
 
-<p>This is quite obvious if we need the env variables in <code class="highlighter-rouge">~/.bashrc</code>. Something linke the <code class="highlighter-rouge">$PATH</code> and <code class="highlighter-rouge">$LD_LIBRARY_PATH</code>. However, one needs to take <em>extra care</em> with the <code class="highlighter-rouge">.bashrc</code> file.</p>
+<p>This is quite obvious if we need the env variables in <code class="language-plaintext highlighter-rouge">~/.bashrc</code>. Something linke the <code class="language-plaintext highlighter-rouge">$PATH</code> and <code class="language-plaintext highlighter-rouge">$LD_LIBRARY_PATH</code>. However, one needs to take <em>extra care</em> with the <code class="language-plaintext highlighter-rouge">.bashrc</code> file.</p>
 
-<p>Typically, following lines appear in the <code class="highlighter-rouge">.bashrc</code> file,</p>
+<p>Typically, following lines appear in the <code class="language-plaintext highlighter-rouge">.bashrc</code> file,</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># If not running interactively, don't do anything</span>
 <span class="k">case</span> <span class="nv">$-</span> <span class="k">in</span>
@@ -106,7 +106,7 @@
 
 <h2 id="final-desktop-file">Final .desktop File</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Desktop Entry]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Desktop Entry]
 Encoding=UTF-8
 Name=Vim (Termial)
 Comment=Edit text files in a console using Vim

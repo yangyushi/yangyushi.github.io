@@ -206,13 +206,13 @@
 
 <h3 id="javascript-放在哪里">JavaScript 放在哪里？</h3>
 
-<p>刚才我们编写了第一个 JavaScript 程序，强调过 JavaScript 代码必须放置在 <code class="highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签里。</p>
+<p>刚才我们编写了第一个 JavaScript 程序，强调过 JavaScript 代码必须放置在 <code class="language-plaintext highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签里。</p>
 
-<p>我们把包含代码的 <code class="highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签放在了 <code class="highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里。其实不止可以这样做，我们还有另外两种方式在 HTML 中使用 JavaScript 。</p>
+<p>我们把包含代码的 <code class="language-plaintext highlighter-rouge">&lt;script&gt;……&lt;/script&gt;</code> 标签放在了 <code class="language-plaintext highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里。其实不止可以这样做，我们还有另外两种方式在 HTML 中使用 JavaScript 。</p>
 
 <h4 id="head-中的-javascript">head 中的 JavaScript</h4>
 
-<p>我们除了可以把包含代码的 <code class="highlighter-rouge">&lt;script&gt;</code> 标签放在 <code class="highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里，还可以把它放在 <code class="highlighter-rouge">&lt;head&gt;……&lt;/head&gt;</code> 标签里，比如这样：</p>
+<p>我们除了可以把包含代码的 <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> 标签放在 <code class="language-plaintext highlighter-rouge">&lt;body&gt;……&lt;/body&gt;</code> 标签里，还可以把它放在 <code class="language-plaintext highlighter-rouge">&lt;head&gt;……&lt;/head&gt;</code> 标签里，比如这样：</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 
@@ -229,9 +229,9 @@
 
 <p><img src="/assets/images/js_intro/14789320566310.jpg" alt="set w400" /></p>
 
-<p>这个程序的执行结果和刚才的没什么不同，但其实把 JavaScript 代码放在 <code class="highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 和放在 <code class="highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 里是有区别的：</p>
+<p>这个程序的执行结果和刚才的没什么不同，但其实把 JavaScript 代码放在 <code class="language-plaintext highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 和放在 <code class="language-plaintext highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 里是有区别的：</p>
 
-<p>简单地说，放在 <code class="highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 里的会比放在 <code class="highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 先执行。<code class="highlighter-rouge">head</code> 标签里的代码会在页面还未开始绘制之前被解析，而在 <code class="highlighter-rouge">body</code> 里的代码则会在页面渲染的同时在读取到这段代码的时候才被执行。</p>
+<p>简单地说，放在 <code class="language-plaintext highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> 里的会比放在 <code class="language-plaintext highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> 先执行。<code class="language-plaintext highlighter-rouge">head</code> 标签里的代码会在页面还未开始绘制之前被解析，而在 <code class="language-plaintext highlighter-rouge">body</code> 里的代码则会在页面渲染的同时在读取到这段代码的时候才被执行。</p>
 
 <h4 id="外部的-javascript">外部的 JavaScript</h4>
 
@@ -396,7 +396,7 @@
 
 <p>比较运算符的基本操作过程是，首先对它的操作数进行比较，再返回一个 true 或 False 值，有８个比较运算符:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt; (小于)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt; (小于)
 &gt; (大于)
 &lt;= (小于等于)
 &gt;= (大于等于)
@@ -414,9 +414,9 @@
 
 <p>JavaScript 中的 if/else 判断选择，你会发现，就像 C 语言。语法格式是这样的：</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="err">条件</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">1</span> <span class="err">为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
-<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="err">条件</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">2</span> <span class="err">为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
-<span class="k">else</span> <span class="p">{</span> <span class="err">当条件</span> <span class="mi">1</span> <span class="err">和</span> <span class="err">条件</span> <span class="mi">2</span> <span class="err">都不为</span> <span class="kc">true</span> <span class="err">时执行的代码</span><span class="p">;</span> <span class="p">}</span> 
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">条件</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">当条件</span> <span class="mi">1</span> <span class="nx">为</span> <span class="kc">true</span> <span class="nx">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">条件</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="nx">当条件</span> <span class="mi">2</span> <span class="nx">为</span> <span class="kc">true</span> <span class="nx">时执行的代码</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span> <span class="nx">当条件</span> <span class="mi">1</span> <span class="nx">和</span> <span class="nx">条件</span> <span class="mi">2</span> <span class="nx">都不为</span> <span class="kc">true</span> <span class="nx">时执行的代码</span><span class="p">;</span> <span class="p">}</span> 
 </code></pre></div></div>
 
 <h4 id="switchcase-语句">switch/case 语句</h4>
@@ -425,13 +425,13 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">switch</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
 <span class="k">case</span> <span class="nx">k1</span><span class="p">:</span> 
-    <span class="err">执行代码块</span> <span class="mi">1</span> <span class="p">;</span> 
+    <span class="nx">执行代码块</span> <span class="mi">1</span> <span class="p">;</span> 
     <span class="k">break</span><span class="p">;</span> 
 <span class="k">case</span> <span class="nx">k2</span><span class="p">:</span> 
-    <span class="err">执行代码块</span> <span class="mi">2</span> <span class="p">;</span> 
+    <span class="nx">执行代码块</span> <span class="mi">2</span> <span class="p">;</span> 
     <span class="k">break</span><span class="p">;</span> 
 <span class="nl">default</span><span class="p">:</span> 
-    <span class="err">默认执行（</span><span class="nx">k</span> <span class="err">值没有在</span> <span class="k">case</span> <span class="err">中找到匹配时）</span><span class="p">;</span> 
+    <span class="nx">默认执行</span><span class="err">（</span><span class="nx">k</span> <span class="nx">值没有在</span> <span class="k">case</span> <span class="nx">中找到匹配时</span><span class="err">）</span><span class="p">;</span> 
 <span class="p">}</span> 
 </code></pre></div></div>
 
@@ -439,7 +439,7 @@
 
 <p>for 循环是程序员进场经常用到的工具，在 JavaScript 中，for 循环的语法也十分类似 C 语言，格式是这样的：</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="err">变量</span> <span class="o">=</span> <span class="err">初始值</span> <span class="p">;</span> <span class="err">循环条件</span> <span class="p">;</span> <span class="err">变量累加方法</span><span class="p">)</span> <span class="p">{</span> <span class="err">循环语句</span><span class="p">;</span> <span class="p">}</span> 
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="nx">变量</span> <span class="o">=</span> <span class="nx">初始值</span> <span class="p">;</span> <span class="nx">循环条件</span> <span class="p">;</span> <span class="nx">变量累加方法</span><span class="p">)</span> <span class="p">{</span> <span class="nx">循环语句</span><span class="p">;</span> <span class="p">}</span> 
 </code></pre></div></div>
 
 <p>举例说明更清楚，比如循环打印出 0～7 的数字：</p>
@@ -462,15 +462,15 @@
 
 <p>区别于 for 循环的另一种循环方式：</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="err">条件</span><span class="p">)</span> <span class="p">{</span> <span class="err">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> 
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nx">条件</span><span class="p">)</span> <span class="p">{</span> <span class="nx">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> 
 </code></pre></div></div>
 
 <p>此外，while 循环还有一种变体，称作 do/while 循环：</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">do</span> <span class="p">{</span> <span class="err">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="err">条件</span><span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">do</span> <span class="p">{</span> <span class="nx">需要执行的代码</span><span class="p">;</span> <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nx">条件</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p>而这两者的区别是，<code class="highlighter-rouge">do/while</code> 循环在检测条件之前就会执行，也就是说，即使条件为 <code class="highlighter-rouge">false</code>，<code class="highlighter-rouge">do/while</code> 也会执行一次循环代码。</p>
+<p>而这两者的区别是，<code class="language-plaintext highlighter-rouge">do/while</code> 循环在检测条件之前就会执行，也就是说，即使条件为 <code class="language-plaintext highlighter-rouge">false</code>，<code class="language-plaintext highlighter-rouge">do/while</code> 也会执行一次循环代码。</p>
 
 <h4 id="break-和-continue-语句">break 和 continue 语句</h4>
 
@@ -493,7 +493,7 @@
     <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="p">}</span> 
 </code></pre></div></div>
 
-<p>输出为 <code class="highlighter-rouge">12347</code>，便是跳过了 <code class="highlighter-rouge">5</code> 和 <code class="highlighter-rouge">6</code>，然后在 <code class="highlighter-rouge">i == 8</code> 的时候跳出了循环。</p>
+<p>输出为 <code class="language-plaintext highlighter-rouge">12347</code>，便是跳过了 <code class="language-plaintext highlighter-rouge">5</code> 和 <code class="language-plaintext highlighter-rouge">6</code>，然后在 <code class="language-plaintext highlighter-rouge">i == 8</code> 的时候跳出了循环。</p>
 
 <h3 id="javascript-函数">JavaScript 函数</h3>
 
@@ -503,9 +503,9 @@
 
 <p>在 JavaScript 中，函数由关键词 function 定义，函数可以有多个参数。基本格式为：</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="err">函数名</span> <span class="p">(</span><span class="err">参数</span><span class="mi">1</span><span class="err">，参数</span><span class="mi">2</span><span class="p">){</span>
-    <span class="err">函数体</span><span class="p">;</span>
-    <span class="k">return</span> <span class="err">返回值</span><span class="p">;</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">函数名</span> <span class="p">(</span><span class="nx">参数1</span><span class="err">，</span><span class="nx">参数2</span><span class="p">){</span>
+    <span class="nx">函数体</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">返回值</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -543,7 +543,7 @@
 <span class="nx">my_func</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>两次声明了同一个函数 <code class="highlighter-rouge">my_func</code>，观察运行结果，并思考。</p>
+<p>两次声明了同一个函数 <code class="language-plaintext highlighter-rouge">my_func</code>，观察运行结果，并思考。</p>
 
 <p><img src="/assets/images/js_intro/14824007896209.jpg" alt="set w200" /></p>
 
@@ -727,9 +727,9 @@
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">my_var</span><span class="o">=</span><span class="dl">"</span><span class="s2">shiyanlou</span><span class="dl">"</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>其实也就是创建了一个 <strong>字符串对象</strong> ，这个对象拥有内建的属性 <code class="highlighter-rouge">my_var.length = 9</code></p>
+<p>其实也就是创建了一个 <strong>字符串对象</strong> ，这个对象拥有内建的属性 <code class="language-plaintext highlighter-rouge">my_var.length = 9</code></p>
 
-<p>同时，这个字符串对象还有数个内建的方法，比如 <code class="highlighter-rouge">my_var.toUpperCase()</code> 方法可以将字符转为大写；<code class="highlighter-rouge">my_var.charAt(n)</code> 方法可以返回第 n 个字符。</p>
+<p>同时，这个字符串对象还有数个内建的方法，比如 <code class="language-plaintext highlighter-rouge">my_var.toUpperCase()</code> 方法可以将字符转为大写；<code class="language-plaintext highlighter-rouge">my_var.charAt(n)</code> 方法可以返回第 n 个字符。</p>
 
 <h3 id="创建对象">创建对象</h3>
 
@@ -784,7 +784,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>然后通过 <code class="highlighter-rouge">new</code> 创建 <code class="highlighter-rouge">student</code> 对象的实例：</p>
+<p>然后通过 <code class="language-plaintext highlighter-rouge">new</code> 创建 <code class="language-plaintext highlighter-rouge">student</code> 对象的实例：</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">student1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">student</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tom</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">19</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">student2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">student</span><span class="p">(</span><span class="dl">'</span><span class="s1">Jack</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">20</span><span class="dl">'</span><span class="p">);</span>
@@ -792,9 +792,9 @@
 
 <h3 id="访问对象的属性和方法">访问对象的属性和方法</h3>
 
-<p>对象的存在意义，就是为了方便地操作数据，我们可以很容易地访问对象的属性或调用对象的方法，通过符号 <code class="highlighter-rouge">.</code>。</p>
+<p>对象的存在意义，就是为了方便地操作数据，我们可以很容易地访问对象的属性或调用对象的方法，通过符号 <code class="language-plaintext highlighter-rouge">.</code>。</p>
 
-<p>比如我们刚才新建的 <code class="highlighter-rouge">student1</code> 对象，可以这样使用：</p>
+<p>比如我们刚才新建的 <code class="language-plaintext highlighter-rouge">student1</code> 对象，可以这样使用：</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">student1</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>  <span class="c1">// 访问对象的属性</span>
 <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">student1</span><span class="p">.</span><span class="nx">age</span><span class="p">;</span>
@@ -805,7 +805,7 @@
 <span class="nx">student1</span><span class="p">.</span><span class="nx">study</span><span class="p">();</span>     <span class="c1">// 调用对象的方法</span>
 </code></pre></div></div>
 
-<p>当我们需要 反复访问 某对象的时候，可以使用 <code class="highlighter-rouge">with</code> 语句简化操作，而不需要反复地用 <code class="highlighter-rouge">.</code> 符号，比如：</p>
+<p>当我们需要 反复访问 某对象的时候，可以使用 <code class="language-plaintext highlighter-rouge">with</code> 语句简化操作，而不需要反复地用 <code class="language-plaintext highlighter-rouge">.</code> 符号，比如：</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">with</span><span class="p">(</span><span class="nx">student1</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
@@ -839,24 +839,24 @@
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">charAt(n)</code> ：返回该字符串第 n 位的单个字符。（从 0 开始计数）</p>
+    <p><code class="language-plaintext highlighter-rouge">charAt(n)</code> ：返回该字符串第 n 位的单个字符。（从 0 开始计数）</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">charCodeAt(n)</code> ：返回该字符串第 n 位的单个字符的 ASCII 码。</p>
+    <p><code class="language-plaintext highlighter-rouge">charCodeAt(n)</code> ：返回该字符串第 n 位的单个字符的 ASCII 码。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">indexOf()</code> ：用法：</p>
+    <p><code class="language-plaintext highlighter-rouge">indexOf()</code> ：用法：</p>
 
     <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">string_1</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">string_2</span><span class="p">,</span> <span class="nx">n</span><span class="p">);</span> 
 </code></pre></div>    </div>
 
-    <p>从字符串 <code class="highlighter-rouge">string_1</code> 的第 <code class="highlighter-rouge">n</code> 位开始搜索，查找 <code class="highlighter-rouge">string_2</code>，返回查找到的位置，如果未找到，则返回 <code class="highlighter-rouge">-1</code>，其中 <code class="highlighter-rouge">n</code> 可以不填，默认从第 <code class="highlighter-rouge">0</code> 位开始查找。</p>
+    <p>从字符串 <code class="language-plaintext highlighter-rouge">string_1</code> 的第 <code class="language-plaintext highlighter-rouge">n</code> 位开始搜索，查找 <code class="language-plaintext highlighter-rouge">string_2</code>，返回查找到的位置，如果未找到，则返回 <code class="language-plaintext highlighter-rouge">-1</code>，其中 <code class="language-plaintext highlighter-rouge">n</code> 可以不填，默认从第 <code class="language-plaintext highlighter-rouge">0</code> 位开始查找。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">lastIndexOf()</code> ：跟 <code class="highlighter-rouge">indexOf()</code> 相似，不过是从后边开始找。</p>
+    <p><code class="language-plaintext highlighter-rouge">lastIndexOf()</code> ：跟 <code class="language-plaintext highlighter-rouge">indexOf()</code> 相似，不过是从后边开始找。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">split('分隔符')</code> ：将字符串按照指定的分隔符分离开，返回一个数组，例如：</p>
+    <p><code class="language-plaintext highlighter-rouge">split('分隔符')</code> ：将字符串按照指定的分隔符分离开，返回一个数组，例如：</p>
   </li>
 </ul>
 
@@ -865,16 +865,16 @@
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">substring(n, m)</code> ：返回原字符串从 n 位置到 m 位置的子串。</p>
+    <p><code class="language-plaintext highlighter-rouge">substring(n, m)</code> ：返回原字符串从 n 位置到 m 位置的子串。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">substr(n, x)</code> ：返回原字符串从 n 位置开始，长度为 x 的子串。</p>
+    <p><code class="language-plaintext highlighter-rouge">substr(n, x)</code> ：返回原字符串从 n 位置开始，长度为 x 的子串。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">toLowerCase()</code> ：返回把原字符串所有大写字母都变成小写的字符串。</p>
+    <p><code class="language-plaintext highlighter-rouge">toLowerCase()</code> ：返回把原字符串所有大写字母都变成小写的字符串。</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">toUpperCase()</code> ：返回把原字符串所有小写字母都变成大写的字符串。</p>
+    <p><code class="language-plaintext highlighter-rouge">toUpperCase()</code> ：返回把原字符串所有小写字母都变成大写的字符串。</p>
   </li>
 </ul>
 
@@ -965,7 +965,7 @@
 
 <h5 id="array-的属性">Array 的属性</h5>
 
-<p><code class="highlighter-rouge">length</code> ：返回数组的长度，即数组里有多少个元素。它等于数组里最后一个元素的下标加一。</p>
+<p><code class="language-plaintext highlighter-rouge">length</code> ：返回数组的长度，即数组里有多少个元素。它等于数组里最后一个元素的下标加一。</p>
 
 <p>因此，想添加一个元素，只需要：</p>
 
@@ -977,12 +977,12 @@
 <h5 id="array-的方法">Array 的方法</h5>
 
 <ul>
-  <li><code class="highlighter-rouge">join("指定分隔符")</code> ：返回一个字符串，把数组元素串起来，元素间用指定分隔符隔开。</li>
-  <li><code class="highlighter-rouge">toString()</code> ：把数组转为字符串，并返回结果。</li>
-  <li><code class="highlighter-rouge">reverse()</code> ：使数组元素倒序。</li>
-  <li><code class="highlighter-rouge">slice(n, m)</code> ：返回子数组，从数组第 n 个元素到第 m 个元素。</li>
-  <li><code class="highlighter-rouge">sort(SortFunction)</code> ：按照指定的 SortFunction 将数组的元素排序。</li>
-  <li><code class="highlighter-rouge">concat(Array_1, Array_2)</code> ：用于连接两个或多个数组。</li>
+  <li><code class="language-plaintext highlighter-rouge">join("指定分隔符")</code> ：返回一个字符串，把数组元素串起来，元素间用指定分隔符隔开。</li>
+  <li><code class="language-plaintext highlighter-rouge">toString()</code> ：把数组转为字符串，并返回结果。</li>
+  <li><code class="language-plaintext highlighter-rouge">reverse()</code> ：使数组元素倒序。</li>
+  <li><code class="language-plaintext highlighter-rouge">slice(n, m)</code> ：返回子数组，从数组第 n 个元素到第 m 个元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">sort(SortFunction)</code> ：按照指定的 SortFunction 将数组的元素排序。</li>
+  <li><code class="language-plaintext highlighter-rouge">concat(Array_1, Array_2)</code> ：用于连接两个或多个数组。</li>
 </ul>
 
 <h3 id="作业-3">作业</h3>
@@ -1029,8 +1029,8 @@
 
 <ul>
   <li>通过 ID、名字、标签名 选取元素；</li>
-  <li>通过 <code class="highlighter-rouge">getAttribute</code> 和 <code class="highlighter-rouge">setAttribute</code> 获取和设置元素属性；</li>
-  <li>通过 <code class="highlighter-rouge">parentNode</code> 获取父元素、<code class="highlighter-rouge">createElement</code> 动态地创建节点、<code class="highlighter-rouge">appendChild</code> 和 <code class="highlighter-rouge">removeChild</code> 动态地添加或者删除节点。</li>
+  <li>通过 <code class="language-plaintext highlighter-rouge">getAttribute</code> 和 <code class="language-plaintext highlighter-rouge">setAttribute</code> 获取和设置元素属性；</li>
+  <li>通过 <code class="language-plaintext highlighter-rouge">parentNode</code> 获取父元素、<code class="language-plaintext highlighter-rouge">createElement</code> 动态地创建节点、<code class="language-plaintext highlighter-rouge">appendChild</code> 和 <code class="language-plaintext highlighter-rouge">removeChild</code> 动态地添加或者删除节点。</li>
 </ul>
 
 <h3 id="基本概念">基本概念</h3>
@@ -1061,13 +1061,13 @@
 
 <h4 id="通过-id-选取元素">通过 ID 选取元素</h4>
 
-<p>我们可以使用方法 <code class="highlighter-rouge">getElementByID()</code> 通过元素的 ID 而选取元素，并对其做操作，比如：</p>
+<p>我们可以使用方法 <code class="language-plaintext highlighter-rouge">getElementByID()</code> 通过元素的 ID 而选取元素，并对其做操作，比如：</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">my_div</span><span class="dl">"</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span><span class="o">=</span><span class="dl">"</span><span class="s2">100px</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// 设置 my_div 高度为 100px    </span>
 <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">my_div</span><span class="dl">"</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span><span class="o">=</span><span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>通过 <code class="highlighter-rouge">getElementByID()</code> 设置了 ID 为 <code class="highlighter-rouge">my_div</code> 的一个 <code class="highlighter-rouge">div</code> 标签的高度（100px）和颜色（red），效果：</p>
+<p>通过 <code class="language-plaintext highlighter-rouge">getElementByID()</code> 设置了 ID 为 <code class="language-plaintext highlighter-rouge">my_div</code> 的一个 <code class="language-plaintext highlighter-rouge">div</code> 标签的高度（100px）和颜色（red），效果：</p>
 
 <p><img src="/assets/images/js_intro/14824625618952.jpg" alt="set w250" /></p>
 
@@ -1087,7 +1087,7 @@
 
 <h4 id="查询和设置元素的属性">查询和设置元素的属性</h4>
 
-<p>可以通过 <code class="highlighter-rouge">getAttribute()</code> 和 <code class="highlighter-rouge">setAttribute()</code> 查询和设置元素的属性：</p>
+<p>可以通过 <code class="language-plaintext highlighter-rouge">getAttribute()</code> 和 <code class="language-plaintext highlighter-rouge">setAttribute()</code> 查询和设置元素的属性：</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -1120,7 +1120,7 @@
 
 <h4 id="父节点">父节点</h4>
 
-<p>通过 <code class="highlighter-rouge">parentNode()</code> 方法可以查看并操作一个节点的父节点，示例：找到 <code class="highlighter-rouge">id</code> 为 <code class="highlighter-rouge">demo</code> 的元素的父节点，并输出其 <code class="highlighter-rouge">class</code> 的名称：</p>
+<p>通过 <code class="language-plaintext highlighter-rouge">parentNode()</code> 方法可以查看并操作一个节点的父节点，示例：找到 <code class="language-plaintext highlighter-rouge">id</code> 为 <code class="language-plaintext highlighter-rouge">demo</code> 的元素的父节点，并输出其 <code class="language-plaintext highlighter-rouge">class</code> 的名称：</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;body&gt;</span>
@@ -1144,7 +1144,7 @@
 
 <p>在了解 JavaScript 之前，可能会以为一个 HTML 页面被写出来是什么样，那它就固定了是什么样子。</p>
 
-<p>但是 JavaScript 可以动态地在页面中创建并插入节点，这便需要用到 <code class="highlighter-rouge">createElement()</code>、<code class="highlighter-rouge">appendChild()</code> 方法，它们的作用分别是创建节点和插入节点。</p>
+<p>但是 JavaScript 可以动态地在页面中创建并插入节点，这便需要用到 <code class="language-plaintext highlighter-rouge">createElement()</code>、<code class="language-plaintext highlighter-rouge">appendChild()</code> 方法，它们的作用分别是创建节点和插入节点。</p>
 
 <p>比如：创建一个 div 并为其设置高度（100px）和背景色（red），并追加到 body 后面：</p>
 
@@ -1167,7 +1167,7 @@
 
 <h4 id="删除节点">删除节点</h4>
 
-<p>除了创建，我们还可以删除一个节点，通过 <code class="highlighter-rouge">removeChild()</code> 方法：</p>
+<p>除了创建，我们还可以删除一个节点，通过 <code class="language-plaintext highlighter-rouge">removeChild()</code> 方法：</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;body&gt;</span>

@@ -93,16 +93,16 @@ Once I understand how the C++ library works, I am more confident to fix the path
 <p>The example code in three files</p>
 
 <ol>
-  <li><code class="highlighter-rouge">hello_world.h</code></li>
-  <li><code class="highlighter-rouge">hello_world.cpp</code></li>
-  <li><code class="highlighter-rouge">main.cpp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">hello_world.h</code></li>
+  <li><code class="language-plaintext highlighter-rouge">hello_world.cpp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">main.cpp</code></li>
 </ol>
 
-<p>The goal is to create a library for <code class="highlighter-rouge">hello_world</code> so that <code class="highlighter-rouge">main.cpp</code> can use the library.</p>
+<p>The goal is to create a library for <code class="language-plaintext highlighter-rouge">hello_world</code> so that <code class="language-plaintext highlighter-rouge">main.cpp</code> can use the library.</p>
 
 <h3 id="the-source-code">The source code</h3>
 
-<p><code class="highlighter-rouge">hello_world.h</code></p>
+<p><code class="language-plaintext highlighter-rouge">hello_world.h</code></p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">hello</span><span class="p">{</span>
     <span class="nl">public:</span>
@@ -110,7 +110,7 @@ Once I understand how the C++ library works, I am more confident to fix the path
 <span class="p">};</span>
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">hello_world.cpp</code></p>
+<p><code class="language-plaintext highlighter-rouge">hello_world.cpp</code></p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
 #include &lt;iostream&gt;
@@ -120,7 +120,7 @@ Once I understand how the C++ library works, I am more confident to fix the path
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">main.cpp</code></p>
+<p><code class="language-plaintext highlighter-rouge">main.cpp</code></p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
 </span>
@@ -134,20 +134,20 @@ Once I understand how the C++ library works, I am more confident to fix the path
 
 <h3 id="normal-way-to-compile">Normal Way to Compile</h3>
 
-<p>I wrote down the normal way to compile C++ code in a file named <code class="highlighter-rouge">compile.sh</code>, with following content</p>
+<p>I wrote down the normal way to compile C++ code in a file named <code class="language-plaintext highlighter-rouge">compile.sh</code>, with following content</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ main.cpp hello_world.cpp <span class="nt">-o</span> out
 ./out
 <span class="nb">rm </span>out
 </code></pre></div></div>
 
-<p>Calling <code class="highlighter-rouge">bash compile.sh</code> would print <code class="highlighter-rouge">Hello World!</code></p>
+<p>Calling <code class="language-plaintext highlighter-rouge">bash compile.sh</code> would print <code class="language-plaintext highlighter-rouge">Hello World!</code></p>
 
 <h3 id="use-static-library">Use Static Library</h3>
 
-<p>The static library is an <strong>archive</strong> of object files <code class="highlighter-rouge">(*.o)</code> that are <strong>linked inside</strong> your final executables.</p>
+<p>The static library is an <strong>archive</strong> of object files <code class="language-plaintext highlighter-rouge">(*.o)</code> that are <strong>linked inside</strong> your final executables.</p>
 
-<p>I wrote down the compile code in a file named <code class="highlighter-rouge">static.sh</code>, with following content</p>
+<p>I wrote down the compile code in a file named <code class="language-plaintext highlighter-rouge">static.sh</code>, with following content</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-c</span> hello_world.cpp  <span class="c"># compile hello_world.cpp -&gt; hello_world.o</span>
 ar rcs libhello_world.a hello_world.o  <span class="c"># create *.a library</span>
@@ -157,13 +157,13 @@ g++ main.cpp libhello_world.a <span class="nt">-o</span> out  <span class="c"># 
 <span class="nb">rm </span>out
 </code></pre></div></div>
 
-<p>Calling <code class="highlighter-rouge">bash static.sh</code> would print <code class="highlighter-rouge">Hello World!</code> and create a static library <code class="highlighter-rouge">libhello_world.a</code>.</p>
+<p>Calling <code class="language-plaintext highlighter-rouge">bash static.sh</code> would print <code class="language-plaintext highlighter-rouge">Hello World!</code> and create a static library <code class="language-plaintext highlighter-rouge">libhello_world.a</code>.</p>
 
 <h3 id="use-shared-library">Use Shared Library</h3>
 
 <p>The shared libraries instead are loaded dynamically <strong>at run time</strong>.</p>
 
-<p>I wrote down the compile code in a file named <code class="highlighter-rouge">dynamical.sh</code>, with following content</p>
+<p>I wrote down the compile code in a file named <code class="language-plaintext highlighter-rouge">dynamical.sh</code>, with following content</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-fPIC</span> <span class="nt">-c</span> hello_world.cpp  <span class="c"># compile hello_world.cpp &amp; enable share -&gt; hello_world.o</span>
 g++ <span class="nt">-shared</span> <span class="nt">-o</span> libhello_world.so hello_world.o  <span class="c"># create *.so shared library</span>
@@ -173,7 +173,7 @@ g++ main.cpp <span class="nt">-L</span> <span class="nb">.</span> <span class="n
 <span class="nb">rm </span>out
 </code></pre></div></div>
 
-<p>Calling <code class="highlighter-rouge">bash dynamical.sh</code> would print <code class="highlighter-rouge">Hello World!</code> and create a shared library <code class="highlighter-rouge">libhello_world.so</code>.</p>
+<p>Calling <code class="language-plaintext highlighter-rouge">bash dynamical.sh</code> would print <code class="language-plaintext highlighter-rouge">Hello World!</code> and create a shared library <code class="language-plaintext highlighter-rouge">libhello_world.so</code>.</p>
 
 <p>This line needs more words,</p>
 
@@ -181,8 +181,8 @@ g++ main.cpp <span class="nt">-L</span> <span class="nb">.</span> <span class="n
 </code></pre></div></div>
 
 <ul>
-  <li><code class="highlighter-rouge">-L .</code> means “looking for libraries inside the current folder <code class="highlighter-rouge">.</code>”</li>
-  <li><code class="highlighter-rouge">-l hello_world</code> means “looking for a library named <code class="highlighter-rouge">libhello_world.so</code>”. Yes, the prefix <code class="highlighter-rouge">lib</code> and suffix <code class="highlighter-rouge">.so</code> were deliberately ignored.</li>
+  <li><code class="language-plaintext highlighter-rouge">-L .</code> means “looking for libraries inside the current folder <code class="language-plaintext highlighter-rouge">.</code>”</li>
+  <li><code class="language-plaintext highlighter-rouge">-l hello_world</code> means “looking for a library named <code class="language-plaintext highlighter-rouge">libhello_world.so</code>”. Yes, the prefix <code class="language-plaintext highlighter-rouge">lib</code> and suffix <code class="language-plaintext highlighter-rouge">.so</code> were deliberately ignored.</li>
 </ul>
 
 </div>

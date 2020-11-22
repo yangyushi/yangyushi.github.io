@@ -126,7 +126,7 @@
 
 <p>因为一个 $t$ 对应了一个随机变量 $S(t)$，那么「所有的时刻」对应了很多随机变量。我们把它们写成</p>
 
-<script type="math/tex; mode=display">\left\lbrace S(t), t \in [0, \infty] \right\rbrace</script>
+\[\left\lbrace S(t), t \in [0, \infty] \right\rbrace\]
 
 <p>总之，</p>
 
@@ -144,11 +144,11 @@
 
 <p>从现在开始我们用 $X(t)$ 来表示一个随机过程。在时刻 $t_0$，$X(t_0)$ 是一个随机变量，其 CDF 为</p>
 
-<script type="math/tex; mode=display">F_{X\left(t_{0}\right)}(x)=P\left(X\left(t_{0}\right) \leq x\right)</script>
+\[F_{X\left(t_{0}\right)}(x)=P\left(X\left(t_{0}\right) \leq x\right)\]
 
 <p>对这个过程中，两个时刻 $t_1$ 和 $t_2$ 的联合 CDF 为</p>
 
-<script type="math/tex; mode=display">F_{X\left(t_{1}\right) X\left(t_{2}\right)}\left(x_{1}, x_{2}\right)=P\left(X\left(t_{1}\right) \leq x_{1}, X\left(t_{2}\right) \leq x_{2}\right)</script>
+\[F_{X\left(t_{1}\right) X\left(t_{2}\right)}\left(x_{1}, x_{2}\right)=P\left(X\left(t_{1}\right) \leq x_{1}, X\left(t_{2}\right) \leq x_{2}\right)\]
 
 <p>类似的我们也可以写出 PDF。</p>
 
@@ -156,7 +156,7 @@
 
 <p>对于随机过程 $\left\lbrace X(t),\ t \in J \right\rbrace$，其「平均函数」$\mu_{X}(t): J \rightarrow \mathbb{R}$ 为</p>
 
-<script type="math/tex; mode=display">\mu_{X}(t) = E[X(t)]</script>
+\[\mu_{X}(t) = E[X(t)]\]
 
 <p>（这个定义对连续和离散随机过程都成立）</p>
 
@@ -168,18 +168,17 @@
 
 <p>对于随机过程 $\left\lbrace X(t),\ t \in J \right\rbrace$，它的「自关联函数」$R_X$ 以及「自协方差函数」$C_X$ 分别为</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_X(t_1, t_2) &= E[\ X(t_1) X(t_2)\ ]
+\[\begin{aligned}
+R_X(t_1, t_2) &amp;= E[\ X(t_1) X(t_2)\ ]
 \\[1em]
 C_X(t_1, t_2)
-&= E[X(t_1)\;X(t_2)] - E[X(t_1)]\;E[X(t_2)]\\
-&= R_X(t_1, t_2) - \mu_X(t_1)\mu_X(t_2) \\
-&= E\left\lbrack
+&amp;= E[X(t_1)\;X(t_2)] - E[X(t_1)]\;E[X(t_2)]\\
+&amp;= R_X(t_1, t_2) - \mu_X(t_1)\mu_X(t_2) \\
+&amp;= E\left\lbrack
 \left( X(t_1) - E[ X(t_1)] \right) 
 \left( X(t_2) - E[ X(t_2)]\right)
 \right\rbrack
-\end{aligned} %]]></script>
+\end{aligned}\]
 
 <p>这个函数告诉我们 随机过程的 <strong>两个时刻</strong> 如何关联。</p>
 
@@ -189,12 +188,11 @@ C_X(t_1, t_2)
 
 <p>对于两个随机变量 $\left\lbrace X(t),\ t \in J \right\rbrace$ 和 $\left\lbrace Y(t),\ t \in J \right\rbrace$</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_{X Y}\left(t_{1}, t_{2}\right)&=E\left[X\left(t_{1}\right) Y\left(t_{2}\right)\right] \\[1em]
-C_{X Y}\left(t_{1}, t_{2}\right) &=\operatorname{Cov}\left(X\left(t_{1}\right), Y\left(t_{2}\right)\right) \\
-&=R_{X Y}\left(t_{1}, t_{2}\right)-\mu_{X}\left(t_{1}\right) \mu_{Y}\left(t_{2}\right)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+R_{X Y}\left(t_{1}, t_{2}\right)&amp;=E\left[X\left(t_{1}\right) Y\left(t_{2}\right)\right] \\[1em]
+C_{X Y}\left(t_{1}, t_{2}\right) &amp;=\operatorname{Cov}\left(X\left(t_{1}\right), Y\left(t_{2}\right)\right) \\
+&amp;=R_{X Y}\left(t_{1}, t_{2}\right)-\mu_{X}\left(t_{1}\right) \mu_{Y}\left(t_{2}\right)
+\end{aligned}\]
 
 <p>两个「独立随机过程」的 cross-covariance 为零。</p>
 
@@ -208,7 +206,7 @@ C_{X Y}\left(t_{1}, t_{2}\right) &=\operatorname{Cov}\left(X\left(t_{1}\right), 
 
 <p>当随机过程满足下面的等式，我们称之为稳定过程，</p>
 
-<script type="math/tex; mode=display">F_{X\left(t_{1}\right) X\left(t_{2}\right) \cdots X\left(t_{r}\right)}\left(x_{1}, x_{2}, \cdots, x_{r}\right)=F_{X\left(t_{1}+\Delta\right) X\left(t_{2}+\Delta\right) \cdots X\left(t_{r}+\Delta\right)}\left(x_{1}, x_{2}, \cdots, x_{r}\right)</script>
+\[F_{X\left(t_{1}\right) X\left(t_{2}\right) \cdots X\left(t_{r}\right)}\left(x_{1}, x_{2}, \cdots, x_{r}\right)=F_{X\left(t_{1}+\Delta\right) X\left(t_{2}+\Delta\right) \cdots X\left(t_{r}+\Delta\right)}\left(x_{1}, x_{2}, \cdots, x_{r}\right)\]
 
 <p>等式中，将时间增加 $\Delta$ 没有改变 joint CDF。</p>
 
@@ -218,46 +216,42 @@ C_{X Y}\left(t_{1}, t_{2}\right) &=\operatorname{Cov}\left(X\left(t_{1}\right), 
 
 <p>这个条件是，对任意的 $t_1, t_2, \Delta \in \mathbb{R}$，下式成立。</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-E[X(t_1)] &= E[X(t_2)] \\
-E[X(t_1 + \Delta)] &= E[X(t_2 + \Delta)]
-\end{aligned} %]]></script>
+\[\begin{aligned}
+E[X(t_1)] &amp;= E[X(t_2)] \\
+E[X(t_1 + \Delta)] &amp;= E[X(t_2 + \Delta)]
+\end{aligned}\]
 
 <p>具体而言，对连续随机过程，有</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mu_X(t) &= \mu_X & \text{for all }t \in \mathbb{R}\\
-R_X(t_1, t_2) &= R_X(t_2 - t_1) & \text{for all } t_1, t_2 \in \mathbb{R}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mu_X(t) &amp;= \mu_X &amp; \text{for all }t \in \mathbb{R}\\
+R_X(t_1, t_2) &amp;= R_X(t_2 - t_1) &amp; \text{for all } t_1, t_2 \in \mathbb{R}
+\end{aligned}\]
 
 <p>对离散随机过程，有</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mu_X(n) &= \mu_X & \text{for all }n \in \mathbb{Z}\\
-R_X(n_1, n_2) &= R_X(n_2 - n_1) & \text{for all } n_1, n_2 \in \mathbb{Z}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mu_X(n) &amp;= \mu_X &amp; \text{for all }n \in \mathbb{Z}\\
+R_X(n_1, n_2) &amp;= R_X(n_2 - n_1) &amp; \text{for all } n_1, n_2 \in \mathbb{Z}
+\end{aligned}\]
 
 <h3 id="例子证明随机过程-wss">例子：证明随机过程 WSS</h3>
 
 <p>定义连续随机过程 ${ X(t),\ t \in \mathbb{R}}$ 为</p>
 
-<script type="math/tex; mode=display">X(t) = \cos(t + U)</script>
+\[X(t) = \cos(t + U)\]
 
 <p>并且 $U$ 是 $[0, 2\pi]$ 上的均匀分布。证明 $X(t)$ WSS。</p>
 
 <h4 id="证明平均函数为常数">证明平均函数为常数</h4>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mu_X(t) &= E[X(t)] \\
-&= E[\cos(t + U)] \\
-&= \int du\ p(u) \cos(t + u) & (\text{Uniform: } p(u)=\frac{1}{2\pi}) \\
-&= \int_0^{2\pi} du \frac1{2\pi} \cos(t+u) \\
-&=0
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mu_X(t) &amp;= E[X(t)] \\
+&amp;= E[\cos(t + U)] \\
+&amp;= \int du\ p(u) \cos(t + u) &amp; (\text{Uniform: } p(u)=\frac{1}{2\pi}) \\
+&amp;= \int_0^{2\pi} du \frac1{2\pi} \cos(t+u) \\
+&amp;=0
+\end{aligned}\]
 
 <p>使用我心爱的 Mathematica</p>
 
@@ -268,41 +262,38 @@ R_X(n_1, n_2) &= R_X(n_2 - n_1) & \text{for all } n_1, n_2 \in \mathbb{Z}
 
 <h4 id="证明关联函数与时刻无关">证明关联函数与时刻无关</h4>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_X(t_1, t_2) &= E[X(t_1)\ X(t_2)]\\
-&= E[\cos(t_1 + U)\ \cos(t_2 + U)] \\
-&\left(\ \cos(a)\cos(b) = \frac12 \cos(a-b)+\cos(a+b)\ \right)\\
-&= \frac12 E[\cos(t_1 - t_2) + \cos(t_1 + t_2 + 2U)] \\
-&= \frac12\cos(t_1 - t_2) +  \underbrace{
+\[\begin{aligned}
+R_X(t_1, t_2) &amp;= E[X(t_1)\ X(t_2)]\\
+&amp;= E[\cos(t_1 + U)\ \cos(t_2 + U)] \\
+&amp;\left(\ \cos(a)\cos(b) = \frac12 \cos(a-b)+\cos(a+b)\ \right)\\
+&amp;= \frac12 E[\cos(t_1 - t_2) + \cos(t_1 + t_2 + 2U)] \\
+&amp;= \frac12\cos(t_1 - t_2) +  \underbrace{
 \frac12 \int_0^{2\pi} du \frac2{2\pi} \cos(t_1 + t_2 + 2u)}_{=0} \\
-&= \frac12\cos(t_1 - t_2)
-\end{aligned} %]]></script>
+&amp;= \frac12\cos(t_1 - t_2)
+\end{aligned}\]
 
 <h3 id="wss-过程的关联函数的性质">WSS 过程的关联函数的性质</h3>
 
 <p>由于对 WSS 过程，$R_X(t_1, t_2) = R_X(t_1 - t_2)$ 所以重要的是时间差 $\tau = t_1 - t_2$，所以我们这样写此过程的 ACF</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_X(\tau) &= E[X(t) X(t - \tau)] \\
-&= E[X(t + \tau) X(t)]
-\end{aligned} %]]></script>
+\[\begin{aligned}
+R_X(\tau) &amp;= E[X(t) X(t - \tau)] \\
+&amp;= E[X(t + \tau) X(t)]
+\end{aligned}\]
 
 <p>考虑 ${ X(t),\ t \in \mathbb{R}}$，它的关联函数是 $R_X(\tau)$ 是</p>
 
-<script type="math/tex; mode=display">R_X(0) = E[X(t)^2]</script>
+\[R_X(0) = E[X(t)^2]\]
 
 <p>我们将 $E[X(t)^2]$ 称为 $X(t)$ 在时刻 $t$ 的 expected (average) power。</p>
 
 <p>仔细研究，我们可以得到关联函数的如下性质</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_X(0) &= E[X(t)^2] \ge 0 \\
-R_X(\tau) &= R_X(-\tau) \\
-|R_X(\tau)| &\le R_X(0)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+R_X(0) &amp;= E[X(t)^2] \ge 0 \\
+R_X(\tau) &amp;= R_X(-\tau) \\
+|R_X(\tau)| &amp;\le R_X(0)
+\end{aligned}\]
 
 <p>一些可能的 $R_X(\tau)$ 的形状是，</p>
 
@@ -323,35 +314,33 @@ R_X(\tau) &= R_X(-\tau) \\
 
 <p>有一些随机过程具有周期性，被称为 cyclostationary processes。更正规的描述是，随机变量</p>
 
-<script type="math/tex; mode=display">X(t_1),X(t_2), \cdots, X(t_r)</script>
+\[X(t_1),X(t_2), \cdots, X(t_r)\]
 
 <p>和下面的随机变量具有相同的 joint CDF。</p>
 
-<script type="math/tex; mode=display">X(t_1 + T),X(t_2 + T), \cdots, X(t_r + T)</script>
+\[X(t_1 + T),X(t_2 + T), \cdots, X(t_r + T)\]
 
 <p>一个严格的 cyclostationary 过程的例子是：对于随机过程 ${X(t), t \in \mathbb{R}}$，并且</p>
 
-<script type="math/tex; mode=display">X(t) = A \cos(\omega t)</script>
+\[X(t) = A \cos(\omega t)\]
 
 <p>其中 $A$ 是一个随机变量。很容易证明</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
+\[\begin{aligned}
 X\left(t + \frac{2\pi}{\omega}\right)
-&= A \cos(\omega t + 2\pi) \\
-&= A \cos(\omega t) = X(t)
-\end{aligned} %]]></script>
+&amp;= A \cos(\omega t + 2\pi) \\
+&amp;= A \cos(\omega t) = X(t)
+\end{aligned}\]
 
 <h4 id="weak-sense-cyclostationary-wsc">Weak-sense Cyclostationary, WSC</h4>
 
 <p>对于连续随机过程 ${X(t), t \in \mathbb{R}}$，如果存在正实数 $T$ 满足</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mu_X(t+T) &= \mu_X(t) & \text{for all } t \in \mathbb{R} \\
-R_X(t_1 + T, t_2 + T) &= R_X(t_1, t_2)
-& \text{for all }t_1, t_2 \in \mathbb{R}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mu_X(t+T) &amp;= \mu_X(t) &amp; \text{for all } t \in \mathbb{R} \\
+R_X(t_1 + T, t_2 + T) &amp;= R_X(t_1, t_2)
+&amp; \text{for all }t_1, t_2 \in \mathbb{R}
+\end{aligned}\]
 
 <h2 id="随机变量的微积分">随机变量的微积分</h2>
 
@@ -361,7 +350,7 @@ R_X(t_1 + T, t_2 + T) &= R_X(t_1, t_2)
 
 <p>假设 $X(t)$ 是连续时间随机过程，我们说 $X(t)$ 在时间 $t$ 满足 mean-square continuous，如果满足下面的关系</p>
 
-<script type="math/tex; mode=display">\lim _{\delta \rightarrow 0} E\left[\left|X(t+\delta)-X(t)\right|^{2}\right]=0</script>
+\[\lim _{\delta \rightarrow 0} E\left[\left|X(t+\delta)-X(t)\right|^{2}\right]=0\]
 
 <p>这个关系的特点是，它<strong>不</strong>要求 $X(t)$ 的每一个<strong>实现</strong>都是连续函数。只要平均而言 $X(t+\delta) - X(t)$ 很小就可以了。</p>
 
@@ -369,7 +358,7 @@ R_X(t_1 + T, t_2 + T) &= R_X(t_1, t_2)
 
 <p>定义了 mean-square continuous 之后，我们可以将「可微」和「可积」的概念延伸到「均方可微」以及「均方可积」。假设 $X(t)$ 是一个随机过程，那么它的微分</p>
 
-<script type="math/tex; mode=display">Y(t) = \frac{d}{dt}X(t)</script>
+\[Y(t) = \frac{d}{dt}X(t)\]
 
 <p>也是一个随机过程。</p>
 
@@ -377,17 +366,15 @@ R_X(t_1 + T, t_2 + T) &= R_X(t_1, t_2)
 
 <p>假设我们有下面的随机过程</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-X(t) &= A + Bt + Ct^2 & t \in [0, \infty)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+X(t) &amp;= A + Bt + Ct^2 &amp; t \in [0, \infty)
+\end{aligned}\]
 
 <p>其中 $A, B, C$ 均为随机变量，那么 $X(t)$ 的微分是</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-X'(t) &= B + 2 Ct & t \in [0, \infty)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+X'(t) &amp;= B + 2 Ct &amp; t \in [0, \infty)
+\end{aligned}\]
 
 <h3 id="处理微积分">处理微积分</h3>
 
@@ -399,38 +386,36 @@ X'(t) &= B + 2 Ct & t \in [0, \infty)
 
 <p>这代表着，<strong>微积分操作 和 求期望操作 的「顺序」是可以替换的</strong>（如果 $X(t)$ 的微分 well defined）。</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
+\[\begin{aligned}
 E\left[ \int_0^t X(u) du \right]
-&= \int_0^tE[X(u)]du \\[0.5em]
+&amp;= \int_0^tE[X(u)]du \\[0.5em]
 E\left[ \frac{d}{dt}X(t) \right]
-&=\frac{d}{dt}E[X(t)]
-\end{aligned} %]]></script>
+&amp;=\frac{d}{dt}E[X(t)]
+\end{aligned}\]
 
 <h3 id="另一个例子">另一个例子</h3>
 
 <p>对于随机过程 $X(t)$ 和它的微分 $X’(t) = \frac{d}{dt}X(t)$，证明</p>
 
-<script type="math/tex; mode=display">R_{XX'}(t_1, t_2) = \frac{\partial}{\partial t_2} R_X(t_1, t_2)</script>
+\[R_{XX'}(t_1, t_2) = \frac{\partial}{\partial t_2} R_X(t_1, t_2)\]
 
 <p>证明过程</p>
 
 <p>由 cross-correlation 的定义</p>
 
-<script type="math/tex; mode=display">R_{XY}(t_1, t_2) = E[X(t_1)Y(t_2)]</script>
+\[R_{XY}(t_1, t_2) = E[X(t_1)Y(t_2)]\]
 
 <p>有</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-R_{XX'}(t_1, t_2) &= E[X(t_1)X'(t_2)]\\[1em]
-&=E\left[X(t_1)\frac{d}{d\color{tomato}{t_2}}X(\color{tomato}{t_2})\right] \\[1em]
-&= E\left[\frac{\partial}{\partial \color{tomato}{t_2}}X(\color{tomato}{t_2})X(t_1)\right] \\[1em]
-&= \frac{\partial}{\partial \color{tomato}{t_2}}
+\[\begin{aligned}
+R_{XX'}(t_1, t_2) &amp;= E[X(t_1)X'(t_2)]\\[1em]
+&amp;=E\left[X(t_1)\frac{d}{d\color{tomato}{t_2}}X(\color{tomato}{t_2})\right] \\[1em]
+&amp;= E\left[\frac{\partial}{\partial \color{tomato}{t_2}}X(\color{tomato}{t_2})X(t_1)\right] \\[1em]
+&amp;= \frac{\partial}{\partial \color{tomato}{t_2}}
 E\left[X(t_1)X(\color{tomato}{t_2})\right] 
-& \text{exchangable}\\[1em]
-&= \frac{\partial}{\partial t_2} R_X(t_1, t_2)
-\end{aligned} %]]></script>
+&amp; \text{exchangable}\\[1em]
+&amp;= \frac{\partial}{\partial t_2} R_X(t_1, t_2)
+\end{aligned}\]
 
 <h2 id="正态随机过程">正态随机过程</h2>
 
@@ -438,7 +423,7 @@ E\left[X(t_1)X(\color{tomato}{t_2})\right]
 
 <p>如果对于很多随机变量 $X_1, X_2, \dots X_n$，对任意 $a_i \in \mathbb{R}$</p>
 
-<script type="math/tex; mode=display">a_1 X_1 + a_2 X_2 + \dots + a_nX_n</script>
+\[a_1 X_1 + a_2 X_2 + \dots + a_nX_n\]
 
 <p>都是一个正态随机变量，则说明 $X_1, X_2, \dots X_n$ 是 jointly normal</p>
 
@@ -446,23 +431,23 @@ E\left[X(t_1)X(\color{tomato}{t_2})\right]
 
 <p>对于随机变量构成的矢量</p>
 
-<script type="math/tex; mode=display">\mathbf{X} = \begin{bmatrix}
+\[\mathbf{X} = \begin{bmatrix}
 X_1 \\ X_2 \\ \vdots \\X_n
-\end{bmatrix}</script>
+\end{bmatrix}\]
 
 <p>其中 $X_1, X_2, \dots X_n$ jointly normal，则这个矢量是正态随机变量，normal random vector。如果正态随机变量 $\mathbf{X}$ 的均值是 $\mathbf{m}$，<a href="https://en.wikipedia.org/wiki/Covariance_matrix">协方差矩阵</a>是 $\mathbf{C}$，则 $\mathbf{X}$ 的 joint PDF 是</p>
 
-<script type="math/tex; mode=display">f_\mathbf{X}(\mathbf{x}) =
+\[f_\mathbf{X}(\mathbf{x}) =
 \frac{1}{(2\pi)^{\frac{n}{2}}\sqrt{\det\mathbf{C}}}\;
 \exp \left\{
 -\frac12(\mathbf{x - m})^T \mathbf{C}^{-1}(\mathbf{x-m})
-\right\}</script>
+\right\}\]
 
 <h3 id="正态随机过程-1">正态随机过程</h3>
 
 <p>对于随机过程 ${ X(t), t \in J }$，如果对于所有</p>
 
-<script type="math/tex; mode=display">t_1, t_2, \dots, t_n \in J</script>
+\[t_1, t_2, \dots, t_n \in J\]
 
 <p>随机变量 $X(t_1), X(t_2), \dots, X(t_n)$ jointly normal，那么这个随机过程就是「正态随机过程」(Gaussian (normal) random process)。</p>
 
@@ -472,16 +457,15 @@ X_1 \\ X_2 \\ \vdots \\X_n
 
 <p>对于两个随机过程 ${ X(t), t \in J }$ 和 ${ Y(t), t \in J }$，如果对于任何的 $t_1, t_2, \dots, t_m$ 和 $t_1^\prime, t_2^\prime, \dots, t_m^\prime$，下面的随机变量们</p>
 
-<script type="math/tex; mode=display">X(t_1), X(t_2), \cdots, X(t_m),\ Y(t_1), Y(t_2), \cdots, Y(t_m)</script>
+\[X(t_1), X(t_2), \cdots, X(t_m),\ Y(t_1), Y(t_2), \cdots, Y(t_m)\]
 
 <p>jointly normal，则 $X(t)$ 与 $Y(t)$ 是联合正态过程。</p>
 
 <p>如果两个联合正态过程 $X(t)$ 与 $Y(t)$ <strong>不相关</strong>，</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-C_{XY}(t_1, t_2) &= 0 &\text{for all }t_1, t_2
-\end{aligned} %]]></script>
+\[\begin{aligned}
+C_{XY}(t_1, t_2) &amp;= 0 &amp;\text{for all }t_1, t_2
+\end{aligned}\]
 
 <p>则 $X(t)$ 和 $Y(t)$ 是两个<strong>独立</strong>的随机变量。</p>
 
@@ -505,7 +489,7 @@ C_{XY}(t_1, t_2) &= 0 &\text{for all }t_1, t_2
 
 <p>对于连续时间过程 ${ X(t), t\in[0, \infty)}$，如果对于所有的 $0\le t_1 &lt; t_2 &lt; \cdots &lt; t_n$，下面的随机变量们</p>
 
-<script type="math/tex; mode=display">X(t_2) - X(t_1),\ X(t_3) - X(t_2)，\cdots , X(t_n) - X(t_{n-1})</script>
+\[X(t_2) - X(t_1),\ X(t_3) - X(t_2)，\cdots , X(t_n) - X(t_{n-1})\]
 
 <p>都是独立的，那么 $X(t)$ 拥有 独立增量。</p>
 
@@ -513,11 +497,11 @@ C_{XY}(t_1, t_2) &= 0 &\text{for all }t_1, t_2
 
 <p>对于 连续时间 随机变量 ${ X(t), t\in[0, \infty)}$。如果对于<strong>所有</strong>的 $t_2 &gt; t_1 \ge 0$ 以及<strong>所有</strong>的 $r &gt; 0$，随机变量</p>
 
-<script type="math/tex; mode=display">X(t_2) - X(t_1)</script>
+\[X(t_2) - X(t_1)\]
 
 <p>和</p>
 
-<script type="math/tex; mode=display">X(t_2 + r) - X(t_1 + r)</script>
+\[X(t_2 + r) - X(t_1 + r)\]
 
 <p>具有相同的 概率分布。那么，我们说 $X(t)$ 具有「独立增量」。</p>
 
@@ -533,8 +517,7 @@ C_{XY}(t_1, t_2) &= 0 &\text{for all }t_1, t_2
 
 <p>令 $X$ 为一个泊松随机变量。它的参数为 $\mu$，写作 $X \sim \mathrm{Possion}(\mu)$。如果 $X$ 的取值范围是 $R_X = {0, 1, 2, \dots }$，那么，$X$ 的概率质量函数 (PMF) 是</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-P_{X}(k)=\left\{\begin{array}{ll}\frac{e^{-\mu} \mu^{k}}{k !} & \text { for } k \in R_{X} \\ 0 & \text { otherwise }\end{array}\right. %]]></script>
+\[P_{X}(k)=\left\{\begin{array}{ll}\frac{e^{-\mu} \mu^{k}}{k !} &amp; \text { for } k \in R_{X} \\ 0 &amp; \text { otherwise }\end{array}\right.\]
 
 <p>泊松过程具有三个值得注意的性质</p>
 
@@ -554,11 +537,10 @@ P_{X}(k)=\left\{\begin{array}{ll}\frac{e^{-\mu} \mu^{k}}{k !} & \text { for } k 
 
 <p>我们将第 $k$ 个间隔写作 $\left( (k-1) \delta, k \delta\right]$。在每一个「间隔」中，我们获得一个「到达」的概率为</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-P(H) &= p &(\text{binomial distribution})\\[0.5em]
-&= \lambda \delta &\left(\frac{\text{arrival chance}}{\text{time}} \times \text{time}\right)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+P(H) &amp;= p &amp;(\text{binomial distribution})\\[0.5em]
+&amp;= \lambda \delta &amp;\left(\frac{\text{arrival chance}}{\text{time}} \times \text{time}\right)
+\end{aligned}\]
 
 <p>只要我们的时间间隔 $\delta$ 无限小，那么我们<strong>总可以</strong>保证每个间隔「最多只有一个 到达」。一个具体的图像是</p>
 
@@ -582,15 +564,14 @@ P(H) &= p &(\text{binomial distribution})\\[0.5em]
 
 <p>我们可以根据「增量」来给出泊松过程的 另一个定义。让我们考察 连续时间里 的一个小时间段 $\Delta$。如果我们研究的过程是 泊松过程，那么</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-P(N(\Delta)=0) &=e^{-\lambda \Delta} \\
-&=1-\lambda \Delta+\frac{\lambda^{2}}{2} \Delta^{2}-\cdots \text { (Taylor Series) } \\
-&=1-\lambda \Delta+o(\Delta)
+\[\begin{aligned}
+P(N(\Delta)=0) &amp;=e^{-\lambda \Delta} \\
+&amp;=1-\lambda \Delta+\frac{\lambda^{2}}{2} \Delta^{2}-\cdots \text { (Taylor Series) } \\
+&amp;=1-\lambda \Delta+o(\Delta)
 \\[1em]
-P(N(\Delta)=1) &= \lambda \Delta + o(\Delta) \\[1em]
-P(N(\Delta)\ge2) &= o(\Delta)
-\end{aligned} %]]></script>
+P(N(\Delta)=1) &amp;= \lambda \Delta + o(\Delta) \\[1em]
+P(N(\Delta)\ge2) &amp;= o(\Delta)
+\end{aligned}\]
 
 <p>这个推导得到了 泊松过程 的第二种定义</p>
 
@@ -600,28 +581,25 @@ P(N(\Delta)\ge2) &= o(\Delta)
   <li>下面的等式成立</li>
 </ol>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-P(N(\Delta)=0) &=1-\lambda \Delta+o(\Delta)
+\[\begin{aligned}
+P(N(\Delta)=0) &amp;=1-\lambda \Delta+o(\Delta)
 \\[1em]
-P(N(\Delta)=1) &= \lambda \Delta + o(\Delta) \\[1em]
-P(N(\Delta)\ge2) &= o(\Delta)
-\end{aligned} %]]></script>
+P(N(\Delta)=1) &amp;= \lambda \Delta + o(\Delta) \\[1em]
+P(N(\Delta)\ge2) &amp;= o(\Delta)
+\end{aligned}\]
 
 <h3 id="到达时间">到达时间</h3>
 
 <p>假设 $N(t)$ 是速率为 $\lambda$ 的泊松过程。令 $X_1$ 为第一次「到达」事件发生的 时间。那么 $X_1$ 是一个随机变量。我们可以根据 泊松分布写出</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-P(X_1 > t) &= P(\ \text{no arrival in }(0, t]\ ) \\
-&= \exp(-\lambda t)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+P(X_1 &gt; t) &amp;= P(\ \text{no arrival in }(0, t]\ ) \\
+&amp;= \exp(-\lambda t)
+\end{aligned}\]
 
 <p>据此我们可以写出 $X_1$ 的 PDF</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-F_{X_{1}}(t)=\left\{\begin{array}{ll}1-e^{-\lambda t} & t>0 \\ 0 & \text { otherwise }\end{array}\right. %]]></script>
+\[F_{X_{1}}(t)=\left\{\begin{array}{ll}1-e^{-\lambda t} &amp; t&gt;0 \\ 0 &amp; \text { otherwise }\end{array}\right.\]
 
 <p>且我们发现 泊松过程的 到达时间 服从 指数分布</p>
 
@@ -629,8 +607,7 @@ F_{X_{1}}(t)=\left\{\begin{array}{ll}1-e^{-\lambda t} & t>0 \\ 0 & \text { other
 
 <p>假设 $N(t)$ 是速率为 $\lambda$ 的泊松过程。令 $X_2$ 为 第一次到达事件 和  第二次到达事件 之间的「间隔」。那么 $X_2$ 也是一个随机变量。我们可以根据 泊松分布写出</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned} P\left(X_{2}>t \mid X_{1}=s\right) &=P\left(\text { no arrival in }(s, s+t] \mid X_{1}=s\right) \\ &=P(\text { no arrivals in }(s, s+t]) \text { (independent increments) } \\ &=e^{-\lambda t} \end{aligned} %]]></script>
+\[\begin{aligned} P\left(X_{2}&gt;t \mid X_{1}=s\right) &amp;=P\left(\text { no arrival in }(s, s+t] \mid X_{1}=s\right) \\ &amp;=P(\text { no arrivals in }(s, s+t]) \text { (independent increments) } \\ &amp;=e^{-\lambda t} \end{aligned}\]
 
 <p>我们发现 <strong>泊松过程的 间隔时间 也服从 指数分布</strong>。</p>
 
@@ -638,7 +615,7 @@ F_{X_{1}}(t)=\left\{\begin{array}{ll}1-e^{-\lambda t} & t>0 \\ 0 & \text { other
 
 <p>此外，服从指数分布的 随机变量 没有<strong>记忆</strong>。即，</p>
 
-<script type="math/tex; mode=display">P(X>x+a \mid X>a)=P(X>x), \text { for } a, x \geq 0</script>
+\[P(X&gt;x+a \mid X&gt;a)=P(X&gt;x), \text { for } a, x \geq 0\]
 
 <p>这个和泊松过程中，每个间隔相互独立是一致的。</p>
 
@@ -646,45 +623,40 @@ F_{X_{1}}(t)=\left\{\begin{array}{ll}1-e^{-\lambda t} & t>0 \\ 0 & \text { other
 
 <p>现在让我们考虑「到达时间的分布」，它们可以写成</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-T_{1} &= X_{1} \\
-T_{2}&=X_{1}+X_{2} \\
-T_{3}&=X_{1}+X_{2}+X_{3} \\
-&\dots
-\end{aligned} %]]></script>
+\[\begin{aligned}
+T_{1} &amp;= X_{1} \\
+T_{2}&amp;=X_{1}+X_{2} \\
+T_{3}&amp;=X_{1}+X_{2}+X_{3} \\
+&amp;\dots
+\end{aligned}\]
 
 <p>对于第 $n$ 次到达事件，到达时间 $T_n$ 这个随机变量是 $n$ 个<strong>独立</strong>的、服从泊松分布的 随机变量的和。我们把 $T_n$ 服从的分布称为 <strong>Gamma 分布</strong>，也叫 <strong>Erlang 分布</strong>。</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-T_n &= \sum_i^n{X_i} \\[1em]
-&\sim \mathrm{Gamma}(n, \lambda)
-& \mathrm{for}\ n = 1, 2, 3, \dots
-\end{aligned} %]]></script>
+\[\begin{aligned}
+T_n &amp;= \sum_i^n{X_i} \\[1em]
+&amp;\sim \mathrm{Gamma}(n, \lambda)
+&amp; \mathrm{for}\ n = 1, 2, 3, \dots
+\end{aligned}\]
 
 <p>我们可以写出 Gamma 分布的 PDF：</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-f_{T_n}(t) &= \frac{\lambda^n t^{n-1}\exp(-\lambda t)}{(n-1)!} &( t > 0)
-\end{aligned} %]]></script>
+\[\begin{aligned}
+f_{T_n}(t) &amp;= \frac{\lambda^n t^{n-1}\exp(-\lambda t)}{(n-1)!} &amp;( t &gt; 0)
+\end{aligned}\]
 
 <p>此外，由于我们知道 $X$ 的期望和方差，</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mathrm{E}[X] &= \lambda^{-1} \\
-\mathrm{Var}[X] &= \lambda^{-2}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mathrm{E}[X] &amp;= \lambda^{-1} \\
+\mathrm{Var}[X] &amp;= \lambda^{-2}
+\end{aligned}\]
 
 <p>则 Gamma 分布的期望和方差是</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\mathrm{E}[T_n] &= n \mathrm{E}[X] = n\lambda^{-1} \\
-\mathrm{Var}[T_n] &= n \mathrm{Var}[X] = \lambda^{-2}
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\mathrm{E}[T_n] &amp;= n \mathrm{E}[X] = n\lambda^{-1} \\
+\mathrm{Var}[T_n] &amp;= n \mathrm{Var}[X] = \lambda^{-2}
+\end{aligned}\]
 
 <h3 id="模拟泊松过程">模拟泊松过程</h3>
 
@@ -695,13 +667,12 @@ f_{T_n}(t) &= \frac{\lambda^n t^{n-1}\exp(-\lambda t)}{(n-1)!} &( t > 0)
   <li>通过对 $X_i$ 求和得到 每个事件 的 到达时间</li>
 </ol>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-T_{1} &= X_{1} \\
-T_{2}&=X_{1}+X_{2} \\
-T_{3}&=X_{1}+X_{2}+X_{3} \\
-&\dots
-\end{aligned} %]]></script>
+\[\begin{aligned}
+T_{1} &amp;= X_{1} \\
+T_{2}&amp;=X_{1}+X_{2} \\
+T_{3}&amp;=X_{1}+X_{2}+X_{3} \\
+&amp;\dots
+\end{aligned}\]
 
 </div>
 

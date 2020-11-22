@@ -78,12 +78,12 @@
 
 <p>SVD 一般是这样写的</p>
 
-<script type="math/tex; mode=display">\begin{align}
+\[\begin{align}
 \bf{A_{m \times n}} = 
 \bf{U_{m \times n}} \;
 \Sigma_{n \times n} \;
 \bf{V_{n \times n}}
-\end{align}</script>
+\end{align}\]
 
 <p>其中，$\bf{U}$ 和 $\bf{V}$ 都是酉矩阵，它们表示旋转操作，同时它们的行/列都是标准正交基（基向量的长度为 1，两两正交）。</p>
 
@@ -91,27 +91,25 @@
 
 <p>我们想要得到的其实是类似于「特征值」的东西，对于方阵 $\bf{X}$，它的特征值 $\upsilon$ 满足</p>
 
-<script type="math/tex; mode=display">\mathbf{X} \mathbf{\upsilon} = \lambda \mathbf{\upsilon}</script>
+\[\mathbf{X} \mathbf{\upsilon} = \lambda \mathbf{\upsilon}\]
 
 <p>对于不是方阵的 $A$，我们能找到两个类似于特征值的东西（$\bf{v}$, $\bf{u}$），叫做「一个奇异向量」。对应的数值 $\sigma$ 叫做「一个奇异值」：</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\bf{A^T} u &= \sigma \bf{v} & \bf{u}\text{: 左奇异向量} \\
-\bf{A} v &= \sigma \bf{u} & \bf{v} \text{: 右奇异向量}
-\end{align} %]]></script>
+\[\begin{align}
+\bf{A^T} u &amp;= \sigma \bf{v} &amp; \bf{u}\text{: 左奇异向量} \\
+\bf{A} v &amp;= \sigma \bf{u} &amp; \bf{v} \text{: 右奇异向量}
+\end{align}\]
 
 <p>如果我们给上面的公式左右分别左乘上 $\bf{A}$ 和 $\bf{A^T}$，我们得到</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-\bf{AA^T} u &= \sigma \bf{Av}\\
-&= \sigma^2 \bf{u}
-&(\bf{u} \text{ 是} \bf{AA^T} \text{ 的特征值})\\[1em]
-\bf{A^TA} v &= \sigma \bf{u}\\
-&= \sigma^2 \bf{v}
-& (\bf{v} \text{ 是} \bf{A^TA} \text{ 的特征值})\\
-\end{aligned} %]]></script>
+\[\begin{aligned}
+\bf{AA^T} u &amp;= \sigma \bf{Av}\\
+&amp;= \sigma^2 \bf{u}
+&amp;(\bf{u} \text{ 是} \bf{AA^T} \text{ 的特征值})\\[1em]
+\bf{A^TA} v &amp;= \sigma \bf{u}\\
+&amp;= \sigma^2 \bf{v}
+&amp; (\bf{v} \text{ 是} \bf{A^TA} \text{ 的特征值})\\
+\end{aligned}\]
 
 <p>在这里，我知考虑了实数矩阵——如果考虑复数的话，我需要计算 $\bf{A}$ 的共轭转置 $\bf{A^\ast}$。</p>
 
@@ -121,16 +119,15 @@
 
 <p>让我们重新审视公式 (1)</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\bf{A} &= \bf{U} \bf{\Sigma} \bf{V^T}
-\end{align} %]]></script>
+\[\begin{align}
+\bf{A} &amp;= \bf{U} \bf{\Sigma} \bf{V^T}
+\end{align}\]
 
 <p>我们可以把它稍微改写成</p>
 
-<script type="math/tex; mode=display">\begin{aligned}
+\[\begin{aligned}
 \bf{A} = \bf{U} \bf{\Sigma} \bf{V^T} \bf{I}
-\end{aligned}</script>
+\end{aligned}\]
 
 <p>其中，$\bf{I}$ 是标准正交基。上面的公式告诉了我们怎么把 $\bf{I}$ 变成 $\bf{A}$：我们首先把 $\bf{I}$ 映射到右奇异基向量（旋转）；按照奇异值大小缩放各个基向量；再把结果映射到左奇异基向量（旋转）。</p>
 
@@ -148,14 +145,13 @@
 
 <p>我们使用 PCA 来压缩数据。假设我们有 $m$ 个属于 $\mathbb{R}^d$ 列向量：$\bf{x_1}, \dots \bf{x_m}$，我们用一个矩阵 $\mathbf{x}\in\mathbb{R}^{d, m}$ 来描述所有的数据点。我们希望找到一个矩阵 $\mathbf{W} \in \mathbb{R}^{d, n}$，来将 $\bf{x}$ 映射到低维空间：</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\mathbf{y} &= \mathbf{Wx} & (\ \mathbf{y} \in \mathbb{R}^n, n < d)
-\end{align} %]]></script>
+\[\begin{align}
+\mathbf{y} &amp;= \mathbf{Wx} &amp; (\ \mathbf{y} \in \mathbb{R}^n, n &lt; d)
+\end{align}\]
 
 <p>同样，我们也需要另一个矩阵 $\mathbf{U} \in \mathbb{R}^{n, d}$ 来将 $\bf{y}$ 还原为一个「同原始 $\bf{x}$ 接近」的 $\bf{\tilde{x}}$。我们通过让两者「尽量接近」来确定最好的 $\bf{U}$ 和 $\bf{W}$：</p>
 
-<script type="math/tex; mode=display">\begin{align}
+\[\begin{align}
 \underset{
 \mathbf{W}\in\mathbb{R}^{n, d},\
 \mathbf{U}\in\mathbb{R}^{d, n}
@@ -163,7 +159,7 @@
 \sum_{i=1}^{m}{\left\|
 \mathbf{x}_i - \mathbf{UWx}_i
 \right\|^2}
-\end{align}</script>
+\end{align}\]
 
 <h3 id="找到-u-和-w">找到 U 和 W</h3>
 
@@ -176,7 +172,7 @@
 
 <p>根据上面的辅助定理，我们可以把公式 (6) 重新写成</p>
 
-<script type="math/tex; mode=display">\begin{align}
+\[\begin{align}
 \underset{
 \mathbf{W}\in\mathbb{R}^{n, d},\
 \mathbf{U}\in\mathbb{R}^{d, n}
@@ -184,16 +180,15 @@
 \sum_{i=1}^{m}{\left\|
 \mathbf{x}_i - \mathbf{UU^\top x}_i
 \right\|^2}
-\end{align}</script>
+\end{align}\]
 
 <p>我们可以把需要 minimise 的部分写成</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}\left\|\mathbf{x}-U U^{\top} \mathbf{x}\right\|^{2} &=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top} \mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\ &=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\ &=\|\mathbf{x}\|^{2}-\operatorname{trace}\left(U^{\top} \mathbf{x} \mathbf{x}^{\top} U\right) \end{aligned} %]]></script>
+\[\begin{aligned}\left\|\mathbf{x}-U U^{\top} \mathbf{x}\right\|^{2} &amp;=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top} \mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\operatorname{trace}\left(U^{\top} \mathbf{x} \mathbf{x}^{\top} U\right) \end{aligned}\]
 
 <p>其中，$\text{trace}$ 的意思是对对角项求和，是一个线性算符，这让我们可以最终把公式 (6) 写成</p>
 
-<script type="math/tex; mode=display">\underset{U \in \mathbb{R}^{d, n} : U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}\left(U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U\right)</script>
+\[\underset{U \in \mathbb{R}^{d, n} : U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}\left(U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U\right)\]
 
 </div>
 

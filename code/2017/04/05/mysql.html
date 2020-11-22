@@ -220,8 +220,8 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
 <p>注意：</p>
 
 <ol>
-  <li><code class="highlighter-rouge">col_1_name</code> 必须是 <code class="highlighter-rouge">table_name</code> 中有的列，否则报错</li>
-  <li><code class="highlighter-rouge">INSERT</code> 时可以缺省某一列，此时这一列会被 <code class="highlighter-rouge">NULL</code> 填充</li>
+  <li><code class="language-plaintext highlighter-rouge">col_1_name</code> 必须是 <code class="language-plaintext highlighter-rouge">table_name</code> 中有的列，否则报错</li>
+  <li><code class="language-plaintext highlighter-rouge">INSERT</code> 时可以缺省某一列，此时这一列会被 <code class="language-plaintext highlighter-rouge">NULL</code> 填充</li>
 </ol>
 
 <h2 id="约束">约束</h2>
@@ -279,7 +279,7 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
   <li>
     <p><strong>每个外键必须 REFERENCES (参考) 另一个表的主键</strong>，被外键约束的列，取值必须在它参考的列中有对应值。</p>
   </li>
-  <li>在 <code class="highlighter-rouge">INSERT</code> 时，如果被外键约束的值没有在参考列中有对应，则INSERT失败</li>
+  <li>在 <code class="language-plaintext highlighter-rouge">INSERT</code> 时，如果被外键约束的值没有在参考列中有对应，则INSERT失败</li>
   <li>
     <p>创建外键约束</p>
 
@@ -318,9 +318,9 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">WHERE</code> 后面的条件可以通过 <code class="highlighter-rouge">OR</code> 或 <code class="highlighter-rouge">AND</code> 连接</p>
+    <p><code class="language-plaintext highlighter-rouge">WHERE</code> 后面的条件可以通过 <code class="language-plaintext highlighter-rouge">OR</code> 或 <code class="language-plaintext highlighter-rouge">AND</code> 连接</p>
   </li>
-  <li>可通过 <code class="highlighter-rouge">IN</code> 和 <code class="highlighter-rouge">NOT IN</code> 来筛选 “在” 或 “不在” 某个范围内的结果
+  <li>可通过 <code class="language-plaintext highlighter-rouge">IN</code> 和 <code class="language-plaintext highlighter-rouge">NOT IN</code> 来筛选 “在” 或 “不在” 某个范围内的结果
     <ul>
       <li>例子：查询在部门＃3 或部门＃4 的员工</li>
     </ul>
@@ -328,16 +328,16 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
     <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span><span class="n">age</span> <span class="k">FROM</span> <span class="n">employee</span> <span class="k">WHERE</span> <span class="n">in_dpt</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'dpt3'</span><span class="p">,</span><span class="s1">'dpt4'</span><span class="p">);</span>
 </code></pre></div>    </div>
   </li>
-  <li><code class="highlighter-rouge">Like</code> 与通配符
+  <li><code class="language-plaintext highlighter-rouge">Like</code> 与通配符
     <ul>
-      <li>关键字 <code class="highlighter-rouge">LIKE</code> 在 SQL 语句中和通配符一起使用，通配符代表未知字符。</li>
-      <li>SQL中的通配符是 <code class="highlighter-rouge">_</code> 和 <code class="highlighter-rouge">%</code>
+      <li>关键字 <code class="language-plaintext highlighter-rouge">LIKE</code> 在 SQL 语句中和通配符一起使用，通配符代表未知字符。</li>
+      <li>SQL中的通配符是 <code class="language-plaintext highlighter-rouge">_</code> 和 <code class="language-plaintext highlighter-rouge">%</code>
         <ul>
-          <li><code class="highlighter-rouge">_</code> 代表一个未指定字符</li>
-          <li><code class="highlighter-rouge">%</code> 代表不定个未指定字符</li>
+          <li><code class="language-plaintext highlighter-rouge">_</code> 代表一个未指定字符</li>
+          <li><code class="language-plaintext highlighter-rouge">%</code> 代表不定个未指定字符</li>
         </ul>
       </li>
-      <li>语法 <code class="highlighter-rouge">WHERE 限制条件 LIKE 通配符</code>
+      <li>语法 <code class="language-plaintext highlighter-rouge">WHERE 限制条件 LIKE 通配符</code>
         <ul>
           <li>例子：查询电话号码以 10 开头的员工</li>
         </ul>
@@ -356,7 +356,7 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="err">要查询的列名</span> <span class="k">FROM</span> <span class="err">表名字</span> <span class="k">WHERE</span> <span class="err">限制条件</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="err">排序列</span> <span class="k">ASC</span><span class="o">/</span><span class="k">DESC</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>其中，<code class="highlighter-rouge">ASC</code> 为升序，<code class="highlighter-rouge">DESC</code> 为降序；默认为升序</p>
+<p>其中，<code class="language-plaintext highlighter-rouge">ASC</code> 为升序，<code class="language-plaintext highlighter-rouge">DESC</code> 为降序；默认为升序</p>
 
 <h3 id="使用内置函数进行计算">使用内置函数进行计算</h3>
 
@@ -392,9 +392,9 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
 <p>这段语句</p>
 
 <ul>
-  <li>先求出 <code class="highlighter-rouge">SELECT col_3 FROM table_name</code> 的结果</li>
-  <li>再判断 <code class="highlighter-rouge">col_1</code> 是否在该结果中</li>
-  <li>最终输出符合条件的 <code class="highlighter-rouge">col_1</code>, <code class="highlighter-rouge">col_2</code></li>
+  <li>先求出 <code class="language-plaintext highlighter-rouge">SELECT col_3 FROM table_name</code> 的结果</li>
+  <li>再判断 <code class="language-plaintext highlighter-rouge">col_1</code> 是否在该结果中</li>
+  <li>最终输出符合条件的 <code class="language-plaintext highlighter-rouge">col_1</code>, <code class="language-plaintext highlighter-rouge">col_2</code></li>
 </ul>
 
 <h3 id="连接查询">连接查询</h3>
@@ -457,8 +457,8 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
 </code></pre></div>    </div>
 
     <ul>
-      <li>在指定位置增加一列: 语句最后加上 <code class="highlighter-rouge">AFTER col_1</code></li>
-      <li>指定添加到第一列: 使用 <code class="highlighter-rouge">FIRST</code> 关键词</li>
+      <li>在指定位置增加一列: 语句最后加上 <code class="language-plaintext highlighter-rouge">AFTER col_1</code></li>
+      <li>指定添加到第一列: 使用 <code class="language-plaintext highlighter-rouge">FIRST</code> 关键词</li>
     </ul>
   </li>
   <li>
