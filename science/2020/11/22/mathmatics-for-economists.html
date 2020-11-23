@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mathematics for Echonomists</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    22 Nov 2020
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#week-1" id="markdown-toc-week-1">Week 1</a>    <ul>
+      <li><a href="#properties-of-operations" id="markdown-toc-properties-of-operations">Properties of Operations</a></li>
+      <li><a href="#inner-product-in-mathbbrn" id="markdown-toc-inner-product-in-mathbbrn">Inner Product in $\mathbb{R}^n$</a></li>
+      <li><a href="#open-ball" id="markdown-toc-open-ball">Open Ball</a></li>
+      <li><a href="#open-set" id="markdown-toc-open-set">Open Set</a></li>
+      <li><a href="#intersection-of-open-sets" id="markdown-toc-intersection-of-open-sets">Intersection of Open Sets</a></li>
+      <li><a href="#sequences-in-mathbbrn" id="markdown-toc-sequences-in-mathbbrn">Sequences in $\mathbb{R}^n$</a></li>
+      <li><a href="#convergence-of-the-sequence" id="markdown-toc-convergence-of-the-sequence">Convergence of the Sequence</a></li>
+      <li><a href="#closed-set" id="markdown-toc-closed-set">Closed Set</a></li>
+      <li><a href="#operations-on-closed-sets" id="markdown-toc-operations-on-closed-sets">Operations on Closed Sets</a></li>
+      <li><a href="#bounded-and-compact" id="markdown-toc-bounded-and-compact">Bounded and Compact</a></li>
+      <li><a href="#functions-in-mathbbrn" id="markdown-toc-functions-in-mathbbrn">Functions in $\mathbb{R}^n$</a></li>
+      <li><a href="#domain-of-a-function" id="markdown-toc-domain-of-a-function">Domain of a function</a></li>
+      <li><a href="#continuity" id="markdown-toc-continuity">Continuity</a></li>
+      <li><a href="#th-weierstrass" id="markdown-toc-th-weierstrass">Th. Weierstrass</a></li>
+      <li><a href="#composite-function" id="markdown-toc-composite-function">Composite Function</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>There are some notes I took while learning math from <a href="https://www.coursera.org/learn/mathematics-for-economists/home/welcome">this online course</a>. I am still young and ambitious to learn math again.</p>
+
+<hr />
+
+<h2 id="week-1">Week 1</h2>
+
+<h3 id="properties-of-operations">Properties of Operations</h3>
+
+\[\begin{align}
+\bf{x + y} &amp;= \bf{y + x}\\
+\bf{(x + y) + z} &amp;= \bf{x + (y + z)}\\
+\bf{x + 0} &amp;= \bf{0}\\
+\bf{(-x) + x} &amp;= \bf{0}\\
+\lambda\bf{(x+y)} &amp;= \lambda \mathbf{x} + \lambda\mathbf{y}\\
+(\lambda + \mu)\bf{x} &amp;=\lambda\mathbf{x} + \mu \mathbf{x}\\
+1 \cdot \mathbf{x} &amp;= \mathbf{x}\\
+\lambda (\mu \mathbf{x}) &amp;= (\lambda \mu) \mathbf{x}
+\end{align}\]
+
+<h3 id="inner-product-in-mathbbrn">Inner Product in $\mathbb{R}^n$</h3>
+
+\[\begin{aligned}
+\langle \mathbf{x}, \mathbf{y}\rangle
+&amp;= \sum_{i=1}^n{x_i y_i}
+&amp;(\bf{x, y} \in \mathbb{R}^n)\\
+\sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}&amp;= \|\mathbf{x}\|  &amp; \text{The norm}\\
+&amp; \|\bf{x - y}\| &amp; \text{Distance}
+\end{aligned}\]
+
+<h3 id="open-ball">Open Ball</h3>
+
+<p>The definition of an open ball in $\mathbb{R}^n$ is</p>
+
+\[\begin{aligned}
+B_\varepsilon\left(\mathbf{x}^{(0)}\right)
+&amp;= \left\{ \mathbf{x} \in \mathbb{R}^n | \left\| \mathbf{x} - \mathbf{x}^{(0)} \right\| &lt; \varepsilon \right\}.\\
+\end{aligned}\]
+
+<p>It is <strong>open</strong> in a sense that we can always find open balls for every point inside one open ball.</p>
+
+<h3 id="open-set">Open Set</h3>
+
+<p>The set $S$ is open if $\forall \mathbf{x} \in S$ there exist a open ball $B_\varepsilon(\mathbf{x}) \in S$</p>
+
+<p>Example:</p>
+
+<ol>
+  <li>The first quadrant \(\mathbb{R}_+^2 = \left\{ \mathbf{x} \in \mathbb{R}^2 | x_1, x_2 &gt; 0 \right\}\) is an open set.</li>
+  <li>The open balls are open sets.</li>
+  <li>The union set of all open sets is a open set. ( \(\cup_{\alpha \in \mathbb{I}} \mathcal{A}_\alpha\)
+is open set if $\mathcal{A}_\alpha$ are open sets.)</li>
+</ol>
+
+<h3 id="intersection-of-open-sets">Intersection of Open Sets</h3>
+
+<p>Suppose all the following <strong>finite</strong> number of sets are open</p>
+
+\[\mathcal{A}_1,\ \mathcal{A}_2,\ \mathcal{A}_3,\ \dots\ \mathcal{A}_m\]
+
+<p>Their intersection,</p>
+
+\[\mathcal{A} = \bigcap_{i=1}^m \mathcal{A}_i\]
+
+<p>is an open set. (This is not true for <strong>infinite</strong> amount of open sets, <em>ie.</em> intersection up to $\mathcal{A}_\infty$ )</p>
+
+<p>Example:</p>
+
+\[\begin{aligned}
+\mathcal{A}_i &amp;= \left( -\frac1i, \frac1i \right)\\[0.5em]
+\mathcal{A} &amp;= \bigcap_{i=1}^{m}\mathcal{A}_i = \mathcal{A}_m &amp; \textrm{open set}\\[1em]
+\tilde{\mathcal{A}} &amp;= \bigcap_{i=1}^{\infty}\mathcal{A}_i = \{0\} &amp; \textrm{not an open set}\\
+\end{aligned}\]
+
+<h3 id="sequences-in-mathbbrn">Sequences in $\mathbb{R}^n$</h3>
+
+<p>For \(\mathbf{x} \in \mathbb{R}^n\) to be one element of a <strong>sequence</strong>, we need to <strong>label</strong> $\mathbf{x}$, we note the label as,</p>
+
+\[\mathbf{x}^{(m)} \; (m \in \mathbb{N})\]
+
+<p>and the sequance is therefore written as,</p>
+
+\[\left\{ \mathbf{x}^{(m)} \right\}_{m=1}^{\infty}.\]
+
+<p>Concretely, $\mathbf{x}^{(3)}$ is the 3rd term of the sequence.</p>
+
+<h3 id="convergence-of-the-sequence">Convergence of the Sequence</h3>
+
+<p>Being <em>convergent</em> means there is a limiting value when $m \rightarrow \infty$. Suppose this value is \(\mathbf{x}^{(0)}\), we write</p>
+
+\[\lim_{m\rightarrow\infty} \mathbf{x}^{(m)} = \mathbf{x}^{(0)}.\]
+
+<p>We define <strong>convergence</strong> as the following,</p>
+
+\[\forall \varepsilon&gt;0,\ \exists\ m_\varepsilon \textrm{ such that } \forall\ m \ge m_\varepsilon,\ \| \mathbf{x}^{(m)} - \mathbf{x}^{(0)} \| \le \varepsilon.\]
+
+<p>(The symbol $m_\varepsilon$ means a typical value of $m$ that depends on $\varepsilon$.)</p>
+
+<h3 id="closed-set">Closed Set</h3>
+
+<p>Intuition: for a convergent <strong>sequence</strong>, whose term belongs to a set, we want to make sure <strong>its limit</strong> also belongs to the same set.</p>
+
+<p>The set $S \in \mathbb{R}^n$ is closed, if <strong>any</strong> convergent sequence</p>
+
+\[\left\{ \mathbf{x}^{(m)} \right\}_{m=1}^{\infty}, \; \mathbf{x}^{(m)} \in S​\]
+
+<p>has the <strong>limit</strong> that belongs to $S$.</p>
+
+<p>Example:</p>
+
+<p>$\mathbb{R}^2_+$ is not closed because we can find the following sequence that contradicts the definition.</p>
+
+\[\mathbf{x}^{(m)} = \left(\begin{array}{c}
+1 \\ 1/m
+\end{array}\right)
+\rightarrow
+\left(\begin{array}{c}
+1 \\ 0
+\end{array}\right) \notin \mathbb{R}^2_+\]
+
+<p>The set</p>
+
+\[S = \left\{ x \in \mathbb{R}^2 |
+\underbrace{x_1 &gt; 0}_{\text{not closed}},\;
+\underbrace{x_2 \ge 0}_{\text{not open}}
+\right\}\]
+
+<p>is <strong>not open</strong> amd <strong>not closed</strong> at the same time.</p>
+
+<h3 id="operations-on-closed-sets">Operations on Closed Sets</h3>
+
+<p>For all the $\mathcal{A}_\alpha$ that are closed set, we have the follwoing conclusions</p>
+
+\[\begin{aligned}
+\bigcap_{\alpha \in \mathbb{I}}{\mathcal{A}_\alpha} &amp;- \text{closed set} \\[2em]
+\bigcup_{i = 1}^{m}{\mathcal{A}_i} &amp;- \text{closed set} \\[2em]
+\bigcup_{\alpha \in \mathbb{I}}{\mathcal{A}_\alpha} &amp;- \text{may not be closed set} \\[2em]
+\end{aligned}\]
+
+<h3 id="bounded-and-compact">Bounded and Compact</h3>
+
+<p>A set $S \in \mathbb{R}^n$ is called <strong>bounded</strong> if there exists a ball $B_R(\mathbb{0})$ such that $S \in B_R(\mathbf{0})$.</p>
+
+<p>A set $S \in \mathbb{R}^n$ which is closed and bounded is called <strong>compact</strong></p>
+
+<p>Example:</p>
+
+<p>A closed ball, expressed as the following function</p>
+
+\[\begin{aligned}
+\mathrm{cl}\ B_\varepsilon\left(\mathbf{x}^{(0)}\right)
+&amp;= \left\{ \mathbf{x} \in \mathbb{R}^n | \left\| \mathbf{x} - \mathbf{x}^{(0)} \right\| \le \varepsilon \right\} &amp; (\textrm{cl means closure})\\
+\end{aligned}\]
+
+<p>is a compact.</p>
+
+<h3 id="functions-in-mathbbrn">Functions in $\mathbb{R}^n$</h3>
+
+<p>The normal functions is something like</p>
+
+\[y = f(x); x \in \mathcal{D}\\
+\mathcal{D} \subset \mathbb{R}\]
+
+<p>The functions in $\mathbb{R}^n$ is something like,</p>
+
+\[y = f(\mathbf{x}) = f(x_1, \dots, x_n); \mathbf{x} \in \mathcal{D}\\
+\mathcal{D} \subset \mathbb{R}^n\]
+
+<p>Example,</p>
+
+<p>The function is $y = \sqrt{1 - x_1^2 - x_2^2}$, and its <strong>natural domain</strong> is</p>
+
+\[\mathcal{D} = \left\{
+x \in \mathbb{R}^2 | x_1^2 + x_2^2 \le 1
+\right\}.\]
+
+<h3 id="domain-of-a-function">Domain of a function</h3>
+
+<p>$\mathcal{D} \subset \mathbb{R}^n$ is the domain of a function, it consists of all permissable values of $\mathbf{x}$, where the funciton looks like the following.</p>
+
+\[\mathbf{x} \in \mathcal{D}\\
+y = f(\mathbf{x}) \in \mathbb{R}\]
+
+<p>we can give $f(\mathbf{x})$ different values, forming the level sets</p>
+
+\[\left\{ x \in \mathcal{D} | f(\mathbf{x}) = y \right\}\]
+
+<h3 id="continuity">Continuity</h3>
+
+<p>For function $f(\mathbf{x})$ where $\mathcal{D}$ is the domain; for $\mathbf{x}^{(0)} \in \mathcal{D}$, the function is <strong>continous</strong> if the following expression is true.</p>
+
+\[\lim_{\mathbf{x}\rightarrow\mathbf{x}^{(0)}} f(\mathbf{x}) = f(\mathbf{x}^{(0)})\]
+
+<p>If a function is continues on any point in $\mathcal{D}$ we call the function <strong>continous on $\mathcal{D}$</strong></p>
+
+<h3 id="th-weierstrass">Th. Weierstrass</h3>
+
+<p>Let $y=f(\mathbf{x})$ be continues on interval $[a, b]$. Then there exist $m, M$ and $\mathbf{x}_1, \mathbf{x}_2 \in [a, b]$ such that
+\(m \le f(\mathbf{x}) \le M\)
+and
+\(f(\mathbf{x}_1) = m; f(\mathbf{x}_2) = M\)</p>
+
+<h3 id="composite-function">Composite Function</h3>
+
+<p>For function $f(\mathbf{x}), g(\mathbf{x})$ that are continous at $\mathbf{x}^{(0)} \in \mathcal{D}$ ($\mathcal{D}$ is called the <em>common domain</em>), the following composite functions are also continous at $\mathbf{x}^{(0)}$.</p>
+
+\[f(\mathbf{x}) \pm g(\mathbf{x}) \\[1em]
+f(\mathbf{x}) g(\mathbf{x}) \\[1em]
+\frac{f(\mathbf{x})} {g(\mathbf{x})} \; \left(g(\mathbf{x}^{(0)}) \ne 0\right)\]
+
+<p>A “difficult” example for composite function is the following, let</p>
+
+\[\begin{aligned}
+g(x, y) &amp;= xy \\
+f(x, y) &amp;= \sin(xy) \\
+\rightarrow f(t) &amp;= \sin(t); t = g(x, y)
+\end{aligned}\]
+
+<p>But what can we say about the domains of these functions?</p>
+
+<p>A generalised example would be,</p>
+
+\[\begin{aligned}
+t &amp;= g(x, y) \\
+f(x, y) &amp;= h(t)
+\end{aligned}\]
+
+<p>we have to make sure the <strong>image</strong> of $g$ matches the <strong>domain</strong> of $h$. Like the follwoing graph,</p>
+
+<pre class="asciiart">
+                ┌──────────────┐
+                │   D(h)       │
+                │              │
+┌───────┐       │  ┌───────┐   │
+│       │       │  │       │   │
+│ D(g)  │───────┼─▶│ Im(g) │   │
+│       │       │  │       │   │
+└───────┘       │  └───────┘   │
+                └──────────────┘
+</pre>
+
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
