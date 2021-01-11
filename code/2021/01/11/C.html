@@ -1,0 +1,1089 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>C 语言简介</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    11 Jan 2021
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#简介" id="markdown-toc-简介">简介</a>    <ul>
+      <li><a href="#c-语言程序的创建过程" id="markdown-toc-c-语言程序的创建过程">c 语言程序的创建过程</a></li>
+      <li><a href="#c-语言程序的结构" id="markdown-toc-c-语言程序的结构">c 语言程序的结构</a>        <ul>
+          <li><a href="#预处理指令" id="markdown-toc-预处理指令">预处理指令</a></li>
+          <li><a href="#函数" id="markdown-toc-函数">函数</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#常量和变量" id="markdown-toc-常量和变量">常量和变量</a>    <ul>
+      <li><a href="#常量" id="markdown-toc-常量">常量</a></li>
+      <li><a href="#变量" id="markdown-toc-变量">变量</a></li>
+    </ul>
+  </li>
+  <li><a href="#数据类型" id="markdown-toc-数据类型">数据类型</a>    <ul>
+      <li><a href="#整形" id="markdown-toc-整形">整形</a>        <ul>
+          <li><a href="#短整形-short" id="markdown-toc-短整形-short">短整形 short</a></li>
+          <li><a href="#长整形-long" id="markdown-toc-长整形-long">长整形 long</a></li>
+        </ul>
+      </li>
+      <li><a href="#浮点型" id="markdown-toc-浮点型">浮点型</a>        <ul>
+          <li><a href="#单精度-float" id="markdown-toc-单精度-float">单精度 <code class="language-plaintext highlighter-rouge">float</code></a></li>
+          <li><a href="#双精度-double" id="markdown-toc-双精度-double">双精度 double</a></li>
+          <li><a href="#float-溢出" id="markdown-toc-float-溢出">float 溢出</a></li>
+        </ul>
+      </li>
+      <li><a href="#字符类型-char" id="markdown-toc-字符类型-char">字符类型 char</a>        <ul>
+          <li><a href="#介绍" id="markdown-toc-介绍">介绍</a></li>
+          <li><a href="#字符的输出" id="markdown-toc-字符的输出">字符的输出</a></li>
+        </ul>
+      </li>
+      <li><a href="#其他类型" id="markdown-toc-其他类型">其他类型</a></li>
+      <li><a href="#强制类型转换" id="markdown-toc-强制类型转换">强制类型转换</a></li>
+    </ul>
+  </li>
+  <li><a href="#运算符" id="markdown-toc-运算符">运算符</a>    <ul>
+      <li><a href="#基本运算符" id="markdown-toc-基本运算符">基本运算符</a></li>
+      <li><a href="#自增自减运算符" id="markdown-toc-自增自减运算符">自增、自减运算符</a></li>
+      <li><a href="#不同数据的混合运算" id="markdown-toc-不同数据的混合运算">不同数据的混合运算</a></li>
+    </ul>
+  </li>
+  <li><a href="#数据的输入和输出" id="markdown-toc-数据的输入和输出">数据的输入和输出</a>    <ul>
+      <li><a href="#格式化字符" id="markdown-toc-格式化字符">格式化字符</a></li>
+      <li><a href="#输入输出字符" id="markdown-toc-输入输出字符">输入输出字符</a></li>
+    </ul>
+  </li>
+  <li><a href="#顺序结构设计" id="markdown-toc-顺序结构设计">顺序结构设计</a>    <ul>
+      <li><a href="#条件表达式" id="markdown-toc-条件表达式">条件表达式</a></li>
+      <li><a href="#while-循环" id="markdown-toc-while-循环">while 循环</a></li>
+      <li><a href="#for-循环" id="markdown-toc-for-循环">for 循环</a></li>
+      <li><a href="#循环嵌套和跳出循环" id="markdown-toc-循环嵌套和跳出循环">循环嵌套和跳出循环</a></li>
+    </ul>
+  </li>
+  <li><a href="#数组" id="markdown-toc-数组">数组</a>    <ul>
+      <li><a href="#一维数组" id="markdown-toc-一维数组">一维数组</a></li>
+      <li><a href="#二维数组" id="markdown-toc-二维数组">二维数组</a></li>
+      <li><a href="#字符数组字符串" id="markdown-toc-字符数组字符串">字符数组（字符串）</a></li>
+      <li><a href="#字符串处理库-stringh" id="markdown-toc-字符串处理库-stringh">字符串处理库 <code class="language-plaintext highlighter-rouge">string.h</code></a></li>
+    </ul>
+  </li>
+  <li><a href="#指针" id="markdown-toc-指针">指针</a>    <ul>
+      <li><a href="#指针的基本用法" id="markdown-toc-指针的基本用法">指针的基本用法</a></li>
+      <li><a href="#运算符-1" id="markdown-toc-运算符-1">运算符</a></li>
+      <li><a href="#定义指针" id="markdown-toc-定义指针">定义指针</a></li>
+      <li><a href="#引用指针" id="markdown-toc-引用指针">引用指针</a></li>
+      <li><a href="#指针的应用" id="markdown-toc-指针的应用">指针的应用</a></li>
+    </ul>
+  </li>
+  <li><a href="#文件操作" id="markdown-toc-文件操作">文件操作</a>    <ul>
+      <li><a href="#打开文件" id="markdown-toc-打开文件">打开文件</a></li>
+      <li><a href="#关闭文件" id="markdown-toc-关闭文件">关闭文件</a></li>
+      <li><a href="#写入文件" id="markdown-toc-写入文件">写入文件</a></li>
+      <li><a href="#读取文件" id="markdown-toc-读取文件">读取文件</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="简介">简介</h2>
+
+<h3 id="c-语言程序的创建过程">c 语言程序的创建过程</h3>
+
+<ul>
+  <li>编辑: 修改源代码的过程</li>
+  <li>编译
+    <ul>
+      <li>编译器可以将源代码转换成机器语言</li>
+      <li>编译器能找出程序中很多无效和无法识别的错误，以及结构错误，例如程序的某个部分永远不会执行。</li>
+      <li>编译器输出的结构成为<strong>对象代码</strong>，存放他们的文件成为<strong>对象文件</strong>。</li>
+      <li>在linux中这些文件的扩展名通常是.o，在windows下面这些文件的扩展名通常是.</li>
+      <li>如果编译成功就会生成一个文件，它与源文件同名。但扩展名为.o或者.obj</li>
+    </ul>
+  </li>
+  <li>链接
+    <ul>
+      <li>链接器将源代码文件中由编译器产生的各种<strong>对象模块</strong>组合起来，再从** c 语言提供的程序库<strong>中添加必要的代码模块，将他们组合成一个</strong>可执行文件**。</li>
+      <li>链接器也可以检测和报告错误，例如程序中引用了一根本不存在的库组件。</li>
+      <li>链接一旦成功，就会生成<strong>可执行文件</strong>，在windows下面可执行文件的扩展名是.exe，在linux下面，可执行文件没有扩展名，但它是可执行的文件类型。</li>
+    </ul>
+  </li>
+  <li>执行</li>
+</ul>
+
+<h3 id="c-语言程序的结构">c 语言程序的结构</h3>
+
+<h4 id="预处理指令">预处理指令</h4>
+
+<p>符号 <code class="language-plaintext highlighter-rouge">#</code> 表示这是一个预处理指令，告诉编译器在编译源代码之前，要先执行一些操作。例如：</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+</code></pre>
+
+<h4 id="函数">函数</h4>
+
+<ul>
+  <li>函数的结构
+    <ul>
+      <li>函数首部: 函数的第一行</li>
+      <li>函数体: 花括号内的部分</li>
+    </ul>
+  </li>
+  <li>主函数
+    <ul>
+      <li>每个c程序都由一个或多个函数组成，但每个c程序都必须有一个 <code class="language-plaintext highlighter-rouge">main()</code> 函数</li>
+      <li>每个程序总是从 <code class="language-plaintext highlighter-rouge">main()</code> 函数开始执行。</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="常量和变量">常量和变量</h2>
+
+<h3 id="常量">常量</h3>
+
+<ul>
+  <li>整形</li>
+  <li>实形
+    <ul>
+      <li>1.1</li>
+      <li>1.1e5 = 1.1 * 10^5</li>
+    </ul>
+  </li>
+  <li>字符
+    <ul>
+      <li>普通字符: 单撇号括起来的一个字符</li>
+      <li>转义字符</li>
+    </ul>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>转义字符</th>
+      <th>含义</th>
+      <th>转义字符</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>\n</td>
+      <td>换行</td>
+      <td>\t</td>
+      <td>水平制表</td>
+    </tr>
+    <tr>
+      <td>\v</td>
+      <td>垂直制表</td>
+      <td>\b</td>
+      <td>退格</td>
+    </tr>
+    <tr>
+      <td>\r</td>
+      <td>回车（不换行）</td>
+      <td>\f</td>
+      <td>换页</td>
+    </tr>
+    <tr>
+      <td>\a</td>
+      <td>响铃</td>
+      <td>\</td>
+      <td>反斜线</td>
+    </tr>
+    <tr>
+      <td>'</td>
+      <td>单引号</td>
+      <td>"</td>
+      <td>双引号</td>
+    </tr>
+    <tr>
+      <td>\ddd</td>
+      <td>3 位 8 进制代表的字符</td>
+      <td>\xhh</td>
+      <td>2 位 16 进制代表的字符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="变量">变量</h3>
+
+<ul>
+  <li>形式: <类型名称> <变量名称></变量名称></类型名称></li>
+  <li>介绍
+    <ul>
+      <li>变量代表一个有名字的、具有特殊属性的一个存储单元。</li>
+      <li>变量可以用来保存数据。</li>
+      <li>变量的值是可以改变的。</li>
+    </ul>
+  </li>
+  <li>标识符
+    <ul>
+      <li>变量的名字</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="数据类型">数据类型</h2>
+
+<h3 id="整形">整形</h3>
+
+<ul>
+  <li>编译系统分配给 int 类型数据2个字节或者4个字节（由具体的c编译系统自行决定）。</li>
+  <li>我们使用的gcc编译器为每个整数类型分配四个字节（32个 bit）</li>
+  <li>在存储单元中的存储方式是：用整数的补码形式存放。所以当4个字节的整数类型取值范围是 -2^31 ~ (2^31-1) 。</li>
+  <li>无符号基本整型表示为 unsigned int ，和 int 类型占有的字节数相同，取值范围是0~2^32-1。</li>
+</ul>
+
+<h4 id="短整形-short">短整形 short</h4>
+
+<ul>
+  <li>gcc 编译系统分配给 <code class="language-plaintext highlighter-rouge">short</code> 类型为 2 个字节，存储方式和 <code class="language-plaintext highlighter-rouge">int</code> 类型一样，也是补码的形式存储，取值范围是 -2^15 ~ 2^15-1</li>
+  <li>无符号短整型 <code class="language-plaintext highlighter-rouge">unsigned short</code> 取值范围是0~2^16-1</li>
+</ul>
+
+<h4 id="长整形-long">长整形 long</h4>
+
+<ul>
+  <li>gcc 编译系统分配给 long 类型为 8 个字节，存储方式和 <code class="language-plaintext highlighter-rouge">int</code> 类型一样，也是补码的形式存储，取值范围是 -2^63 ~ 2^63-1</li>
+  <li>unsigned long 取值范围是 0 ~ 2^64-1</li>
+</ul>
+
+<h3 id="浮点型">浮点型</h3>
+
+<h4 id="单精度-float">单精度 <code class="language-plaintext highlighter-rouge">float</code></h4>
+
+<ul>
+  <li>gcc编译系统为每一个 <code class="language-plaintext highlighter-rouge">float</code> 型变量分配4个字节，数值以规范化的二进制数指数形式存放在存储单元中。</li>
+  <li>在存储时，系统将实型数据分成小数部分和指数部分两个部分、分别存储。一个具体的例子如下，</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> +      0.314159    1
+ ↑         ↑        ↑
+符号     小数部分   指数部分
+</code></pre></div></div>
+
+<p>我们可以用下面的代码查看计算机里，单精度浮点数的范围。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;float.h&gt;
+
+int main() {
+    printf("Smallest positive: %.3e\n", FLT_MIN);
+    printf("Largest  positive: %.3e\n", FLT_MAX);
+}
+
+输出结果
+
+Smallest positive: 1.175e-38
+Largest  positive: 3.403e+38
+</code></pre>
+
+<h4 id="双精度-double">双精度 double</h4>
+
+<ul>
+  <li>为了能扩大数字的范围，用 8 个字节（64位）存储一个 <code class="language-plaintext highlighter-rouge">double</code> 型数据，可以得到 <code class="language-plaintext highlighter-rouge">15</code> 位有效数字</li>
+</ul>
+
+<h4 id="float-溢出">float 溢出</h4>
+
+<p>float 的有效位数是 7 位，这里赋值超过了</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    float a, b;
+    a = 123456.789e5;
+    b = a + 20;
+    printf("b - a = %f", b - a);
+    return 0;
+}
+
+输出结果
+
+b - a = 0.000000
+</code></pre>
+
+<p>溢出部分会被忽略，所以 b 和 a 的结果相同。将 float 改为 double 之后可以得到正确结果</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    double a, b;
+    a = 123456.789e5;
+    b = a + 20;
+    printf("b - a = %f", b - a);
+    return 0;
+}
+
+输出结果
+
+b - a = 20.000000
+</code></pre>
+
+<h3 id="字符类型-char">字符类型 char</h3>
+
+<h4 id="介绍">介绍</h4>
+
+<ul>
+  <li>c语言中，字符型的基本类型符是 <code class="language-plaintext highlighter-rouge">char</code>。</li>
+  <li>所有的编译系统中都规定以 1 个字节（8 位）来存放一个字符。</li>
+  <li>字符型数据在存储时，并不是把该字符本身存放到内存单元中，而是把该字符相应的 <strong>ASCII</strong> 码值存放到该存储单元中。</li>
+</ul>
+
+<h4 id="字符的输出">字符的输出</h4>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    char a, b;
+    a = 'c';  // 输入字符
+    b = 121;  // 输入 ascii 码
+    printf("a: %c,  b: %c   (char)\n", a, b);  // 打印字符
+    printf("a: %d, b: %d (int)\n", a, b);  // 打印 ascii 码
+    return 0;
+}
+
+输出结果
+
+a: c,  b: y   (char)
+a: 99, b: 121 (int)
+</code></pre>
+
+<p>我们可以对字符的 ASCII 码进行数学运算。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    char a, x;
+    int b;
+    a = 'a';
+    b = 1;
+    x = a + b; // increase 'c' by 1
+    printf("x is %c\n", x);
+    return 0;
+}
+
+输出结果
+
+x is b
+</code></pre>
+
+<h3 id="其他类型">其他类型</h3>
+
+<ul>
+  <li>构造类型
+    <ul>
+      <li>数组</li>
+      <li>字符串</li>
+      <li>结构体 struct</li>
+      <li>共用体 union</li>
+      <li>枚举类型</li>
+    </ul>
+  </li>
+  <li>指针类型</li>
+  <li>空类型 <code class="language-plaintext highlighter-rouge">void</code></li>
+</ul>
+
+<h3 id="强制类型转换">强制类型转换</h3>
+
+<p>格式：(类型名) (表达式)</p>
+
+<p>例子</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int a;
+    float b = 2.5;
+    a = (int) b;  // 类型转换
+    printf("(int) b is %d\n", a);
+    return 0;
+}
+
+输出结果
+
+(int) b is 2
+</code></pre>
+
+<h2 id="运算符">运算符</h2>
+
+<h3 id="基本运算符">基本运算符</h3>
+
+<pre><code class="language-C">x + y
+x - y
+x * y
+x / y
+x % y  // 取余数
+</code></pre>
+
+<p>整数和整数的结果是整数</p>
+
+<h3 id="自增自减运算符">自增、自减运算符</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">++i</code>: 先给 i ＋1，再使用 i</li>
+  <li><code class="language-plaintext highlighter-rouge">i++</code>:先使用 i，再给 i ＋1</li>
+  <li><code class="language-plaintext highlighter-rouge">--i</code>: 先给 i －1，再使用 i</li>
+  <li><code class="language-plaintext highlighter-rouge">i--</code>: 先使用 i，再给 i －1</li>
+</ul>
+
+<h3 id="不同数据的混合运算">不同数据的混合运算</h3>
+
+<ul>
+  <li>基本规则: 混合运算的时候，把低精度转换到高精度</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>类型（优先级从高到低）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>long double</td>
+    </tr>
+    <tr>
+      <td>double</td>
+    </tr>
+    <tr>
+      <td>float</td>
+    </tr>
+    <tr>
+      <td>long</td>
+    </tr>
+    <tr>
+      <td>unsigned int</td>
+    </tr>
+    <tr>
+      <td>int</td>
+    </tr>
+    <tr>
+      <td>short</td>
+    </tr>
+    <tr>
+      <td>char</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="数据的输入和输出">数据的输入和输出</h2>
+
+<h3 id="格式化字符">格式化字符</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">％d</code>: 带符号 - 十进制 - 整数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">％md</code>：以 <code class="language-plaintext highlighter-rouge">m</code> 指定的字段宽度输出，右对齐</li>
+      <li><code class="language-plaintext highlighter-rouge">％ld</code>：输出长整型数据</li>
+      <li><code class="language-plaintext highlighter-rouge">％mld</code>：输出指定宽度的长整型数据</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">%o</code>: 无符号 - 八进制 - 整数</li>
+  <li><code class="language-plaintext highlighter-rouge">%x</code>: 无符号 - 十六进制 - 整数</li>
+  <li><code class="language-plaintext highlighter-rouge">%u</code>: 无符号 - 十进制 - 整数</li>
+  <li><code class="language-plaintext highlighter-rouge">%f</code>: 小数点形式 - 单／双精度实数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">％α.βf</code>：数据占 <code class="language-plaintext highlighter-rouge">α</code> 列，其中小数点占 <code class="language-plaintext highlighter-rouge">β</code> 列</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">%e</code>: 指数形式 - 单／双精度实数</li>
+  <li><code class="language-plaintext highlighter-rouge">%g</code>: 选用输入／输出宽度较小的格式输出实数</li>
+  <li><code class="language-plaintext highlighter-rouge">%c</code>: 字符 - 单个字符</li>
+  <li><code class="language-plaintext highlighter-rouge">%s</code>: 字符 - 字符串</li>
+</ul>
+
+<h3 id="输入输出字符">输入输出字符</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">scanf</code>
+    <ul>
+      <li>格式：<code class="language-plaintext highlighter-rouge">scanf("%[fdcs]", &amp;var)</code></li>
+      <li>用 <code class="language-plaintext highlighter-rouge">%c</code> 格式声明输入字符时，空格字符和转义字符都是作为有效字符输入</li>
+      <li>输入的时候，要连续按下三个字母，中间不能有空格</li>
+      <li>用其它格式字符输入的时候，数字之间用空格隔开</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">putchar</code>
+    <ul>
+      <li>格式：<code class="language-plaintext highlighter-rouge">putchar(c)</code></li>
+      <li>输出变量 c 所代表的一个字符</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">getchar</code>
+    <ul>
+      <li>从输入设备上得到的字符</li>
+      <li>注意也可以输入回车字符</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="顺序结构设计">顺序结构设计</h2>
+
+<h3 id="条件表达式">条件表达式</h3>
+
+<p>格式：如果 (a&gt;b) 为真，则取 a，否则取 b</p>
+
+<pre><code class="language-C">max = (a &gt; b) ? a : b;
+</code></pre>
+
+<h3 id="while-循环">while 循环</h3>
+
+<p>下面两种写法等价</p>
+
+<p><code class="language-plaintext highlighter-rouge">while</code></p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+    while (i &lt;= 10){
+        i++;
+    }
+    printf("result is %d", i);
+    return 0;
+}
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">do ... while</code></p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+    do {
+        i++;
+    } while (i &lt;= 10);
+    printf("result is %d", i);
+    return 0;
+}
+</code></pre>
+
+<h3 id="for-循环">for 循环</h3>
+
+<p>下面是 for 循环的语法。注意条件语句中的分号，不是逗号。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 0;
+    for (i = 1; i &lt;=3; i++){
+        printf("i = %d\n", i);
+    }
+    return 0;
+}
+</code></pre>
+
+<p>条件语句</p>
+
+<p><code class="language-plaintext highlighter-rouge">(表达式_1; 表达式_2; 表达式_3)</code></p>
+
+<ul>
+  <li>表达式_1: 对一个值初始化。该表达式可以省略，但是它后面的「分号」不能省略。</li>
+  <li>表达式_2: 当该表达式为 真 的时候，循环继续。该表达式可以省略，但是它后面的「分号」不能省略。省略它之后，<code class="language-plaintext highlighter-rouge">for</code> 循环会无限循环。</li>
+  <li>表达式_3: 每一次循环的时候执行。</li>
+</ul>
+
+<h3 id="循环嵌套和跳出循环">循环嵌套和跳出循环</h3>
+
+<p>使用 <code class="language-plaintext highlighter-rouge">break</code> 可以跳出一层循环。下面的代码是一个例子（只有涉及变量 <code class="language-plaintext highlighter-rouge">j</code> 的循环被跳出了）。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int i, j;
+    for (i = 0; i &lt; 3; i++){
+        for (j=0; j &lt; 3; j++){
+            if (j == 2) break;
+            printf("i = %d, j = %d\n", i, j);
+        }
+    }
+}
+
+输出结果 （j 没有取 2 因为循环被 break）
+
+i = 0, j = 0
+i = 0, j = 1
+i = 1, j = 0
+i = 1, j = 1
+i = 2, j = 0
+i = 2, j = 1
+</code></pre>
+
+<h2 id="数组">数组</h2>
+
+<h3 id="一维数组">一维数组</h3>
+
+<p>下面介绍了 C 语言中，创建一个 含有 10 个数字的 数组的语法。</p>
+
+<pre><code class="language-C">int array[10];
+</code></pre>
+
+<p>我们可以用 常量表达式 指定数组长度。</p>
+
+<pre><code class="language-C">int array[2 * 5];
+</code></pre>
+
+<p>我们也可以用 变量 来指定数组长度。</p>
+
+<pre><code class="language-C">int n = 10;
+int array[n];
+</code></pre>
+
+<p>但是，我们不能用 变量 来指定数组长度，并且给它赋值。</p>
+
+<pre><code class="language-C">int n = 5;
+int array[n] = {1, 2, 3, 4, 5};
+
+报错
+
+variable-sized object may not be initialized  
+</code></pre>
+
+<p>当我们给数组赋值的时候，我们可以一次给所有元素赋值，也可以只给 部分元素 赋值。</p>
+
+<pre><code class="language-C">/* 完整赋值 */
+int array[3] = {1, 2, 3};    // -&gt; {1, 2, 3}
+/* 部分赋值 */
+int array[3] = {1, 2};       // -&gt; {1, 2, 0}
+/* 完整赋值，Warning Excess elements in array initializer */
+int array[3] = {1, 2, 3, 4}; // -&gt; {1, 2, 3}
+</code></pre>
+
+<h3 id="二维数组">二维数组</h3>
+
+<p>下面是创建 二维数组 的语法。</p>
+
+<pre><code class="language-C">类型符   数组名 [常量表达式][常量表达式]
+int     matrix[10][10] 
+</code></pre>
+
+<p>二维数组在内存中的 存放规则 如下。</p>
+
+<pre class="asciiart">
+┌─────────┐
+│ a[0][0] │
+│ a[0][1] │  第一行
+│ a[0][2] │
+├─────────┤
+│ a[1][0] │
+│ a[1][1] │  第二行
+│ a[1][2] │
+├─────────┤
+│ a[2][0] │
+│ a[2][1] │  第三行
+│ a[2][2] │
+└─────────┘
+</pre>
+
+<p>下面是常用的给 二维数组 赋值的方法。</p>
+
+<pre><code class="language-C">/* 整体赋值 */
+int matrix[3][2] = { {1, 2}, {3, 4}, {5, 6} };
+int matrix[3][2] = {1, 2, 3, 4, 5, 6};
+
+/* 部分赋值 */
+int matrix[3][2] = { {1}, {3}, {5} };
+</code></pre>
+
+<h3 id="字符数组字符串">字符数组（字符串）</h3>
+
+<p>在 C 语言中，字符串就是「字符组成的数组」。创建字符串的格式如下：</p>
+
+<pre><code class="language-C">char string[10];
+</code></pre>
+
+<p>由于 字符串就是数组，给它赋值的方法与 同数组赋值 的方法一致。</p>
+
+<pre><code class="language-C">/* 完整赋值 */
+char string[5] = {"H", "E", "L", "L", "O"};
+
+/* 部分赋值（剩下的元素会被「空字符 \0」填充） */
+char string[5] = {"H", "E", "L"};
+</code></pre>
+
+<p>我们可以在赋值的时候，省略长度。</p>
+
+<pre><code class="language-C">char string[] = {"H", "E", "L", "L", "O"};
+</code></pre>
+
+<p>我们也可以用下面的，更简单的方法来赋值。</p>
+
+<pre><code class="language-C">char string[] = {"hello world"};
+char string[] = "hello world";
+</code></pre>
+
+<p>c 语言编译器在用<strong>字符数组</strong>存储字符串时，会自动加一个 ’\0’ 作为<strong>结束符</strong></p>
+
+<p>我们可以使用下面的两个方法（<code class="language-plaintext highlighter-rouge">%s</code> 和 <code class="language-plaintext highlighter-rouge">puts</code>）来打印字符串。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    char string[] = "hello world\n";
+    printf("%s", string); // method 1
+    puts(string); // method 2
+    return 0;
+}
+</code></pre>
+
+<h3 id="字符串处理库-stringh">字符串处理库 <code class="language-plaintext highlighter-rouge">string.h</code></h3>
+
+<p>字符串处理库 <code class="language-plaintext highlighter-rouge">string.h</code> 提供了很多 方便操作字符串 的函数。</p>
+
+<ul>
+  <li>输入/输出</li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char string[5];
+    gets(string);  // 从标准输入获得字符串内容
+    puts(string);  // 打印字符串
+    return 0;
+}
+</code></pre>
+
+<ul>
+  <li>连接两个字符串 <code class="language-plaintext highlighter-rouge">strcat</code></li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char str1[20] = "hello "; // 长度必须足够包含 strcat 的结果
+    char str2[] = "world\n";
+    printf("%s", strcat(str1, str2));
+    printf("%s", str1);
+    return 0;
+}
+
+输出结果
+
+hello world
+hello world
+</code></pre>
+
+<ul>
+  <li>测字符串长度的函数 <code class="language-plaintext highlighter-rouge">strlen</code></li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char str[] = "hello world";
+    int length = strlen(str);
+    printf("String size is %d", length);
+    return 0;
+}
+
+输出结果
+
+String size is 11
+</code></pre>
+
+<ul>
+  <li>字符串 <code class="language-plaintext highlighter-rouge">strcpy</code></li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char A[10];
+    char B[] = "message";
+    strcpy(A, B);  // 将 B 的内容复制到 A
+    puts(A);
+    return 0;
+}
+
+输出结果
+
+message
+</code></pre>
+
+<ul>
+  <li>比较字符串 <code class="language-plaintext highlighter-rouge">strcmp</code></li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char A[] = "hello";
+    char B[] = "world";
+    int result = strcmp(A, B);
+    printf("%d", result);
+    return 0;
+}
+
+输出结果（负数，因为 h &lt; w）
+
+-15
+</code></pre>
+
+<p>比较规则：将两个字符串自左向右逐个字符比较（按照ASCII码值大小比较），直到出现不同的字符或者遇到’\0’</p>
+
+<ul>
+  <li>如果全部字符相同，则认为两个字符串相同。</li>
+  <li>若出现不同的字符，则以第 1 对不相同的字符的比较结果为准。</li>
+</ul>
+
+<p>例如： “A”&lt;“D”,”e”&gt;”E”,”these”&gt;”that”,”computer”&gt;”compare”</p>
+
+<p>比较结果由函数值返回：</p>
+
+<ul>
+  <li>字符串1 = 字符串2，则函数值为 0</li>
+  <li>字符串1 &gt; 字符串2，则函数值为一个「正」整数</li>
+  <li>字符串1 &lt; 字符串2，则函数值为一个「负」整数</li>
+</ul>
+
+<h2 id="指针">指针</h2>
+
+<h3 id="指针的基本用法">指针的基本用法</h3>
+
+<p>下面的例子展示了指针的基本用法。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 100, b =10;
+    int *p1, *p2;  // 两个指向「整形」变量的指针
+    p1 = &amp;a;  // 将 a 的地址 赋予给 p1
+    p2 = &amp;b;  // 将 b 的地址 赋予给 p2
+    
+    /* 输出变量的 值 */
+    printf("a = %d, b = %d\n", *p1, *p2);
+    
+    /* 输出变量的 地址 */
+    printf("a is in %#x, b is in %#x\n", p1, p2);
+    return 0;
+}
+
+输出结果
+
+a = 100, b = 10
+a is in 0xee9b71b8, b is in 0xee9b71b4
+</code></pre>
+
+<h3 id="运算符-1">运算符</h3>
+
+<p>取地址运算符 <code class="language-plaintext highlighter-rouge">&amp;</code> 和 指针运算符 <code class="language-plaintext highlighter-rouge">*</code> 处于第二优先级，仅次于括号。它们的结合方向是 从右到左。下面的表格展示了二者的差异。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>取地址运算符 &amp;</th>
+      <th>指针运算符 *</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>功能</td>
+      <td>取地址</td>
+      <td>指针运算（简介访问）</td>
+    </tr>
+    <tr>
+      <td>操作对象</td>
+      <td>「变量」或「数组元素」</td>
+      <td>「指针」或「指针表达式」</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="定义指针">定义指针</h3>
+
+<pre class="asciiart">            
+│int│*│pointer
+│   │ │
+│   │ │指针的名字            
+│   │ └─────────── 
+│   │ 指针指向的变量             
+│   └───────────── 
+│定义一个指针，指向一个整数变量                  
+└─────────────────
+</pre>
+
+<h3 id="引用指针">引用指针</h3>
+
+<p>给指针变量赋值的语法如下，使用 <code class="language-plaintext highlighter-rouge">&amp;</code></p>
+
+<pre><code class="language-C">/* 将变量 a 的地址赋予 pointer */
+pointer = &amp;a;
+</code></pre>
+
+<p>引用指针变量指向的变量，使用 <code class="language-plaintext highlighter-rouge">*</code></p>
+
+<pre><code class="language-C">/* 「使用」指针指向的变量 */
+printf("%d", *pointer);
+/* 对 指针指向的变量 「赋值」 */
+*pointer = 2;
+</code></pre>
+
+<h3 id="指针的应用">指针的应用</h3>
+
+<ul>
+  <li>通过函数改变实参。</li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    void swap(int *p1, int *p2);
+    int a = 1, b = 2;
+    int *p1 = &amp;a, *p2 = &amp;b;
+    swap(p1, p2);
+    printf("a = %d, b = %d\n", a, b);
+    return 0;
+}
+
+void swap(int *p1, int *p2){
+    int tmp = *p1;
+    *p1 = *p2;
+    *p2 = tmp;
+}
+
+输出结果
+
+a = 2, b = 1
+</code></pre>
+
+<ul>
+  <li>引用数组元素。</li>
+</ul>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int *p, a[3] = {1, 2, 3};
+    p = a; // same as p = &amp;a[0]
+    printf("pointing %d\n", *p);
+    p++;
+    printf("after p++, pointing %d\n", *p);
+    return 0;
+}
+
+输出结果
+
+pointing 1
+after p++, pointing 2
+</code></pre>
+
+<p>（<code class="language-plaintext highlighter-rouge">pointer = array</code>  这个表达式自动把指针指向函数的第一个元素）</p>
+
+<ul>
+  <li>字符串的赋值</li>
+</ul>
+
+<pre><code class="language-C">char str[5];
+str[0] = "I";  // 合法，对字符串的「元素」赋值
+str = "hello"; // 非法，str 是一个地址，是常量
+</code></pre>
+
+<h2 id="文件操作">文件操作</h2>
+
+<h3 id="打开文件">打开文件</h3>
+
+<pre><code class="language-C">char filename[10]
+FILE *f;
+f = fopen(filename, "w");
+</code></pre>
+
+<h3 id="关闭文件">关闭文件</h3>
+
+<pre><code class="language-C">fclose(f)
+</code></pre>
+
+<h3 id="写入文件">写入文件</h3>
+
+<pre><code class="language-C">fputc(input_char, f);
+</code></pre>
+
+<h3 id="读取文件">读取文件</h3>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    FILE *file_pointer;
+    char filename[] = "abc.txt", read_char;
+    file_pointer = fopen(filename, "r");
+    for (int i=0; i&lt;5; i++){
+        read_char = fgetc(file_pointer);
+        putchar(read_char);
+    }
+    fclose(file_pointer);
+    return 0;
+}
+
+输出结果
+
+Hello
+
+a.txt 内容：Hello World
+</code></pre>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

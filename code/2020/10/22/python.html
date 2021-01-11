@@ -172,7 +172,7 @@
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">'abcd'</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-   <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="s">f"Index: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">; Char: </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+   <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Index: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">; Char: </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
    <span class="p">...:</span> 
 <span class="n">Index</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">a</span>
 <span class="n">Index</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span> <span class="n">Char</span><span class="p">:</span> <span class="n">b</span>
@@ -507,7 +507,7 @@ Out[16]:
 
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">F</span><span class="p">):</span>
     <span class="p">...:</span>     <span class="k">def</span> <span class="nf">new_F</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>  <span class="c1"># 打印「被装饰的函数」的参数
-</span>    <span class="p">...:</span>         <span class="k">print</span><span class="p">(</span><span class="s">f"The input is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> and </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</span>    <span class="p">...:</span>         <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"The input is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> and </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
     <span class="p">...:</span>         <span class="k">return</span> <span class="n">F</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="p">...:</span>     <span class="k">return</span> <span class="n">new_F</span>
     <span class="p">...:</span> 
@@ -530,7 +530,7 @@ Out[16]:
 </span>    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="p">...:</span>         <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="p">...:</span>             <span class="k">print</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
-    <span class="p">...:</span>             <span class="k">print</span><span class="p">(</span><span class="s">f"the input is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> and </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">...:</span>             <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"the input is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> and </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
     <span class="p">...:</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="p">...:</span>         <span class="k">return</span> <span class="n">new_func</span>
     <span class="p">...:</span>     <span class="k">return</span> <span class="n">decorator</span>
@@ -962,7 +962,7 @@ a.append(b)
 <span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">crow_str</span> <span class="o">=</span> <span class="n">pickle</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">crow</span><span class="p">)</span>  <span class="c1"># 将 对象 转化成 字符串
 </span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">crow_str</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="s">b'</span><span class="se">\x80\x03</span><span class="s">c__main__</span><span class="se">\n</span><span class="s">bird</span><span class="se">\n</span><span class="s">q</span><span class="se">\x00</span><span class="s">)</span><span class="se">\x81</span><span class="s">q</span><span class="se">\x01</span><span class="s">.'</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="sa">b</span><span class="s">'</span><span class="se">\x80\x03</span><span class="s">c__main__</span><span class="se">\n</span><span class="s">bird</span><span class="se">\n</span><span class="s">q</span><span class="se">\x00</span><span class="s">)</span><span class="se">\x81</span><span class="s">q</span><span class="se">\x01</span><span class="s">.'</span>
 </code></pre></div></div>
 
 <p>之后，我们可以将这个字符串（<code class="language-plaintext highlighter-rouge">crow_str</code>）存储到硬盘上。当然，我们也可以使用 <code class="language-plaintext highlighter-rouge">pickle.dump()</code> 的方法，将上面两部合二为一。下面的代码展示了这个过程。</p>
@@ -1028,7 +1028,7 @@ a.append(b)
 <p>获得 shell 命令的输出</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"."</span><span class="p">])</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="s">b'file.txt</span><span class="se">\n</span><span class="s">'</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="sa">b</span><span class="s">'file.txt</span><span class="se">\n</span><span class="s">'</span>
 </code></pre></div></div>
 
 <h3 id="popen">Popen()</h3>
@@ -1103,7 +1103,7 @@ parent process is printing  <span class="c"># 父进程 在 子进程结束之�
 <span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">out</span> <span class="o">=</span> <span class="n">child_2</span><span class="p">.</span><span class="n">communicate</span><span class="p">()</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">out</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">(</span><span class="s">b'       4      29     167</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">(</span><span class="sa">b</span><span class="s">'       4      29     167</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">subprocess.PIPE</code> 实际上为文本流提供一个缓存区。<code class="language-plaintext highlighter-rouge">child_1</code> 的<code class="language-plaintext highlighter-rouge">stdout</code> 将文本输出到缓存区，随后 <code class="language-plaintext highlighter-rouge">child_2</code> 的 <code class="language-plaintext highlighter-rouge">stdin</code> 从该 <code class="language-plaintext highlighter-rouge">PIPE</code> 中将文本读取走。<code class="language-plaintext highlighter-rouge">child_2</code> 的输出文本也被存放在 <code class="language-plaintext highlighter-rouge">PIPE</code> 中，直到 <code class="language-plaintext highlighter-rouge">communicate()</code> 方法从 <code class="language-plaintext highlighter-rouge">PIPE</code> 中读取出 <code class="language-plaintext highlighter-rouge">PIPE</code> 中的文本。</p>
@@ -1112,7 +1112,7 @@ parent process is printing  <span class="c"># 父进程 在 子进程结束之�
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">"cat"</span><span class="p">],</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">c</span><span class="p">.</span><span class="n">communicate</span><span class="p">(</span><span class="s">b"Hello</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>  <span class="c1"># 相当于 echo Hello | cat
+<span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">c</span><span class="p">.</span><span class="n">communicate</span><span class="p">(</span><span class="sa">b</span><span class="s">"Hello</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>  <span class="c1"># 相当于 echo Hello | cat
 </span><span class="n">Hello</span>  <span class="c1"># cat 的结果：打印输入
 </span><span class="n">Out</span><span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>  <span class="c1"># 没有 stdout 和 stderr
 </span></code></pre></div></div>
@@ -1396,10 +1396,10 @@ parent process is printing  <span class="c"># 父进程 在 子进程结束之�
 
 <span class="c1"># receive message
 </span><span class="n">request</span> <span class="o">=</span> <span class="n">client_conn</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">f"the request of client is: </span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s">, connected by: </span><span class="si">{</span><span class="n">addr</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"the request of client is: </span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s">, connected by: </span><span class="si">{</span><span class="n">addr</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
 <span class="c1"># send message
-</span><span class="n">client_conn</span><span class="p">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">b'Yes'</span><span class="p">)</span>
+</span><span class="n">client_conn</span><span class="p">.</span><span class="n">sendall</span><span class="p">(</span><span class="sa">b</span><span class="s">'Yes'</span><span class="p">)</span>
 
 <span class="c1"># close connection
 </span><span class="n">client_conn</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
@@ -1413,7 +1413,7 @@ parent process is printing  <span class="c"># 父进程 在 子进程结束之�
 <span class="c1"># address
 </span><span class="n">HOST</span> <span class="o">=</span> <span class="s">'127.0.0.1'</span>
 <span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>
-<span class="n">request</span> <span class="o">=</span> <span class="s">b'can you hear me'</span>
+<span class="n">request</span> <span class="o">=</span> <span class="sa">b</span><span class="s">'can you hear me'</span>
 
 <span class="c1"># configure socket
 </span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="p">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
@@ -1422,7 +1422,7 @@ parent process is printing  <span class="c"># 父进程 在 子进程结束之�
 <span class="c1"># send request &amp; get reply
 </span><span class="n">s</span><span class="p">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 <span class="n">reply</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">f"the reply is </span><span class="si">{</span><span class="n">reply</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"the reply is </span><span class="si">{</span><span class="n">reply</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
 <span class="n">s</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div></div>
@@ -1488,8 +1488,8 @@ Content-Type: text/html
 
 <span class="c1"># Read picture, put into HTTP format
 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.png'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">pic_content</span> <span class="o">=</span> <span class="s">b'HTTP/1.1 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
-                  <span class="s">b'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
+    <span class="n">pic_content</span> <span class="o">=</span> <span class="sa">b</span><span class="s">'HTTP/1.1 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
+                  <span class="sa">b</span><span class="s">'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
     <span class="n">pic_content</span> <span class="o">+=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
 
 <span class="c1"># Configure socket
@@ -1555,8 +1555,8 @@ Content-Type: text/html
 
 <p>而 <code class="language-plaintext highlighter-rouge">pic_content</code> 的头信息 (Content-Type: image/jpg) 说明主体的类型为 jpg 图片 (image/jpg):</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pic_content</span> <span class="o">=</span> <span class="s">b'HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
-              <span class="s">b'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pic_content</span> <span class="o">=</span> <span class="sa">b</span><span class="s">'HTTP/1.x 200 OK</span><span class="se">\n</span><span class="s">'</span><span class="o">+</span>\
+              <span class="sa">b</span><span class="s">'Content-Type: image/jpeg</span><span class="se">\n\n</span><span class="s">'</span>
 </code></pre></div></div>
 
 <p>我们并没有写客户端程序，后面我们会用浏览器作为客户端。request 由客户端程序发给服务器。尽管 request 也可以像 response 那样分为三部分，request 的格式与 response 的格式并不相同。request 由客户发送给服务器，比如下面是一个request：</p>
