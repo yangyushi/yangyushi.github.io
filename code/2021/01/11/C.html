@@ -123,7 +123,12 @@
       <li><a href="#运算符-1" id="markdown-toc-运算符-1">运算符</a></li>
       <li><a href="#定义指针" id="markdown-toc-定义指针">定义指针</a></li>
       <li><a href="#引用指针" id="markdown-toc-引用指针">引用指针</a></li>
+      <li><a href="#指向任意类型的指针" id="markdown-toc-指向任意类型的指针">指向任意类型的指针</a></li>
+      <li><a href="#指针的指针" id="markdown-toc-指针的指针">指针的指针</a></li>
+      <li><a href="#指向函数的指针" id="markdown-toc-指向函数的指针">指向函数的指针</a></li>
       <li><a href="#指针的应用" id="markdown-toc-指针的应用">指针的应用</a></li>
+      <li><a href="#二维数组-和-指针的指针" id="markdown-toc-二维数组-和-指针的指针">二维数组 和 指针的指针</a></li>
+      <li><a href="#不同指针声明方法" id="markdown-toc-不同指针声明方法">不同指针声明方法</a></li>
     </ul>
   </li>
   <li><a href="#文件操作" id="markdown-toc-文件操作">文件操作</a>    <ul>
@@ -947,17 +952,43 @@ a is in 0xee9b71b8, b is in 0xee9b71b4
   </tbody>
 </table>
 
+<p>我们也可以使用 <code class="language-plaintext highlighter-rouge">+ / -</code> 运算指针。这样的效果是，让指针指向一个 新的地址。请看下面的例子，</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 1;
+    int *p = &amp;a;
+    printf("%p\n", p);
+    printf("%p\n", ++p);
+}
+
+运算结果
+  
+0x7ffee209e1bc
+0x7ffee209e1c0   上面的地址 +4，因为一个整数占用 4 个 bit
+</code></pre>
+
+<p>在操作数组的时候，我们可以用「下标运算符<code class="language-plaintext highlighter-rouge">[]</code>」来获取元素。下标运算符是指针运算符的简写。下面的两种形式是等价的。</p>
+
+<pre><code class="language-C">p[i]   &lt;---&gt; *(p + i)
+</code></pre>
+
+<p>由于加法的可交换性，下面的（奇怪的）形式也是等价的。</p>
+
+<pre><code class="language-C">p[i]  &lt;---&gt;  *(p + i)  &lt;---&gt;  *(i + p)  &lt;---&gt;  i[p]
+</code></pre>
+
 <h3 id="定义指针">定义指针</h3>
 
 <pre class="asciiart">            
 │int│*│pointer
-│   │ │
-│   │ │指针的名字            
-│   │ └─────────── 
-│   │ 指针指向的变量             
-│   └───────────── 
+│   │ │           指针的名字            
+│   │ └─────────────────── 
+│   │          指针指向的变量             
+│   └─────────────────────
 │定义一个指针，指向一个整数变量                  
-└─────────────────
+└─────────────────────────
 </pre>
 
 <h3 id="引用指针">引用指针</h3>
@@ -974,6 +1005,77 @@ pointer = &amp;a;
 printf("%d", *pointer);
 /* 对 指针指向的变量 「赋值」 */
 *pointer = 2;
+</code></pre>
+
+<h3 id="指向任意类型的指针">指向任意类型的指针</h3>
+
+<p>C 语言为我们提供了 <code class="language-plaintext highlighter-rouge">void *</code>，用于创建指向任意类型的指针。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 5;
+    void *p;
+    p = &amp;a;
+    printf("%d\n", *p);  // 会报错，因为不知道 p 指向的内容 的类型
+    printf("%d\n", * (int*) p);  // 将指针指向的变量定义为 int
+}
+</code></pre>
+
+<p>我们不使用 <code class="language-plaintext highlighter-rouge">void</code> 的原因是，在给指针赋值之后，指针不知道自己指向的变量的类型。所以，我们没有办法直接使用 解除引用 之后的指针。</p>
+
+<h3 id="指针的指针">指针的指针</h3>
+
+<p>我们也可以创建，指向指针的指针。一个非常简单的例子如下。</p>
+
+<pre><code class="language-C">int value = 5;
+int *ptr = &amp;value; // 普通的指针
+int *ptr_to_ptr = &amp;ptr; // 指针的指针
+</code></pre>
+
+<p>注意，我们<strong>不能</strong>连续用两次 <code class="language-plaintext highlighter-rouge">&amp;</code> 来创建指针的指针。换言之，下面的代码是错误的。</p>
+
+<pre><code class="language-C">int value = 5;
+int **ptr_to_ptr = &amp;&amp;value; // 错误的创建方式
+</code></pre>
+
+<p>我们可以直接创建一个 空指针 <code class="language-plaintext highlighter-rouge">nullptr</code>，方法如下</p>
+
+<pre><code class="language-C">int **ptr_to_ptr = nullptr;
+</code></pre>
+
+<p>我们可以使用 指针的指针 来处理「包含指针的数组」。下面代码给出了一个示范。</p>
+
+<pre><code class="language-C">int **array = new int*[10];  // 分配一个数组，包含 10 个整数指针
+</code></pre>
+
+<h3 id="指向函数的指针">指向函数的指针</h3>
+
+<p>函数可以 在表达式中 被解读成「指向函数的指针」。我们也可以创建新的指针，来指向某个函数。下面的代码展示了一个 指向函数的指针。</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+int sum(int a, int b){
+    return a + b;
+}
+
+int main() {
+    int (*func_ptr) (int, int);  // 创建指针
+    func_ptr = sum;  // 给指针赋值
+    int result = func_ptr(1, 2);  // 使用指针，不需要解引用
+    printf("%d\n", result);
+}
+</code></pre>
+
+<p>我们也可以创建「指向函数的指针 的 数组」。一个例子如下。</p>
+
+<pre><code class="language-C">int (*func_table[]) (double) = {
+  func0,  // 这些函数接受 double 参数，输出整数
+  func1,
+  func2
+};
+
+func_table[0](0.5)  // 使用函数
 </code></pre>
 
 <h3 id="指针的应用">指针的应用</h3>
@@ -1035,6 +1137,70 @@ after p++, pointing 2
 str[0] = "I";  // 合法，对字符串的「元素」赋值
 str = "hello"; // 非法，str 是一个地址，是常量
 </code></pre>
+
+<h3 id="二维数组-和-指针的指针">二维数组 和 指针的指针</h3>
+
+<p>假设我们创建了二维数组 <code class="language-plaintext highlighter-rouge">A[m][n]</code>, 那么 <code class="language-plaintext highlighter-rouge">A[0]</code> 指向第 1 行的地址，<code class="language-plaintext highlighter-rouge">A[0][0]</code> 指向第一行第一列。总体上，下面的关系成立。</p>
+
+<pre><code class="language-C">*A = A[0]
+**A = A[0][0]
+*(A + i) = A[i]
+&amp;A[i][0] = &amp;(*(A[i] + 0)) = A[i]
+A[i][j] = *(A[i] + j) = *(*(A + i) + j)
+</code></pre>
+
+<p>假设 A 是一个二维 <code class="language-plaintext highlighter-rouge">int</code> 数组，那么在 C 语言里，A 其实是一个 指针的指针，<code class="language-plaintext highlighter-rouge">int**</code>。下面是一些与 A 相关的不同的 地址/指针 类型。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">&amp;A</code> ：整个「指针的指针」的地址。</li>
+  <li><code class="language-plaintext highlighter-rouge">&amp;A[0]</code>：与 A 相同，是「第一行」的地址。</li>
+  <li><code class="language-plaintext highlighter-rouge">&amp;A[0][0]</code>：第一行第一列的地址，是一个 <code class="language-plaintext highlighter-rouge">int</code>。</li>
+  <li><code class="language-plaintext highlighter-rouge">A</code>：指向指针的指针，相当于 <code class="language-plaintext highlighter-rouge">int (*) [n]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">*A</code>: 指向整数的指针，相当于 <code class="language-plaintext highlighter-rouge">int *</code></li>
+</ul>
+
+<h3 id="不同指针声明方法">不同指针声明方法</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>C 语言</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int var</code></td>
+      <td><code class="language-plaintext highlighter-rouge">var</code> 是整形</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int var[10]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">var</code> 是整数的数组</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int var[10][3]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">var</code> 是整数的二维数组</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int *var[10]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">var</code> 是「指向整数的指针」的数组</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">double (*var)[3];</code></td>
+      <td><code class="language-plaintext highlighter-rouge">var</code> 是指向「双精度浮点数数组」的指针</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int func(int a);</code></td>
+      <td><code class="language-plaintext highlighter-rouge">func</code> 是接受整数参数，返回整数的函数</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int (*func_p)(int a);</code></td>
+      <td><code class="language-plaintext highlighter-rouge">func_p</code>  是指向「接受整数参数，返回整数的函数」的指针</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>C 语言的声明不能按照从左到右（或者从右到左）的顺序解读。我们并没有很好的办法理解 C 语言的声明。</p>
 
 <h2 id="文件操作">文件操作</h2>
 
