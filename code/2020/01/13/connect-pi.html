@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Connect to Raspeberry Pi via Ethernet</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    13 Jan 2020
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#ssh" id="markdown-toc-ssh">SSH</a></li>
+  <li><a href="#vnc-viewer" id="markdown-toc-vnc-viewer">VNC Viewer</a></li>
+</ul>
+<hr />
+
+<p>This post recoreded how I connected to my raspberry pi from a Ubuntu PC via ethernet. The raspberry pi is installed with the <a href="https://www.raspberrypi.org/software/operating-systems/">Raspberry Pi OS</a> (Jan 2021). I spend embarransingly long time to figure it out.</p>
+
+<hr />
+
+<h2 id="ssh">SSH</h2>
+
+<p>For a new raspeberry Pi (3B), I enable all of its interfaces in the configuration. Then I input the following command.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh pi@raspberrypi.local
+</code></pre></div></div>
+
+<p>I get some warning, and following the warning, I did</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-f</span> <span class="s2">"/home/yushi/.ssh/known_hosts"</span> <span class="nt">-R</span> <span class="s2">"raspberrypi.local"</span>
+</code></pre></div></div>
+
+<p>Then I did the same command again.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh pi@raspberrypi.local
+</code></pre></div></div>
+
+<p>which would require the password on the chip (<code class="language-plaintext highlighter-rouge">raspberry</code> by default). After that, the <code class="language-plaintext highlighter-rouge">ssh</code> connection is established!</p>
+
+<h2 id="vnc-viewer">VNC Viewer</h2>
+
+<p>It is sometimes convenient to take a look at the desktop of the raspberry pi. I find it very convenient when switching between WIFI networks. The very convenient software that helps is the VNC viewer. I installed it on my Ubuntu PC. And I started a new connection via <code class="language-plaintext highlighter-rouge">File -&gt; New connection...</code>. In the <code class="language-plaintext highlighter-rouge">VNC Server</code> entry, I entered <code class="language-plaintext highlighter-rouge">raspberrypi.local</code>. Then I clicked the new connection, inputed the username (<code class="language-plaintext highlighter-rouge">pi</code>) and the password (<code class="language-plaintext highlighter-rouge">raspberry</code>), it worked!</p>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
