@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jupyter Notebook Tricks</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    23 Jan 2021
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#install--uninstall-a-kernel" id="markdown-toc-install--uninstall-a-kernel">Install / Uninstall a Kernel</a></li>
+  <li><a href="#install-image-and-resize" id="markdown-toc-install-image-and-resize">Install Image and Resize</a></li>
+  <li><a href="#reload-modules" id="markdown-toc-reload-modules">Reload Modules</a></li>
+</ul>
+<h2 id="install--uninstall-a-kernel">Install / Uninstall a Kernel</h2>
+
+<p>If I have many multiple versions of Python install on my machine, I would want to use them <strong>separately</strong> and <strong>clarely</strong> in jupyter notebook. For instance, if I have the versions of <code class="language-plaintext highlighter-rouge">3.6.8</code>, <code class="language-plaintext highlighter-rouge">3.7.3</code>, <code class="language-plaintext highlighter-rouge">3.8.1</code> and <code class="language-plaintext highlighter-rouge">3.9.0</code>, I would not want to have a kernal naming <code class="language-plaintext highlighter-rouge">Python3</code>, because this is not specific.</p>
+
+<p>To be more specific, I use the following command to install those kernels separately, with special names such as <code class="language-plaintext highlighter-rouge">Python368</code>.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># install python to the kernel, customise the NAME of the kernel</span>
+pip <span class="nb">install </span>ipykernel
+python <span class="nt">-m</span> ipykernel <span class="nb">install</span> <span class="nt">--user</span> <span class="nt">--name</span> NAME <span class="nt">--display-name</span> <span class="s2">"NAME"</span>
+
+<span class="c"># uninstall a particular kernel</span>
+jupyter kernelspec uninstall NAME
+</code></pre></div></div>
+
+<h2 id="install-image-and-resize">Install Image and Resize</h2>
+
+<p>The default chose of inserting an image into the markdown cell of jupyter notebook is the following line.</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">![](</span><span class="sx">link_to_image</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>However, the image size is fixed in this size, and quite often the image is way too big. To insert an image with the desired size, I will need to write the <code class="language-plaintext highlighter-rouge">html</code> code, instead of the markdown.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">'image'</span> <span class="na">alt=</span><span class="s">"Drawing"</span> <span class="na">style=</span><span class="s">"width: 200px;"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>(Caveat: the render would not work on GitHub.)</p>
+
+<h2 id="reload-modules">Reload Modules</h2>
+
+<p>If I am developing a module, and testing it on a jupyter notebook, I would add the following lines to the beginning of the notebook.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>With these magical commands, the modifications on the module code would immediately affect the result on the jupyter notebook.</p>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
