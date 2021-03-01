@@ -58,14 +58,23 @@
 
 <div class="post center">
     <ul id="markdown-toc">
+  <li><a href="#setting-up" id="markdown-toc-setting-up">Setting up</a></li>
   <li><a href="#load-image--measurements" id="markdown-toc-load-image--measurements">Load Image &amp; measurements</a></li>
-  <li><a href="#affine-rectified-image" id="markdown-toc-affine-rectified-image">Affine rectified image</a>    <ul>
-      <li><a href="#measure-coordinates-in-the-affined-transformed-image" id="markdown-toc-measure-coordinates-in-the-affined-transformed-image">Measure Coordinates in the Affined transformed Image</a></li>
-      <li><a href="#calculate-the-homography-from-affine-image-to-similar-image" id="markdown-toc-calculate-the-homography-from-affine-image-to-similar-image">Calculate the homography from affine image to similar image</a></li>
-      <li><a href="#composing-the-transformation" id="markdown-toc-composing-the-transformation">Composing the transformation</a></li>
-    </ul>
-  </li>
+  <li><a href="#calculate-the-line-at-infinity" id="markdown-toc-calculate-the-line-at-infinity">Calculate the Line at Infinity</a></li>
+  <li><a href="#affine-rectified-image" id="markdown-toc-affine-rectified-image">Affine rectified image</a></li>
+  <li><a href="#measure-coordinates-again" id="markdown-toc-measure-coordinates-again">Measure Coordinates Again</a></li>
+  <li><a href="#calculate-the-homography" id="markdown-toc-calculate-the-homography">Calculate the homography</a></li>
+  <li><a href="#composing-the-transformation" id="markdown-toc-composing-the-transformation">Composing the transformation</a></li>
 </ul>
+<hr />
+
+<p>This post is a not about the way to remove the perspective of the image.</p>
+
+<hr />
+
+<h2 id="setting-up">Setting up</h2>
+
+<p>I used Python to perform the task. I used the following libraries.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
@@ -75,16 +84,16 @@
 
 <h2 id="load-image--measurements">Load Image &amp; measurements</h2>
 
+<p>With the <code class="language-plaintext highlighter-rouge">Image</code> module from library <code class="language-plaintext highlighter-rouge">Pillow</code> (<code class="language-plaintext highlighter-rouge">PIL</code>), it is very easy to load an image as a Python object or numpy array.</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'cam-1-calib.tiff'</span><span class="p">).</span><span class="n">convert</span><span class="p">(</span><span class="s">"L"</span><span class="p">))</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">px</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">pz</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mf">1335.083</span><span class="p">,</span><span class="mi">495</span><span class="p">],</span>
-    <span class="p">[</span><span class="mf">1411.500</span><span class="p">,</span><span class="mf">880.625</span><span class="p">],</span>
-    <span class="p">[</span><span class="mf">1042.562</span><span class="p">,</span><span class="mf">504.375</span><span class="p">],</span>
-    <span class="p">[</span><span class="mf">1059.344</span><span class="p">,</span><span class="mf">894.500</span><span class="p">],</span>
-    <span class="p">[</span><span class="mf">1052.375</span><span class="p">,</span> <span class="mf">735.562</span><span class="p">],</span>
-    <span class="p">[</span><span class="mf">1381.000</span><span class="p">,</span> <span class="mf">723.833</span><span class="p">]</span>
+<p>We need to measure several points on the image, to get two different parallel lines and orthogonal lines. Thanks to the nature of the picture (it is a chessboard grid), measureing some grid points would do the trick.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">px</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">pz</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span>  <span class="c1"># manually measured grid points
+</span>    <span class="p">[</span><span class="mf">1335.083</span><span class="p">,</span> <span class="mi">495</span><span class="p">],</span> <span class="p">[</span><span class="mf">1411.500</span><span class="p">,</span> <span class="mf">880.625</span><span class="p">],</span> <span class="p">[</span><span class="mf">1042.562</span><span class="p">,</span> <span class="mf">504.375</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">1059.344</span><span class="p">,</span> <span class="mf">894.500</span><span class="p">],</span> <span class="p">[</span><span class="mf">1052.375</span><span class="p">,</span> <span class="mf">735.562</span><span class="p">],</span> <span class="p">[</span><span class="mf">1381.000</span><span class="p">,</span> <span class="mf">723.833</span><span class="p">]</span>
 <span class="p">])</span>
 
 <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">px</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">pz</span><span class="p">]</span>
@@ -93,13 +102,29 @@
 <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'x'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">72</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">900</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/remove_perspective/output_2_0.png" alt="png" /></p>
+<p>This picture is the ouput of the above code block.</p>
+
+<p><img src="/assets/images/remove_perspective/output_2_0.png" alt="" /></p>
+
+<p>The line connecting point 1 and point 3 ($\mathbf{l} _ {13}$) is parallel to the line connecting point y and point z ($\mathbf{l} _ {yz}$). Similarilly, we have the following relationships.</p>
+
+\[\begin{aligned}
+\mathbf{l}_{13} &amp;\parallel \mathbf{l}_{yz} \parallel \mathbf{l}_{2x} \\
+\mathbf{l}_{32} &amp;\parallel \mathbf{l}_{1x} \\
+\mathbf{l}_{32} &amp;\perp \mathbf{l}_{2x} \\
+\mathbf{l}_{xy} &amp;\perp \mathbf{l}_{z2} \\
+\end{aligned}\]
+
+<h2 id="calculate-the-line-at-infinity">Calculate the Line at Infinity</h2>
+
+<p>The following code block calculate the line at infinity ($\mathbf{l} _ {\infty}$), which will be used to recorve the information about parallel lines in the image.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pxh</span><span class="p">,</span> <span class="n">p1h</span><span class="p">,</span> <span class="n">p2h</span><span class="p">,</span> <span class="n">p3h</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">])]</span>
 <span class="n">l13</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p1h</span><span class="p">,</span> <span class="n">p3h</span><span class="p">)</span>
@@ -123,15 +148,19 @@
 <span class="k">print</span><span class="p">(</span><span class="n">l_inf</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p>The out put image is below. The $\mathbf{l} _ {\infty}$ is very far away from the image (which is a small yellow patch).</p>
+
 <p><img src="/assets/images/remove_perspective/output_3_0.png" alt="png" /></p>
+
+<p>This is the homogeneous representation of $\mathbf{l} _ {\infty}$.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[-2.60516041e-06  7.16055835e-04  1.00000000e+00]
 </code></pre></div></div>
 
-<h1 id="affine-rectified-image">Affine rectified image</h1>
+<h2 id="affine-rectified-image">Affine rectified image</h2>
 
 <ul>
-  <li>If we apply the transformation obtained from $l_\infty$, we get a new image</li>
+  <li>If we apply the transformation obtained from $\mathbf{l} _ {\infty}$, we get a new image</li>
   <li>In such image, parallel line in real life is parallel in the image</li>
 </ul>
 
@@ -145,15 +174,19 @@
 <span class="n">img_affine</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p>This is the result. In this image all the parallel lines are parallel now.</p>
+
 <p><img src="/assets/images/remove_perspective/output_5_0.png" alt="png" /></p>
 
-<h2 id="measure-coordinates-in-the-affined-transformed-image">Measure Coordinates in the Affined transformed Image</h2>
+<h2 id="measure-coordinates-again">Measure Coordinates Again</h2>
 
 <ul>
   <li>Now we want to recover such information: perpendicular lines in real life should be perpendicular in the image</li>
   <li>This is to say, we want our image to be the result of, not an affine transformation, but a similar transformation.</li>
-  <li>We do this by specifying two perpendicular pairs in the image. In this case, it is line x1 &amp; x2, and line 2z &amp; 3y.</li>
+  <li>We do this by specifying two perpendicular pairs in the image. In this case, it is $\mathbf{l} _ {x1}$ &amp; $\mathbf{l} _ {x2}$; and also $\mathbf{l} _ {2z}$ &amp; $\mathbf{l} _ {3y}$.</li>
 </ul>
+
+<p>The following code demonstratethe calculation procedure.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">points_A</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
     <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">H</span> <span class="o">@</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">points</span>
@@ -178,14 +211,13 @@
 <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p>The image illustrates the measurement results. Notice that the perpendicular lines (in real life) are not perpendicular in the image.</p>
+
 <p><img src="/assets/images/remove_perspective/output_7_0.png" alt="png" /></p>
 
-<h2 id="calculate-the-homography-from-affine-image-to-similar-image">Calculate the homography from affine image to similar image</h2>
+<h2 id="calculate-the-homography">Calculate the homography</h2>
 
-<ul>
-  <li>Notice the result is <strong>NOT</strong> equivelant to an image taken from a top view, even though it looks very similar. (Image from the top view is still a projective transformation)</li>
-  <li>It is the similar transformation of the plane of the chessboard. In real 3D space, the distances and angles are not invariant if they were not on the same plane of the chessboard.</li>
-</ul>
+<p>The following code calculate the homography from the affine image to similar image.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># first orthogonal pair, x1 &amp; x2
 </span><span class="n">lx2_Ah</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">px_Ah</span><span class="p">,</span> <span class="n">p2_Ah</span><span class="p">)</span>
@@ -236,7 +268,14 @@
 <span class="n">img_similar</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'similar.png'</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p>The result is the following image. Look at the fact that the chessboard obtains its origional rectangular shape now, which means the perspective is removed effectively.</p>
+
 <p><img src="/assets/images/remove_perspective/output_9_0.png" alt="png" /></p>
+
+<ul>
+  <li>Notice the result is <strong>NOT</strong> equivelant to an image taken from a top view, even though it looks very similar. (Image from the top view is still a projective transformation)</li>
+  <li>It is the similar transformation of the plane of the chessboard. In real 3D space, the distances and angles are not invariant if they were not on the same plane of the chessboard.</li>
+</ul>
 
 <h2 id="composing-the-transformation">Composing the transformation</h2>
 
