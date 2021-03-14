@@ -896,25 +896,30 @@ int main(){
 
 <h3 id="vim-配置">Vim 配置</h3>
 
-<p>我使用编写 C++ 项目的偏好如下，这并不是值得推荐的习惯。</p>
+<p>我编写 C++ 代码的时候，习惯使用 vim 作为编辑器，搭配插件 <a href="https://github.com/dense-analysis/ale">ale</a> 和 <a href="https://github.com/ycm-core/YouCompleteMe">YouCompleteMe</a>。前者是作用是 检查代码语法，后者的作用是 代码的自动补全。在插件 <a href="https://github.com/dense-analysis/ale">ale</a> 进行 语法检查 的时候，我们需要「告诉」vim 我们的编译选项。由于 不同项目使用的 编译选项 不同，所以我倾向于 在不同项目下 使用不同的 vim 配置。具体的做法如下。</p>
 
-<ul>
-  <li>手写 <code class="language-plaintext highlighter-rouge">Makefile</code>。</li>
-  <li>使用 vim 作为编辑器，搭配插件 <a href="https://github.com/dense-analysis/ale">ale</a> 和 <a href="https://github.com/ycm-core/YouCompleteMe">YouCompleteMe</a>。</li>
-</ul>
-
-<p>在 <a href="https://github.com/dense-analysis/ale">ale</a> 进行语法检查的时候，我们需要「告诉」vim 我们的编译选项。由于 不同项目使用的 编译选项 不同，所以我倾向于 在不同项目下 使用不同的 vim 配置。具体的做法如下。</p>
-
-<p>首先，向系统的 <code class="language-plaintext highlighter-rouge">vimrc</code> 添加下面两行代码。大部分 Linux 系统下，这个文件处于 <code class="language-plaintext highlighter-rouge">$HOME/.vim/vimrc</code>。这两行代码能够让 vim 读取「当前文件夹」下的 配置文件。</p>
+<p>首先，向系统的 VIM 配置文件 (<code class="language-plaintext highlighter-rouge">vimrc</code>) 添加下面两行代码。大部分 Linux 系统下，这个文件处于 <code class="language-plaintext highlighter-rouge">$HOME/.vimrc</code> 或者 <code class="language-plaintext highlighter-rouge">$HOME/.vim/vimrc</code>。</p>
 
 <div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">set</span> <span class="nb">exrc</span>
 <span class="k">set</span> <span class="nb">secure</span>
 </code></pre></div></div>
 
-<p>其次，在 C++ 项目的文件夹里，创建一个 命名为 <code class="language-plaintext highlighter-rouge">.vimrc</code> 的文件，加入下面的代码。这一行代码能够让 <a href="https://github.com/dense-analysis/ale">ale</a> 分析 <code class="language-plaintext highlighter-rouge">Makefile</code>，自动找出需要 include 的文件夹、library 的位置、以及 C++ 标准的版本。</p>
+<p>上面的 两行代码 能够让 vim 读取「当前的工作文件夹」下的 配置文件。其次，在 C++ 项目的文件夹（即，我们的工作文件夹）里，创建一个 命名为 <code class="language-plaintext highlighter-rouge">.vimrc</code> 的文件，加入下面的代码。</p>
 
-<div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">g:ale_c_parse_makefile</span><span class="p">=</span><span class="s2">"./Makefile"</span>
+<div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">g:ale_linters</span> <span class="p">=</span> <span class="p">{</span><span class="s1">'cpp'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'clang'</span><span class="p">]}</span>  " use clang <span class="k">compiler</span>
+<span class="k">let</span> cpp_flags <span class="p">=</span> <span class="s1">'-std=c++11 -Wall '</span>  " <span class="k">c</span><span class="p">++</span> standard &amp; show <span class="k">all</span> warnings
+<span class="k">let</span> <span class="nv">g:ale_cpp_clang_options</span> <span class="p">=</span> cpp_flags  " <span class="k">set</span> the flag <span class="k">for</span> linting
 </code></pre></div></div>
+
+<p>我们可以在 <code class="language-plaintext highlighter-rouge">cpp_flags</code> 里加入更多的参数，来满足项目的需要。下面的 <code class="language-plaintext highlighter-rouge">.vimrc</code> 文件是我在使用 <code class="language-plaintext highlighter-rouge">Eigen</code> 库时使用的参数。</p>
+
+<div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">g:ale_linters</span> <span class="p">=</span> <span class="p">{</span><span class="s1">'cpp'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'clang'</span><span class="p">]}</span>  " use clang <span class="k">compiler</span>
+<span class="k">let</span> cpp_flags <span class="p">=</span> <span class="s1">'-std=c++11 -Wall '</span>  " <span class="k">c</span><span class="p">++</span> standard &amp; show <span class="k">all</span> warnings
+<span class="k">let</span> cpp_flags <span class="p">=</span> cpp_flags <span class="p">.</span> <span class="s1">'-I/usr/local/include/eigen3'</span> <span class="p">.</span> <span class="s1">' '</span>  " <span class="k">for</span> eigen
+<span class="k">let</span> cpp_flags <span class="p">=</span> cpp_flags <span class="p">.</span> <span class="s1">'-Wno-unknown-warning-option'</span> <span class="p">.</span> <span class="s1">' '</span>  " supress eigen warnings
+<span class="k">let</span> <span class="nv">g:ale_cpp_clang_options</span> <span class="p">=</span> cpp_flags  " <span class="k">set</span> the flag <span class="k">for</span> linting
+</code></pre></div></div>
+
 
 </div>
 
