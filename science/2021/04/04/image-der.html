@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Modeling Confocal Images</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/about.html
+            
+        >
+            About
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    04 Apr 2021
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#the-model" id="markdown-toc-the-model">The model</a></li>
+  <li><a href="#the-derivative-of-the-model" id="markdown-toc-the-derivative-of-the-model">The Derivative of the Model</a></li>
+  <li><a href="#numerical-implementation" id="markdown-toc-numerical-implementation">Numerical Implementation</a></li>
+</ul>
+<h2 id="the-model">The model</h2>
+
+<p>I treat each particle as a hard sphere, with gaussian blur in 3D. Because of the lower z-resolution of the confocal microscopy, the blur is anisotropic. For particle $i$, I can write down its contribution ($\mathrm{S}_i$) to the the image as,</p>
+
+\[\mathrm{S}_i = \mathrm{I}_i \cdot (\mathrm{P}_i \ast \mathrm{G})\]
+
+<p>where $\mathrm{I}$ is the intensity of the spehere, $\mathrm{P}$ is a “Platonic” particle without blur, and $\mathrm{G}$ is the gaussian kernel. A good algorithm to simulate the Platonic particle can be found in the SI of <a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.7.041007">this nice PRX paper about particle tracking</a>. As a result, the model of a confocal image ($\mathrm{M}$) can be written as</p>
+
+\[\mathrm{M} = \sum_i{\mathrm{S}_i}.\]
+
+<p>In a more operational way, I can simulat a confocal image, knowing a collection of particle locations, the radii of these particles and their intensitiy values, following the pseudo-code,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_particles</span><span class="p">):</span>
+  <span class="n">position</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+  <span class="n">intensity</span> <span class="o">=</span> <span class="n">intensities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+  <span class="n">radius</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+  <span class="n">P</span> <span class="o">=</span> <span class="n">generate_single_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+  <span class="n">box</span> <span class="o">=</span> <span class="n">get_sphere_container</span><span class="p">(</span><span class="n">positoin</span><span class="p">)</span>
+  <span class="n">M</span><span class="p">[</span><span class="n">box</span><span class="p">]</span> <span class="o">+=</span> <span class="n">P</span> <span class="o">*</span> <span class="n">intensity</span>
+<span class="n">apply_kernel</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="the-derivative-of-the-model">The Derivative of the Model</h2>
+
+<p>If we are comparing the model with the experimental data, $\mathrm{E}$, we can take the squared difference as a measure of cost ($\mathrm{C}$). A good model should then be the model that minimise the difference, written as,</p>
+
+\[\begin{aligned}
+\mathrm{C} &amp;= \sum_x\sum_y\sum_z(\mathrm{M} - \mathrm{E})^2 \cdot \mathrm{W}\\
+&amp;= \underbrace{\sum_x\sum_y\sum_z}_{\text{sum over all voxels}}\mathrm{D}^2 \cdot \mathrm{W}
+\end{aligned}\]
+
+<p>where $\mathrm{D}$ is the difference between the experimental image and simulation, and $\mathrm{W}$ is the weight for different voxels. I choose $\mathrm{W} = \mathbf{1}$ and treat all pixel equally. Another option would be setting $\mathrm{W} \propto \mathrm{E}$ to stress the importance of bright voxels.</p>
+
+<p>Suppose we want to use the criteria to find the particle locations, using algorithms like gradient descent, then we will need the derivative of $\mathrm{C}$ w.r.t. particle locations. The derivative w.r.t. the $x$ component of particle $i$ can be written as</p>
+
+\[\begin{aligned}
+\frac{\partial \mathrm{C}}{\partial x_i} &amp;=
+\sum_x\sum_y\sum_z \mathrm{W} \cdot \frac{\partial \mathrm{D}^2} {\partial x_i}\\[1ex]
+&amp;= \sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \frac{\partial \mathrm{D}} {\partial x_i}\\[1ex]
+&amp;= \sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \frac{\partial \left[ 
+\sum_j{\mathrm{I}_j \cdot (\mathrm{P}_j \ast \mathrm{G}}) - \mathrm{E}
+\right]} {\partial x_i}.
+\end{aligned}\]
+
+<p>We know the experimental image would not be affected by the location of particle $i$. Therefore, $\partial\mathrm{E}/\partial x_i = 0$, and the derivative is finally,</p>
+
+\[\begin{aligned}
+\frac{\partial \mathrm{C}}{\partial x_i} &amp;=
+\sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \frac{ \partial
+\sum_j{[\mathrm{I}_j \cdot (\mathrm{P}_j \ast \mathrm{G}})
+]} {\partial x_i} \\[1em] &amp;=
+\sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \sum_j 
+\left(
+	\frac{
+		\partial \left[
+			\mathrm{I}_j \cdot (\mathrm{P}_j \ast \mathrm{G})
+		\right]
+	}
+	{
+		\partial x_i
+	}
+\right) \\[1em] &amp;=
+\sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \sum_j
+\left(
+	 \frac{\partial \mathrm{I}_j}{\partial x_i}  (\mathrm{P}_j \ast \mathrm{G})
+	 + \mathrm{I}_j \frac{\partial (\mathrm{P}_j \ast \mathrm{G})}{\partial x_i}
+\right)
+\end{aligned}\]
+
+<p>Exploiting the property of convolution operator</p>
+
+\[\frac{d}{dx}(f \ast g) = f \ast \frac{dg}{dx},\]
+
+<p>we can further rewrite the differentiation as</p>
+
+\[\begin{aligned}
+\frac{\partial \mathrm{C}}{\partial x_i} &amp;=
+\sum_x\sum_y\sum_z 2 \mathrm{DW} \cdot \sum_j
+\left(
+	 \frac{\partial \mathrm{I}_j}{\partial x_i}  (\mathrm{P}_j \ast \mathrm{G})
+	 + \mathrm{I}_j \cdot
+		\left(
+	 		\mathrm{P}_j \ast\frac{\partial \mathrm{G}}{\partial x_i}
+		\right)
+\right) \\[1em]
+\end{aligned}\]
+
+<p>since the intensity ($\mathrm{I}_j$) and shape ($\mathrm{P}_j$) of particle $j$ would not be affected by the location of particle $i$, the derivative can be simplified to the following,</p>
+
+\[\begin{aligned}
+\frac{\partial \mathrm{C}}{\partial x_i} &amp;=
+\sum_x\sum_y\sum_z 2 \mathrm{DW} \; \left(
+\frac{\partial \mathrm{I}_i}{\partial x_i}
+\cdot (\color{teal}{\mathrm{P}_i} \ast \mathrm{G})
++ \mathrm{I}_i \cdot \left(\color{teal}{\mathrm{P}_i} \ast \frac{\partial \mathrm{G}}{\partial x_i} \right)
+\right)
+\end{aligned}\]
+
+<p>This equation can be used to evalulate the Jacobian matrix for the least–square fitting. It will be very fast because we only have to conserder a small sub–image, where $\mathrm{P}_i$ and its blurred version is non–zero. Formally, we can write something like,</p>
+
+\[\frac{\partial \mathrm{C}}{\partial x_i} = \underbrace{\color{teal}{
+	\sum_{x^\prime}\sum_{y^\prime}\sum_{z^\prime}
+}}_{\text{where P}_i \ast \mathrm{G} &gt; 0 }
+2 \mathrm{DW} \; \left(
+\frac{\partial \mathrm{I}_i}{\partial x_i}
+\cdot (\color{teal}{\mathrm{P}_i} \ast \mathrm{G})
++ \mathrm{I}_i \cdot \left(\color{teal}{\mathrm{P}_i} \ast \frac{\partial \mathrm{G}}{\partial x_i} \right)
+\right).\]
+
+<p>And the new summation range is much smaller.</p>
+
+<h2 id="numerical-implementation">Numerical Implementation</h2>
+
+<p>I implemented the cost function in <a href="https://github.com/yangyushi/nplocate">my tracking code</a>, and use the least square optimisation to update the particle locations.</p>
+
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
