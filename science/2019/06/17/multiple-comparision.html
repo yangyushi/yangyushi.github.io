@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>多重比较（统计）</title>
+    <title>多重比较</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
@@ -90,13 +90,13 @@
 
 <p>很多人建议，什么都不要做：把实验中用到的所有分析结果，以及 p 值都报道出来。这让阅读实验报告的人能够理解，有 5% 的结论可能是错的。</p>
 
-<p>如果实验是预先设计，并且严格按照计划执行和分析的，我们通常也不需要做额外的 correction。「按照计划」是指我们没有位了降低 p 值而增加样本数目，等等。</p>
+<p>如果实验是预先设计，并且严格按照计划执行和分析的，我们通常也不需要做额外的 correction。「按照计划」是指我们没有「为了降低 p 值」而增加样本数目。</p>
 
 <h3 id="bonferroni-correction">Bonferroni correction</h3>
 
-<p>这个笔记参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。</p>
+<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
 
-<p>以 $P^\prime$ 作为新的 $P$ 值，$P^\prime = P / n$</p>
+<p>Bonferroni Correction 的要点：以 $P^\prime$ 作为新的 $P$ 值，$P^\prime = P / n$</p>
 
 <p>这个方法的缺点是，如果我们有很多统计学分析（$n = 1000$)，那么我们的 $P^\prime$ 会很小：这回让我们把很多「不符合」null 假设的比较设定为 null 假设。换言之，我们会产生很多的 false negative。</p>
 
@@ -104,9 +104,9 @@
 
 <h3 id="benjaminihochberg-procedure">Benjamini–Hochberg procedure</h3>
 
-<p>这个笔记参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。</p>
+<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
 
-<p>另外一个方法是控制 false discovery rate。它的具体做法是</p>
+<p>在 Bonferroni Correction 外，另外一个方法是控制 false discovery rate。它的具体做法是</p>
 
 <ol>
   <li>计算出所有统计分析的 P 值</li>
