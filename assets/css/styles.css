@@ -4,9 +4,11 @@ a { color: cornflowerblue; background: transparent; word-wrap: break-word; word-
 
 a:active, a:hover { color: tomato; outline: 1; }
 
-li a { color: darkslategray; }
+.two_column li a { color: darkslategray; }
 
 li a:active, a:hover { color: tomato; }
+
+.list ul { list-style-image: url("/assets/images/flower.svg"); }
 
 h1, h2, h3, h4, h5, h6 { color: teal; font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace; text-align: left; padding-top: 0.5em; padding-bottom: 0.5em; }
 
@@ -16,7 +18,7 @@ nav ul { display: flex; font-size: 18px; list-style-type: none; font: Monaco, Co
 
 nav li { min-width: 200px; float: left; }
 
-nav a { padding: 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; display: block; text-align: center; }
+nav a { padding: 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; display: block; text-align: center; color: darkslategray; }
 
 .current { border-radius: 0; border-bottom: 2px solid lightgray; }
 
