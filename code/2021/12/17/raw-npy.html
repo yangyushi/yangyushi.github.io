@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Import NPY files to ImageJ</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            About
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook.html
+            
+        >
+            Notes
+        </a>
+        </li>
+        
+        <li>
+        <a href=/links.html
+            
+        >
+            Links
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    17 Dec 2021
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#npy-file--header--bianry-data" id="markdown-toc-npy-file--header--bianry-data">NPY file = Header + Bianry Data</a></li>
+  <li><a href="#loading-the-npy-file" id="markdown-toc-loading-the-npy-file">Loading the NPY File</a></li>
+  <li><a href="#the-header-length" id="markdown-toc-the-header-length">The header length</a></li>
+  <li><a href="#dump-array-without-header" id="markdown-toc-dump-array-without-header">Dump Array without Header</a></li>
+</ul>
+<hr />
+
+<p>In certain situations I would like to use the software <a href="https://imagej.nih.gov/ij/">ImageJ</a> (or <a href="https://imagej.net/software/fiji/">FIJI</a>) to see an <a href="https://numpy.org">Numpy</a> array, which is dumped in the binary format as an NPY file. This post talkes about the correct way to import these files.</p>
+
+<p>TL;DR: 1) use File &gt; Import &gt; Raw to open the NPY file; 2) The order of axes is reversed; 3) set Offset to first Image to 128.</p>
+
+<hr />
+
+<h2 id="npy-file--header--bianry-data">NPY file = Header + Bianry Data</h2>
+
+<p>A numpy array can be easily saved to the disk with <code class="language-plaintext highlighter-rouge">numpy.save</code> function, and the result is typically shown as a NPY file. The file is copmosed of,</p>
+
+<ol>
+  <li>header: some meaningful information about the array.</li>
+  <li>raw data: <code class="language-plaintext highlighter-rouge">010111...</code> bits that representing the values in the array.</li>
+</ol>
+
+<p>We need to ignore the header in ImageJ or FIJI, and load the raw data.</p>
+
+<h2 id="loading-the-npy-file">Loading the NPY File</h2>
+
+<p>We can use File → Import → Raw… to load the raw data in the NPY file.</p>
+
+<p>After selecting the file, the following window will appear.</p>
+
+<p><img src="/assets/images/fiji-npy.png" alt="" /></p>
+
+<p>And unfortunately you need to input correct numbers to load the data to ImageJ/FIJI.</p>
+
+<p>In the example shown in the image, the <code class="language-plaintext highlighter-rouge">.npy</code> file contains an array with shape <code class="language-plaintext highlighter-rouge">(400, 300, 1970)</code> and a data type of <code class="language-plaintext highlighter-rouge">numpy.uint8</code>. Therefore, I select 8-bit, and all the values for <strong>width</strong>, <strong>height</strong>, and <strong>number of images</strong>. Notice because the numpy and ImageJ/FIJI use a different order to store the array, the <code class="language-plaintext highlighter-rouge">(X, Y, Z)</code> array in numpy should be loaded as <code class="language-plaintext highlighter-rouge">(Z, Y, X)</code> in ImageJ/FIJI.</p>
+
+<p>The value <strong>Offset to first image</strong> is tricky: we need the header length of the NPY file. Luckly, it is a number that is divisible by 16 (32, 64, 96, 128, …). And in most cases, it was 128. And if 128 does not work, you can make more “educated guesses”. I will make sense of the number in the next section.</p>
+
+<p>Nevertheless, if you type everything correctly and click <strong>OK</strong>, the data will be loaded into ImageJ/FIJI as stacks of 2D images!</p>
+
+<h2 id="the-header-length">The header length</h2>
+
+<p>We need to put the length of the header to <strong>Offset to first image</strong>. Firstly, we can “see” the header information with a <a href="https://en.wikipedia.org/wiki/Hex_editor">hex editor</a>. The following information shows the binary file of a dumped 3D array.</p>
+
+<pre><code class="language-C++">934E554D 50590100 76007B27 64657363 72273A20 277C7531 272C2027 | "NUMPY  v {'descr': '|u1', 
+666F7274 72616E5F 6F726465 72273A20 46616C73 652C2027 73686170 |'fortran_order': False,
+65273A20 28343530 2C203330 302C2031 39373029 2C207D20 20202020 | 'shape': (450, 300, 1970), }
+20202020 20202020 20202020 20202020 20202020 20202020 20202020 |
+20202020 20202020 20202020 2020200A &lt;- end of header           |
+00010000 00000000 00000000 01010202 01000000 01000001 01020202 |
+01010101 01010100 00020102 02010000 02030100 00000001 02000000 |
+00000001 00010102 01000001 02040002 00010204 02000102 04070403 |
+01020400 00000000 00010002 02020201 00000000 00000000 00000000 |
+00000000 02020000 01000000 00000001 00000000 00020000 00000000 |
+...
+</code></pre>
+
+<p>There are <a href="https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html#version-numbering">some rules</a> about the headers, notably</p>
+
+<ul>
+  <li>A valid .npy file always start with <code class="language-plaintext highlighter-rouge">0x93</code></li>
+  <li>After <code class="language-plaintext highlighter-rouge">0x93</code> is the ASCII values of <code class="language-plaintext highlighter-rouge">NUMPY</code>, being <code class="language-plaintext highlighter-rouge">0x4e</code> (N), <code class="language-plaintext highlighter-rouge">0x55</code> (U), <code class="language-plaintext highlighter-rouge">0x4d</code> (M), <code class="language-plaintext highlighter-rouge">0x50</code> (P), <code class="language-plaintext highlighter-rouge">0x59</code> (Y).
+(BTW, you can check the hex value of a letter in python using <code class="language-plaintext highlighter-rouge">hex(ord("N"))</code>)</li>
+  <li>The 7th and 8th bytes gives information about versions. (<code class="language-plaintext highlighter-rouge">0x0100</code>)</li>
+  <li>The 9th and 10th bytes gives the header size (called HEADER_LEN in numpy documentation). 
+(In my example, it was <code class="language-plaintext highlighter-rouge">0x7600</code>, <a href="https://www.save-editor.com/tools/wse_hex.html">converting</a> to integer is 118.)</li>
+  <li>The actual header length is HEADER_LEN + <strong>6</strong> (0x93+NUMPY) + <strong>2</strong> (<code class="language-plaintext highlighter-rouge">0x0100</code>) + <strong>2</strong> (<code class="language-plaintext highlighter-rouge">0x7600</code>). The length should always be divisible by 16.
+(In my example, the header length is 118 + 10 = 128)</li>
+</ul>
+
+<p>It was very confusing from the documentation, since <strong>HEADER_LEN + 10</strong> is the actual header length.</p>
+
+<h2 id="dump-array-without-header">Dump Array without Header</h2>
+
+<p>If the header length is frustrating for you, another option would be use the <code class="language-plaintext highlighter-rouge">tofile</code> method of the numpy array, to just dump the data to a file. For example, the following code dumps a 3D array without header.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">data</span><span class="p">.</span><span class="n">tofile</span><span class="p">(</span><span class="s">"data.raw"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And the <code class="language-plaintext highlighter-rouge">data.raw</code> file can be loaded with following settings.</p>
+
+<ul>
+  <li>Image type: 8-bit</li>
+  <li>Width: 200</li>
+  <li>Height: 100</li>
+  <li>Offset to first Image: 0</li>
+  <li>Number of Images: 5</li>
+  <li>Gap between Images: 0</li>
+</ul>
+
+<p>The bad part of the <code class="language-plaintext highlighter-rouge">tofile</code> method is actually <em>the lack of the header</em>, and you will need the memorise the <code class="language-plaintext highlighter-rouge">shape</code> and <code class="language-plaintext highlighter-rouge">dtype</code> of the array to make the raw file useful.</p>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
