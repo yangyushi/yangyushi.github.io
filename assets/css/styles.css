@@ -8,7 +8,9 @@ a:active, a:hover { color: tomato; outline: 1; }
 
 li a:active, a:hover { color: tomato; }
 
-.list ul { list-style-image: url("/assets/images/flower.svg"); }
+.list ul { list-style-type: none; }
+
+.list li { padding-bottom: 12px; }
 
 h1, h2, h3, h4, h5, h6 { color: teal; font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace; text-align: left; padding-top: 0.5em; padding-bottom: 0.5em; }
 
@@ -72,6 +74,8 @@ blockquote:after { content: '\201D'; }
 .fig_right { width: 45%; margin-left: 5%; }
 
 .intro { font-size: 14px; line-height: 1.5; padding: 12px; text-align: center; color: #333; font-family: monospace; border-bottom: 1px solid #BCBEC0; }
+
+.links { font-size: 18px; line-height: 1.732; padding: 12px; text-align: left; color: #333; font-family: monospace; }
 
 .post { color: #333; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 1.5; min-width: 800px; }
 
