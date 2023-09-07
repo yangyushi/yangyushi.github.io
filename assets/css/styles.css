@@ -247,13 +247,13 @@ blockquote:after {
 
 .catalog_left {
   float: left;
-  width: 50%;
+  min-width: 250px;
   list-style-type: none;
 }
 
 .catalog_right {
   float: right;
-  width: 50%;
+  min-width: 250px;
   list-style-type: none;
 }
 

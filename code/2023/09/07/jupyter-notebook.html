@@ -35,7 +35,7 @@
         <a href=/
             
         >
-            About
+            Home
         </a>
         </li>
         
@@ -53,15 +53,32 @@
 
     <div class="main">
         <div id="side_bar">
-    23 Jan 2021
+    07 Sep 2023
 </div>
 
 <div class="post center">
     <ul id="markdown-toc">
+  <li><a href="#reload-modules" id="markdown-toc-reload-modules">Reload Modules</a></li>
   <li><a href="#install--uninstall-a-kernel" id="markdown-toc-install--uninstall-a-kernel">Install / Uninstall a Kernel</a></li>
   <li><a href="#install-image-and-resize" id="markdown-toc-install-image-and-resize">Install Image and Resize</a></li>
-  <li><a href="#reload-modules" id="markdown-toc-reload-modules">Reload Modules</a></li>
+  <li><a href="#connecting-to-server" id="markdown-toc-connecting-to-server">Connecting to Server</a>    <ul>
+      <li><a href="#start-notebook-in-blue-crystal" id="markdown-toc-start-notebook-in-blue-crystal">start notebook in blue crystal</a></li>
+      <li><a href="#forward-remote-port-to-local" id="markdown-toc-forward-remote-port-to-local">forward remote port to local</a></li>
+      <li><a href="#use-notebook" id="markdown-toc-use-notebook">use notebook</a></li>
+    </ul>
+  </li>
 </ul>
+
+<h2 id="reload-modules">Reload Modules</h2>
+
+<p>If I am developing a module, and testing it on a jupyter notebook, I would add the following lines to the beginning of the notebook.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>With these magical commands, the modifications on the module code would immediately affect the result on the jupyter notebook.</p>
+
 <h2 id="install--uninstall-a-kernel">Install / Uninstall a Kernel</h2>
 
 <p>If I have many multiple versions of Python install on my machine, I would want to use them <strong>separately</strong> and <strong>clarely</strong> in jupyter notebook. For instance, if I have the versions of <code class="language-plaintext highlighter-rouge">3.6.8</code>, <code class="language-plaintext highlighter-rouge">3.7.3</code>, <code class="language-plaintext highlighter-rouge">3.8.1</code> and <code class="language-plaintext highlighter-rouge">3.9.0</code>, I would not want to have a kernal naming <code class="language-plaintext highlighter-rouge">Python3</code>, because this is not specific.</p>
@@ -90,15 +107,36 @@ jupyter kernelspec uninstall NAME
 
 <p>(Caveat: the render would not work on GitHub.)</p>
 
-<h2 id="reload-modules">Reload Modules</h2>
+<h2 id="connecting-to-server">Connecting to Server</h2>
 
-<p>If I am developing a module, and testing it on a jupyter notebook, I would add the following lines to the beginning of the notebook.</p>
+<p>I want to use BlueCrystal (HPC in University of Bristol) in my own laptop, with jupyter notebook.
+This is what I will have to do</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
-<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<h3 id="start-notebook-in-blue-crystal">start notebook in blue crystal</h3>
+
+<p>Run <code class="language-plaintext highlighter-rouge">jupyter notebook --no-browser</code> in blue crystal, getting something like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to login with a token:
+    http://localhost:8888/?token=xxxxxx
 </code></pre></div></div>
 
-<p>With these magical commands, the modifications on the module code would immediately affect the result on the jupyter notebook.</p>
+<h3 id="forward-remote-port-to-local">forward remote port to local</h3>
+
+<p>Start another session, log to blue crystal again, with following command</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh yy17363@bluecrystalp3.acrc.bris.ac.uk -L 8888:localhost:8888 -N
+</code></pre></div></div>
+
+<p>(notice I will have to kill local notebook server if it use 8888 as port)</p>
+
+<h3 id="use-notebook">use notebook</h3>
+
+<p>copy the link</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:8888/?token=xxxxxx
+</code></pre></div></div>
+
+<p>to the browser and enjoy!</p>
 
 </div>
 

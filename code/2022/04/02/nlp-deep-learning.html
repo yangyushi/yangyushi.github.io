@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>NLP with Tensorflow</title>
+    <title>Tensorflow Applications</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
@@ -35,7 +35,7 @@
         <a href=/
             
         >
-            About
+            Home
         </a>
         </li>
         
@@ -58,26 +58,481 @@
 
 <div class="post center">
     <ul id="markdown-toc">
-  <li><a href="#introducing-the-task" id="markdown-toc-introducing-the-task">Introducing the Task</a></li>
-  <li><a href="#convert-texts-to-numbers-tokenise" id="markdown-toc-convert-texts-to-numbers-tokenise">Convert Texts to Numbers (Tokenise)</a></li>
-  <li><a href="#learning-the-embedding" id="markdown-toc-learning-the-embedding">Learning the Embedding</a></li>
-  <li><a href="#using-the-sequence-model" id="markdown-toc-using-the-sequence-model">Using the Sequence Model</a></li>
-  <li><a href="#use-lstm" id="markdown-toc-use-lstm">Use LSTM</a></li>
-  <li><a href="#use-1d-convonlution-layer" id="markdown-toc-use-1d-convonlution-layer">Use 1D Convonlution Layer</a></li>
-  <li><a href="#generate-new-text" id="markdown-toc-generate-new-text">Generate New Text</a></li>
+  <li><a href="#modelling-time-series" id="markdown-toc-modelling-time-series">Modelling Time Series</a>    <ul>
+      <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+      <li><a href="#typical-patterns" id="markdown-toc-typical-patterns">Typical Patterns</a>        <ul>
+          <li><a href="#stationary" id="markdown-toc-stationary">Stationary</a></li>
+          <li><a href="#non-stationary" id="markdown-toc-non-stationary">Non-stationary</a></li>
+        </ul>
+      </li>
+      <li><a href="#prepare-data" id="markdown-toc-prepare-data">Prepare Data</a>        <ul>
+          <li><a href="#tfdatadataset" id="markdown-toc-tfdatadataset">tf.data.Dataset</a></li>
+          <li><a href="#training-data" id="markdown-toc-training-data">Training Data</a></li>
+        </ul>
+      </li>
+      <li><a href="#train-models" id="markdown-toc-train-models">Train Models</a>        <ul>
+          <li><a href="#baseline-models" id="markdown-toc-baseline-models">Baseline Models</a></li>
+          <li><a href="#linear-regression" id="markdown-toc-linear-regression">Linear Regression</a></li>
+          <li><a href="#mlp" id="markdown-toc-mlp">MLP</a></li>
+          <li><a href="#simple-rnn" id="markdown-toc-simple-rnn">Simple RNN</a></li>
+          <li><a href="#lstm" id="markdown-toc-lstm">LSTM</a></li>
+        </ul>
+      </li>
+      <li><a href="#evaluate-prediction" id="markdown-toc-evaluate-prediction">Evaluate Prediction</a></li>
+    </ul>
+  </li>
+  <li><a href="#modellling-natural-language" id="markdown-toc-modellling-natural-language">Modellling Natural Language</a>    <ul>
+      <li><a href="#introduction-1" id="markdown-toc-introduction-1">Introduction</a></li>
+      <li><a href="#tokenise" id="markdown-toc-tokenise">Tokenise</a></li>
+      <li><a href="#learning-the-embedding" id="markdown-toc-learning-the-embedding">Learning the Embedding</a></li>
+      <li><a href="#model-the-sequence" id="markdown-toc-model-the-sequence">Model the Sequence</a>        <ul>
+          <li><a href="#lstm-1" id="markdown-toc-lstm-1">LSTM</a></li>
+          <li><a href="#1d-cnn" id="markdown-toc-1d-cnn">1D CNN</a></li>
+        </ul>
+      </li>
+      <li><a href="#generate-new-text" id="markdown-toc-generate-new-text">Generate New Text</a></li>
+    </ul>
+  </li>
 </ul>
 
 <hr />
 
-<p>This is the note I took when taking <a href="https://www.coursera.org/learn/natural-language-processing-tensorflow/home/welcome">this coursera course</a>. It is a serious of introductory and helpful lectures.</p>
+<p>This is the note I took when taking the following two courses,</p>
+
+<ul>
+  <li><a href="https://www.coursera.org/learn/natural-language-processing-tensorflow/home/welcome">Tensorflow for NLP</a></li>
+  <li><a href="https://www.coursera.org/learn/tensorflow-sequences-time-series-and-prediction/home/welcome">Tensorflow for time series</a></li>
+</ul>
 
 <hr />
 
-<h2 id="introducing-the-task">Introducing the Task</h2>
+<h2 id="modelling-time-series">Modelling Time Series</h2>
 
-<p>To illustrate the concepts for natural language processing (NLP), we will have to use an example throughout the note.</p>
+<h3 id="introduction">Introduction</h3>
 
-<p>Now we want to learn to predict if a movie comment is a positive comment or negative. Our dataset would contains,</p>
+<p>Times seires is defined as</p>
+
+<blockquote>
+  <p>an ordered sequence of values that are usually <em>equally spaced</em> over time</p>
+</blockquote>
+
+<p>We can use ML for the follwoing applications</p>
+
+<ol>
+  <li>Predicting the future (forecasting)</li>
+  <li>Retracing the past (imputation &amp; Interpolate)</li>
+  <li>Detection of the anomaly (spikes in time series)</li>
+  <li>Detection of patterns</li>
+</ol>
+
+<h3 id="typical-patterns">Typical Patterns</h3>
+
+<h4 id="stationary">Stationary</h4>
+
+<p>Time series are ideally from a stationary stochastic process, with following patterns.</p>
+
+<ol>
+  <li>Trend (linear).</li>
+  <li>Sensonality (periodicity).</li>
+  <li>White noise (not learnable).</li>
+  <li>Auto-correlation (often shown as <em>deterministic decay</em>)</li>
+</ol>
+
+<p>These four basic types are often combined for real data.</p>
+
+<h4 id="non-stationary">Non-stationary</h4>
+
+<p>In real life, the data may not be a <em>stationary random process</em>, so everything can change!</p>
+
+<p>These dataset are called <em>none stationary time series</em>.</p>
+
+<p>We chop a small and stable section of the entire time series, to make some predictions.</p>
+
+<p>(more data may not be better!)</p>
+
+<p>We just can not predict drastic changes!</p>
+
+<h3 id="prepare-data">Prepare Data</h3>
+
+<h4 id="tfdatadataset">tf.data.Dataset</h4>
+
+<p>Tensorflow offered a nice <code class="language-plaintext highlighter-rouge">Dataset</code> class as the container for data.</p>
+
+<p>Here are some examples.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="nf">numpy</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">, </span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="sh">"""</span><span class="s"> result
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>We can use the <code class="language-plaintext highlighter-rouge">window</code> method to generate nested (2D) dataset from 1D arrays.</p>
+
+<p>Notice, the results can not be converted to <code class="language-plaintext highlighter-rouge">numpy</code> directly.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="c1"># data.numpy() -&gt; _VariantDataset' object has no attribute 'numpy'
+</span>    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="nf">numpy</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">, </span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">()</span>
+
+<span class="sh">"""</span><span class="s"> result
+0, 1, 2, 3, 4, 
+1, 2, 3, 4, 5, 
+2, 3, 4, 5, 6, 
+3, 4, 5, 6, 7, 
+4, 5, 6, 7, 8, 
+5, 6, 7, 8, 9, 
+6, 7, 8, 9, 
+7, 8, 9, 
+8, 9, 
+9, 
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>We can use <code class="language-plaintext highlighter-rouge">drop_remainder</code> to remove the result, whose length is smaller than widnow size.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="nf">numpy</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">, </span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">()</span>
+
+<span class="sh">"""</span><span class="s">result
+0, 1, 2, 3, 4, 
+1, 2, 3, 4, 5, 
+2, 3, 4, 5, 6, 
+3, 4, 5, 6, 7, 
+4, 5, 6, 7, 8, 
+5, 6, 7, 8, 9, 
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>We can also transofrm a block of array into <code class="language-plaintext highlighter-rouge">numpy</code> directly, using the <code class="language-plaintext highlighter-rouge">flat_map</code> method.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="nf">numpy</span><span class="p">())</span>
+    
+<span class="sh">"""</span><span class="s">result
+[0 1 2 3 4]
+[1 2 3 4 5]
+[2 3 4 5 6]
+[3 4 5 6 7]
+[4 5 6 7 8]
+[5 6 7 8 9]
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h4 id="training-data">Training Data</h4>
+
+<p>For the sake of predicting time series, we split the data <code class="language-plaintext highlighter-rouge">1, 2, 3, 4, 5</code> into</p>
+
+<ul>
+  <li>The features <code class="language-plaintext highlighter-rouge">1, 2, 3, 4</code> (the prediction will base on these numbers)</li>
+  <li>The label <code class="language-plaintext highlighter-rouge">5,</code> (the prediction will predict this value)</li>
+</ul>
+
+<p>This can be done with the <code class="language-plaintext highlighter-rouge">map</code> method</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">numpy</span><span class="p">(),</span> <span class="n">y</span><span class="p">.</span><span class="nf">numpy</span><span class="p">())</span>
+    
+<span class="sh">"""</span><span class="s">result
+[0 1 2 3] [4]
+[1 2 3 4] [5]
+[2 3 4 5] [6]
+[3 4 5 6] [7]
+[4 5 6 7] [8]
+[5 6 7 8] [9]
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>We can also <code class="language-plaintext highlighter-rouge">shuffle</code> the data, to avoid the <a href="https://www.coursera.org/learn/tensorflow-sequences-time-series-and-prediction/supplement/Qo0TU/sequence-bias"><em>sequence bias</em></a>, which is defined as</p>
+
+<blockquote>
+  <p>Sequence bias is when the order of things can impact the selection of things.</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">numpy</span><span class="p">(),</span> <span class="n">y</span><span class="p">.</span><span class="nf">numpy</span><span class="p">())</span>
+    
+<span class="sh">"""</span><span class="s">result
+[0 1 2 3] [4]
+[5 6 7 8] [9]
+[2 3 4 5] [6]
+[1 2 3 4] [5]
+[4 5 6 7] [8]
+[3 4 5 6] [7]
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>Finally, we separate the dataset into different <em>batches</em>, for the training of the network.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nf">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">numpy</span><span class="p">().</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="p">.</span><span class="nf">numpy</span><span class="p">().</span><span class="n">shape</span><span class="p">)</span>
+    
+<span class="sh">"""</span><span class="s">result
+(2, 4) (2, 1) -&gt; x = [[1, 2, 3, 4], [3, 4, 5, 6]], y = [[5,], [6,]]
+(2, 4) (2, 1)
+(2, 4) (2, 1)
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>To generate dataset from an existing time series, we can use the following function, which includes all previous methods.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">windowed_dataset</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle_buffer</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Args:
+        series (np.ndarray): 1D array
+        window_size (int): the length + 1 of the features
+        batch_size (int): the number of instances in a batch for training
+        suffle_buffer (int): the buffer for randomnise dastaset
+    </span><span class="sh">"""</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">.</span><span class="nf">from_tensor_slices</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">window</span><span class="p">(</span><span class="n">window_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">window</span><span class="p">:</span> <span class="n">window</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="n">window_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">shuffle</span><span class="p">(</span><span class="n">shuffle_buffer</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">window</span><span class="p">:</span> <span class="p">(</span><span class="n">window</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">window</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">).</span><span class="nf">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div></div>
+
+<h3 id="train-models">Train Models</h3>
+
+<h4 id="baseline-models">Baseline Models</h4>
+
+<p>There are ways to predict time series with out ML, called the <em>statistical forcasting</em>.</p>
+
+<ul>
+  <li>Naive forcasting: $\hat{y}_{i+1} = y_i$ (the result in that course is just wrong.)</li>
+  <li>Moving average: $\hat{y}<em>i = \frac1S\sum</em>{j=0}^{j=S} \hat{y}_{i-j} $</li>
+  <li>Differencing: try to predict the difference of the time series, rather than the time series.
+(Differencing removes the <em>trend</em> and the <em>seasonality</em>)</li>
+</ul>
+
+<h4 id="linear-regression">Linear Regression</h4>
+
+<p>We can use linear regression to fit the data, by using a NN with one layer. Mathematically, the calculation is written as</p>
+
+\[y_i = \left( \begin{matrix}
+w_1 \\ w_2 \\ \vdots \\ w_n
+\end{matrix} \right)
+\left( \begin{matrix} 
+y_{i+(0-n)} &amp; y_{i+(1-n)} &amp; \dots &amp; y_{i+(n-1-n)}
+\end{matrix} \right) + b.\]
+
+<p>The code for such model is,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window_size</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">shuffle_buffer_size</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">l0</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="n">window_size</span><span class="p">])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span><span class="n">l0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="mlp">MLP</h4>
+
+<p>We can use a deeper network to fit the data, with minimum modification. This yields slightly better result.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window_size</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">shuffle_buffer_size</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+  <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">"</span><span class="s">relu</span><span class="sh">"</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="n">window_size</span><span class="p">]),</span>
+  <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">"</span><span class="s">relu</span><span class="sh">"</span><span class="p">),</span>
+  <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="simple-rnn">Simple RNN</h4>
+
+<p>Here is the structure of a simple RNN.</p>
+
+<pre class="asciiart">
+                     output (forecasts)
+               shape: (batch_size, time_steps, )
+                            ▲         
+                            │         
+                  ┌──────────────────┐
+                  │   Dense Layer    │
+                  └──────────────────┘
+                            ▲         
+                            │         
+                  ┌──────────────────┐
+                  │ Recurrent Layer  │
+                  └──────────────────┘
+                            ▲         
+                            │         
+                  ┌──────────────────┐
+                  │ Recurrent Layer  │
+                  └──────────────────┘
+                            ▲         
+                            │         
+                         input x
+      shape (batch_size, time_steps, dimensions)
+</pre>
+
+<p>This is a recurrent layer.</p>
+
+<pre class="asciiart">
+       y(0)              y(1)              y(2)    ...            y(t)
+        ▲                 ▲                 ▲                      ▲            
+        │                 │                 │                      │            
+    ┌──────┐          ┌──────┐          ┌──────┐               ┌──────┐         
+    │ Mem  │          │      │          │      │               │      │         
+0──▶│ Cell │───H(0)──▶│      │───H(1)──▶│      │─ ... ─H(t-1)─▶│      │──H(t)──▶  
+    └──────┘          └──────┘          └──────┘               └──────┘         
+        ▲                 ▲                 ▲                      ▲            
+        │                 │                 │                      │            
+       x(0)              x(1)              x(2)                   x(t)   
+
+
+
+──────────────────────────────────Time Steps───────────────────────────────▶    
+
+</pre>
+
+<p>The shapes of different variables are,</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x(i)</code>:  (batch_size, dim), for univariate series, dim = 1</li>
+  <li><code class="language-plaintext highlighter-rouge">y(i)</code>: (batch_size, units_number), the number of output neurons.</li>
+  <li><code class="language-plaintext highlighter-rouge">H(i)</code>: this is the <em>state output</em>, for simple RNN, <code class="language-plaintext highlighter-rouge">H(i) = y(i)</code></li>
+</ul>
+
+<p>The code for a simple RNN model is</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">SimpleRNN</span><span class="p">(</span>
+        <span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  <span class="c1"># return the { y(i) } sequence
+</span>        <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># None -&gt; input takes arbitrary length
+</span>    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">SimpleRNN</span><span class="p">(</span>
+        <span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>  <span class="c1"># y(t)
+</span>    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>  <span class="c1"># forecasting one number
+</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>The intermediate RNN layers should always have the parameter <code class="language-plaintext highlighter-rouge">return_sequence = True</code>.</p>
+
+<p>We can also change the data in the mode, with a <code class="language-plaintext highlighter-rouge">Lamda</code> layer.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">SimpleRNN</span><span class="p">(</span>
+        <span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">SimpleRNN</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Lambda</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># fit the scale of dataset
+</span>    <span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="lstm">LSTM</h4>
+
+<p>We can use an <code class="language-plaintext highlighter-rouge">LSTM</code> laryer rather than a <code class="language-plaintext highlighter-rouge">SimpleRNN</code> to construct the model.</p>
+
+<p>There is another <em>cell state</em> in LSTM, which carries the information to more time steps.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Lambda</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="p">.</span><span class="nf">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span>
+    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Bidirectional</span><span class="p">(</span>
+        <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Bidirectional</span><span class="p">(</span>
+        <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>We can also add <code class="language-plaintext highlighter-rouge">Conv1D</code> layer on top of the <code class="language-plaintext highlighter-rouge">LSTM</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Conv1D</span><span class="p">(</span>
+        <span class="n">filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">padding</span><span class="o">=</span><span class="sh">"</span><span class="s">causal</span><span class="sh">"</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">"</span><span class="s">relu</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<h3 id="evaluate-prediction">Evaluate Prediction</h3>
+
+<p>There are following matrices</p>
+
+\[\begin{aligned}
+\mathrm{mse} &amp;= \frac1N \sum_i (\hat{y}_i - y_i)^2 \\
+\mathrm{rmse} &amp;= \sqrt{\mathrm{mse}} \\
+\mathrm{mae} &amp;= \frac1N \sum_i \vert \hat{y}_i - y_i \vert \\
+\mathrm{mape} &amp;= \frac1N \sum_i \vert \frac{\hat{y}_i - y_i}{y_i} \vert  &amp; \text{p = percentage}
+\end{aligned}\]
+
+<ul>
+  <li>$\hat{y}_i$ is the predicted value at time $i$</li>
+  <li>$y_i$ is the true value at time point $i$</li>
+</ul>
+
+<h2 id="modellling-natural-language">Modellling Natural Language</h2>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<p>Natural language processing (NLP) allows us to extract information from languages.</p>
+
+<p>For example, let’s say we want to predict if a movie comment is positive.</p>
+
+<p>Our dataset would contains,</p>
 
 <ul>
   <li>$n$ Comments, and</li>
@@ -85,9 +540,11 @@
   <li>Each comment will be either <strong>positive</strong> or <strong>negative</strong>.</li>
 </ul>
 
-<h2 id="convert-texts-to-numbers-tokenise">Convert Texts to Numbers (Tokenise)</h2>
+<h3 id="tokenise">Tokenise</h3>
 
-<p>To analyse the natural languages, we need to convert text to numbers. We treat every comment in the same way. And for each comment, we will</p>
+<p>To analyse the natural languages, we need to convert text to numbers.
+We treat every comment in the same way.
+And for each comment, we will</p>
 
 <ol>
   <li>Give each word a number/code. This is called <strong>encoding</strong>.</li>
@@ -121,11 +578,14 @@
 </span><span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
 </code></pre></div></div>
 
-<h2 id="learning-the-embedding">Learning the Embedding</h2>
+<h3 id="learning-the-embedding">Learning the Embedding</h3>
 
-<p>The tokenised sequences does not make much scence. Word <em>cat</em> may have the code of <code class="language-plaintext highlighter-rouge">00001</code> and word <em>cats</em> might have <code class="language-plaintext highlighter-rouge">95843</code> but these two words should somehow be similar.</p>
+<p>The tokenised sequences does not make much scence.
+Word <em>cat</em> may have the code of <code class="language-plaintext highlighter-rouge">00001</code> and word <em>cats</em> might have <code class="language-plaintext highlighter-rouge">95843</code> but these two words should somehow be similar.</p>
 
-<p>To get meaningful representations of words, we need to represnt the words as vectores. And the words with similar meanings should be <strong>closer</strong> in their corresponding space, where the vectors be in. The conversion from <strong>code</strong> to <strong>vector</strong> is carried out by <strong>embedding</strong>.</p>
+<p>To get meaningful representations of words, we need to represnt the words as vectores.
+And the words with similar meanings should be <strong>closer</strong> in their corresponding space, where the vectors be in.
+The conversion from <strong>code</strong> to <strong>vector</strong> is carried out by <strong>embedding</strong>.</p>
 
 <p>We get the embedding by <em>training a predictive network</em>. Here is the relevent code.</p>
 
@@ -188,7 +648,8 @@
 <span class="n">_________________________________________________________________</span>
 </code></pre></div></div>
 
-<p>The final “product” of the embeding layer is the <strong>weight</strong>. In this exampe, the shape of the weight can be obtained via,</p>
+<p>The final “product” of the embeding layer is the <strong>weight</strong>.
+In this exampe, the shape of the weight can be obtained via,</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># only give the top 10,000 most frequent words a number/code
 </span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># each word is represented by 16 numbers
@@ -199,55 +660,14 @@
 
 <p>The weights will map every word from their <strong>code</strong> to a <strong>vector</strong>.</p>
 
-<h2 id="using-the-sequence-model">Using the Sequence Model</h2>
+<h3 id="model-the-sequence">Model the Sequence</h3>
 
-<p>We need consider the <strong>sequence</strong> of the language into consideration. We use recurrent neural network (RNN) to consider the sequence. RNN can be graphically represented like the following figure.</p>
+<p>We need consider the <strong>sequence</strong> of the language into consideration.</p>
 
-<pre class="asciiart">
-       .───────────.       
-      (    y(t)     )      
-       `───────────'       
-             ▲             
-┌────────────┼────────────┐
-│            │            │
-│  ┌───────────────────┐  │
-└─▶│     Function      │──┘
-   └───────────────────┘   
-             ▲             
-             │             
-             │             
-       .───────────.       
-      (    x(t)     )      
-       `───────────'       
-</pre>
+<h4 id="lstm-1">LSTM</h4>
 
-<p>The RNN can be “expanded” into a more understandable version.</p>
-
-<pre class="asciiart">
-    .───────────.                .───────────.                 .───────────.           
-   (    y(0)     )              (    y(1)     )               (    y(2)     )          
-    `───────────'                `───────────'                 `───────────'           
-          ▲                            ▲                             ▲                 
-          │                            │                             │                 
-          │                            │                             │                 
-┌───────────────────┐        ┌───────────────────┐         ┌───────────────────┐       
-│     Function      │───────▶│     Function      │────────▶│     Function      │──────▶
-└───────────────────┘        └───────────────────┘         └───────────────────┘       
-          ▲                            ▲                             ▲                 
-          │                            │                             │                 
-          │                            │                             │                 
-    .───────────.                .───────────.                 .───────────.           
-   (    x(0)     )              (    x(1)     )               (    x(2)     )          
-    `───────────'                `───────────'                 `───────────'           
-</pre>
-
-<p>Using RNN, the information carried by <code class="language-plaintext highlighter-rouge">x(0)</code> will propagate all the way to later time points.</p>
-
-<p>Unfortunately there is no example code snippest from the course.</p>
-
-<h2 id="use-lstm">Use LSTM</h2>
-
-<p>A very popular model called long short term memory (LSTM) can be used to construct an RNN. The structure of the model is different but the idea is similar.</p>
+<p>A very popular model called long short term memory (LSTM) can be used to construct an RNN.
+The structure of the model is different but the idea is similar.</p>
 
 <pre class="asciiart">
     .───────────.                .───────────.                 .───────────.           
@@ -267,7 +687,9 @@
     `───────────'                `───────────'                 `───────────'           
 </pre>
 
-<p>LSTM can be think of as an “update” to RNN. There is an additional pipeline called “cell state” being passed from earilier states. The cell state can also be bi-direcitonal, where the future can affect the past.</p>
+<p>LSTM can be think of as an “update” to RNN.
+There is an additional pipeline called “cell state” being passed from earilier states.
+The cell state can also be bi-direcitonal, where the future can affect the past.</p>
 
 <p>The following code use the LSTM in the model in tensorflow.</p>
 
@@ -295,36 +717,9 @@
 </span>    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
     <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">sigmoid</span><span class="sh">'</span><span class="p">)</span>
 <span class="p">])</span>
-
-<span class="n">model</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="sh">'</span><span class="s">binary_crossentropy</span><span class="sh">'</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="sh">'</span><span class="s">adam</span><span class="sh">'</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">accuracy</span><span class="sh">'</span><span class="p">])</span>
-<span class="n">model</span><span class="p">.</span><span class="nf">summary</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>The above code works for <code class="language-plaintext highlighter-rouge">tensorflow 2.6.0</code>, and the output is.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="sh">"</span><span class="s">sequential</span><span class="sh">"</span>
-<span class="n">_________________________________________________________________</span>
-<span class="nc">Layer </span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
-</span><span class="o">=================================================================</span>
-<span class="nf">embedding </span><span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
-<span class="n">_________________________________________________________________</span>
-<span class="nf">bidirectional </span><span class="p">(</span><span class="nc">Bidirectional </span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>               <span class="mi">41472</span>     
-<span class="n">_________________________________________________________________</span>
-<span class="nf">dense </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>                <span class="mi">8256</span>      
-<span class="n">_________________________________________________________________</span>
-<span class="nf">dense_1 </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="mi">65</span>        
-<span class="o">=================================================================</span>
-<span class="n">Total</span> <span class="n">params</span><span class="p">:</span> <span class="mi">209</span><span class="p">,</span><span class="mi">793</span>
-<span class="n">Trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">209</span><span class="p">,</span><span class="mi">793</span>
-<span class="n">Non</span><span class="o">-</span><span class="n">trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">_________________________________________________________________</span>
-</code></pre></div></div>
-
-<p>Notice the output shape of hthe <code class="language-plaintext highlighter-rouge">bidirectional</code> layer is <code class="language-plaintext highlighter-rouge">128</code>, and this is because it is <code class="language-plaintext highlighter-rouge">64 * 2</code>, due to the bidirectional nature.</p>
-
-<p>(In the lecture, it is mentioned that a <strong>smooth</strong> accuracy curve is good.)</p>
-
-<h2 id="use-1d-convonlution-layer">Use 1D Convonlution Layer</h2>
+<h4 id="1d-cnn">1D CNN</h4>
 
 <p>Except for the LSTM, we can also use a 1D convolution layer, like below</p>
 
@@ -338,27 +733,7 @@
 <span class="p">])</span>
 </code></pre></div></div>
 
-<p>The summary of the model is</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="sh">"</span><span class="s">sequential</span><span class="sh">"</span>
-<span class="n">_________________________________________________________________</span>
-<span class="nc">Layer </span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
-</span><span class="o">=================================================================</span>
-<span class="nf">embedding </span><span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
-<span class="n">_________________________________________________________________</span>
-<span class="nf">conv1d </span><span class="p">(</span><span class="n">Conv1D</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>          <span class="mi">10368</span>     
-<span class="n">_________________________________________________________________</span>
-<span class="nf">dense </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>           <span class="mi">8256</span>      
-<span class="n">_________________________________________________________________</span>
-<span class="nf">dense_1 </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>            <span class="mi">65</span>        
-<span class="o">=================================================================</span>
-<span class="n">Total</span> <span class="n">params</span><span class="p">:</span> <span class="mi">178</span><span class="p">,</span><span class="mi">689</span>
-<span class="n">Trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">178</span><span class="p">,</span><span class="mi">689</span>
-<span class="n">Non</span><span class="o">-</span><span class="n">trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">_________________________________________________________________</span>
-</code></pre></div></div>
-
-<h2 id="generate-new-text">Generate New Text</h2>
+<h3 id="generate-new-text">Generate New Text</h3>
 
 <p>We can train a network to generate new text. The idea is to <em>predict the next word</em> based on existing texts.</p>
 
@@ -377,60 +752,8 @@ And if youll but listen Ill make your eyes glisten
 Of the rows and the ructions of Lanigans Ball.
 Myself to be sure got free invitation,
 For all the nice girls and boys I might ask,
-And just in a minute both friends and relations
-Were dancing round merry as bees round a cask.
-Judy ODaly, that nice little milliner,
-She tipped me a wink for to give her a call,
-And I soon arrived with Peggy McGilligan
-Just in time for Lanigans Ball.
-There were lashings of punch and wine for the ladies,
-Potatoes and cakes; there was bacon and tea,
-There were the Nolans, Dolans, OGradys
-Courting the girls and dancing away.
-Songs they went round as plenty as water,
-The harp that once sounded in Taras old hall,
-Sweet Nelly Gray and The Rat Catchers Daughter,
-All singing together at Lanigans Ball.
-They were doing all kinds of nonsensical polkas
-All round the room in a whirligig.
-Julia and I, we banished their nonsense
-And tipped them the twist of a reel and a jig.
-Ach mavrone, how the girls got all mad at me
-Danced til youd think the ceiling would fall.
-For I spent three weeks at Brooks Academy
-Learning new steps for Lanigans Ball.
-Three long weeks I spent up in Dublin,
-Three long weeks to learn nothing at all,
-Three long weeks I spent up in Dublin,
-Learning new steps for Lanigans Ball.
-She stepped out and I stepped in again,
-I stepped out and she stepped in again,
-She stepped out and I stepped in again,
-Learning new steps for Lanigans Ball.
-Boys were all merry and the girls they were hearty
-And danced all around in couples and groups,
-Til an accident happened, young Terrance McCarthy
-Put his right leg through miss Finnertys hoops.
-Poor creature fainted and cried Meelia murther,
-Called for her brothers and gathered them all.
-Carmody swore that hed go no further
-Til he had satisfaction at Lanigans Ball.
-In the midst of the row miss Kerrigan fainted,
-Her cheeks at the same time as red as a rose.
-Some of the lads declared she was painted,
-She took a small drop too much, I suppose.
-Her sweetheart, Ned Morgan, so powerful and able,When he saw his fair colleen stretched out by the wall,
-Tore the left leg from under the table
-And smashed all the Chaneys at Lanigans Ball.
-Boys, oh boys, twas then there were runctions.
-Myself got a lick from big Phelim McHugh.
-I soon replied to his introduction
-And kicked up a terrible hullabaloo.
-Old Casey, the piper, was near being strangled.
-They squeezed up his pipes, bellows, chanters and all.
-The girls, in their ribbons, they got all entangled
-And that put an end to Lanigans Ball.
-</span><span class="sh">"""</span>
+</span><span class="gp">...</span>
+<span class="sh">"""</span>
 
 <span class="n">corpus</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">lower</span><span class="p">().</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
 
