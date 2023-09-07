@@ -1,0 +1,580 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quantitative Modeling</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            About
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook.html
+            
+        >
+            Notebook
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    07 May 2022
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#week-1-introduction" id="markdown-toc-week-1-introduction">Week 1 Introduction</a>    <ul>
+      <li><a href="#purpose-of-the-course" id="markdown-toc-purpose-of-the-course">Purpose of the course</a></li>
+      <li><a href="#what-is-a-model" id="markdown-toc-what-is-a-model">What is a Model</a></li>
+      <li><a href="#examples-of-models" id="markdown-toc-examples-of-models">Examples of Models</a></li>
+      <li><a href="#mathmatical-functions" id="markdown-toc-mathmatical-functions">Mathmatical Functions</a></li>
+      <li><a href="#how-models-are-used" id="markdown-toc-how-models-are-used">How Models are Used</a></li>
+      <li><a href="#benefits-of-modelling" id="markdown-toc-benefits-of-modelling">Benefits of Modelling</a></li>
+      <li><a href="#key-steps-in-modelling" id="markdown-toc-key-steps-in-modelling">Key Steps in Modelling</a></li>
+      <li><a href="#a-vocabulary-for-modeling" id="markdown-toc-a-vocabulary-for-modeling">A Vocabulary for Modeling</a></li>
+    </ul>
+  </li>
+  <li><a href="#week-2-linear-models" id="markdown-toc-week-2-linear-models">Week 2 Linear Models</a>    <ul>
+      <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+      <li><a href="#constant-proportionate-growth" id="markdown-toc-constant-proportionate-growth">Constant Proportionate Growth</a></li>
+      <li><a href="#present-and-future-value" id="markdown-toc-present-and-future-value">Present and Future Value</a></li>
+      <li><a href="#continuous-compounding" id="markdown-toc-continuous-compounding">Continuous Compounding</a></li>
+      <li><a href="#optimisation" id="markdown-toc-optimisation">Optimisation</a></li>
+    </ul>
+  </li>
+  <li><a href="#week-3-probabilistic-models" id="markdown-toc-week-3-probabilistic-models">Week 3 Probabilistic Models</a>    <ul>
+      <li><a href="#introduction-1" id="markdown-toc-introduction-1">Introduction</a></li>
+      <li><a href="#regression-models" id="markdown-toc-regression-models">Regression Models</a></li>
+      <li><a href="#probability-trees" id="markdown-toc-probability-trees">Probability Trees</a></li>
+      <li><a href="#monte-carlo-simulation" id="markdown-toc-monte-carlo-simulation">Monte-Carlo Simulation</a></li>
+      <li><a href="#markov-models" id="markdown-toc-markov-models">Markov Models</a></li>
+      <li><a href="#common-probability-distributions" id="markdown-toc-common-probability-distributions">Common Probability Distributions</a></li>
+      <li><a href="#the-emprical-rule" id="markdown-toc-the-emprical-rule">The emprical rule</a></li>
+    </ul>
+  </li>
+  <li><a href="#week-4-regression-model" id="markdown-toc-week-4-regression-model">Week 4 Regression Model</a>    <ul>
+      <li><a href="#regression-models-1" id="markdown-toc-regression-models-1">Regression Models</a></li>
+      <li><a href="#multiple-regression" id="markdown-toc-multiple-regression">Multiple Regression</a></li>
+      <li><a href="#logistic-regression" id="markdown-toc-logistic-regression">Logistic Regression</a></li>
+    </ul>
+  </li>
+</ul>
+<hr />
+
+<p>This is the note that I took while learning the <a href="https://www.coursera.org/learn/wharton-quantitative-modeling/home/week/1">Fundamentals of Quantitative Modeling</a> Coursera course.</p>
+
+<hr />
+
+<h2 id="week-1-introduction">Week 1 Introduction</h2>
+
+<h3 id="purpose-of-the-course">Purpose of the course</h3>
+
+<ul>
+  <li>expose to the language of modelling</li>
+  <li>see different models</li>
+  <li>learn to model and critique models</li>
+  <li>associate business process characteristics with appropriatepriate models (which model should I use?)</li>
+  <li>understand the value &amp; limitation of quantitative models</li>
+</ul>
+
+<h3 id="what-is-a-model">What is a Model</h3>
+
+<ul>
+  <li>a formal <em>description</em> of a business process</li>
+  <li>equations + random variables</li>
+  <li>simplification of complex sturcture</li>
+  <li>models rely on <em>assumptions</em></li>
+  <li>the models are <em>implemented</em> in computer programmes</li>
+</ul>
+
+<h3 id="examples-of-models">Examples of Models</h3>
+
+<ul>
+  <li>diamond price as a function of its weight</li>
+  <li>spread of epidemic over time</li>
+  <li>the relationship between demand and price (what happen to sales if I increase the price?)</li>
+  <li>the <em>uptake</em> of a new product in the market (can I <em>forcast</em> the number of units to be sold?)</li>
+</ul>
+
+<h3 id="mathmatical-functions">Mathmatical Functions</h3>
+
+<ul>
+  <li>linear function:  $y = a x + b$ (price of diamond)</li>
+  <li>exponential: $y = a \exp(b x)$ (early spread of epidemic)</li>
+  <li>power function: $y = a x^b$ (the relationship between demand and price)</li>
+  <li>logistic function: $y = L / [1 + \exp(-k(x - x_0))]$ (uptake of new product)</li>
+</ul>
+
+<h3 id="how-models-are-used">How Models are Used</h3>
+
+<ul>
+  <li>Prediction: from $x$ calculate $y$.</li>
+  <li>Forecasting: for <em>time series</em>, tell what happens in the future.</li>
+  <li>Optimisation: find the maximum/minimum</li>
+  <li>Ranking &amp; Targeting: Giving limited resources, which potential product should be targeted for potential purchases</li>
+  <li>Explore “what-if” scenarios</li>
+  <li>Interpreting coefficients in a model</li>
+  <li>Sensitivity analysis: assessing the susceptibility of the model on the assumptions</li>
+</ul>
+
+<h3 id="benefits-of-modelling">Benefits of Modelling</h3>
+
+<ul>
+  <li>Identifying gaps in current understanding</li>
+  <li>Making assumptions explicity</li>
+  <li>Having a well-defined description of business process</li>
+  <li>Creating an institutional memory (to replace the “smart guys” in the company)</li>
+  <li>A decision <em>support</em> tool</li>
+  <li>serendipitous (偶然的) insight generator</li>
+</ul>
+
+<h3 id="key-steps-in-modelling">Key Steps in Modelling</h3>
+
+<pre class="asciiart">
+┌──────────────────┐                      ┌────────────────────┐                                                   
+│                  │                      │ ┌───────────────┐  │                                                   
+│ ┌──────────────┐ │                      │ │  Sensitivity  │  │                                                   
+│ │Define inputs │ │     ┌──────────┐     │ │   Analysis    │  │     ┌──────────────┐                              
+│ │  &amp; Outputs   │ │     │          │     │ └───────────────┘  │     │              │              ┌──────────────┐
+│ └──────────────┘ │     │formulate │     │                    │     │   Fit for    │              │  Implement   │
+│                  │────▶│  model   │────▶│ ┌───────────────┐  │────▶│   purpose?   │────[ Yes ] ─▶│    Model     │
+│ ┌──────────────┐ │     │          │     │ │   Validate    │  │     │              │              └──────────────┘
+│ │ Define scope │ │     └──────────┘     │ │     model     │  │     └──────────────┘                              
+│ └──────────────┘ │                      │ │   forecasts   │  │             │                                     
+│                  │                      │ └───────────────┘  │             │                                     
+└──────────────────┘                      └────────────────────┘             │                                     
+          ▲                                                                  │                                     
+          │                                                                  │                                     
+          └───────────────────────────────────[ No ]─────────────────────────┘                                     
+</pre>
+
+<ul>
+  <li>Scope: what range would the model apply. (For instance, the price-weight relationship may only hold from 1-2 crela)</li>
+  <li>What if the model does not work?
+    <ul>
+      <li>if the observation is different from prediction, try to understand the reason of the difference. (the difference is <em>very imformative</em>)</li>
+      <li>modelling is a <em>continuumuous</em> and <em>evolutiontionary</em> process (no steady state).</li>
+      <li>we overcome the limitations of the model by <em>iteration</em></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="a-vocabulary-for-modeling">A Vocabulary for Modeling</h3>
+
+<ul>
+  <li>Data Driven &amp; Theory Driven
+    <ul>
+      <li>Theory: the logical consequences given <strong>assumptions</strong> and <strong>relationships</strong>.</li>
+      <li>Data: approximation of the underlying process that generates the observed <strong>data</strong>.</li>
+    </ul>
+
+    <pre class="asciiart">
+┌─────────────────────────────────────────────────────────────┐
+│    Empirical &lt;-----------------------------&gt; Theoretical    │
+└─────────────────────────────────────────────────────────────┘
+There is a *spectrum* for models, which can be labelled as 
+*data driven* or *theory driven*.
+</pre>
+  </li>
+  <li>
+    <p>Determinstic &amp; Probabilistic/Stochastic</p>
+
+    <ul>
+      <li>
+        <p>determinstic: given fixed input, there is always a fixed output.</p>
+      </li>
+      <li>
+        <p>stochastic: different output might be generated from the same input</p>
+      </li>
+    </ul>
+  </li>
+  <li>Discrete &amp; Continuous Variables</li>
+  <li>Static &amp; Dynamic
+    <ul>
+      <li>Static: try to capture a single snapshot of the business process
+(given a website’s installed software base, what are the chances that it is compromised today?)</li>
+      <li>Dynamic: the <strong>evolution of the process</strong> itself is of interest. The model descries the <em>movement</em> from state to state.
+(given a person’s participation in a job training programme, how long will it take until he/she finds a job?)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="week-2-linear-models">Week 2 Linear Models</h2>
+
+<h3 id="introduction">Introduction</h3>
+
+<ul>
+  <li>linear models
+    <ul>
+      <li>$y = mx + b$, the slope ($m$) is <strong>constant</strong></li>
+      <li>example: Cost = 100 + 30 q, where q is the number of produced units</li>
+      <li>can be optimised via <strong>linear programming</strong></li>
+    </ul>
+  </li>
+  <li>growth and decay in discrete time
+    <ul>
+      <li>Examples: The number of customers at time $t$; The revenue in quarter $q$</li>
+      <li>Proportional growth: a constant percentage increase (rather than amount)</li>
+      <li>Simple interest: interest is only earned on the <strong>principle investment</strong> → linear growth</li>
+      <li>Compound interest: the interest itself earns interest →</li>
+    </ul>
+  </li>
+  <li>growth and decay in continous time</li>
+  <li>classical optimisation (classical - using calculus)</li>
+</ul>
+
+<h3 id="constant-proportionate-growth">Constant Proportionate Growth</h3>
+
+<pre class="asciiart">
+┌────────┬────────┬────────┬────────┬────────┐
+│  TIME  │    0   │    1   │    2   │    3   │
+├────────┼────────┼────────┼────────┼────────┤
+│ AMOUNT │   P0   │  P0 Θ  │ P0 Θ^2 │ P0 Θ^3 │
+└────────┴────────┴────────┴────────┴────────┘
+</pre>
+
+<ul>
+  <li>$P_0$: initial amount</li>
+  <li>$\theta$: growth factor</li>
+  <li>this is called <strong>geometric series</strong></li>
+  <li>The <strong>sum</strong> of geometric series ($S_t$) is:</li>
+</ul>
+
+\[S_t = P_0 \frac{1 - \theta^{t+1}}{1 - \theta}\]
+
+<h3 id="present-and-future-value">Present and Future Value</h3>
+
+<p>If the prevailingiling interest rate (现行利率) is 4%, which options is better?</p>
+
+<ul>
+  <li>Getting $1000 now</li>
+  <li>Getting $1500 in ten years</li>
+</ul>
+
+<p>This question is equal to</p>
+
+<ul>
+  <li>How much we would have invest today, to get $1500 in ten years?</li>
+  <li>How much $1000 would worth in ten years?</li>
+</ul>
+
+<p>The equation is,
+\(P_t = P_0 \theta^t\)
+since $P_t = 1000 \times 1.04^{10} = 1480.2443$, we should take $1500.</p>
+
+<h3 id="continuous-compounding">Continuous Compounding</h3>
+
+<p>The compounding period approachs 0, the process is continuous.</p>
+
+<p>If a <strong>principle amount $P_0$</strong> is continuously compounded at a <strong>nominal annual interest rate</strong> of $R \%$, then at year $t$, we have
+\(P_t = P_0 \exp(r t)\)
+where $r = R / 100$.</p>
+
+<p>The exponential function also describes the beginning of an epidemic.</p>
+
+<h3 id="optimisation">Optimisation</h3>
+
+<p>Consider the <strong>demand model</strong> which gives the relationship between the quantity $Q$ and the price $P$.</p>
+
+\[Q = 60000 P^{-2.5}\]
+
+<p>If the price of producing one unit of product is constant ($c = 2$), how do we maximise the profit?</p>
+
+\[\begin{aligned}
+\mathrm{Profit} &amp;= \mathrm{Revenue} - \mathrm{Cost} \\
+&amp;= P \times Q - c\times Q \\
+&amp;= Q(P - c) \\
+&amp;= 60,000 \times P^{-2.5}(P - c) \\
+&amp;= 60,000 \times (P^{-1.5} - c \times P^{-2.5})
+\end{aligned}\]
+
+<p>Taking the derivatives.</p>
+
+\[\begin{aligned}
+\frac{d\ \mathrm{Profit}}{dP} &amp;= 60,000 \times (-1.5 \times P^{-2.5} + 2.5c \times P^{-3.5}) \rightarrow 0 \\
+&amp;\rightarrow 2.5c \times P^{-1} = 1.5 \\
+&amp;\rightarrow P = 2.5 c / 1.5  \\
+&amp; \rightarrow P_\mathrm{opt}\approx 3.333 \;(c = 2)
+\end{aligned}\]
+
+<p>generally, if the relationship follows</p>
+
+\[Q = a P^\beta; \mathrm{Cost} = P - c\]
+
+<p>then the best price is</p>
+
+\[P_\mathrm{opt} = \frac{c b}{1 + b}\]
+
+<h2 id="week-3-probabilistic-models">Week 3 Probabilistic Models</h2>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<ul>
+  <li>random variables and probability distributions</li>
+  <li>probabilistic models incorporates the uncertainty, which is good</li>
+  <li>uncertainty == risk</li>
+</ul>
+
+<h3 id="regression-models">Regression Models</h3>
+
+<ul>
+  <li>Linear fit of data points + <strong>prediciton interval</strong></li>
+</ul>
+
+<h3 id="probability-trees">Probability Trees</h3>
+
+<ul>
+  <li>Propagate probabilities through a sequence of events.</li>
+</ul>
+
+<h3 id="monte-carlo-simulation">Monte-Carlo Simulation</h3>
+
+<p>The method is used to model complicated examples. For instance, if the value of $b$ for the optimisation problem in Week 2 is a random variable following uniform distribution. We can calculate the distirubiton of the optimum price.</p>
+
+<p>Example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+<span class="n">popt</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="n">b</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">popt</span><span class="p">.</span><span class="nf">mean</span><span class="p">(),</span> <span class="n">popt</span><span class="p">.</span><span class="nf">std</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">The opt price is </span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">, with std of </span><span class="si">{</span><span class="n">std</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The opt price is 3.3869, with std of 0.2797.</p>
+
+<h3 id="markov-models">Markov Models</h3>
+
+<p>The Markov model is a dynamic model for discrete <strong>state transition</strong>. The model is expressed as <strong>probability transition matrix</strong>.</p>
+
+<p>For instance, a person may change its state between <em>employed</em>, <em>unemployed</em>, and <em>looking for job</em>. These states were illustrated in the following graph.</p>
+
+<pre class="asciiart">                                          
+                               ┌──[ 0.2 ]──┐                  
+                               │           │                  
+                               ▼           │                  
+                     ┌──────────────────┐  │                  
+                     │                  │  │                  
+             ┌──────▶│    Unemployed    │──┴─────┐            
+             │       │       (1)        │        │            
+             │       └──────────────────┘        │            
+          [ 0.2 ]                             [ 0.8 ]         
+             │                                   │            
+             │                                   │            
+             │                                   ▼            
+   ┌──────────────────┐                ┌──────────────────┐   
+   │                  │                │     Looking      │   
+┌─▶│     Employed     │◀────[ 0.5 ]────│     for Job      │◀─┐
+│  │        (3)       │                │       (2)        │  │
+│  └──────────────────┘                └──────────────────┘  │
+│            │                                   │           │
+│            │                                   │           │
+└──[ 0.8 ]───┘                                   └──[ 0.5 ]──┘
+</pre>
+
+<p>The corresponding transition matrix is
+\(\left(
+\begin{matrix}
+0.2 &amp; 0.8 &amp; 0.0 \\
+0.0 &amp; 0.5 &amp; 0.5 \\
+0.2 &amp; 0.0 &amp; 0.8
+\end{matrix}
+\right)\)
+Markov chain model is characterised by <strong>the lack of memory</strong>, meaning the history of the chain will <strong>not</strong> affect the probability for the next state. This is the <strong>assumption</strong> of Markov chains.</p>
+
+<p>Example</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+
+<span class="k">def</span> <span class="nf">change_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">rand_num</span><span class="p">):</span>
+    <span class="n">new_state</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">rand_num</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">rand_num</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">rand_num</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">new_state</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">new_state</span>
+
+
+<span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">state_init</span><span class="p">,</span> <span class="n">n_sample</span><span class="p">):</span>
+    <span class="n">rand_nums</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">state_init</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_sample</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="nf">change_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">rand_nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">n_sample</span> <span class="o">=</span> <span class="mi">5000000</span>
+    <span class="n">state_init</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">state_init</span><span class="p">,</span> <span class="n">n_sample</span><span class="p">).</span><span class="nf">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">The stationary probabilities are (Simulation)</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">P(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">)=</span><span class="si">{</span><span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nf">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">'</span><span class="s">; </span><span class="sh">'</span><span class="p">)</span>
+        
+    <span class="c1"># calculating from transition matrix
+</span>    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span>
+        <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>  <span class="c1"># pij ---&gt; state i to j
+</span>        <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
+    <span class="p">)).</span><span class="n">T</span>  <span class="c1"># pij ---&gt; state j to i
+</span>    <span class="n">s_init</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s_init</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">s</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n\n</span><span class="s">Stationary Probabilities are (MCMC):</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">P(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">)=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">'</span><span class="s">; </span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="c1"># calculating from the eigen vector
+</span>    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">eig</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">v_eq</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">eigvecs</span><span class="p">.</span><span class="n">T</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="nf">argmin</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">eigvals</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))])</span>
+    <span class="n">v_eq</span> <span class="o">=</span> <span class="n">v_eq</span> <span class="o">/</span> <span class="n">v_eq</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>  <span class="c1"># probability sum --&gt; 1
+</span>    <span class="nf">print</span><span class="p">(</span>
+        <span class="sh">"</span><span class="se">\n\n</span><span class="s">Stationary Probabilities are (Analytical):</span><span class="sh">"</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">P(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">)=</span><span class="si">{</span><span class="n">v_eq</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">'</span><span class="s">; </span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Result:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">The</span> <span class="n">stationary</span> <span class="n">probabilities</span> <span class="nf">are </span><span class="p">(</span><span class="n">Simulation</span><span class="p">)</span>
+<span class="nc">P</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1515</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="mf">0.2428</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="mf">0.6057</span><span class="p">;</span> 
+
+<span class="n">Stationary</span> <span class="n">Probabilities</span> <span class="nf">are </span><span class="p">(</span><span class="n">MCMC</span><span class="p">):</span>
+<span class="nc">P</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1515</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="mf">0.2424</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="mf">0.6061</span><span class="p">;</span> 
+
+<span class="n">Stationary</span> <span class="n">Probabilities</span> <span class="nf">are </span><span class="p">(</span><span class="n">Analytical</span><span class="p">):</span>
+<span class="nc">P</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1515</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="mf">0.2424</span><span class="p">;</span> <span class="nc">P</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="mf">0.6061</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="common-probability-distributions">Common Probability Distributions</h3>
+
+<ul>
+  <li>Bernoulli Distribution (toss a coin)</li>
+  <li>Binomial Distribution (toss a coin many times)</li>
+  <li>Normal Distribution (common)</li>
+</ul>
+
+<h3 id="the-emprical-rule">The emprical rule</h3>
+
+<p>For normal distribution, the probability in these following ranges are</p>
+
+<ul>
+  <li>$(\mu - \sigma, \mu + \sigma)$: 68%</li>
+  <li>$(\mu - 2\sigma, \mu + 2\sigma)$: 95%</li>
+  <li>$(\mu - 3\sigma, \mu + 3\sigma)$: 99.7%</li>
+</ul>
+
+<p>Example: if the daily return of Apple’s stock follows normal distribution with $\mu = 0.13\%, \sigma = 2.34\%$, what is the probability that tomorrow Apple’s stock price increase by more than 2.47%?</p>
+
+<ol>
+  <li>calculate Z score: $Z = (2.47 - 0.13) / 2.34 = 1$</li>
+  <li>since the increase is 1 $\sigma$ on the right hand side of the distribution, its probability is $100\% - 50\% - 68\%/2 = 16\%$</li>
+</ol>
+
+<h2 id="week-4-regression-model">Week 4 Regression Model</h2>
+
+<h3 id="regression-models-1">Regression Models</h3>
+
+<ul>
+  <li>A single regression model uses a single predictor $X$ to predict the mean of $Y$.</li>
+  <li>If the relationship between $X$ and $Y$ is <em>linear</em>, we call it a <em>linear regression</em>, written as $\mathbb{E}(Y\vert X)=b_0 + b_1X$.</li>
+  <li>The linear assisiation between two variables are captured by the <strong>correlation</strong>, which is a value between -1 and 1.</li>
+  <li>The regression model can be used to:
+    <ul>
+      <li>prediction</li>
+      <li>coefficient interpreting</li>
+      <li>how much variability is $Y$ explained by $X$? (as a numerical measure)</li>
+    </ul>
+  </li>
+  <li>The coefficient of the model can be found via the <strong>least square fit</strong>
+    <ul>
+      <li>The fitting minimizes $(Y_\mathrm{pred} - Y_\mathrm{obs})^2$</li>
+      <li>The difference $Y_\mathrm{pred} - Y_\mathrm{obs}$ is the <strong>residual</strong>, which allows us to assess the fitting quality.</li>
+    </ul>
+  </li>
+  <li>To assess the fitting, the two options are frequently reported.
+    <ul>
+      <li>the $R^2$ measures how much variability of $Y$ is explained by the linear regression model. It is the square of the correlation. (The larger the better.)</li>
+      <li>The root mean squared error (RMSE) measures the standard deviation (std) of the residuals. (The smaller the better.)</li>
+      <li>The RMSE can be input for <strong>prediction interval</strong>, with following assumptions.
+        <ul>
+          <li>For a fixed value of $X$, the distribution of $Y_\mathrm{obs}$  follows a normal distribuition, centerd arbound $Y_\mathrm{pred}$.</li>
+          <li>The standerd deviation $\sigma$ of the distribution can be estimated by RMSE</li>
+          <li>With these assumptions, we can plot $Y_\mathrm{pred} \pm 2\,\mathrm{RMSE}$ as the 95% prediction interval.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>We can also fit a curve to the data, if the linear relationship does not hold. Sometimes, the log-log plot shows linear relation.</li>
+</ul>
+
+<h3 id="multiple-regression">Multiple Regression</h3>
+
+<ul>
+  <li>Multiple regression inclues many ($n$) predictor variables, meaning a vector $\mathbf{X} \in \mathbb{R}^n$ is used to predict $Y \in \mathbb{R}$.</li>
+  <li>For two varialbes, the model is $\mathbb{E}(Y \vert X_1, X_2) = b_0 + b_1 X_1 + b_2 X_2$.</li>
+</ul>
+
+<h3 id="logistic-regression">Logistic Regression</h3>
+
+\[\mathbb{E}(Y=1\vert X=x) = \frac{\exp(x\beta)}{1 + \exp(x\beta)}\]
+
+<ul>
+  <li>The logistic regression is suitable for discrete (Yes $\vert$ No) variable</li>
+  <li>Always predict between 0 and 1</li>
+</ul>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

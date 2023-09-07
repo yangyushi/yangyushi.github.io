@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -118,17 +110,17 @@ This post introduced my idea of generating such noise.</p>
 
 <p>The python code that generating such noise is this</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_phi</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-<span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-<span class="n">noise_r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">noise_z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">noise_x</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
-<span class="n">noise_y</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
-<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">((</span><span class="n">noise_x</span><span class="p">,</span> <span class="n">noise_y</span><span class="p">,</span> <span class="n">noise_z</span><span class="p">)).</span><span class="n">T</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_phi</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">noise_r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">noise_z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">noise_x</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
+<span class="n">noise_y</span> <span class="o">=</span> <span class="n">noise_r</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">noise_phi</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="n">noise_x</span><span class="p">,</span> <span class="n">noise_y</span><span class="p">,</span> <span class="n">noise_z</span><span class="p">)).</span><span class="n">T</span>
 </code></pre></div></div>
 
 <p>The not very obvious code is this line.</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">noise_z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Here, $\eta$ (<code class="language-plaintext highlighter-rouge">eta</code>) is a measure of noise level ranging from $0$ to $1$. When $\eta = 1$ the pink cap would be the entire unit sphere, and the cap will vanish if $\eta = 0$.</p>

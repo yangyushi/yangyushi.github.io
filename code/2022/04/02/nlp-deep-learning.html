@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -105,25 +97,25 @@
 
 <p>This is relevant code in tensorflow using the class <a href="https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/text/Tokenizer">tokenisor</a> and function <a href="https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/sequence/pad_sequences">pad_sequences</a>.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequence</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequence</span>
 
 <span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># only give the top 10,000 most frequent words a number/code
 </span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">120</span>    <span class="c1"># maximum length (word count) for each comment
-</span><span class="n">trunc_type</span><span class="o">=</span><span class="s">'post'</span>   <span class="c1"># removing excess words at the end of the comments
-</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="s">"&lt;OOV&gt;"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
+</span><span class="n">trunc_type</span><span class="o">=</span><span class="sh">'</span><span class="s">post</span><span class="sh">'</span>   <span class="c1"># removing excess words at the end of the comments
+</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="sh">"</span><span class="s">&lt;OOV&gt;</span><span class="sh">"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
 </span>
 <span class="n">comments</span> <span class="o">=</span> <span class="p">...</span>  <span class="c1"># a list of n comments (strings), each comment has different length
 </span>
 <span class="c1"># generate the encoding rule that convert words to numbers
-</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="nc">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="p">.</span><span class="nf">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
 
 <span class="c1"># convert words to numbers
-</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
 
 <span class="c1"># making the sequences so that they have equal length
-</span><span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+</span><span class="n">padded</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
 
 <span class="c1"># obtain the map between words and numbers, the dict is {words: number}
 </span><span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
@@ -137,58 +129,58 @@
 
 <p>We get the embedding by <em>training a predictive network</em>. Here is the relevent code.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
 
 <span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># only give the top 10,000 most frequent words a number/code
 </span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># each word is represented by 16 numbers
 </span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">120</span>    <span class="c1"># maximum length (word count) for each comment
-</span><span class="n">trunc_type</span><span class="o">=</span><span class="s">'post'</span>   <span class="c1"># removing excess words at the end of the comments
-</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="s">"&lt;OOV&gt;"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
+</span><span class="n">trunc_type</span><span class="o">=</span><span class="sh">'</span><span class="s">post</span><span class="sh">'</span>   <span class="c1"># removing excess words at the end of the comments
+</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="sh">"</span><span class="s">&lt;OOV&gt;</span><span class="sh">"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
 </span>
-<span class="n">comments</span> <span class="o">=</span> <span class="p">[</span><span class="s">"comment"</span><span class="p">,</span> <span class="s">"hello world"</span><span class="p">]</span>  <span class="c1"># n comments (strings) with different lengths
+<span class="n">comments</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">comment</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">hello world</span><span class="sh">"</span><span class="p">]</span>  <span class="c1"># n comments (strings) with different lengths
 </span>
 <span class="c1"># generate the encoding rule that convert words to numbers
-</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="nc">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="p">.</span><span class="nf">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
 
 <span class="c1"># convert words to numbers
-</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
 
 <span class="c1"># making the sequences so that they have equal length
-</span><span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+</span><span class="n">padded</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
 
 <span class="c1"># obtain the map between words and numbers, the dict is {words: number}
 </span><span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
 
 <span class="c1"># construct a model with embedding
-</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Flatten</span><span class="p">(),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'sigmoid'</span><span class="p">)</span>
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Flatten</span><span class="p">(),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">sigmoid</span><span class="sh">'</span><span class="p">)</span>
 <span class="p">])</span>
 
-<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'binary_crossentropy'</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
-<span class="n">model</span><span class="p">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="sh">'</span><span class="s">binary_crossentropy</span><span class="sh">'</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="sh">'</span><span class="s">adam</span><span class="sh">'</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">accuracy</span><span class="sh">'</span><span class="p">])</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">summary</span><span class="p">()</span>
 
 </code></pre></div></div>
 
 <p>This is the summary of the model.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="s">"sequential"</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="sh">"</span><span class="s">sequential</span><span class="sh">"</span>
 <span class="n">_________________________________________________________________</span>
-<span class="n">Layer</span> <span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
+<span class="nc">Layer </span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
 </span><span class="o">=================================================================</span>
-<span class="n">embedding</span> <span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>     
+<span class="nf">embedding </span><span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>     
 <span class="c1"># meaning: 120 vectors, each vector is 16 dimensional
 </span><span class="n">_________________________________________________________________</span>
-<span class="n">flatten</span> <span class="p">(</span><span class="n">Flatten</span><span class="p">)</span>            <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1920</span><span class="p">)</span>              <span class="mi">0</span>     
+<span class="nf">flatten </span><span class="p">(</span><span class="n">Flatten</span><span class="p">)</span>            <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1920</span><span class="p">)</span>              <span class="mi">0</span>     
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>                 <span class="mi">11526</span> 
+<span class="nf">dense </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>                 <span class="mi">11526</span> 
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense_1</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="mi">7</span>
+<span class="nf">dense_1 </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="mi">7</span>
 <span class="o">=================================================================</span>
 <span class="n">Total</span> <span class="n">params</span><span class="p">:</span> <span class="mi">171</span><span class="p">,</span><span class="mi">533</span>
 <span class="n">Trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">171</span><span class="p">,</span><span class="mi">533</span>
@@ -200,9 +192,9 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># only give the top 10,000 most frequent words a number/code
 </span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># each word is represented by 16 numbers
-</span><span class="p">.......</span>
+</span><span class="p">....</span><span class="bp">...</span>
 <span class="n">embed_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">weights</span> <span class="o">=</span> <span class="n">embed_layer</span><span class="p">.</span><span class="n">weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># shape (10000, 16), 
+<span class="n">weights</span> <span class="o">=</span> <span class="n">embed_layer</span><span class="p">.</span><span class="nf">weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># shape (10000, 16), 
 </span></code></pre></div></div>
 
 <p>The weights will map every word from their <strong>code</strong> to a <strong>vector</strong>.</p>
@@ -279,48 +271,48 @@
 
 <p>The following code use the LSTM in the model in tensorflow.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="n">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
 
 <span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># only give the top 10,000 most frequent words a number/code
 </span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># each word is represented by 16 numbers
 </span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">120</span>    <span class="c1"># maximum length (word count) for each comment
-</span><span class="n">trunc_type</span><span class="o">=</span><span class="s">'post'</span>   <span class="c1"># removing excess words at the end of the comments
-</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="s">"&lt;OOV&gt;"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
+</span><span class="n">trunc_type</span><span class="o">=</span><span class="sh">'</span><span class="s">post</span><span class="sh">'</span>   <span class="c1"># removing excess words at the end of the comments
+</span><span class="n">oov_tok</span> <span class="o">=</span> <span class="sh">"</span><span class="s">&lt;OOV&gt;</span><span class="sh">"</span>   <span class="c1"># use &lt;OOV&gt; to represnt words never seen before
 </span>
-<span class="n">comments</span> <span class="o">=</span> <span class="p">[</span><span class="s">"comment"</span><span class="p">,</span> <span class="s">"hello world"</span><span class="p">]</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
-<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
-<span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+<span class="n">comments</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">comment</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">hello world</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="nc">Tokenizer</span><span class="p">(</span><span class="n">num_words</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="n">oov_tok</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="p">.</span><span class="nf">fit_on_texts</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+<span class="n">padded</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
 <span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
 
 <span class="c1"># construct a model with sequence model
-</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">64</span><span class="p">)),</span>  <span class="c1"># use LSTM
-</span>    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'sigmoid'</span><span class="p">)</span>
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Bidirectional</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">64</span><span class="p">)),</span>  <span class="c1"># use LSTM
+</span>    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">sigmoid</span><span class="sh">'</span><span class="p">)</span>
 <span class="p">])</span>
 
-<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'binary_crossentropy'</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
-<span class="n">model</span><span class="p">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="sh">'</span><span class="s">binary_crossentropy</span><span class="sh">'</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="sh">'</span><span class="s">adam</span><span class="sh">'</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">accuracy</span><span class="sh">'</span><span class="p">])</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">summary</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>The above code works for <code class="language-plaintext highlighter-rouge">tensorflow 2.6.0</code>, and the output is.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="s">"sequential"</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="sh">"</span><span class="s">sequential</span><span class="sh">"</span>
 <span class="n">_________________________________________________________________</span>
-<span class="n">Layer</span> <span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
+<span class="nc">Layer </span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
 </span><span class="o">=================================================================</span>
-<span class="n">embedding</span> <span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
+<span class="nf">embedding </span><span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
 <span class="n">_________________________________________________________________</span>
-<span class="n">bidirectional</span> <span class="p">(</span><span class="n">Bidirectional</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>               <span class="mi">41472</span>     
+<span class="nf">bidirectional </span><span class="p">(</span><span class="nc">Bidirectional </span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>               <span class="mi">41472</span>     
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>                <span class="mi">8256</span>      
+<span class="nf">dense </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>                <span class="mi">8256</span>      
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense_1</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="mi">65</span>        
+<span class="nf">dense_1 </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="mi">65</span>        
 <span class="o">=================================================================</span>
 <span class="n">Total</span> <span class="n">params</span><span class="p">:</span> <span class="mi">209</span><span class="p">,</span><span class="mi">793</span>
 <span class="n">Trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">209</span><span class="p">,</span><span class="mi">793</span>
@@ -337,28 +329,28 @@
 <p>Except for the LSTM, we can also use a 1D convolution layer, like below</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># construct a model convolution rather than LSTM
-</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
-  	<span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">GlobalMaxPooling1D</span><span class="p">(),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
-    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'sigmoid'</span><span class="p">)</span>
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
+  	<span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Conv1D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">GlobalMaxPooling1D</span><span class="p">(),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">sigmoid</span><span class="sh">'</span><span class="p">)</span>
 <span class="p">])</span>
 </code></pre></div></div>
 
 <p>The summary of the model is</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="s">"sequential"</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Model</span><span class="p">:</span> <span class="sh">"</span><span class="s">sequential</span><span class="sh">"</span>
 <span class="n">_________________________________________________________________</span>
-<span class="n">Layer</span> <span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
+<span class="nc">Layer </span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>                 <span class="n">Output</span> <span class="n">Shape</span>              <span class="n">Param</span> <span class="c1">#   
 </span><span class="o">=================================================================</span>
-<span class="n">embedding</span> <span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
+<span class="nf">embedding </span><span class="p">(</span><span class="n">Embedding</span><span class="p">)</span>        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>           <span class="mi">160000</span>    
 <span class="n">_________________________________________________________________</span>
-<span class="n">conv1d</span> <span class="p">(</span><span class="n">Conv1D</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>          <span class="mi">10368</span>     
+<span class="nf">conv1d </span><span class="p">(</span><span class="n">Conv1D</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>          <span class="mi">10368</span>     
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>           <span class="mi">8256</span>      
+<span class="nf">dense </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>                <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>           <span class="mi">8256</span>      
 <span class="n">_________________________________________________________________</span>
-<span class="n">dense_1</span> <span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>            <span class="mi">65</span>        
+<span class="nf">dense_1 </span><span class="p">(</span><span class="n">Dense</span><span class="p">)</span>              <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>            <span class="mi">65</span>        
 <span class="o">=================================================================</span>
 <span class="n">Total</span> <span class="n">params</span><span class="p">:</span> <span class="mi">178</span><span class="p">,</span><span class="mi">689</span>
 <span class="n">Trainable</span> <span class="n">params</span><span class="p">:</span> <span class="mi">178</span><span class="p">,</span><span class="mi">689</span>
@@ -372,9 +364,9 @@
 
 <p>The following code present an example for this task.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tokenizer</span> <span class="o">=</span> <span class="nc">Tokenizer</span><span class="p">()</span>
 
-<span class="n">data</span><span class="o">=</span><span class="s">"""
+<span class="n">data</span><span class="o">=</span><span class="sh">"""</span><span class="s">
 In the town of Athy one Jeremy Lanigan
 Battered away til he hadnt a pound.
 His father died and made him a man again
@@ -438,36 +430,36 @@ Old Casey, the piper, was near being strangled.
 They squeezed up his pipes, bellows, chanters and all.
 The girls, in their ribbons, they got all entangled
 And that put an end to Lanigans Ball.
-"""</span>
+</span><span class="sh">"""</span>
 
-<span class="n">corpus</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">lower</span><span class="p">().</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
 
-<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="n">total_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">tokenizer</span><span class="p">.</span><span class="nf">fit_on_texts</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+<span class="n">total_words</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="c1"># print(tokenizer.word_index) -&gt; 263
 # print(total_words) -&gt; {'and': 1, 'the': 2, 'a': 3, ... }
 </span>
 <span class="n">input_sequences</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="n">line</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_list</span><span class="p">)):</span>
+	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">line</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nf">len</span><span class="p">(</span><span class="n">token_list</span><span class="p">)):</span>
 		<span class="n">n_gram_sequence</span> <span class="o">=</span> <span class="n">token_list</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-		<span class="n">input_sequences</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_gram_sequence</span><span class="p">)</span>
+		<span class="n">input_sequences</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">n_gram_sequence</span><span class="p">)</span>
 
 <span class="c1"># pad sequences 
-</span><span class="n">max_sequence_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_sequences</span><span class="p">])</span>
-<span class="n">input_sequences</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
-  <span class="n">pad_sequences</span><span class="p">(</span><span class="n">input_sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s">'pre'</span><span class="p">)</span>
+</span><span class="n">max_sequence_len</span> <span class="o">=</span> <span class="nf">max</span><span class="p">([</span><span class="nf">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_sequences</span><span class="p">])</span>
+<span class="n">input_sequences</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span>
+  <span class="nf">pad_sequences</span><span class="p">(</span><span class="n">input_sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="sh">'</span><span class="s">pre</span><span class="sh">'</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="c1"># create predictors and label
 </span><span class="n">xs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">input_sequences</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">input_sequences</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># from numbers to categorical label
-</span><span class="n">ys</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">total_words</span><span class="p">)</span>
+</span><span class="n">ys</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="nf">to_categorical</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">total_words</span><span class="p">)</span>
 
-<span class="s">"""
+<span class="sh">"""</span><span class="s">
 xs[6] -&gt; [ 0  0  0  4  2 66  8 67 68 69] (history)
 labels[6] -&gt;  70  (prediction)
 
@@ -475,36 +467,36 @@ categorical label
 ys[6].shape -&gt; (263,)
 ys[6][70] -&gt; 1
 ys[6][65] -&gt; 0
-"""</span>
+</span><span class="sh">"""</span>
 
 <span class="c1"># Train the network to make prediction
-</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
-<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Embedding</span><span class="p">(</span><span class="n">total_words</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">20</span><span class="p">)))</span>
-<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">total_words</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">))</span>
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nc">Embedding</span><span class="p">(</span><span class="n">total_words</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nc">Bidirectional</span><span class="p">(</span><span class="nc">LSTM</span><span class="p">(</span><span class="mi">20</span><span class="p">)))</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nc">Dense</span><span class="p">(</span><span class="n">total_words</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">softmax</span><span class="sh">'</span><span class="p">))</span>
 
-<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span>
-  <span class="n">loss</span><span class="o">=</span><span class="s">'categorical_crossentropy'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span>
+  <span class="n">loss</span><span class="o">=</span><span class="sh">'</span><span class="s">categorical_crossentropy</span><span class="sh">'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="sh">'</span><span class="s">adam</span><span class="sh">'</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">accuracy</span><span class="sh">'</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
 <span class="c1"># Use the network to generate text, starting with she
-</span><span class="n">seed_text</span> <span class="o">=</span> <span class="s">"She"</span>
+</span><span class="n">seed_text</span> <span class="o">=</span> <span class="sh">"</span><span class="s">She</span><span class="sh">"</span>
 <span class="n">next_words</span> <span class="o">=</span> <span class="mi">10</span>
 
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">next_words</span><span class="p">):</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="n">seed_text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">([</span><span class="n">token_list</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s">'pre'</span><span class="p">)</span>
-	<span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-	<span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">output_word</span> <span class="o">=</span> <span class="s">""</span>
-	<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">next_words</span><span class="p">):</span>
+	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">seed_text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">token_list</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">([</span><span class="n">token_list</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="sh">'</span><span class="s">pre</span><span class="sh">'</span><span class="p">)</span>
+	<span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">output_word</span> <span class="o">=</span> <span class="sh">""</span>
+	<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
 		<span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="n">predicted</span><span class="p">:</span>
 			<span class="n">output_word</span> <span class="o">=</span> <span class="n">word</span>
 			<span class="k">break</span>
-	<span class="n">seed_text</span> <span class="o">+=</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">output_word</span>
-<span class="k">print</span><span class="p">(</span><span class="n">seed_text</span><span class="p">)</span>
+	<span class="n">seed_text</span> <span class="o">+=</span> <span class="sh">"</span><span class="s"> </span><span class="sh">"</span> <span class="o">+</span> <span class="n">output_word</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">seed_text</span><span class="p">)</span>
 
 <span class="c1"># -&gt; She stepped out and i stepped in again again again again
 </span></code></pre></div></div>

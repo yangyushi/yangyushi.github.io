@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -100,9 +92,9 @@
 <p>在 <code class="language-plaintext highlighter-rouge">import</code> 的时候，我希望达到这样的效果</p>
 
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">c_correlation</span> <span class="k">as</span> <span class="n">corr</span>
+    <span class="kn">import</span> <span class="n">c_correlation</span> <span class="k">as</span> <span class="n">corr</span>
 <span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">correlation</span> <span class="k">as</span> <span class="n">corr</span>
+    <span class="kn">import</span> <span class="n">correlation</span> <span class="k">as</span> <span class="n">corr</span>
 </code></pre></div></div>
 
 <p>在我的 <code class="language-plaintext highlighter-rouge">c_corrlation.cpp</code> 文件里，我最需要完成的是 Pyhton 和 C++ 数据类型的转换。十分幸运的是，<code class="language-plaintext highlighter-rouge">pybind11</code> 可以自动地帮助我将 <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">Dict</code> 和 <code class="language-plaintext highlighter-rouge">numpy.ndarray</code> 转换成相应的 C++ 数据结构。</p>
@@ -133,8 +125,8 @@
 <p>同时我们写一个 <code class="language-plaintext highlighter-rouge">wrap.py</code> 的文件</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//wrap.cpp</span>
-<span class="cp">#include &lt;pybind11/pybind11.h&gt;
-#include "funcs.hpp"
+<span class="cp">#include</span> <span class="cpf">&lt;pybind11/pybind11.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"funcs.hpp"</span><span class="cp">
 </span>
 <span class="k">namespace</span> <span class="n">py</span> <span class="o">=</span> <span class="n">pybind11</span><span class="p">;</span>
 
@@ -156,8 +148,8 @@ funcs.cpp wrap.cpp
 
 <p>最终就会得到一个名为 <code class="language-plaintext highlighter-rouge">wrap.cpython-37m-darwin.so</code> 的文件。我们可以在 <code class="language-plaintext highlighter-rouge">python</code> 里直接执行</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">wrap</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">wrap</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">wrap</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">wrap</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">3</span>
 </code></pre></div></div>
 
@@ -170,28 +162,28 @@ funcs.cpp wrap.cpp
 
 <p>来编译需要的 <code class="language-plaintext highlighter-rouge">wrap</code> 模块。文件 <code class="language-plaintext highlighter-rouge">setup.py</code> 的内容如下</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span><span class="p">,</span> <span class="n">sys</span>
-<span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<span class="kn">from</span> <span class="nn">distutils</span> <span class="kn">import</span> <span class="n">sysconfig</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span><span class="p">,</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<span class="kn">from</span> <span class="n">distutils</span> <span class="kn">import</span> <span class="n">sysconfig</span>
 
-<span class="n">cpp_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-std=c++11'</span><span class="p">,</span> <span class="s">'-stdlib=libc++'</span><span class="p">,</span> <span class="s">'-mmacosx-version-min=10.7'</span><span class="p">]</span>
+<span class="n">cpp_args</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">-std=c++11</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">-stdlib=libc++</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">-mmacosx-version-min=10.7</span><span class="sh">'</span><span class="p">]</span>
 
 <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">Extension</span><span class="p">(</span>
-    <span class="s">'wrap'</span><span class="p">,</span>
-        <span class="p">[</span><span class="s">'funcs.cpp'</span><span class="p">,</span> <span class="s">'func_wrap.cpp'</span><span class="p">],</span>
-        <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="s">'pybind11/include'</span><span class="p">],</span>
-    <span class="n">language</span><span class="o">=</span><span class="s">'c++'</span><span class="p">,</span>
+    <span class="nc">Extension</span><span class="p">(</span>
+    <span class="sh">'</span><span class="s">wrap</span><span class="sh">'</span><span class="p">,</span>
+        <span class="p">[</span><span class="sh">'</span><span class="s">funcs.cpp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">func_wrap.cpp</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">pybind11/include</span><span class="sh">'</span><span class="p">],</span>
+    <span class="n">language</span><span class="o">=</span><span class="sh">'</span><span class="s">c++</span><span class="sh">'</span><span class="p">,</span>
     <span class="n">extra_compile_args</span> <span class="o">=</span> <span class="n">cpp_args</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]</span>
 
-<span class="n">setup</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s">'wrap'</span><span class="p">,</span>
-    <span class="n">version</span><span class="o">=</span><span class="s">'0.0.1'</span><span class="p">,</span>
-    <span class="n">author</span><span class="o">=</span><span class="s">'Yushi Yang'</span><span class="p">,</span>
-    <span class="n">author_email</span><span class="o">=</span><span class="s">'yushi.yang@bristol.ac.uk'</span><span class="p">,</span>
-    <span class="n">description</span><span class="o">=</span><span class="s">'Example'</span><span class="p">,</span>
+<span class="nf">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">wrap</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="sh">'</span><span class="s">0.0.1</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="sh">'</span><span class="s">Yushi Yang</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">author_email</span><span class="o">=</span><span class="sh">'</span><span class="s">yushi.yang@bristol.ac.uk</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="sh">'</span><span class="s">Example</span><span class="sh">'</span><span class="p">,</span>
     <span class="n">ext_modules</span><span class="o">=</span><span class="n">ext_modules</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div></div>
@@ -212,9 +204,9 @@ funcs.cpp wrap.cpp
 <span class="n">setup_pybind11</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="o">%&gt;</span>
 
-<span class="cp">#include &lt;pybind11/pybind11.h&gt;
-#include &lt;pybind11/stl.h&gt;
-#include "funcs.hpp"
+<span class="cp">#include</span> <span class="cpf">&lt;pybind11/pybind11.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;pybind11/stl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"funcs.hpp"</span><span class="cp">
 </span>
 <span class="k">namespace</span> <span class="n">py</span> <span class="o">=</span> <span class="n">pybind11</span><span class="p">;</span>
 
@@ -226,9 +218,9 @@ funcs.cpp wrap.cpp
 
 <p>代码最开始的标记就是为了 <code class="language-plaintext highlighter-rouge">cppimport</code> 服务的。在我们使用 <code class="language-plaintext highlighter-rouge">pip install cppimport</code> 之后，我们可以「直接」导入我们的 c++ 模块。</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">cppimport</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">wrap</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="n">imp</span><span class="p">(</span><span class="s">"ez_wrap"</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">wrap</span><span class="p">.</span><span class="n">add</span><span class="p">()</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">cppimport</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">wrap</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="nf">imp</span><span class="p">(</span><span class="sh">"</span><span class="s">ez_wrap</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">wrap</span><span class="p">.</span><span class="nf">add</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">3</span>
 </code></pre></div></div>
 
@@ -259,7 +251,7 @@ funcs.cpp wrap.cpp
 
 <p>我们需要导入 <code class="language-plaintext highlighter-rouge">numpy</code> 对应的头文件来使用相关的功能。</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;pybind11/numpy.h&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;pybind11/numpy.h&gt;</span><span class="cp">
 </span></code></pre></div></div>
 
 <h3 id="修改已有数组">修改已有数组</h3>
@@ -281,20 +273,20 @@ funcs.cpp wrap.cpp
 
 <p>我们可以在 Python 里导入这个模块</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">cnp</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="n">imp</span><span class="p">(</span><span class="s">"cnp"</span><span class="p">)</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">cnp</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="nf">imp</span><span class="p">(</span><span class="sh">"</span><span class="s">cnp</span><span class="sh">"</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">a</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> 
-<span class="n">array</span><span class="p">([[</span><span class="mf">0.49394052</span><span class="p">,</span> <span class="mf">0.14228716</span><span class="p">],</span>
+<span class="nf">array</span><span class="p">([[</span><span class="mf">0.49394052</span><span class="p">,</span> <span class="mf">0.14228716</span><span class="p">],</span>
        <span class="p">[</span><span class="mf">0.13781544</span><span class="p">,</span> <span class="mf">0.51710877</span><span class="p">]])</span>
        
-<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">cnp</span><span class="p">.</span><span class="n">arr_db</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">cnp</span><span class="p">.</span><span class="nf">arr_db</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">a</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> 
-<span class="n">array</span><span class="p">([[</span><span class="mf">0.98788103</span><span class="p">,</span> <span class="mf">0.28457432</span><span class="p">],</span>
+<span class="nf">array</span><span class="p">([[</span><span class="mf">0.98788103</span><span class="p">,</span> <span class="mf">0.28457432</span><span class="p">],</span>
        <span class="p">[</span><span class="mf">0.27563088</span><span class="p">,</span> <span class="mf">1.03421754</span><span class="p">]])</span>
 </code></pre></div></div>
 
@@ -331,11 +323,11 @@ funcs.cpp wrap.cpp
 
 <p>我们可以在 Python 里导入这个模块。</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">cppimport</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">cnp</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="n">imp</span><span class="p">(</span><span class="s">"cnp"</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">np</span><span class="p">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">power</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">cnp</span><span class="p">.</span><span class="n">arr_sqr</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">cppimport</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">cnp</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="nf">imp</span><span class="p">(</span><span class="sh">"</span><span class="s">cnp</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">np</span><span class="p">.</span><span class="nf">allclose</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">power</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="nf">ravel</span><span class="p">(),</span> <span class="n">cnp</span><span class="p">.</span><span class="nf">arr_sqr</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="bp">True</span>
 </code></pre></div></div>
 
@@ -353,9 +345,9 @@ funcs.cpp wrap.cpp
 <span class="n">setup_pybind11</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="o">%&gt;</span>
 
-<span class="cp">#include &lt;pybind11/pybind11.h&gt;
-#include &lt;pybind11/eigen.h&gt;
-#include &lt;Eigen/LU&gt;
+<span class="cp">#include</span> <span class="cpf">&lt;pybind11/pybind11.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;pybind11/eigen.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;Eigen/LU&gt;</span><span class="cp">
 </span>
 <span class="k">namespace</span> <span class="n">py</span> <span class="o">=</span> <span class="n">pybind11</span><span class="p">;</span>
 
@@ -383,15 +375,15 @@ funcs.cpp wrap.cpp
 
 <p>我们可以直接引用这个模块</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">cppimport</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">cppimport</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">eig</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="n">imp</span><span class="p">(</span><span class="s">'eig'</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">eig</span> <span class="o">=</span> <span class="n">cppimport</span><span class="p">.</span><span class="nf">imp</span><span class="p">(</span><span class="sh">'</span><span class="s">eig</span><span class="sh">'</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">np</span><span class="p">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">eig</span><span class="p">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">np</span><span class="p">.</span><span class="nf">allclose</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">eig</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="bp">True</span>
 </code></pre></div></div>
 

@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -156,7 +148,7 @@
 
 <p>2 - 在「第一个」源文件里定义函数</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "functions.h"
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"functions.h"</span><span class="cp">
 </span>
 <span class="c1">// Function definition</span>
 <span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
@@ -167,8 +159,8 @@
 
 <p>3 - 在「其他源文件」中 <code class="language-plaintext highlighter-rouge">include</code> 头文件，使用函数</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-#include "functions.h"
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">"functions.h"</span><span class="cp">
 </span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
@@ -195,7 +187,7 @@ int main(){
 
 <p>C++ 里可以做同样的事情，不过也可以传递「地址」</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span>
 <span class="kt">void</span> <span class="nf">triple</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">num</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>
@@ -325,7 +317,7 @@ int main(){
 
 <p>这意味着，我们可以使用所有 free store / heap 里的内存。这样是不对的，会导致神秘的错误，制造最难查的 bug。这种错误的行为叫 out-of-range access。</p>
 
-<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">|</span> <span class="p">...</span>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">|</span> <span class="bp">...</span>
 </code></pre></div></div>
 
 <p>避免 out-of-range access 的方法是使用 <code class="language-plaintext highlighter-rouge">vector</code></p>
@@ -377,8 +369,8 @@ int main(){
 
 <p>C++ 里最简单的 结构体 用法</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-#include &lt;string&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
 </span>
 <span class="k">struct</span> <span class="nc">Date</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
@@ -407,8 +399,8 @@ int main(){
 
 <p>如果硬要这么用，应该 <code class="language-plaintext highlighter-rouge">(*pointer).key</code>。因为 <code class="language-plaintext highlighter-rouge">(*pointer)</code> 就是 <code class="language-plaintext highlighter-rouge">struct</code></p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-#include &lt;string&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
 </span>
 <span class="k">struct</span> <span class="nc">Date</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
@@ -545,7 +537,7 @@ int main(){
 
 <p>例子，注意这段代码比上面的代码慢很多</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;vector&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
 </span>
 <span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
@@ -606,7 +598,7 @@ int main(){
 
 <p>例子：记录总共创建了多少实例</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
 
@@ -656,7 +648,7 @@ int main(){
 
 <p>例子 - friend 类：<code class="language-plaintext highlighter-rouge">Bar</code> 的 <code class="language-plaintext highlighter-rouge">eat</code> 函数可以获取 <code class="language-plaintext highlighter-rouge">Foo</code> 的私有变量 <code class="language-plaintext highlighter-rouge">a</code></p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
 
@@ -666,7 +658,7 @@ int main(){
         <span class="k">friend</span> <span class="k">class</span> <span class="nc">Bar</span><span class="p">;</span>
     <span class="nl">public:</span>
         <span class="kt">void</span> <span class="n">inc</span><span class="p">(){</span><span class="n">a</span><span class="o">++</span><span class="p">;}</span>
-        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+        <span class="kt">void</span> <span class="nf">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"a is "</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
 <span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">Bar</span><span class="p">{</span>
@@ -674,7 +666,7 @@ int main(){
         <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="nl">public:</span>
         <span class="kt">void</span> <span class="n">eat</span><span class="p">(</span><span class="n">Foo</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">){</span><span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">a</span><span class="p">;}</span>
-        <span class="kt">void</span> <span class="n">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"b is "</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
+        <span class="kt">void</span> <span class="nf">show</span><span class="p">(){</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"b is "</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;}</span>
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
@@ -758,7 +750,7 @@ int main(){
 
 <p>下面是一个稍微具体一点的例子</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span>
 <span class="k">struct</span> <span class="nc">Base</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"B"</span><span class="p">;</span>
@@ -846,8 +838,8 @@ int main(){
 </code></pre></div></div>
 <p>的格式迭代。其中，<code class="language-plaintext highlighter-rouge">item</code> 的类型是 <a href="https://en.cppreference.com/w/cpp/utility/pair"><code class="language-plaintext highlighter-rouge">pair</code></a>。我们可以用 <code class="language-plaintext highlighter-rouge">item.first</code> 获取 键；用 <code class="language-plaintext highlighter-rouge">item.second</code> 获取 值。一个完整的例子如下</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-#include &lt;map&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
 </span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
 
@@ -881,9 +873,9 @@ int main(){
 
 <p>这个时候, <code class="language-plaintext highlighter-rouge">m</code> 里有一个 键，它的类型是 <code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>。但是我有点担心，它其实是指向 <code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code> 的一个指针。（因为 python 里基本上 <code class="language-plaintext highlighter-rouge">list</code> 和「指向 <code class="language-plaintext highlighter-rouge">list</code> 的指针」是一个意思）。这一段代码证明了，我的担心是多余的。</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
-#include &lt;map&gt;
-#include &lt;vector&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
 </span>
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 

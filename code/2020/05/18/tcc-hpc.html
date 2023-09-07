@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -225,30 +217,30 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 <p>It is worth mentioning that since we put <code class="language-plaintext highlighter-rouge">tcc</code> into <code class="language-plaintext highlighter-rouge">$HOME/.local/bin</code>, we need specifying it in our python code. It is something like</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="p">.</span><span class="n">TCCWrapper</span><span class="p">()</span>
-<span class="n">TCC_setup</span><span class="p">.</span><span class="n">set_tcc_executable_directory</span><span class="p">(</span><span class="s">"/newhome/yy17363/.local/bin"</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="p">.</span><span class="nc">TCCWrapper</span><span class="p">()</span>
+<span class="n">TCC_setup</span><span class="p">.</span><span class="nf">set_tcc_executable_directory</span><span class="p">(</span><span class="sh">"</span><span class="s">/newhome/yy17363/.local/bin</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Please notice that you will need to specify the <strong>full absolute path</strong> of the folder that holds the <code class="language-plaintext highlighter-rouge">tcc</code> file. The <code class="language-plaintext highlighter-rouge">yy17363</code> will be different on your account.</p>
 
 <p>You can use the following script to check if your TCC wrapper is working or not.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">from</span> <span class="nn">tcc_python_scripts.tcc</span> <span class="kn">import</span> <span class="n">wrapper</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">tcc_python_scripts.tcc</span> <span class="kn">import</span> <span class="n">wrapper</span>
 
 
-<span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="p">.</span><span class="n">TCCWrapper</span><span class="p">()</span>
+<span class="n">TCC_setup</span> <span class="o">=</span> <span class="n">wrapper</span><span class="p">.</span><span class="nc">TCCWrapper</span><span class="p">()</span>
 <span class="c1"># **** modify the following line for your account ****
-</span><span class="n">TCC_setup</span><span class="p">.</span><span class="n">set_tcc_executable_directory</span><span class="p">(</span><span class="s">"/newhome/yy17363/.local/bin"</span><span class="p">)</span>
-<span class="n">TCC_setup</span><span class="p">.</span><span class="n">input_parameters</span><span class="p">[</span><span class="s">'Run'</span><span class="p">][</span><span class="s">'Frames'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="n">TCC_setup</span><span class="p">.</span><span class="nf">set_tcc_executable_directory</span><span class="p">(</span><span class="sh">"</span><span class="s">/newhome/yy17363/.local/bin</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">TCC_setup</span><span class="p">.</span><span class="n">input_parameters</span><span class="p">[</span><span class="sh">'</span><span class="s">Run</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">Frames</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># find TCC clusters in a random gas
 # You will get something if you are very lucky
-</span><span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">TCC_setup</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+</span><span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">TCC_setup</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="footnotes" role="doc-endnotes">

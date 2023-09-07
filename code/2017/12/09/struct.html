@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -86,9 +78,9 @@ Return a bytes object containing the values v1, v2, … packed according to the 
 
 <p>we can use <code class="language-plaintext highlighter-rouge">pack</code> method to encode numerical data into formatted binary data.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">packed_data</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">'iif'</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">)</span> <span class="c1"># iif → int, int, float
-</span><span class="k">print</span><span class="p">(</span><span class="n">packed_data</span><span class="p">)</span>
-<span class="sa">b</span><span class="s">'</span><span class="se">\x06\x00\x00\x00\x13\x00\x00\x00</span><span class="s">ff</span><span class="se">\x96</span><span class="s">@'</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">packed_data</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">pack</span><span class="p">(</span><span class="sh">'</span><span class="s">iif</span><span class="sh">'</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">)</span> <span class="c1"># iif → int, int, float
+</span><span class="nf">print</span><span class="p">(</span><span class="n">packed_data</span><span class="p">)</span>
+<span class="sa">b</span><span class="sh">'</span><span class="se">\x06\x00\x00\x00\x13\x00\x00\x00</span><span class="s">ff</span><span class="se">\x96</span><span class="s">@</span><span class="sh">'</span>
 </code></pre></div></div>
 
 <h2 id="calcsize">calcsize</h2>
@@ -98,10 +90,10 @@ Return a bytes object containing the values v1, v2, … packed according to the 
 Return the size of the struct (and hence of the bytes object produced by pack(fmt, …)) corresponding to the format string fmt.</p>
 </blockquote>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s">'c'</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s">'i'</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s">'f'</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s">'cif'</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="nf">calcsize</span><span class="p">(</span><span class="sh">'</span><span class="s">c</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="nf">calcsize</span><span class="p">(</span><span class="sh">'</span><span class="s">i</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="nf">calcsize</span><span class="p">(</span><span class="sh">'</span><span class="s">f</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">struct</span><span class="p">.</span><span class="nf">calcsize</span><span class="p">(</span><span class="sh">'</span><span class="s">cif</span><span class="sh">'</span><span class="p">))</span>
 
 <span class="mi">1</span>
 <span class="mi">4</span>
@@ -116,8 +108,8 @@ Return the size of the struct (and hence of the bytes object produced by pack(fm
 Unpack from the buffer buffer (presumably packed by pack(fmt, …)) according to the format string fmt. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().</p>
 </blockquote>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">'iif'</span><span class="p">,</span> <span class="sa">b</span><span class="s">'</span><span class="se">\x06\x00\x00\x00\x13\x00\x00\x00</span><span class="s">ff</span><span class="se">\x96</span><span class="s">@'</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">'</span><span class="s">iif</span><span class="sh">'</span><span class="p">,</span> <span class="sa">b</span><span class="sh">'</span><span class="se">\x06\x00\x00\x00\x13\x00\x00\x00</span><span class="s">ff</span><span class="se">\x96</span><span class="s">@</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mf">4.699999809265137</span><span class="p">)</span>
 </code></pre></div></div>
 

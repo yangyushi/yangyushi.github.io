@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -142,10 +134,10 @@
 
 <p>If the header length is frustrating for you, another option would be use the <code class="language-plaintext highlighter-rouge">tofile</code> method of the numpy array, to just dump the data to a file. For example, the following code dumps a 3D array without header.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
-<span class="n">data</span><span class="p">.</span><span class="n">tofile</span><span class="p">(</span><span class="s">"data.raw"</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">data</span><span class="p">.</span><span class="nf">tofile</span><span class="p">(</span><span class="sh">"</span><span class="s">data.raw</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>And the <code class="language-plaintext highlighter-rouge">data.raw</code> file can be loaded with following settings.</p>

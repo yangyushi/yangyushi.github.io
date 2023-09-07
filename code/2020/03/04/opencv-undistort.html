@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -109,7 +101,7 @@ y_\text{corrected} &amp;= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
     <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
     <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="n">fx</span>
     <span class="n">y0</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="n">fy</span>
     <span class="n">r2</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y0</span> <span class="o">**</span> <span class="mi">2</span>
@@ -118,7 +110,7 @@ y_\text{corrected} &amp;= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
     <span class="n">delta_y</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x0</span><span class="o">*</span><span class="n">y0</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="n">delta_x</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="n">delta_y</span>
-    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
 </code></pre></div></div>
 
 <p>And the result is what I get, and it is wrong. The tomato crosses are the undistorted points from my code and the teal circles are results from <code class="language-plaintext highlighter-rouge">cv2.undistortPoints</code>. They should match.</p>
@@ -169,19 +161,19 @@ y_\text{distorted} &amp;= y + [p_1(r^2 + 2y^2) + 2p_2 xy]
     <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">distortion</span>
     <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="n">fx</span>
     <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span>
     <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="n">fy</span>
     <span class="n">y0</span> <span class="o">=</span> <span class="n">y</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iter_num</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">iter_num</span><span class="p">):</span>
         <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span>
         <span class="n">k_inv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
         <span class="n">delta_x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">delta_y</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="n">delta_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_inv</span>
         <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span> <span class="o">-</span> <span class="n">delta_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_inv</span>
-    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
 </code></pre></div></div>
 
 <p>And this is the result, it is correct!</p>

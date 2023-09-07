@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -120,8 +112,8 @@ Once I understand how the C++ library works, I am more confident to fix the path
 
 <p><code class="language-plaintext highlighter-rouge">hello_world.cpp</code></p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
-#include &lt;iostream&gt;
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"hello_world.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span>
 <span class="kt">void</span> <span class="n">hello</span><span class="o">::</span><span class="n">printHelloWorld</span><span class="p">(){</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World!"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -130,7 +122,7 @@ Once I understand how the C++ library works, I am more confident to fix the path
 
 <p><code class="language-plaintext highlighter-rouge">main.cpp</code></p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "hello_world.h"
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"hello_world.h"</span><span class="cp">
 </span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
     <span class="n">hello</span> <span class="n">h</span><span class="p">;</span>

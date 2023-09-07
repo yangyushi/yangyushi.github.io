@@ -43,15 +43,7 @@
         <a href=/notebook.html
             
         >
-            Notes
-        </a>
-        </li>
-        
-        <li>
-        <a href=/links.html
-            
-        >
-            Links
+            Notebook
         </a>
         </li>
         
@@ -82,14 +74,14 @@
 
 <p>In a more operational way, I can simulat a confocal image, knowing a collection of particle locations, the radii of these particles and their intensitiy values, following the pseudo-code,</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_particles</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_particles</span><span class="p">):</span>
   <span class="n">position</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
   <span class="n">intensity</span> <span class="o">=</span> <span class="n">intensities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
   <span class="n">radius</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-  <span class="n">P</span> <span class="o">=</span> <span class="n">generate_single_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-  <span class="n">box</span> <span class="o">=</span> <span class="n">get_sphere_container</span><span class="p">(</span><span class="n">positoin</span><span class="p">)</span>
+  <span class="n">P</span> <span class="o">=</span> <span class="nf">generate_single_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+  <span class="n">box</span> <span class="o">=</span> <span class="nf">get_sphere_container</span><span class="p">(</span><span class="n">positoin</span><span class="p">)</span>
   <span class="n">M</span><span class="p">[</span><span class="n">box</span><span class="p">]</span> <span class="o">+=</span> <span class="n">P</span> <span class="o">*</span> <span class="n">intensity</span>
-<span class="n">apply_kernel</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+<span class="nf">apply_kernel</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h2 id="the-derivative-of-the-model">The Derivative of the Model</h2>
