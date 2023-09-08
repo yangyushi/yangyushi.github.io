@@ -131,11 +131,14 @@ code {
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-  border: 1px solid #BCBEC0;
-  padding: 2px;
+  border: 1px solid teal;
+  padding: 0.1em 0.4em;
+  margin: 0;
+  white-space: break-spaces;
   font: 12px Consolas, Monaco, "Andale  Mono", "DejaVu Sans Mono", monospace;
-  line-height: 2;
-  color: teal;
+  font-size: 85%;
+  line-height: 1.5;
+  color: #333;
 }
 
 table {
@@ -271,6 +274,23 @@ img {
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 4px;
+  height: 85vh;
+  width: 15%;
+}
+
+#side_bar::-webkit-scrollbar {
+  width: 7px;
+}
+
+#side_bar::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #e7e7e7;
+  border: 1px solid #cacaca;
+}
+
+#side_bar::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #c0c0c0;
 }
 
 #side_bar li {
@@ -283,6 +303,10 @@ img {
   padding-left: 14px;
   margin-bottom: 8px;
   list-style-type: none;
+}
+
+#markdown-toc-new {
+  overflow: auto;
 }
 
 .cn_label {

@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>二代测序</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Home
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook.html
+            
+        >
+            Notebook
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    18 Aug 2023
+</div>
+
+<div class="post center">
+    <ul id="markdown-toc">
+  <li><a href="#barcode" id="markdown-toc-barcode">Barcode</a>    <ul>
+      <li><a href="#dna-基础" id="markdown-toc-dna-基础">DNA 基础</a></li>
+      <li><a href="#pe-测序" id="markdown-toc-pe-测序">PE 测序</a></li>
+      <li><a href="#barcode-拆分策略" id="markdown-toc-barcode-拆分策略">Barcode 拆分策略</a>        <ul>
+          <li><a href="#单端-barcode" id="markdown-toc-单端-barcode">单端 barcode</a></li>
+          <li><a href="#双端-barcode" id="markdown-toc-双端-barcode">双端 barcode</a></li>
+          <li><a href="#单读段-barcode" id="markdown-toc-单读段-barcode">单读段 barcode</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="barcode">Barcode</h2>
+
+<p><strong>目的</strong>：在测序中，我们经常一次性测序来自不同样品的多个 DNA 片段。为了在测序完成后能区分各个样品，我们会在每个片段上加上一个独特的 DNA 序列，称为 barcode。测序后，我们可以根据这些 barcode 来拆分、分类数据。</p>
+
+<h3 id="dna-基础">DNA 基础</h3>
+
+<ul>
+  <li>DNA 由两条反向互补的链组成，每条链都有一个 5’ 端和一个 3’ 端。</li>
+  <li>标准的 DNA 序列方向是从 5’ 到 3’。</li>
+</ul>
+
+<h3 id="pe-测序">PE 测序</h3>
+
+<ul>
+  <li><strong>PE (Pair Ended) 测序</strong>可以提供片段两端的序列信息。</li>
+  <li>这种测序方式可以帮助我们了解片段的方向和距离信息。</li>
+</ul>
+
+<p>假设测序的 DNA 片段是：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5' - ATGCACTGACTGAGCTA - 3'
+3' - TACGTGACTGACTCGAT - 5'
+</code></pre></div></div>
+
+<p>测序结果为：
+<strong>读段 1</strong>：<code class="language-plaintext highlighter-rouge">5' - ATGCACTGA - 3'</code>
+<strong>读段 2</strong>：<code class="language-plaintext highlighter-rouge">5' - TAGCTCAGT - 3'</code></p>
+
+<h3 id="barcode-拆分策略">Barcode 拆分策略</h3>
+
+<h4 id="单端-barcode">单端 barcode</h4>
+
+<p>只在片段的一个端（如 5’ 端）加入 barcode。<strong>示例</strong>：</p>
+
+<p>加入 barcode <code class="language-plaintext highlighter-rouge">GGTT</code> 后的片段：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5' - GGTTATGCACTGACTGAGCTA - 3'
+3' - AACCTACGTGACTGACTCGAT - 5'
+</code></pre></div></div>
+
+<ul>
+  <li>测序读段 1：<code class="language-plaintext highlighter-rouge">5' - GGTTATGCA - 3'</code></li>
+</ul>
+
+<h4 id="双端-barcode">双端 barcode</h4>
+
+<p>在片段的两端都加入 barcode。<strong>示例</strong>：</p>
+
+<p>5’ 端的 barcode 为 <code class="language-plaintext highlighter-rouge">GGTT</code>，3’ 端的 barcode 为 <code class="language-plaintext highlighter-rouge">AACC</code>。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5' - GGTTATGCACTGACTGAGCTAAACC - 3'
+3' - TTGGTACGTGACTGACTCGATGGTT - 5'
+</code></pre></div></div>
+
+<ul>
+  <li>测序读段 1：<code class="language-plaintext highlighter-rouge">5' - GGTTATGCA - 3'</code></li>
+  <li>测序读段 2：<code class="language-plaintext highlighter-rouge">5' - GGTTATCGA - 3'</code></li>
+</ul>
+
+<h4 id="单读段-barcode">单读段 barcode</h4>
+
+<p>在 paired-end 测序中，只在一个特定的读段（如 Read1）添加 barcode。<strong>示例</strong>：</p>
+
+<p>在 Read1 上添加 barcode <code class="language-plaintext highlighter-rouge">GGTT</code>：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5' - GGTTATGCACTGACTGAGCTA - 3'
+3' - AACCTACGTGACTGACTCGAT - 5'
+</code></pre></div></div>
+
+<ul>
+  <li>测序读段 1：<code class="language-plaintext highlighter-rouge">5' - GGTTATGCA - 3'</code></li>
+</ul>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

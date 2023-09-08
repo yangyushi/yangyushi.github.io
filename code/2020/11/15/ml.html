@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Keras 函数式 API</title>
+    <title>机器学习</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
@@ -58,19 +58,20 @@
 
 <div class="post center">
     <ul id="markdown-toc">
-  <li><a href="#面向对象-api" id="markdown-toc-面向对象-api">面向对象 API</a></li>
-  <li><a href="#函数式-api" id="markdown-toc-函数式-api">函数式 API</a></li>
-  <li><a href="#深入理解" id="markdown-toc-深入理解">深入理解</a></li>
-  <li><a href="#附录没有输入的模型" id="markdown-toc-附录没有输入的模型">附录：没有输入的模型</a></li>
+  <li><a href="#keras-函数式-api" id="markdown-toc-keras-函数式-api">Keras 函数式 API</a>    <ul>
+      <li><a href="#面向对象-api" id="markdown-toc-面向对象-api">面向对象 API</a></li>
+      <li><a href="#函数式-api" id="markdown-toc-函数式-api">函数式 API</a></li>
+      <li><a href="#深入理解" id="markdown-toc-深入理解">深入理解</a></li>
+      <li><a href="#附录没有输入的模型" id="markdown-toc-附录没有输入的模型">附录：没有输入的模型</a></li>
+    </ul>
+  </li>
 </ul>
 
-<hr />
+<h2 id="keras-函数式-api">Keras 函数式 API</h2>
 
 <p>深度学习库 Tensorflow 2 里的 Keras 模块提供了函数式<small>（泛函）</small> 风格的 应用程序接口 (API)。这让我们可以用相当不同的风格，构建出同样的神经网络模型。这个笔记比较了两种风格，基于对应的 <a href="https://www.tensorflow.org/guide/keras/functional">tensorflow 文档</a>。</p>
 
-<hr />
-
-<h2 id="面向对象-api">面向对象 API</h2>
+<h3 id="面向对象-api">面向对象 API</h3>
 
 <p>Keras 里我们可以用下面的代码创建模型。这里的代码是过程式的（普通的）。</p>
 
@@ -108,7 +109,7 @@ _________________________________________________________________
 
 <p>第一层的参数是 <strong>12</strong> 的原因是我们有 <strong>2</strong> 个神经元，每个神经元 连接了 <strong>5</strong> 个输入，所有总共有 $2 \times 5 = 10$ 个 权重值。再加上 <strong>2</strong> 个属于神经元的偏差，最终得到 <strong>12</strong> 个参数。</p>
 
-<h2 id="函数式-api">函数式 API</h2>
+<h3 id="函数式-api">函数式 API</h3>
 
 <p>Keras 同时也允许我们把 同样的代码 用<a href="https://zh.wikipedia.org/wiki/函数式编程">函数式风格</a>写出来。写法如下，</p>
 
@@ -125,7 +126,7 @@ _________________________________________________________________
 
 <p>这会得到同样的模型。</p>
 
-<h2 id="深入理解">深入理解</h2>
+<h3 id="深入理解">深入理解</h3>
 
 <p>在面向对象 API 里，我们的使用的语法如下</p>
 
@@ -159,7 +160,7 @@ x_2 &amp;= l_2(x_1)\\
 y &amp;= l_3(x_2)
 \end{aligned}\]
 
-<h2 id="附录没有输入的模型">附录：没有输入的模型</h2>
+<h3 id="附录没有输入的模型">附录：没有输入的模型</h3>
 
 <p>在我创建模型的时候，我通常会指定输入数据的形状。譬如，下面的代码 将 输入数据 固定为 5 个数字。</p>
 
