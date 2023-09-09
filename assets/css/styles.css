@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: cornflowerblue;
+  color: darkslategray;
   background: transparent;
   word-wrap: break-word;
   word-break: break-all;
@@ -13,19 +13,11 @@ a {
 
 a:active, a:hover {
   color: tomato;
-  outline: 1;
 }
 
-.two_column li a {
-  color: darkslategray;
-}
-
-.two_column ul {
-  padding-inline-start: 0px;
-}
-
-li a:active, a:hover {
-  color: tomato;
+.notebooks ul {
+  padding-inline-start: 0;
+  list-style-type: none;
 }
 
 .list ul {
@@ -36,12 +28,18 @@ li a:active, a:hover {
   padding-bottom: 12px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   color: teal;
   font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
   text-align: left;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+}
+
+h3, h4, h5, h6 {
+  color: teal;
+  font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 nav {
@@ -49,13 +47,14 @@ nav {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0%);
+  font-family: monospace;
 }
 
 nav ul {
   display: flex;
   font-size: 18px;
   list-style-type: none;
-  font: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
+  line-height: 1em;
 }
 
 nav li {
@@ -73,6 +72,15 @@ nav a {
   color: darkslategray;
 }
 
+.post {
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-width: 500px;
+  overflow: visible;
+}
+
 .current {
   border-radius: 0;
   border-bottom: 2px solid lightgray;
@@ -80,27 +88,30 @@ nav a {
 
 .post h1 {
   text-align: left;
-  font-size: 2;
+  font-size: 2em;
   margin-bottom: 32px;
 }
 
 .post h2 {
   font-size: 1.5em;
-  margin-bottom: 24px;
 }
 .post h2:before {
-  content: "# ";
+  content: "#";
   color: lightgray;
-  position: relative;
+  position: absolute;
+  padding-right: 4px;
+  left: -1em;
 }
 
 .post h3 {
-  font-size: 1.25em;
+  font-size: 1.2em;
 }
 .post h3:before {
-  content: "## ";
+  content: "##";
   color: lightgray;
-  position: relative;
+  position: absolute;
+  padding-right: 4px;
+  left: -2em;
 }
 
 .post h4 {
@@ -108,9 +119,11 @@ nav a {
   line-height: 1.2;
 }
 .post h4:before {
-  content: "### ";
+  content: "###";
   color: lightgray;
-  position: relative;
+  position: absolute;
+  padding-right: 4px;
+  left: -3em;
 }
 
 .post h5 {
@@ -119,7 +132,9 @@ nav a {
 .post h5:before {
   content: "#### ";
   color: lightgray;
-  position: relative;
+  position: absolute;
+  padding-right: 8px;
+  left: -1em;
 }
 
 .post h6 {
@@ -146,7 +161,7 @@ table {
   font-family: Helvetica, Arial, sans-serif; /* Nicer font */
   width: 100%;
   border-collapse: collapse;
-  border-spacing: 1;
+  border-spacing: 1px;
 }
 
 table td, th {
@@ -183,7 +198,7 @@ blockquote {
 }
 blockquote:before, blockquote:after {
   content: "“";
-  font-family: "Sanchez";
+  font-family: "sans-serif";
   color: teal;
 }
 blockquote:after {
@@ -200,10 +215,10 @@ blockquote:after {
 
 .center {
   top: 80px;
-  overflow: auto;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
+  overflow: visible;
 }
 
 .two_column {
@@ -240,14 +255,6 @@ blockquote:after {
   font-family: monospace;
 }
 
-.post {
-  color: #333;
-  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  min-width: 500px;
-}
-
 .catalog_left {
   float: left;
   min-width: 250px;
@@ -274,8 +281,8 @@ img {
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 4px;
-  height: 85vh;
-  width: 15%;
+  max-height: 85vh;
+  max-width: 20%;
 }
 
 #side_bar::-webkit-scrollbar {
@@ -376,7 +383,7 @@ img {
 
 .fold_click:active, .fold_click:hover {
   color: tomato;
-  outline: 1;
+  outline: 1px;
 }
 
 .toc_click {
@@ -394,7 +401,7 @@ img {
 
 .toc_click:active, .toc_click:hover {
   color: tomato;
-  outline: 1;
+  outline: 1px;
 }
 
 .footnotes {

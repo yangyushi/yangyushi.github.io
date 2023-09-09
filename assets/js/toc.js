@@ -15,7 +15,7 @@ function moveTOC() {
         toc.parentNode.removeChild(toc);
         new_toc.id = 'markdown-toc-new'
         var side_toc = document.getElementById('side_bar');
-        side_toc.innerHTML = '<div onclick="foldTOC()" class="toc_click"> Table of Contents </div>';
+        side_toc.innerHTML = '<div onclick="foldTOC()" class="toc_click"> TOC </div>';
         side_toc.appendChild(new_toc);
     }
 }

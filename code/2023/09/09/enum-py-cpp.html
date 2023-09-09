@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Enumeration in Python/C++</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Home
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook_en.html
+            
+        >
+            Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook_cn.html
+            
+        >
+            笔记本
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    09 Sep 2023
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#enumerations-python-vs-c" id="markdown-toc-enumerations-python-vs-c">Enumerations: Python vs. C++</a>    <ul>
+      <li><a href="#general-concept" id="markdown-toc-general-concept">General Concept</a>        <ul>
+          <li><a href="#pseudo-code" id="markdown-toc-pseudo-code">Pseudo-code:</a></li>
+        </ul>
+      </li>
+      <li><a href="#pythons-enumenum" id="markdown-toc-pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></a>        <ul>
+          <li><a href="#features" id="markdown-toc-features">Features:</a></li>
+          <li><a href="#applications--examples" id="markdown-toc-applications--examples">Applications &amp; Examples:</a></li>
+        </ul>
+      </li>
+      <li><a href="#c-enum" id="markdown-toc-c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></a>        <ul>
+          <li><a href="#features-1" id="markdown-toc-features-1">Features:</a></li>
+          <li><a href="#applications--examples-1" id="markdown-toc-applications--examples-1">Applications &amp; Examples:</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="enumerations-python-vs-c">Enumerations: Python vs. C++</h2>
+
+<h3 id="general-concept">General Concept</h3>
+
+<p>Enumerations (enums) are used to represent a set of named values. They make code more readable and can reduce errors by replacing magic numbers or strings with named constants.</p>
+
+<h4 id="pseudo-code">Pseudo-code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum Colors {
+    RED,
+    GREEN,
+    BLUE
+}
+
+if (currentColor == Colors.RED) {
+    // Do something
+}
+</code></pre></div></div>
+
+<h3 id="pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></h3>
+
+<h4 id="features">Features:</h4>
+<ul>
+  <li><strong>Flexible Values</strong>: Enum members in Python can be associated with not just integers but also strings, tuples, or other constant values.</li>
+  <li><strong>Type-Safe Comparisons</strong>: Enums in Python are more type-safe, avoiding many pitfalls present in other languages.</li>
+  <li><strong>Iterability</strong>: Enumerations in Python are iterable, allowing easy traversal of all enum members.</li>
+  <li><strong>Methods and Attributes</strong>: Python enums can have methods and other attributes.</li>
+</ul>
+
+<h4 id="applications--examples">Applications &amp; Examples:</h4>
+<ol>
+  <li><strong>Basic Enumeration</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="n">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+    
+ <span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+     <span class="n">RED</span> <span class="o">=</span> <span class="mi">1</span>
+     <span class="n">GREEN</span> <span class="o">=</span> <span class="mi">2</span>
+     <span class="n">BLUE</span> <span class="o">=</span> <span class="mi">3</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Flexible Values</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">Mood</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+     <span class="n">HAPPY</span> <span class="o">=</span> <span class="sh">"</span><span class="s">smiling</span><span class="sh">"</span>
+     <span class="n">SAD</span> <span class="o">=</span> <span class="sh">"</span><span class="s">crying</span><span class="sh">"</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Auto Value Assignment</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="n">enum</span> <span class="kn">import</span> <span class="n">auto</span>
+    
+ <span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+     <span class="n">RED</span> <span class="o">=</span> <span class="nf">auto</span><span class="p">()</span>
+     <span class="n">GREEN</span> <span class="o">=</span> <span class="nf">auto</span><span class="p">()</span>
+     <span class="n">BLUE</span> <span class="o">=</span> <span class="nf">auto</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Iterating</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">Color</span><span class="p">:</span>
+     <span class="nf">print</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Methods within Enums</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+     <span class="n">RED</span> <span class="o">=</span> <span class="mi">1</span>
+     <span class="n">GREEN</span> <span class="o">=</span> <span class="mi">2</span>
+     <span class="n">BLUE</span> <span class="o">=</span> <span class="mi">3</span>
+    
+     <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+         <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">This color has the value </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">value</span><span class="si">}</span><span class="sh">"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></h3>
+
+<h4 id="features-1">Features:</h4>
+<ul>
+  <li><strong>Integral Underlying Type</strong>: In C++, the values of enum members are restricted to integral types, although you can specify which one (e.g., <code class="language-plaintext highlighter-rouge">char</code>, <code class="language-plaintext highlighter-rouge">int</code>).</li>
+  <li><strong>Scoped (or <code class="language-plaintext highlighter-rouge">enum class</code>)</strong>: Introduced in C++11, <code class="language-plaintext highlighter-rouge">enum class</code> provides better type safety and scope management compared to traditional enums.</li>
+  <li><strong>Conversions</strong>: Traditional C++ enums can be implicitly converted to integers, but <code class="language-plaintext highlighter-rouge">enum class</code> members can’t without explicit casting.</li>
+</ul>
+
+<h4 id="applications--examples-1">Applications &amp; Examples:</h4>
+<ol>
+  <li><strong>Basic Enumeration</strong>:
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">enum</span> <span class="n">Color</span> <span class="p">{</span>
+     <span class="n">RED</span><span class="p">,</span>
+     <span class="n">GREEN</span><span class="p">,</span>
+     <span class="n">BLUE</span>
+ <span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Scoped Enum with Specific Underlying Type</strong>:
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">enum</span> <span class="k">class</span> <span class="nc">Color</span> <span class="o">:</span> <span class="kt">char</span> <span class="p">{</span>
+     <span class="n">RED</span> <span class="o">=</span> <span class="sc">'r'</span><span class="p">,</span>
+     <span class="n">GREEN</span> <span class="o">=</span> <span class="sc">'g'</span><span class="p">,</span>
+     <span class="n">BLUE</span> <span class="o">=</span> <span class="sc">'b'</span>
+ <span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Access and Comparisons</strong>:
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Color</span> <span class="n">col</span> <span class="o">=</span> <span class="n">Color</span><span class="o">::</span><span class="n">RED</span><span class="p">;</span>
+    
+ <span class="k">if</span> <span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">Color</span><span class="o">::</span><span class="n">RED</span><span class="p">)</span> <span class="p">{</span>
+     <span class="c1">// Do something</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Custom “Enum” Using Classes</strong>:
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">Color</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+     <span class="k">static</span> <span class="k">const</span> <span class="n">Color</span> <span class="n">Red</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="s">"Red"</span><span class="p">);</span> <span class="p">}</span>
+     <span class="c1">// ... Other colors and methods ...</span>
+ <span class="k">private</span><span class="o">:</span>
+     <span class="k">explicit</span> <span class="nf">Color</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">)</span> <span class="o">:</span> <span class="n">value_</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{}</span>
+     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value_</span><span class="p">;</span>
+ <span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
