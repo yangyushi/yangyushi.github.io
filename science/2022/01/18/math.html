@@ -1,0 +1,462 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>数学</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      >
+    </script>
+    
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <nav>
+    <ul>
+        
+        <li>
+        <a href=/
+            
+        >
+            Home
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook_en.html
+            
+        >
+            Notebook
+        </a>
+        </li>
+        
+        <li>
+        <a href=/notebook_cn.html
+            
+        >
+            笔记本
+        </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <div class="main">
+        <div id="side_bar">
+    18 Jan 2022
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#多重比较" id="markdown-toc-多重比较">多重比较</a>    <ul>
+      <li><a href="#什么都不做" id="markdown-toc-什么都不做">什么都不做</a></li>
+      <li><a href="#bonferroni-correction" id="markdown-toc-bonferroni-correction">Bonferroni correction</a></li>
+      <li><a href="#benjaminihochberg-procedure" id="markdown-toc-benjaminihochberg-procedure">Benjamini–Hochberg procedure</a></li>
+      <li><a href="#prism-里的方法" id="markdown-toc-prism-里的方法">Prism 里的方法</a></li>
+      <li><a href="#什么时候用什么" id="markdown-toc-什么时候用什么">什么时候用什么</a></li>
+    </ul>
+  </li>
+  <li><a href="#svd" id="markdown-toc-svd">SVD</a>    <ul>
+      <li><a href="#公式" id="markdown-toc-公式">公式</a></li>
+      <li><a href="#svd-和特征向量特征值" id="markdown-toc-svd-和特征向量特征值">SVD 和特征向量/特征值</a></li>
+      <li><a href="#奇异向量和-svd" id="markdown-toc-奇异向量和-svd">奇异向量和 SVD</a></li>
+      <li><a href="#svd-中的小知识点" id="markdown-toc-svd-中的小知识点">SVD 中的小知识点</a></li>
+    </ul>
+  </li>
+  <li><a href="#pca" id="markdown-toc-pca">PCA</a>    <ul>
+      <li><a href="#pca-的目的" id="markdown-toc-pca-的目的">PCA 的目的</a></li>
+      <li><a href="#找到-u-和-w" id="markdown-toc-找到-u-和-w">找到 U 和 W</a></li>
+    </ul>
+  </li>
+  <li><a href="#向量微分算子" id="markdown-toc-向量微分算子">向量微分算子</a>    <ul>
+      <li><a href="#散度" id="markdown-toc-散度">散度</a></li>
+      <li><a href="#梯度" id="markdown-toc-梯度">梯度</a></li>
+      <li><a href="#旋度" id="markdown-toc-旋度">旋度</a></li>
+      <li><a href="#拉普拉斯算符" id="markdown-toc-拉普拉斯算符">拉普拉斯算符</a></li>
+      <li><a href="#其他" id="markdown-toc-其他">其他</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="多重比较">多重比较</h2>
+
+<p>统计中，$P$ 值的含义是 null 假设为真的概率是 $1-P$。</p>
+
+<p>如果我们以 $P=0.05$ 来判断 null 假设的成立与否，那么我们的「每一次」判断都有 5% 的概率出错——我们测试出来的每一个「统计学显著的差异」都有 5% 的出错几率。</p>
+
+<p>如果我们在一个项目中同时做了 $n$ 个统计学检验。那么我们「所有检验结果都为真」的概率是 $(1-P)^n$ ——在 $n$ 很大的时候，<strong>我们几乎注定会出错</strong>！</p>
+
+<p>下面介绍的两个方法都用与减轻 multiple comparison 的副作用。它们的大概作用都是「降低 false positive」的几率。不过这也会同时增加我们的 false negative 的概率。</p>
+
+<p>我们是否要「主动降低 false positive 概率」呢？这个取决于「代价」，需要我们自己定夺。</p>
+
+<h3 id="什么都不做">什么都不做</h3>
+
+<p>很多人建议，什么都不要做：把实验中用到的所有分析结果，以及 p 值都报道出来。这让阅读实验报告的人能够理解，有 5% 的结论可能是错的。</p>
+
+<p>如果实验是预先设计，并且严格按照计划执行和分析的，我们通常也不需要做额外的 correction。「按照计划」是指我们没有「为了降低 p 值」而增加样本数目。</p>
+
+<h3 id="bonferroni-correction">Bonferroni correction</h3>
+
+<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
+
+<p>Bonferroni Correction 的要点：以 $P^\prime$ 作为新的 $P$ 值，$P^\prime = P / n$</p>
+
+<p>这个方法的缺点是，如果我们有很多统计学分析（$n = 1000$)，那么我们的 $P^\prime$ 会很小：这回让我们把很多「不符合」null 假设的比较设定为 null 假设。换言之，我们会产生很多的 false negative。</p>
+
+<p>此外，我们还面临着「历史」的问题：如果我们在 10 年前分析了 100 个样品，我们「现在」的统计分析是否需要将那 100 个分析算在我们的 $n$ 里？——这个问题没有统一的答案。</p>
+
+<h3 id="benjaminihochberg-procedure">Benjamini–Hochberg procedure</h3>
+
+<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
+
+<p>在 Bonferroni Correction 外，另外一个方法是控制 false discovery rate。它的具体做法是</p>
+
+<ol>
+  <li>计算出所有统计分析的 P 值</li>
+  <li>将 P 值由小到大「排序」。我们假设某一个实验的排序结果为 $i$ ($i=1$ 表示 $P$ 值最小的结果)。</li>
+  <li>我们人工选择一个 $Q$ 值，这个值被称为 false discovery rate。</li>
+  <li>对于「每一个」统计分析结果，我们它对应的 $(i/m)Q$</li>
+</ol>
+
+<p>上面的结果之后，我们会得到两列数据</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>实验序号</th>
+      <th>P 值</th>
+      <th>(i/m)Q</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0.001</td>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.008</td>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.039</td>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.041</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td><strong>0.042</strong></td>
+      <td><strong>0.05</strong></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.060</td>
+      <td>0.06</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.074</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我们取这样的 $P$ 值作为差异显著的判断标准：最大的，小于 $(i/m)Q$ 的 $P$。</p>
+
+<p>对应上面的表格，我们会选择「第五行」数据对应的 $P$ 值，0.042，作为我们的判断标准。</p>
+
+<p>有的时候，我们把 $P (m / i)$ 称为 Benjamini-Hochberg adjusted P value。只要它小于我们设定的 $Q$，我们就认为这个结果是显著的。</p>
+
+<p>这个方法会导致一个奇怪的结论：如果我们分析了 1000 个结果，其中最大的 $P$ 值是 0.24，最小的 $P$ 值是 0.1。按照这个小节的方法，我们会拒绝所有的 null 假设（认为我们的样品有统计学显著性），即使它们的 $P$ 值都大于 0.05。</p>
+
+<p>这其实也是合理的：如果我们想要接受 1000 个 null 假设，我们最大的 $P$ 值应该挺大的——在 0.9 左右。</p>
+
+<p>与 Bonferroni 方法相比，这个方法不会产生「当统计检验数目 $n$ 很大时，接受所有的 null 假设」的情况。</p>
+
+<p>对于 $Q$ 值，0.1 或者 0.2 是很严格的标准了——有时候有人会用 0.05，这可能是此人混淆了 $Q$ 值与 $P$ 值。</p>
+
+<p>注意：这个方法默认所有的测试都是「相互独立」的。如果我们是比较一个 control 组和其他很多实验组，这个方法是不适用的。举例而言，如果 control &gt; A &amp;&amp; A &gt; B 那么 control 一定大于 B。</p>
+
+<h3 id="prism-里的方法">Prism 里的方法</h3>
+
+<p>在软件 Prism 里，我们可以选择 Bonferroni, Tukey, Dunnett 或者 Dunn 等方法。它们有类似之处：都会报告一个 adjusted P 值。我们得到的 adjusted P 的含义是</p>
+
+<blockquote>
+  <p>对我们的「某一个」统计检验，我们寻找一个「最小的」P 值，把这个值应用在我们多重比较 (family) 里，我们能认为「某一个」检验不符合 null 假设。</p>
+</blockquote>
+
+<h3 id="什么时候用什么">什么时候用什么</h3>
+
+<ul>
+  <li>比较一个 control 和其他样本的均值： Dunnett’s method</li>
+  <li>比较所有样本的均值：Tukey method</li>
+  <li>比较我们主观选择的一些样本：Bonferroni / Šídák method</li>
+</ul>
+
+<h2 id="svd">SVD</h2>
+
+<h3 id="公式">公式</h3>
+
+<p>SVD 一般是这样写的</p>
+
+\[\begin{align}
+\bf{A_{m \times n}} = 
+\bf{U_{m \times n}} \;
+\Sigma_{n \times n} \;
+\bf{V_{n \times n}}
+\end{align}\]
+
+<p>其中，$\bf{U}$ 和 $\bf{V}$ 都是酉矩阵，它们表示旋转操作，同时它们的行/列都是标准正交基（基向量的长度为 1，两两正交）。</p>
+
+<h3 id="svd-和特征向量特征值">SVD 和特征向量/特征值</h3>
+
+<p>我们想要得到的其实是类似于「特征值」的东西，对于方阵 $\bf{X}$，它的特征值 $\upsilon$ 满足</p>
+
+\[\mathbf{X} \mathbf{\upsilon} = \lambda \mathbf{\upsilon}\]
+
+<p>对于不是方阵的 $A$，我们能找到两个类似于特征值的东西（$\bf{v}$, $\bf{u}$），叫做「一个奇异向量」。对应的数值 $\sigma$ 叫做「一个奇异值」：</p>
+
+\[\begin{align}
+\bf{A^T} u &amp;= \sigma \bf{v} &amp; \bf{u}\text{: 左奇异向量} \\
+\bf{A} v &amp;= \sigma \bf{u} &amp; \bf{v} \text{: 右奇异向量}
+\end{align}\]
+
+<p>如果我们给上面的公式左右分别左乘上 $\bf{A}$ 和 $\bf{A^T}$，我们得到</p>
+
+\[\begin{aligned}
+\bf{AA^T} u &amp;= \sigma \bf{Av}\\
+&amp;= \sigma^2 \bf{u}
+&amp;(\bf{u} \text{ 是} \bf{AA^T} \text{ 的特征值})\\[1em]
+\bf{A^TA} v &amp;= \sigma \bf{u}\\
+&amp;= \sigma^2 \bf{v}
+&amp; (\bf{v} \text{ 是} \bf{A^TA} \text{ 的特征值})\\
+\end{aligned}\]
+
+<p>在这里，我知考虑了实数矩阵——如果考虑复数的话，我需要计算 $\bf{A}$ 的共轭转置 $\bf{A^\ast}$。</p>
+
+<h3 id="奇异向量和-svd">奇异向量和 SVD</h3>
+
+<p>公式 (1) 中的 $\bf{U}$ 和 $\bf{V}$ 是所有包含了所有左/右奇异向量的矢量空间的标准正交基。而公式 (1) 中的 $\Sigma$ 则表示了每个奇异向量对应的奇异值。</p>
+
+<p>让我们重新审视公式 (1)</p>
+
+\[\begin{align}
+\bf{A} &amp;= \bf{U} \bf{\Sigma} \bf{V^T}
+\end{align}\]
+
+<p>我们可以把它稍微改写成</p>
+
+\[\begin{aligned}
+\bf{A} = \bf{U} \bf{\Sigma} \bf{V^T} \bf{I}
+\end{aligned}\]
+
+<p>其中，$\bf{I}$ 是标准正交基。上面的公式告诉了我们怎么把 $\bf{I}$ 变成 $\bf{A}$：我们首先把 $\bf{I}$ 映射到右奇异基向量（旋转）；按照奇异值大小缩放各个基向量；再把结果映射到左奇异基向量（旋转）。</p>
+
+<h3 id="svd-中的小知识点">SVD 中的小知识点</h3>
+
+<ul>
+  <li>$\Sigma$ 中的奇异值的「有序集合」被称为矩阵的「谱」spectrum。</li>
+  <li>奇异值之间的差影响着解的稳定性</li>
+  <li>最大和最小的奇异值绝对值之间的比率（条件数）影响着一个迭代求解器找到矩阵解的速度。</li>
+</ul>
+
+<h2 id="pca">PCA</h2>
+
+<h3 id="pca-的目的">PCA 的目的</h3>
+
+<p>我们使用 PCA 来压缩数据。假设我们有 $m$ 个属于 $\mathbb{R}^d$ 列向量：$\bf{x_1}, \dots \bf{x_m}$，我们用一个矩阵 $\mathbf{x}\in\mathbb{R}^{d, m}$ 来描述所有的数据点。我们希望找到一个矩阵 $\mathbf{W} \in \mathbb{R}^{d, n}$，来将 $\bf{x}$ 映射到低维空间：</p>
+
+\[\begin{align}
+\mathbf{y} &amp;= \mathbf{Wx} &amp; (\ \mathbf{y} \in \mathbb{R}^n, n &lt; d)
+\end{align}\]
+
+<p>同样，我们也需要另一个矩阵 $\mathbf{U} \in \mathbb{R}^{n, d}$ 来将 $\bf{y}$ 还原为一个「同原始 $\bf{x}$ 接近」的 $\bf{\tilde{x}}$。我们通过让两者「尽量接近」来确定最好的 $\bf{U}$ 和 $\bf{W}$：</p>
+
+\[\begin{align}
+\underset{
+\mathbf{W}\in\mathbb{R}^{n, d},\
+\mathbf{U}\in\mathbb{R}^{d, n}
+}{\operatorname{argmin}}
+\sum_{i=1}^{m}{\left\|
+\mathbf{x}_i - \mathbf{UWx}_i
+\right\|^2}
+\end{align}\]
+
+<h3 id="找到-u-和-w">找到 U 和 W</h3>
+
+<p>我们首先可以证明，我们想要的，符合公式 (6) 的， $\bf{U}$ 与 $\bf{W}$ 满足下面的性质（其实就是说，这两个都是旋转矩阵）</p>
+
+<ol>
+  <li>$\bf{U}$ 的列向量相互正交，即 $\bf U^\top U=I$</li>
+  <li>$\bf W = U^\top$</li>
+</ol>
+
+<p>根据上面的辅助定理，我们可以把公式 (6) 重新写成</p>
+
+\[\begin{align}
+\underset{
+\mathbf{W}\in\mathbb{R}^{n, d},\
+\mathbf{U}\in\mathbb{R}^{d, n}
+}{\operatorname{argmin}}
+\sum_{i=1}^{m}{\left\|
+\mathbf{x}_i - \mathbf{UU^\top x}_i
+\right\|^2}
+\end{align}\]
+
+<p>我们可以把需要 minimise 的部分写成</p>
+
+\[\begin{aligned}\left\|\mathbf{x}-U U^{\top} \mathbf{x}\right\|^{2} &amp;=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top} \mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\operatorname{trace}\left(U^{\top} \mathbf{x} \mathbf{x}^{\top} U\right) \end{aligned}\]
+
+<p>其中，$\text{trace}$ 的意思是对对角项求和，是一个线性算符，这让我们可以最终把公式 (6) 写成</p>
+
+\[\underset{U \in \mathbb{R}^{d, n} : U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}\left(U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U\right)\]
+
+<h2 id="向量微分算子">向量微分算子</h2>
+
+<p>Del 算子或稱 Nabla 算子，在中文中也叫向量微分算子、劈形算子、倒三角算子，符号为 $\nabla$。</p>
+
+<p>Nabla 主要的作用就是用来简写「散度」、「梯度」和「旋度」。我们可以把它看成一个向量。</p>
+
+<p>三维空间中</p>
+
+\[\nabla=\vec{e}_{x} \frac{\partial}{\partial x}+\vec{e}_{y} \frac{\partial}{\partial y}+\vec{e}_{z} \frac{\partial}{\partial z}=\left(\frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z}\right)\]
+
+<p>n 维空间中</p>
+
+\[\nabla=\sum_{i=1}^{n} \vec{e}_{i} \frac{\partial}{\partial x_{i}}=\left(\frac{\partial}{\partial x_{1}}, \cdots, \frac{\partial}{\partial x_{n}}\right)\]
+
+<h3 id="散度">散度</h3>
+
+<ul>
+  <li>
+    <p>记号： $\nabla \cdot \mathbf{A}$</p>
+  </li>
+  <li>
+    <p>维度： $\mathbb{R}^n \rightarrow \mathbb{R}$</p>
+  </li>
+  <li>
+    <p>意义：散度描述的是向量场里一个点是汇聚点还是发源点，形象地说，就是这包含这一点的一个微小体元中的向量是“向外”居多还是“向内”居多。</p>
+  </li>
+  <li>
+    <p>分量表示
+\(\begin{aligned}
+\nabla \cdot \mathbf{A} &amp;= \operatorname{div} \mathbf{A} \\
+&amp;= \left(
+	\frac{\partial}{\partial x},
+	\frac{\partial}{\partial y},
+	\frac{\partial}{\partial z}
+\right) \cdot (A_x, A_y, A_z)\\[0.5em]
+&amp;= \frac{\partial A_{x}}{\partial x}+\frac{\partial A_{y}}{\partial y}+\frac{\partial A_{z}}{\partial z}
+\end{aligned}\)</p>
+  </li>
+</ul>
+
+<h3 id="梯度">梯度</h3>
+
+<ul>
+  <li>
+    <p>记号：$\nabla \mathbf{A}$</p>
+  </li>
+  <li>
+    <p>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</p>
+  </li>
+  <li>意义：
+    <ul>
+      <li>方向：多元函数的某一个点上，最大增长的「方向」</li>
+      <li>大小：多元函数的某一个点上，最大增长的「增长率」</li>
+    </ul>
+  </li>
+  <li>分量表示
+  \(\begin{aligned}
+  \nabla \mathbf{A}
+  &amp;= \text{grad}\,\mathbf{A} = \mathbf{J}_\mathbf{A} \\[0.5em]
+  &amp;= \left(
+  	\frac{\partial \textbf{A}}{\partial x},
+  	\frac{\partial \textbf{A}}{\partial y},
+  	\frac{\partial \textbf{A}}{\partial z}
+  \right)\\[0.5em]
+  &amp;= \left( \frac{\partial A_i}{ \partial x_j} \right)_{ij}
+  \end{aligned}\)</li>
+</ul>
+
+<h3 id="旋度">旋度</h3>
+
+<ul>
+  <li>记号：$\nabla \times \mathbf{A}$</li>
+  <li>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</li>
+  <li>意义：在向量场每个点上，点的<strong>旋度</strong>表示为一个<strong>向量</strong>。这个向量的特性（长度和方向）刻画了在这个点上的旋转。</li>
+  <li>分量表示:</li>
+</ul>
+
+\[\begin{aligned}
+\operatorname{curl} \mathbf{A}
+&amp;=\boldsymbol{\nabla} \times \mathbf{A}\\[1em]
+&amp;=\left(\frac{\partial A_{z}}{\partial y}-\frac{\partial A_{y}}{\partial z}\right) \mathbf{i}+\left(\frac{\partial A_{x}}{\partial z}-\frac{\partial A_{z}}{\partial x}\right) \mathbf{j}+\left(\frac{\partial A_{y}}{\partial x}-\frac{\partial A_{x}}{\partial y}\right) \mathbf{k}\\[1em]
+&amp;=\left|\begin{array}{ccc}{\mathbf{i}} &amp; {\mathbf{j}} &amp; {\mathbf{k}} \\ {\frac{\partial}{\partial x}} &amp; {\frac{\partial}{\partial y}} &amp; {\frac{\partial}{\partial z}} \\ {A_{x}} &amp; {A_{y}} &amp; {A_{z}}\end{array}\right|
+\end{aligned}\]
+
+<h3 id="拉普拉斯算符">拉普拉斯算符</h3>
+
+<p>矢量拉普拉斯算符（vector Laplacian）作用在 <strong>矢量</strong>场 上，返回一个<strong>矢量</strong>。类似地，标量拉普拉斯算符（scalar Laplacian）作用在 <strong>标量</strong>场 上，返回一个<strong>标</strong>量。</p>
+
+<p>作用在 矢量场 $\mathbf{A}$ 的 矢量拉普拉斯算符 写成 $\nabla^2$，定义为
+\(\nabla^2 = \nabla(\nabla \cdot \mathbf{A})
+         - \nabla\times(\nabla \times \mathbf{A})\)
+在 笛卡尔坐标系 下，上面的定义可以被（极大地）简化为
+\(\nabla^2\mathbf{A} = \left( 
+\nabla^2 A_x, \nabla^2 A_y, \nabla^2 A_z
+\right)\)
+其中，$A_x， A_y, A_z$ 是矢量场 $\mathbf{A}$ 的分量</p>
+
+<h3 id="其他">其他</h3>
+
+\[\begin{aligned}
+(\mathbf{A} \cdot \nabla)  \mathbf{B}
+&amp;= \left( A_i \frac{\partial}{\partial x_i} \right)B_j \\
+&amp;= A_i \left( \frac{\partial B_\color{tomato}{j}}{\partial x_\color{teal}{i}} \right) \\[1em]
+\mathbf{A}\cdot \nabla\mathbf{B}
+&amp;= \mathbf{A}\cdot\mathbf{J}_\mathbf{B} \\
+&amp;= A_i \left( \frac{\partial B_\color{teal}{i}}{\partial x_\color{tomato}{j}} \right)
+\end{aligned}\]
+
+<p><a href="https://en.wikipedia.org/wiki/Vector_calculus_identities">更多矢量微积分的记号</a></p>
+
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

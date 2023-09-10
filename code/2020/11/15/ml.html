@@ -66,6 +66,19 @@
 
 <div class="center post">
     <ul id="markdown-toc">
+  <li><a href="#单纯形-simplex" id="markdown-toc-单纯形-simplex">单纯形 (Simplex)</a>    <ul>
+      <li><a href="#定义" id="markdown-toc-定义">定义</a></li>
+      <li><a href="#几何解释" id="markdown-toc-几何解释">几何解释</a></li>
+      <li><a href="#与概率的关系" id="markdown-toc-与概率的关系">与概率的关系</a></li>
+      <li><a href="#单纯复合体" id="markdown-toc-单纯复合体">单纯复合体</a></li>
+    </ul>
+  </li>
+  <li><a href="#核范数与谱范数" id="markdown-toc-核范数与谱范数">核范数与谱范数</a>    <ul>
+      <li><a href="#核范数" id="markdown-toc-核范数">核范数</a></li>
+      <li><a href="#谱范数" id="markdown-toc-谱范数">谱范数</a></li>
+      <li><a href="#半定规划sdp" id="markdown-toc-半定规划sdp">半定规划（SDP）</a></li>
+    </ul>
+  </li>
   <li><a href="#keras-函数式-api" id="markdown-toc-keras-函数式-api">Keras 函数式 API</a>    <ul>
       <li><a href="#面向对象-api" id="markdown-toc-面向对象-api">面向对象 API</a></li>
       <li><a href="#函数式-api" id="markdown-toc-函数式-api">函数式 API</a></li>
@@ -74,6 +87,123 @@
     </ul>
   </li>
 </ul>
+
+<h2 id="单纯形-simplex">单纯形 (Simplex)</h2>
+
+<p><strong>单纯形 (Simplex)</strong> 在数学中是一个基本概念，通常使用 $ \Delta $ 来表示。</p>
+
+<h3 id="定义">定义</h3>
+
+<p>在 $ \mathbb{R}^K $ 中的<strong>单纯形</strong>是所有点 $ p $ 的集合，使得：</p>
+
+<ul>
+  <li>每个组件 $ p_k $ 都是非负的：对于所有 $ k $，都有 $ p_k \geq 0 $。</li>
+  <li>组件的总和为一：$ \sum_{k=1}^{K} p_k = 1 $。</li>
+</ul>
+
+<p>数学上，这可以表示为：</p>
+
+\[\Delta^{K-1} = \{ p \in \mathbb{R}^K : p_k \geq 0, \sum_{k=1}^{K} p_k = 1 \}\]
+
+<h3 id="几何解释">几何解释</h3>
+
+<ul>
+  <li>在 $ \mathbb{R}^2 $（2D空间）中，单纯形是一个线段。</li>
+  <li>在 $ \mathbb{R}^3 $（3D空间）中，它是一个三角形。</li>
+  <li>在 $ \mathbb{R}^4 $ 中，它是一个四面体。</li>
+  <li>以此类推…</li>
+</ul>
+
+<h3 id="与概率的关系">与概率的关系</h3>
+
+<p>单纯形与概率分布有着密切的关系：</p>
+<ul>
+  <li>$ (K-1) $-维单纯形中的一个点对应于 $ K $ 个结果上的概率分布。</li>
+  <li>例如，在 $ \mathbb{R}^3 $ 中，单纯形中的一个点可以表示三个事件上的概率分布。</li>
+</ul>
+
+<h3 id="单纯复合体">单纯复合体</h3>
+
+<p><strong>单纯复合体</strong>是由顶点、线段、三角形及其 $ n $-维对应物组成的集合。它是单纯形概念的推广，可以表示由各种维度的单纯形填充的空间。</p>
+
+<h2 id="核范数与谱范数">核范数与谱范数</h2>
+
+<h3 id="核范数">核范数</h3>
+
+<p>对于矩阵$A$，其核范数（Nuclear Norm 或者 Trace Norm，通常记作 $|A|_*$）是其奇异值的总和。</p>
+
+<p><strong>使用Numpy的Python示例</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">compute_nuclear_norm</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">singular_values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">singular_values</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">compute_nuclear_norm</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>核范数最小化的伪代码</strong>:</p>
+
+<p>核范数可以作为矩阵秩在优化问题中的凸替代。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function NuclearNormMinimization(A, mask):
+    使用零初始化矩阵 X
+    当未达到收敛条件:
+        # 梯度步骤: 逼近已知条目
+        基于A的条目（mask为True的地方）更新X
+        # 收缩步骤: 促进低秩
+        对X应用SVD并缩小奇异值
+    return X
+</code></pre></div></div>
+
+<h3 id="谱范数">谱范数</h3>
+
+<p>对于矩阵 $A$，其谱范数（spectral norm, 通常记作 $|A|_2$）是其最大的奇异值。</p>
+
+<p>使用 Numpy 的 Python 示例:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">compute_spectral_norm</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">singular_values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">singular_values</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">compute_spectral_norm</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>带有谱范数约束的优化的伪代码</strong>:</p>
+
+<p>谱范数可以用作优化问题中的约束，以界定矩阵的“大小”或“效果”。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function SpectralNormConstrainedOptimization(A, gamma):
+    使用零初始化矩阵 X
+    当未达到收敛条件:
+        # 梯度步骤: 逼近目标
+        更新 X
+        # 投影步骤: 确保谱范数约束
+        如果 SpectralNorm(X) &gt; gamma:
+            缩放X以满足谱范数 &lt;= gamma
+    return X
+</code></pre></div></div>
+
+<h3 id="半定规划sdp">半定规划（SDP）</h3>
+
+<p>核范数和谱范数都可以整合到形式化为 SDP 的优化问题中。</p>
+
+<p><strong>带有核范数最小化的SDP的伪代码</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function SDPWithNuclearNorm(A):
+    初始化半定矩阵 Y
+    当未达到收敛条件:
+        # 梯度步骤: 逼近数据拟合
+        基于A更新Y
+        # 收缩步骤: 促进结构
+        对Y应用某些操作以鼓励所需结构
+    return Y
+</code></pre></div></div>
 
 <h2 id="keras-函数式-api">Keras 函数式 API</h2>
 

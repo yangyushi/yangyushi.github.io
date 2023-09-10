@@ -66,32 +66,27 @@
 
 <div class="center post">
     <ul id="markdown-toc">
-  <li><a href="#enumerations-python-vs-c" id="markdown-toc-enumerations-python-vs-c">Enumerations: Python vs. C++</a>    <ul>
-      <li><a href="#general-concept" id="markdown-toc-general-concept">General Concept</a>        <ul>
-          <li><a href="#pseudo-code" id="markdown-toc-pseudo-code">Pseudo-code:</a></li>
-        </ul>
-      </li>
-      <li><a href="#pythons-enumenum" id="markdown-toc-pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></a>        <ul>
-          <li><a href="#features" id="markdown-toc-features">Features:</a></li>
-          <li><a href="#applications--examples" id="markdown-toc-applications--examples">Applications &amp; Examples:</a></li>
-        </ul>
-      </li>
-      <li><a href="#c-enum" id="markdown-toc-c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></a>        <ul>
-          <li><a href="#features-1" id="markdown-toc-features-1">Features:</a></li>
-          <li><a href="#applications--examples-1" id="markdown-toc-applications--examples-1">Applications &amp; Examples:</a></li>
-        </ul>
-      </li>
+  <li><a href="#general-concept" id="markdown-toc-general-concept">General Concept</a>    <ul>
+      <li><a href="#pseudo-code" id="markdown-toc-pseudo-code">Pseudo-code:</a></li>
+    </ul>
+  </li>
+  <li><a href="#pythons-enumenum" id="markdown-toc-pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></a>    <ul>
+      <li><a href="#features" id="markdown-toc-features">Features</a></li>
+      <li><a href="#applications--examples" id="markdown-toc-applications--examples">Applications &amp; Examples</a></li>
+    </ul>
+  </li>
+  <li><a href="#c-enum" id="markdown-toc-c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></a>    <ul>
+      <li><a href="#features-1" id="markdown-toc-features-1">Features</a></li>
+      <li><a href="#applications--examples-1" id="markdown-toc-applications--examples-1">Applications &amp; Examples</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="enumerations-python-vs-c">Enumerations: Python vs. C++</h2>
-
-<h3 id="general-concept">General Concept</h3>
+<h2 id="general-concept">General Concept</h2>
 
 <p>Enumerations (enums) are used to represent a set of named values. They make code more readable and can reduce errors by replacing magic numbers or strings with named constants.</p>
 
-<h4 id="pseudo-code">Pseudo-code:</h4>
+<h3 id="pseudo-code">Pseudo-code:</h3>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum Colors {
     RED,
     GREEN,
@@ -103,9 +98,10 @@ if (currentColor == Colors.RED) {
 }
 </code></pre></div></div>
 
-<h3 id="pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></h3>
+<h2 id="pythons-enumenum">Python’s <code class="language-plaintext highlighter-rouge">enum.Enum</code></h2>
 
-<h4 id="features">Features:</h4>
+<h3 id="features">Features</h3>
+
 <ul>
   <li><strong>Flexible Values</strong>: Enum members in Python can be associated with not just integers but also strings, tuples, or other constant values.</li>
   <li><strong>Type-Safe Comparisons</strong>: Enums in Python are more type-safe, avoiding many pitfalls present in other languages.</li>
@@ -113,7 +109,8 @@ if (currentColor == Colors.RED) {
   <li><strong>Methods and Attributes</strong>: Python enums can have methods and other attributes.</li>
 </ul>
 
-<h4 id="applications--examples">Applications &amp; Examples:</h4>
+<h3 id="applications--examples">Applications &amp; Examples</h3>
+
 <ol>
   <li><strong>Basic Enumeration</strong>:
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="n">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
@@ -156,16 +153,18 @@ if (currentColor == Colors.RED) {
   </li>
 </ol>
 
-<h3 id="c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></h3>
+<h2 id="c-enum">C++ <code class="language-plaintext highlighter-rouge">enum</code></h2>
 
-<h4 id="features-1">Features:</h4>
+<h3 id="features-1">Features</h3>
+
 <ul>
   <li><strong>Integral Underlying Type</strong>: In C++, the values of enum members are restricted to integral types, although you can specify which one (e.g., <code class="language-plaintext highlighter-rouge">char</code>, <code class="language-plaintext highlighter-rouge">int</code>).</li>
   <li><strong>Scoped (or <code class="language-plaintext highlighter-rouge">enum class</code>)</strong>: Introduced in C++11, <code class="language-plaintext highlighter-rouge">enum class</code> provides better type safety and scope management compared to traditional enums.</li>
   <li><strong>Conversions</strong>: Traditional C++ enums can be implicitly converted to integers, but <code class="language-plaintext highlighter-rouge">enum class</code> members can’t without explicit casting.</li>
 </ul>
 
-<h4 id="applications--examples-1">Applications &amp; Examples:</h4>
+<h3 id="applications--examples-1">Applications &amp; Examples</h3>
+
 <ol>
   <li><strong>Basic Enumeration</strong>:
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">enum</span> <span class="n">Color</span> <span class="p">{</span>
