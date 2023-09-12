@@ -5,9 +5,10 @@
     <title>Tensorflow Applications</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -18,49 +19,18 @@
       });
     </script>
 
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-      >
-    </script>
-    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    
-    <nav>
-    <ul>
-        
-        <li>
-        <a href=/
-            
-        >
-            Home
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_en.html
-            
-        >
-            Notebook
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_cn.html
-            
-        >
-            笔记本
-        </a>
-        </li>
-        
-    </ul>
-</nav>
-
 
     <div class="main">
-        <div id="side_bar">
+        <p><a href="/" id="backToHomeButton">Home</a></p>
+
+<div id="side_bar">
     02 Apr 2022
 </div>
 
@@ -734,7 +704,7 @@ The cell state can also be bi-direcitonal, where the future can affect the past.
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># construct a model convolution rather than LSTM
 </span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">([</span>
     <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
-  	<span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Conv1D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
+      <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Conv1D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
     <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">GlobalMaxPooling1D</span><span class="p">(),</span>
     <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">relu</span><span class="sh">'</span><span class="p">),</span>
     <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="nc">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="sh">'</span><span class="s">sigmoid</span><span class="sh">'</span><span class="p">)</span>
@@ -773,10 +743,10 @@ For all the nice girls and boys I might ask,
 </span>
 <span class="n">input_sequences</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">line</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nf">len</span><span class="p">(</span><span class="n">token_list</span><span class="p">)):</span>
-		<span class="n">n_gram_sequence</span> <span class="o">=</span> <span class="n">token_list</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-		<span class="n">input_sequences</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">n_gram_sequence</span><span class="p">)</span>
+    <span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">line</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nf">len</span><span class="p">(</span><span class="n">token_list</span><span class="p">)):</span>
+        <span class="n">n_gram_sequence</span> <span class="o">=</span> <span class="n">token_list</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">input_sequences</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">n_gram_sequence</span><span class="p">)</span>
 
 <span class="c1"># pad sequences 
 </span><span class="n">max_sequence_len</span> <span class="o">=</span> <span class="nf">max</span><span class="p">([</span><span class="nf">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_sequences</span><span class="p">])</span>
@@ -817,16 +787,16 @@ ys[6][65] -&gt; 0
 <span class="n">next_words</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">next_words</span><span class="p">):</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">seed_text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="n">token_list</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">([</span><span class="n">token_list</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="sh">'</span><span class="s">pre</span><span class="sh">'</span><span class="p">)</span>
-	<span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-	<span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">output_word</span> <span class="o">=</span> <span class="sh">""</span>
-	<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
-		<span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="n">predicted</span><span class="p">:</span>
-			<span class="n">output_word</span> <span class="o">=</span> <span class="n">word</span>
-			<span class="k">break</span>
-	<span class="n">seed_text</span> <span class="o">+=</span> <span class="sh">"</span><span class="s"> </span><span class="sh">"</span> <span class="o">+</span> <span class="n">output_word</span>
+    <span class="n">token_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">texts_to_sequences</span><span class="p">([</span><span class="n">seed_text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">token_list</span> <span class="o">=</span> <span class="nf">pad_sequences</span><span class="p">([</span><span class="n">token_list</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="sh">'</span><span class="s">pre</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">output_word</span> <span class="o">=</span> <span class="sh">""</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="n">predicted</span><span class="p">:</span>
+            <span class="n">output_word</span> <span class="o">=</span> <span class="n">word</span>
+            <span class="k">break</span>
+    <span class="n">seed_text</span> <span class="o">+=</span> <span class="sh">"</span><span class="s"> </span><span class="sh">"</span> <span class="o">+</span> <span class="n">output_word</span>
 <span class="nf">print</span><span class="p">(</span><span class="n">seed_text</span><span class="p">)</span>
 
 <span class="c1"># -&gt; She stepped out and i stepped in again again again again

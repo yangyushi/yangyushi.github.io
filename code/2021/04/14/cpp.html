@@ -5,9 +5,10 @@
     <title>C++</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -18,54 +19,34 @@
       });
     </script>
 
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-      >
-    </script>
-    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    
-    <nav>
-    <ul>
-        
-        <li>
-        <a href=/
-            
-        >
-            Home
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_en.html
-            
-        >
-            Notebook
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_cn.html
-            
-        >
-            笔记本
-        </a>
-        </li>
-        
-    </ul>
-</nav>
-
 
     <div class="main">
-        <div id="side_bar">
-    17 Apr 2020
+        <p><a href="/" id="backToHomeButton">Home</a></p>
+
+<div id="side_bar">
+    14 Apr 2021
 </div>
 
 <div class="center post">
     <ul id="markdown-toc">
+  <li><a href="#迭代技术" id="markdown-toc-迭代技术">迭代技术</a>    <ul>
+      <li><a href="#传统循环" id="markdown-toc-传统循环">传统循环</a></li>
+      <li><a href="#基于-stl-的迭代" id="markdown-toc-基于-stl-的迭代">基于 STL 的迭代</a></li>
+    </ul>
+  </li>
+  <li><a href="#并发" id="markdown-toc-并发">并发</a>    <ul>
+      <li><a href="#c11-并发功能" id="markdown-toc-c11-并发功能">C++11 并发功能</a></li>
+      <li><a href="#c17-及以后" id="markdown-toc-c17-及以后">C++17 及以后</a></li>
+      <li><a href="#深入原子操作-stdatomic" id="markdown-toc-深入原子操作-stdatomic">深入原子操作 (<code class="language-plaintext highlighter-rouge">std::atomic</code>)</a></li>
+    </ul>
+  </li>
   <li><a href="#函数" id="markdown-toc-函数">函数</a>    <ul>
       <li><a href="#inline" id="markdown-toc-inline">inline</a></li>
       <li><a href="#在不同源代码中共享函数" id="markdown-toc-在不同源代码中共享函数">在不同源代码中共享函数</a></li>
@@ -110,17 +91,307 @@
   <li><a href="#其他话题" id="markdown-toc-其他话题">其他话题</a>    <ul>
       <li><a href="#头文件里放什么" id="markdown-toc-头文件里放什么">头文件里放什么</a></li>
       <li><a href="#map-的迭代" id="markdown-toc-map-的迭代">map 的迭代</a></li>
-      <li><a href="#vector-作为-map-的键" id="markdown-toc-vector-作为-map-的键">vector 作为 map 的键</a></li>
       <li><a href="#vim-配置" id="markdown-toc-vim-配置">Vim 配置</a></li>
     </ul>
   </li>
 </ul>
 
-<p>参考资料</p>
+<h2 id="迭代技术">迭代技术</h2>
+
+<p>迭代是编程中的基础概念，而 C++ 提供了许多技术来迭代集合，每种技术都有其细微差别和用例。</p>
+
+<h3 id="传统循环">传统循环</h3>
 
 <ol>
-  <li><a href="https://www.amazon.co.uk/Programming-Principles-Practice-Using-C/dp/0321992784">Programming Principle Practice</a>。</li>
+  <li><strong>基本的 For 循环</strong>：当迭代次数事先已知时常用。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 访问 vec[i]</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>While 和 Do-While 循环</strong>：当迭代次数不是由索引严格定义，或者循环至少必须运行一次时使用。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// While 循环</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// 访问 vec[i]</span>
+    <span class="o">++</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Do-While 循环</span>
+<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="c1">// 访问 vec[j]</span>
+    <span class="o">++</span><span class="n">j</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>基于指针的迭代</strong>：直接访问内存，通常与 C 风格的数组一起使用。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">arr</span><span class="p">;</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">arr</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 访问 *p</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
 </ol>
+
+<h3 id="基于-stl-的迭代">基于 STL 的迭代</h3>
+
+<ol>
+  <li><strong>基于迭代器的 For 循环</strong>：使用容器定义的迭代器直接访问元素。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 访问 *it</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>基于范围的 For 循环</strong>：C++11 引入，用于简化容器遍历。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">value</span> <span class="o">:</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 访问 value</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>使用函数指针和仿函数的 <code class="language-plaintext highlighter-rouge">std::for_each</code></strong>：在 C++11 的 lambda 函数之前，这些是常用的方法。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用函数指针</span>
+<span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">process</span><span class="p">);</span>
+
+<span class="c1">// 使用仿函数</span>
+<span class="k">struct</span> <span class="nc">MyFunctor</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 处理 value</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">MyFunctor</span><span class="p">());</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>使用 Lambda 的 <code class="language-plaintext highlighter-rouge">std::for_each</code></strong>：C++11 之后，lambda 函数提供了一种更简洁的使用 <code class="language-plaintext highlighter-rouge">std::for_each</code> 的方式。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[](</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 处理 value</span>
+<span class="p">});</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>带迭代器的算法</strong>：<code class="language-plaintext highlighter-rouge">&lt;algorithm&gt;</code> 中的 STL 算法在迭代器范围上操作。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 示例：std::transform</span>
+<span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>并行迭代</strong>：C++17 引入了并行算法，用于多线程处理。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par</span><span class="p">,</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">process</span><span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>虽然传统的循环机制仍然是相关的，尤其是对于更简单的任务或与内存紧密合作时，基于 STL 的技术提供了强大、表现力强和通常更易读的方式来迭代集合。选择技术应由任务的具体要求、所需的代码清晰度和性能考虑来驱动。</p>
+
+<h2 id="并发">并发</h2>
+
+<p>并发涉及设计和构建系统来管理多个任务，这些任务可能重叠或交错。C++ 的发展显著地增加了并发支持功能。</p>
+
+<ul>
+  <li><strong>并发</strong>: 针对多个任务的设计中心管理。 It’s more about managing many things at once.</li>
+  <li><strong>并行</strong>: 任务执行以提高性能。It’s about doing many things at once.</li>
+</ul>
+
+<p>C++11 之前，标准库</p>
+
+<ul>
+  <li>缺少内置并发支持。</li>
+  <li>依赖于特定平台的库或 <code class="language-plaintext highlighter-rouge">Boost.Thread</code>。</li>
+</ul>
+
+<h3 id="c11-并发功能">C++11 并发功能</h3>
+
+<p><strong>内存模型</strong>: 使多线程场景下的内存行为易于理解。</p>
+
+<p><strong>线程 (<code class="language-plaintext highlighter-rouge">&lt;thread&gt;</code>)</strong>: 提供直接、可访问的方法在不同线程中运行函数。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">print_hello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"来自另一个线程的问候！"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">print_hello</span><span class="p">);</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"来自主线程的问候！"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>互斥体 (<code class="language-plaintext highlighter-rouge">&lt;mutex&gt;</code>)</strong>: 保证数据完整性，避免数据竞争。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mtx</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">shared_data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">increment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">mtx</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>
+        <span class="o">++</span><span class="n">shared_data</span><span class="p">;</span>
+        <span class="n">mtx</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">increment</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">increment</span><span class="p">);</span>
+    <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"共享数据值: "</span> <span class="o">&lt;&lt;</span> <span class="n">shared_data</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>条件变量 (<code class="language-plaintext highlighter-rouge">&lt;condition_variable&gt;</code>)</strong>: 基于特定条件同步线程。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;condition_variable&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mtx</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span> <span class="n">cv</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">ready</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">print_message</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span>
+    <span class="n">cv</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">lock</span><span class="p">,</span> <span class="p">[]{</span> <span class="k">return</span> <span class="n">ready</span><span class="p">;</span> <span class="p">});</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"来自工作线程的问候！"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">print_message</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"设置就绪标志..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span>
+        <span class="n">ready</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cv</span><span class="p">.</span><span class="n">notify_one</span><span class="p">();</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>原子操作 (<code class="language-plaintext highlighter-rouge">&lt;atomic&gt;</code>)</strong>: 对共享数据进行无锁操作。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;atomic&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">increment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">++</span><span class="n">count</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">increment</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">increment</span><span class="p">);</span>
+    <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"计数值: "</span> <span class="o">&lt;&lt;</span> <span class="n">count</span><span class="p">.</span><span class="n">load</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>未来 (<code class="language-plaintext highlighter-rouge">&lt;future&gt;</code>)</strong>: 异步运行函数并稍后检索结果。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;future&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">compute</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">42</span> <span class="o">*</span> <span class="mi">42</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">async</span><span class="p">(</span><span class="n">compute</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"执行其他任务..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"结果: "</span> <span class="o">&lt;&lt;</span> <span class="n">result</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="c17-及以后">C++17 及以后</h3>
+
+<p><strong>并行算法</strong>: 无需手动线程管理即可获得最佳性能。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par</span><span class="p">,</span> <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>并发 TS 和协程</strong>: 线性、可读的异步代码。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 注意: 实际使用可能需要编译器和标准库对协程的支持。</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;coroutine&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;future&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">compute</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">co_return</span> <span class="mi">42</span> <span class="o">*</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">compute</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"结果: "</span> <span class="o">&lt;&lt;</span> <span class="n">result</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="深入原子操作-stdatomic">深入原子操作 (<code class="language-plaintext highlighter-rouge">std::atomic</code>)</h3>
+
+<p>在多线程程序中，<code class="language-plaintext highlighter-rouge">std::atomic</code> 为变量提供了原子（不可中断）操作，以防止在并发上下文中的数据竞争。</p>
+
+<p><strong>基本原子操作</strong>：<code class="language-plaintext highlighter-rouge">std::atomic</code> 的主要用途是保证对封装的变量进行原子操作。这包括赋值、读取、增加等操作。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">counter</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">counter</span><span class="o">++</span><span class="p">;</span>       <span class="c1">// 原子增加</span>
+<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">counter</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>  <span class="c1">// 原子读取</span>
+</code></pre></div></div>
+
+<p>对于非原子变量，我们需要用 mutex 保护它，来达到 thread-safe.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">atomicCount</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">nonAtomicCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mtx</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">process</span><span class="p">()</span> <span class="p">{</span>
+    <span class="o">++</span><span class="n">atomicCount</span><span class="p">;</span>
+
+    <span class="n">mtx</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>
+    <span class="o">++</span><span class="n">nonAtomicCount</span><span class="p">;</span>
+    <span class="n">mtx</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>内存顺序</strong>：<code class="language-plaintext highlighter-rouge">std::atomic</code> 提供了控制操作的内存顺序的更高级特性。这允许开发者在特定场景中优化线程之间的同步。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">counter</span><span class="p">.</span><span class="n">fetch_add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>复杂原子操作</strong>：除基本操作外，<code class="language-plaintext highlighter-rouge">std::atomic</code> 提供了更复杂的原子操作，如 <code class="language-plaintext highlighter-rouge">compare_exchange_weak</code> 和 <code class="language-plaintext highlighter-rouge">compare_exchange_strong</code>。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">expected</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">atomicVar</span><span class="p">.</span><span class="n">compare_exchange_strong</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>原子标志</strong>：<code class="language-plaintext highlighter-rouge">std::atomic_flag</code> 是一个专门的原子类型，作为一个自旋锁。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">atomic_flag</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">ATOMIC_FLAG_INIT</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">test_and_set</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">));</span>  <span class="c1">// 自旋直到标志清除</span>
+<span class="c1">// 临界区</span>
+<span class="n">flag</span><span class="p">.</span><span class="n">clear</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>专门的原子类型</strong>：C++ 标准库为整数、指针和其他常见类型提供了专门的原子类型，如 <code class="language-plaintext highlighter-rouge">std::atomic_int</code>, <code class="language-plaintext highlighter-rouge">std::atomic_long</code>, <code class="language-plaintext highlighter-rouge">std::atomic_bool</code> 和 <code class="language-plaintext highlighter-rouge">std::atomic&lt;void*&gt;</code>。</p>
+
+<p>总之，<code class="language-plaintext highlighter-rouge">std::atomic</code> 不仅仅是改变变量的行为，它提供了丰富的特性，允许开发者创建精密的多线程算法和数据结构。</p>
 
 <h2 id="函数">函数</h2>
 
@@ -856,47 +1127,6 @@ int main(){
     <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">item</span> <span class="o">:</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="p">.</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">" : "</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="p">.</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="vector-作为-map-的键">vector 作为 map 的键</h3>
-
-<blockquote>
-  <p><code class="language-plaintext highlighter-rouge">std::map</code> 里的「键 - 值」映射在创建的时候，内存里存放了完整的「键和值 的数值」。</p>
-</blockquote>
-
-<p>如果我创建了这样的数据结构</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span>
-</code></pre></div></div>
-
-<p>我个人比较担心的是，映射里的键 <code class="language-plaintext highlighter-rouge">std::vector&lt;int&gt;</code> 是怎么存储在 内存里的？具体而言，如果我用下面的代码 创建了 一个映射</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map</span><span class="o">&lt;</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">;</span>
-<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
-<span class="n">m</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>这个时候, <code class="language-plaintext highlighter-rouge">m</code> 里有一个 键，它的类型是 <code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>。但是我有点担心，它其实是指向 <code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code> 的一个指针。（因为 python 里基本上 <code class="language-plaintext highlighter-rouge">list</code> 和「指向 <code class="language-plaintext highlighter-rouge">list</code> 的指针」是一个意思）。这一段代码证明了，我的担心是多余的。</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
-#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
-</span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">map</span><span class="o">&lt;</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">;</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
-    <span class="n">m</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// m: {(1, 1, 1): 1}</span>
-    <span class="n">a</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">a</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="n">m</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">// m: {(1, 1, 1): 1, (2, 2, 2): 2}</span>
-    <span class="n">a</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span> <span class="c1">// a 被清空之后，m 的键依然等于其他的 vector</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">t1</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">t2</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
-    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">[</span><span class="n">t1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// m[t1] -&gt; 1</span>
-    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">[</span><span class="n">t2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// m[t2] -&gt; 2</span>
 <span class="p">}</span>
 </code></pre></div></div>
 

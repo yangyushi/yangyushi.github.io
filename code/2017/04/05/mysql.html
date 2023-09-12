@@ -2,12 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MySQL</title>
+    <title>MySQL 简介</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -18,49 +19,18 @@
       });
     </script>
 
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-      >
-    </script>
-    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    
-    <nav>
-    <ul>
-        
-        <li>
-        <a href=/
-            
-        >
-            Home
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_en.html
-            
-        >
-            Notebook
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_cn.html
-            
-        >
-            笔记本
-        </a>
-        </li>
-        
-    </ul>
-</nav>
-
 
     <div class="main">
-        <div id="side_bar">
+        <p><a href="/" id="backToHomeButton">Home</a></p>
+
+<div id="side_bar">
     05 Apr 2017
 </div>
 
@@ -173,25 +143,23 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
   <li>数据表（table）简称表，它是数据库最重要的组成部分之一</li>
   <li>数据库只是一个框架，表才是实质内容。</li>
   <li>一个数据库中一般会有多张表，这些各自独立的表通过建立关系被联接起来，才成为可以交叉查阅、一目了然的数据库</li>
-  <li>
-    <p>下面是一个表的例子</p>
-
-    <table>
-  <tr>
-      <td>ID</td><td>Name</td><td>Gender</td>
-  </tr>
-  <tr>
-      <td>054</td><td>Leo</td><td>Male</td>
-  </tr>
-  <tr>
-      <td>055</td><td>Ken</td><td>Male</td>
-  </tr>
-  <tr>
-      <td>056</td><td>Lily</td><td>Female</td>
-      </tr>
-  </table>
-  </li>
+  <li>下面是一个表的例子</li>
 </ul>
+
+<table>
+<tr>
+    <td>ID</td><td>Name</td><td>Gender</td>
+</tr>
+<tr>
+    <td>054</td><td>Leo</td><td>Male</td>
+</tr>
+<tr>
+    <td>055</td><td>Ken</td><td>Male</td>
+</tr>
+<tr>
+    <td>056</td><td>Lily</td><td>Female</td>
+    </tr>
+</table>
 
 <h3 id="mysql-中的数据类型">MySQL 中的数据类型</h3>
 
@@ -448,9 +416,9 @@ mysql <span class="nt">-u</span> root <span class="c">#使用 root 登陆</span>
     <p>重命名表</p>
 
     <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">RENAME</span> <span class="k">TABLE</span> <span class="err">原名</span> <span class="k">TO</span> <span class="err">新名字</span><span class="p">;</span>
-	
+    
   <span class="k">ALTER</span> <span class="k">TABLE</span> <span class="err">原名</span> <span class="k">RENAME</span> <span class="err">新名</span><span class="p">;</span>
-	
+    
   <span class="k">ALTER</span> <span class="k">TABLE</span> <span class="err">原名</span> <span class="k">RENAME</span> <span class="k">TO</span> <span class="err">新名</span><span class="p">;</span>
 </code></pre></div>    </div>
   </li>

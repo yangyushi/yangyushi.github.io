@@ -1,4 +1,8 @@
 @charset "UTF-8";
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
 }
@@ -20,12 +24,16 @@ a:active, a:hover {
   list-style-type: none;
 }
 
+.list {
+  max-width: 100%;
+}
+
 .list ul {
   list-style-type: none;
 }
 
 .list li {
-  padding-bottom: 12px;
+  padding-bottom: 0.5em;
 }
 
 h1, h2 {
@@ -75,7 +83,7 @@ nav a {
 .post {
   color: #333;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 1.5;
   min-width: 500px;
   overflow: visible;
@@ -214,7 +222,7 @@ blockquote:after {
 }
 
 .center {
-  top: 80px;
+  top: 5%;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -255,18 +263,6 @@ blockquote:after {
   font-family: monospace;
 }
 
-.catalog_left {
-  float: left;
-  min-width: 250px;
-  list-style-type: none;
-}
-
-.catalog_right {
-  float: right;
-  min-width: 250px;
-  list-style-type: none;
-}
-
 img {
   padding: 5%;
   text-align: center;
@@ -275,7 +271,7 @@ img {
 
 #side_bar {
   color: #333;
-  top: 5%;
+  top: 10%;
   position: fixed;
   overflow: auto;
   z-index: 1;
@@ -407,6 +403,58 @@ img {
 .footnotes {
   border-top: 2px solid #BCBEC0;
   margin-top: 5%;
+}
+
+.query {
+  min-width: 250px;
+  margin-bottom: 2em;
+}
+
+#search {
+  padding: 10px 15px;
+  border: 2px solid teal;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+}
+
+#search:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px rgba(100, 100, 100, 0.1);
+}
+
+#search::placeholder {
+  color: #999;
+}
+
+#searchResults a {
+  display: block;
+  padding: 5px 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+#searchResults a:hover {
+  background-color: #f5f5f5;
+}
+
+#backToHomeButton {
+  display: inline-block;
+  padding: 4px 8px;
+  border: solid teal;
+  border-radius: 4px;
+  color: teal; /* White color */
+  transition: background-color 0.3s;
+}
+
+#backToHomeButton:hover {
+  background-color: teal;
+  color: white;
+}
+
+#backToHomeButton {
+  position: fixed;
+  z-index: 1000; /* To ensure it appears on top of other content */
 }
 
 /*# sourceMappingURL=styles.css.map */

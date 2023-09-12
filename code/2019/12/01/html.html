@@ -5,9 +5,10 @@
     <title>HTML</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -18,49 +19,18 @@
       });
     </script>
 
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-      >
-    </script>
-    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    
-    <nav>
-    <ul>
-        
-        <li>
-        <a href=/
-            
-        >
-            Home
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_en.html
-            
-        >
-            Notebook
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_cn.html
-            
-        >
-            笔记本
-        </a>
-        </li>
-        
-    </ul>
-</nav>
-
 
     <div class="main">
-        <div id="side_bar">
+        <p><a href="/" id="backToHomeButton">Home</a></p>
+
+<div id="side_bar">
     01 Dec 2019
 </div>
 
@@ -211,12 +181,12 @@
 <h4 id="introduction-2">Introduction</h4>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">&lt;b&gt;</code>	（bold）粗体</li>
-  <li><code class="language-plaintext highlighter-rouge">&lt;big&gt;</code>	（big）大字体</li>
-  <li><code class="language-plaintext highlighter-rouge">&lt;em&gt;</code>	（emphasized）强调字</li>
-  <li><code class="language-plaintext highlighter-rouge">&lt;i&gt;</code>	（italic）斜体</li>
-  <li><code class="language-plaintext highlighter-rouge">&lt;small&gt;</code>	（small）小字体</li>
-  <li><code class="language-plaintext highlighter-rouge">&lt;strong&gt;</code>	(strong)加重语气</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;b&gt;</code>（bold）粗体</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;big&gt;</code>（big）大字体</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;em&gt;</code>（emphasized）强调字</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;i&gt;</code>（italic）斜体</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;small&gt;</code>（small）小字体</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;strong&gt;</code>(strong)加重语气</li>
 </ul>
 
 <h4 id="pre">&lt;Pre&gt;</h4>
@@ -253,13 +223,13 @@ Hello world!
     <span class="nt">&lt;p&gt;</span>let's have an example<span class="nt">&lt;/p&gt;</span>
 
     <span class="nt">&lt;p&gt;</span>   
-    	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.shiyanlou.com"</span><span class="nt">&gt;</span>
-    	shiyanlou
-    	<span class="nt">&lt;/a&gt;</span>
-    	<span class="nt">&lt;/br&gt;</span>
-    	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span><span class="nt">&gt;</span>
-    	<span class="nt">&lt;/img</span> <span class="err">src="logo.png"</span><span class="nt">&gt;</span> <span class="c">&lt;!--显示相同 PATH 下的 logo.png 图片--&gt;</span>
-    	<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.shiyanlou.com"</span><span class="nt">&gt;</span>
+    shiyanlou
+    <span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/br&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/img</span> <span class="err">src="logo.png"</span><span class="nt">&gt;</span> <span class="c">&lt;!--显示相同 PATH 下的 logo.png 图片--&gt;</span>
+    <span class="nt">&lt;/a&gt;</span>
     <span class="nt">&lt;/p&gt;</span>
 
 
@@ -270,21 +240,17 @@ Hello world!
 <h4 id="opening-methods">Opening methods</h4>
 
 <ul>
-  <li>超级链接打开方式分为
-    <ul>
-      <li>本页打开</li>
-      <li>在新的浏览器窗口打开</li>
-    </ul>
+  <li>超级链接打开方式分为</li>
+  <li>本页打开</li>
+  <li>
+    <p>在新的浏览器窗口打开</p>
   </li>
   <li>
     <p>超级链接打开新页面的<strong>默认方式</strong>是自我覆盖（就是在本页打开）。</p>
   </li>
-  <li>超级链接标签提供了 <code class="language-plaintext highlighter-rouge">target</code> 属性进行设置，取值分别为
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">_self</code>（自我覆盖，默认）</li>
-      <li><code class="language-plaintext highlighter-rouge">_blank</code>（创建新窗口打开新页面）</li>
-    </ul>
-  </li>
+  <li>超级链接标签提供了 <code class="language-plaintext highlighter-rouge">target</code> 属性进行设置，取值分别为</li>
+  <li><code class="language-plaintext highlighter-rouge">_self</code>（自我覆盖，默认）</li>
+  <li><code class="language-plaintext highlighter-rouge">_blank</code>（创建新窗口打开新页面）</li>
 </ul>
 
 <p>Example</p>
@@ -309,10 +275,10 @@ Hello world!
 </ul>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p&gt;</span>
-	<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#c1"</span><span class="nt">&gt;</span>anchor_1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#c1"</span><span class="nt">&gt;</span>anchor_1<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;p&gt;</span>
-	<span class="nt">&lt;a</span> <span class="na">name=</span><span class="s">"c1"</span><span class="nt">&gt;</span>anchor_1 jumps to here<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">name=</span><span class="s">"c1"</span><span class="nt">&gt;</span>anchor_1 jumps to here<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;/p&gt;</span>
 </code></pre></div></div>
 
@@ -324,14 +290,11 @@ Hello world!
   <li>HTML 網頁設計不可或缺的元素就是表格（Table）</li>
   <li>通常表格用來做版面的排版</li>
   <li>数据单元格可以包含文本、图片、列表、段落、表单、水平线、表格等等</li>
-  <li>表格的幾個重要标签
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">&lt;table&gt;</code>: 定义表格</li>
-      <li><code class="language-plaintext highlighter-rouge">&lt;tr&gt;</code>: 每个表格的<strong>行</strong></li>
-      <li><code class="language-plaintext highlighter-rouge">&lt;td&gt;</code>: 每个行的<strong>单元格</strong>的内容</li>
-      <li><code class="language-plaintext highlighter-rouge">&lt;th&gt;</code>: 定义表头</li>
-    </ul>
-  </li>
+  <li>表格的幾個重要标签</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;table&gt;</code>: 定义表格</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;tr&gt;</code>: 每个表格的<strong>行</strong></li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;td&gt;</code>: 每个行的<strong>单元格</strong>的内容</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;th&gt;</code>: 定义表头</li>
 </ul>
 
 <h4 id="example">Example:</h4>
@@ -340,14 +303,14 @@ Hello world!
 <span class="nt">&lt;title</span> <span class="nt">&gt;</span>TABLE<span class="nt">&lt;/title&gt;</span>
 <span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"font-size:20px"</span><span class="nt">&gt;</span>
      <span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"1"</span><span class="nt">&gt;</span>  
-     	<span class="nt">&lt;tr&gt;</span>
-		<span class="nt">&lt;td&gt;</span>T11<span class="nt">&lt;/td&gt;</span>
-		<span class="nt">&lt;td&gt;</span>T12<span class="nt">&lt;/td&gt;</span>
-		<span class="nt">&lt;/tr&gt;</span>
-		<span class="nt">&lt;tr&gt;</span>
-		<span class="nt">&lt;td&gt;</span>T21<span class="nt">&lt;/td&gt;</span>
-		<span class="nt">&lt;td&gt;</span>T22<span class="nt">&lt;/td&gt;</span>
-		<span class="nt">&lt;/tr&gt;</span>
+     <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;td&gt;</span>T11<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>T12<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;td&gt;</span>T21<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>T22<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
      <span class="nt">&lt;/table&gt;</span>   
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
@@ -391,15 +354,15 @@ Hello world!
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
-	<span class="nt">&lt;title&gt;</span>image<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;title&gt;</span>image<span class="nt">&lt;/title&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
-	<span class="nt">&lt;p&gt;</span>
-	<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"logo.png"</span> <span class="na">usemap=</span><span class="s">"#map"</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">"map"</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;area</span> <span class="na">shape=</span><span class="s">"rect"</span> <span class="na">coords=</span><span class="s">"0, 0, 50, 50"</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>
-		<span class="c">&lt;!--只有图片从左上角 (0,0) 坐标到右下角 (50,50) 的区域响应点击--&gt;</span>
-	<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"logo.png"</span> <span class="na">usemap=</span><span class="s">"#map"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">"map"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;area</span> <span class="na">shape=</span><span class="s">"rect"</span> <span class="na">coords=</span><span class="s">"0, 0, 50, 50"</span> <span class="na">href=</span><span class="s">"http://www.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!--只有图片从左上角 (0,0) 坐标到右下角 (50,50) 的区域响应点击--&gt;</span>
+<span class="nt">&lt;/map&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div></div>
@@ -415,17 +378,14 @@ Hello world!
 <span class="nt">&lt;/ol&gt;</span>
 </code></pre></div></div>
 <ul>
-  <li>Attributes
+  <li>Attributes</li>
+  <li><code class="language-plaintext highlighter-rouge">start</code>:  起始编号，默认是 1</li>
+  <li><code class="language-plaintext highlighter-rouge">type</code>: 编号方法，默认是阿拉伯数字
     <ul>
-      <li><code class="language-plaintext highlighter-rouge">start</code>:  起始编号，默认是 1</li>
-      <li><code class="language-plaintext highlighter-rouge">type</code>: 编号方法，默认是阿拉伯数字
-        <ul>
-          <li><code class="language-plaintext highlighter-rouge">a</code>: a, b, c, …</li>
-          <li><code class="language-plaintext highlighter-rouge">A</code>: A, B, C, …</li>
-          <li><code class="language-plaintext highlighter-rouge">i</code>: i, ii, iii, …</li>
-          <li><code class="language-plaintext highlighter-rouge">I</code>: I, II, III, …</li>
-        </ul>
-      </li>
+      <li><code class="language-plaintext highlighter-rouge">a</code>: a, b, c, …</li>
+      <li><code class="language-plaintext highlighter-rouge">A</code>: A, B, C, …</li>
+      <li><code class="language-plaintext highlighter-rouge">i</code>: i, ii, iii, …</li>
+      <li><code class="language-plaintext highlighter-rouge">I</code>: I, II, III, …</li>
     </ul>
   </li>
 </ul>
@@ -439,24 +399,21 @@ Hello world!
 <span class="nt">&lt;/ul&gt;</span>
 </code></pre></div></div>
 <ul>
-  <li>Attributes
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">Disc</code>: 实心黑点 (默认)</li>
-      <li><code class="language-plaintext highlighter-rouge">Cirle</code>: 小圈</li>
-      <li><code class="language-plaintext highlighter-rouge">square</code>: 方点</li>
-    </ul>
-  </li>
+  <li>Attributes</li>
+  <li><code class="language-plaintext highlighter-rouge">Disc</code>: 实心黑点 (默认)</li>
+  <li><code class="language-plaintext highlighter-rouge">Cirle</code>: 小圈</li>
+  <li><code class="language-plaintext highlighter-rouge">square</code>: 方点</li>
 </ul>
 
 <h4 id="defined-list">Defined List</h4>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dl&gt;</span>
-	<span class="nt">&lt;dt&gt;</span>1st<span class="nt">&lt;/dt&gt;</span> <span class="c">&lt;!--Define the title--&gt;</span>
-		<span class="nt">&lt;dd&gt;</span>1st element<span class="nt">&lt;/dd&gt;</span>
-	<span class="nt">&lt;dt&gt;</span>2nd<span class="nt">&lt;/dt&gt;</span>
-		<span class="nt">&lt;dd&gt;</span>2nd element<span class="nt">&lt;/dd&gt;</span>
-	<span class="nt">&lt;dt&gt;</span>3rd<span class="nt">&lt;/dt&gt;</span>
-		<span class="nt">&lt;dd&gt;</span>3rd element<span class="nt">&lt;/dd&gt;</span>
+<span class="nt">&lt;dt&gt;</span>1st<span class="nt">&lt;/dt&gt;</span> <span class="c">&lt;!--Define the title--&gt;</span>
+    <span class="nt">&lt;dd&gt;</span>1st element<span class="nt">&lt;/dd&gt;</span>
+<span class="nt">&lt;dt&gt;</span>2nd<span class="nt">&lt;/dt&gt;</span>
+    <span class="nt">&lt;dd&gt;</span>2nd element<span class="nt">&lt;/dd&gt;</span>
+<span class="nt">&lt;dt&gt;</span>3rd<span class="nt">&lt;/dt&gt;</span>
+    <span class="nt">&lt;dd&gt;</span>3rd element<span class="nt">&lt;/dd&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
 </code></pre></div></div>
 
@@ -466,20 +423,14 @@ Hello world!
 
 <ul>
   <li>HTML元素被定义为<strong>块级元素</strong>或<strong>内联元素</strong></li>
-  <li>块级元素 (block) 特性:
-    <ul>
-      <li>总是独占一行，表现为另起一行开始，而且其后的元素也必须另起一行显示</li>
-      <li>宽度 (width)、高度 (height)、内边距 (padding) 和外边距 (margin) 都可控制</li>
-      <li>例子: <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;p&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;ul&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;table&gt;</code> 标签</li>
-    </ul>
-  </li>
-  <li>内联元素 (inline) 特性:
-    <ul>
-      <li>和相邻的内联元素在同一行</li>
-      <li>宽度(width)、高度(height)、内边距的top/bottom (padding-top/padding-bottom) 和外边距的 top/bottom (margin-top/margin-bottom) 都不可改变</li>
-      <li>例子: <code class="language-plaintext highlighter-rouge">&lt;b&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;td&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;img&gt;</code> 标签</li>
-    </ul>
-  </li>
+  <li>块级元素 (block) 特性:</li>
+  <li>总是独占一行，表现为另起一行开始，而且其后的元素也必须另起一行显示</li>
+  <li>宽度 (width)、高度 (height)、内边距 (padding) 和外边距 (margin) 都可控制</li>
+  <li>例子: <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;p&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;ul&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;table&gt;</code> 标签</li>
+  <li>内联元素 (inline) 特性:</li>
+  <li>和相邻的内联元素在同一行</li>
+  <li>宽度(width)、高度(height)、内边距的top/bottom (padding-top/padding-bottom) 和外边距的 top/bottom (margin-top/margin-bottom) 都不可改变</li>
+  <li>例子: <code class="language-plaintext highlighter-rouge">&lt;b&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;td&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;img&gt;</code> 标签</li>
 </ul>
 
 <h4 id="div">&lt;div&gt;</h4>
@@ -493,16 +444,16 @@ Hello world!
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
-	<span class="nt">&lt;title&gt;</span>Div<span class="nt">&lt;/title&gt;</span>
-	<span class="nt">&lt;/head&gt;</span>
-	<span class="nt">&lt;body&gt;</span>
-	<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"color:blue;font-family=arial"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;h3&gt;</span>Inside the div, font color is blue<span class="nt">&lt;/h3&gt;</span>
-	<span class="nt">&lt;p&gt;</span>Paragraphs are combined<span class="nt">&lt;/p&gt;</span>
-	<span class="nt">&lt;p&gt;</span>With the same style<span class="nt">&lt;/p&gt;</span>
-	<span class="nt">&lt;/div&gt;</span>
-	<span class="nt">&lt;h3&gt;</span>Outside the div, font color is black<span class="nt">&lt;/h3&gt;</span>
-	<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;title&gt;</span>Div<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"color:blue;font-family=arial"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;h3&gt;</span>Inside the div, font color is blue<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;p&gt;</span>Paragraphs are combined<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>With the same style<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;h3&gt;</span>Outside the div, font color is black<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div></div>
 
@@ -521,7 +472,7 @@ Hello world!
 
     <span class="nt">&lt;tr</span> <span class="na">valign=</span><span class="s">"top"</span><span class="nt">&gt;</span>
         <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"background-color: darkorange;width:300px"</span><span class="nt">&gt;</span>
-        	<span class="nt">&lt;h1&gt;</span>Part Two<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Part Two<span class="nt">&lt;/h1&gt;</span>
         <span class="nt">&lt;/td&gt;</span>
         
         <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"background-color: forestgreen;height:500px;width:700px;"</span><span class="nt">&gt;</span>

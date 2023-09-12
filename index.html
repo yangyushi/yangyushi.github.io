@@ -5,9 +5,10 @@
     <title>Home</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -18,83 +19,78 @@
       });
     </script>
 
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-      >
-    </script>
-    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </head>
 
   <body>
     <script>hljs.initHighlightingOnLoad();</script>
-    
-    <nav>
-    <ul>
-        
-        <li>
-        <a href=/
-            
-                class="current"
-            
-        >
-            Home
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_en.html
-            
-        >
-            Notebook
-        </a>
-        </li>
-        
-        <li>
-        <a href=/notebook_cn.html
-            
-        >
-            笔记本
-        </a>
-        </li>
-        
-    </ul>
-</nav>
-
 
     <div class="main">
         <div class="center">
-    <div class="list">
-        <h2> Recent </h2>
+
+    <pre>
+    Hi, I am Yushi! Welcome to my place!
+    </pre>
+
+    <h2>Notebooks</h2>
+
+    <pre>
+    Type something in the search bar and you will see my notes!
+    </pre>
+
+    <div class="query">
+        <input type="text" id="search" placeholder="Search for notes with keywords ..." />
+        <div class="list">
+            <ul id="searchResults">
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="btnNews">Recent News +</h2>
+    <div class="list" id="divNews" style="display: none;">
         <ul>
             <li>
-                (2022) I am now working on NGS basecalling algorithms.
+                <font color="teal"><b>2022</b></font>
+                I am developing NGS basecalling algorithms.
             </li>
             <li>
-                (2022) I finished my PhD with
+                <font color="teal"><b>2022</b></font>
+                I finished my PhD with
                 <a href="http://padrus.com">Paddy</a>,
                 <a href="https://scholar.google.co.uk/citations?user=liq4jfQAAAAJ&amp;hl=en">Chrissy</a>,
                 and <a href="http://tmachon.com/">Tom</a>.
             </li>
             <li>
-                (2021) My <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009394">
+                <font color="teal"><b>2021</b></font>
+                My <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009394">
                     paper about 3D fish behaviour
-                    </a> is published.
+                    </a>
+                is published.
                 <br />
             </li>
         </ul>
     </div>
 
-    <div class="list">
-        <h2> Bookmarks </h2>
+
+
+    <h2 id="btnBookmark">Bookmarks +</h2>
+    <div class="list" id="divBookmark" style="display: none;">
         <ul>
             <li><a href="https://github.com/">GitHub</a></li>
+            <li><a href="https://godbolt.org/">Compiler Explorer</a></li>
             <li><a href="https://chat.openai.com/">ChatGPT</a></li>
             <li>
-                <a href="https://matplotlib.org/cheatsheets/_images/handout-intermediate.png">Matplotlib Cheatsheet</a>
+                <a href="https://matplotlib.org/cheatsheets/_images/handout-intermediate.png">
+                    Matplotlib Cheatsheet
+                </a>
             </li>
 
             <li>
-                <a href="https://matplotlib.org/3.1.0/_images/sphx_glr_named_colors_003.png">Matplotlib Color Names</a>
+                <a href="https://matplotlib.org/3.1.0/_images/sphx_glr_named_colors_003.png">
+                    Matplotlib Color Names
+                </a>
             </li>
 
             <li>
@@ -145,8 +141,9 @@
                 </a>
             </li>
         </ul>
-        <h2>Friends</h2>
+
         <ul>
+            <h4>Friends</h4><br />
             <li>
                 <a href="https://francescoturci.net">Francesco Turci</a>
                 (<a href="https://francescoturci.net">backup</a>)
@@ -155,9 +152,15 @@
                 <a href="https://www.mauleonamieva.com">Abraham Mauleon Amieva</a>
             </li>
         </ul>
+
     </div>
 
 </div>
+
+<script src="/assets/js/fold.js"></script>
+
+<script src="/assets/js/query.js"></script>
+
 
     </div>
 
