@@ -1,9 +1,3 @@
-let isOnSR = false;
-
-document.getElementById("searchResults").addEventListener("mouseenter", function(  ) {isOnSR=true;});
-document.getElementById("searchResults").addEventListener("mouseout", function(  ) {isOnSR=false;});
-
-
 document.addEventListener("DOMContentLoaded", function() {
     var documents;
     fetch('assets/search_index.json')
@@ -45,18 +39,22 @@ function displayResults(results, documents) {
 
 document.getElementById('search').addEventListener('blur', function() {
     var obj = document.getElementById("searchResults")
-    if (isOnSR){
+
+    var is_selecting_article = false;
+    for (let i = 0; i < obj.children.length; i++) {
+        const child = obj.children[i];
+        is_selecting_article = is_selecting_article || child.matches(":active");
+    }
+    if (is_selecting_article){
         obj.style.display = "block";
     } else {
         obj.style.display = "none";
     }
 });
 
-
 document.getElementById('search').addEventListener('focus', function() {
     var obj = document.getElementById("searchResults")
     if (obj.style.display == "none"){
         obj.style.display = "block";
     }
-
 });

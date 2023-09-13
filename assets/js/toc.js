@@ -1,9 +1,12 @@
 function foldTOC() {
     var toc = document.getElementById('markdown-toc-new');
+    var toc_btn = document.getElementById('toc-btn');
     if (toc.style.display === "none") {
         toc.style.display = "block";
+        toc_btn.innerHTML = "Hide TOC";
     } else {
         toc.style.display = "none";
+        toc_btn.innerHTML = "Show TOC";
     }
 }
 
@@ -15,11 +18,18 @@ function moveTOC() {
         toc.parentNode.removeChild(toc);
         new_toc.id = 'markdown-toc-new'
         var side_toc = document.getElementById('side_bar');
-        side_toc.innerHTML = '<div onclick="foldTOC()" class="toc_click"> TOC </div>';
+        side_toc.innerHTML = '<div class="toc_click"> <a href="/">Back to Home</a> </div>';
+        side_toc.innerHTML += '<div onclick="topFunction()" class="toc_click"> Back to Top </div>';
+        side_toc.innerHTML += '<div onclick="foldTOC()" class="toc_click", id="toc-btn">Hide TOC</div>';
         side_toc.appendChild(new_toc);
     }
 }
 
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 
 function addClick() {
     var toc = document.getElementById('markdown-toc-new');
