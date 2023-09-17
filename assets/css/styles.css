@@ -102,6 +102,8 @@ nav a {
 
 .post h2 {
   font-size: 1.5em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 .post h2:before {
   content: "#";
@@ -113,6 +115,8 @@ nav a {
 
 .post h3 {
   font-size: 1.2em;
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
 }
 .post h3:before {
   content: "##";
