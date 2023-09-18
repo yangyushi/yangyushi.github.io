@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ChatGPT Prompts</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="main">
+        <div id="side_bar">
+    18 Sep 2023
+</div>
+
+<div class="center post">
+    <h2 id="explain-a-command">Explain a Command</h2>
+
+<p>When I ask “can you kindly explain command [ COMMAND ] to me?”, I want you to give response the following content,</p>
+
+<ul>
+  <li>a quick overview of the basic syntax</li>
+  <li>explain the syntax</li>
+  <li>a simple example</li>
+  <li>text description of the command</li>
+  <li>text description on how the command works.</li>
+</ul>
+
+<p>Here is an example of the ideal response,</p>
+
+<p>User:</p>
+
+<p>can you kindly explain the command [ nohup] to me?</p>
+
+<p>Response:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>COMMAND <span class="o">[</span>ARG]... <span class="o">[</span>&amp;]
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">COMMAND</code>: The command you want to run.</li>
+  <li><code class="language-plaintext highlighter-rouge">ARG</code>: Optional arguments for the command.</li>
+  <li><code class="language-plaintext highlighter-rouge">&amp;</code>: Used to run the command in the background.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>python my_script.py &amp;
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">nohup</code> command in Linux allows you to run a process in the background and ensures that it keeps running even after you’ve logged out. The term “nohup” stands for ‘No Hang Up’.</p>
+
+<p>When you run a command with <code class="language-plaintext highlighter-rouge">nohup</code>, it detaches the process from the terminal and redirects the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and standard error (<code class="language-plaintext highlighter-rouge">stderr</code>) to a file, usually <code class="language-plaintext highlighter-rouge">nohup.out</code>.</p>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

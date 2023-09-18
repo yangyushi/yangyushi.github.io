@@ -2,7 +2,10 @@ import os
 import re
 import json
 import openai
+import hashlib
 from glob import glob
+
+TARGET = "assets/search_index.json"
 
 openai.organization = "org-jwqi1P40tS7CWVP6SFDGvQq4"
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -12,26 +15,21 @@ HEAD_PATTERN = re.compile(r"(\w+):\s?(.*)\n")
 FILENAME_PATTERN = re.compile(r"(\d+)\-(\d+)\-(\d+)\-(.*)\.md")
 
 PROMPT = """\
-Hi Chat, can you summarise the following markdown post after
-===== in detail, so that I can build a query service
-from your summary?
+Hi Chat, can you summarise the following markdown post in detail,
+so that I can build a query service from your summary?
 
-I want your response to be descriptive without using any symbols.
-In other words, you should only use English words. If you meet a block
-of code, you should describe its functionality.
+I want your response to be purely descriptive texts without any symbol.
+If you meet a block of code, you should try to describe its functionality.
 
 I want your answer to be a single paragraph, which can be very long,
 without any linebreak symbols or other unusual symbols.
-The only allowed punctuations are comma and dot.
 
 In addition, I want you to try to understand the provided content,
 and to try using a rich vocabulary for your summary.
 
 Finally, I want you to list the 10 most important keywords.
 
-
 Here is the content.
-
 
 =====
 """
@@ -54,11 +52,23 @@ paths = list(glob("_posts/*.md"))
 paths.sort(key=lambda x: len(open(x).read()))
 paths = paths[::-1]
 
-result = []
+if os.path.isfile(TARGET):
+    with open(TARGET) as f:
+        result = json.load(f)
+    hash_db = [r.get("sha256") for r in result if r.get("sha256")]
+else:
+    result = []
+    hash_db = []
+
 for path in paths:
+    with open(path, "rb") as f:
+        sha256 = hashlib.sha256(f.read()).hexdigest()
+    if sha256 in hash_db:
+        continue
     with open(path) as f:
         line = f.readline()
         filename = os.path.basename(path)
+        print("Re-indexing", filename)
         query = FILENAME_PATTERN.match(filename)
         if query:
             year, month, day, title = query.groups()
@@ -127,12 +137,10 @@ for path in paths:
             "id": post_id,
             "title": post_title,
             "content": post_summary,
+            "sha256": sha256,
         }
 
-        print(entry)
-
         result.append(entry)
-
 
 with open("assets/search_index.json", "w") as f:
     json.dump(result, f, indent=2, ensure_ascii=False)

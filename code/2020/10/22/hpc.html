@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Useful Commands in HPC</title>
+    <title>Useful Linux Commands</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="https://unpkg.com/lunr/lunr.js"></script>
@@ -34,85 +34,143 @@
 
 <div class="center post">
     <ul id="markdown-toc">
-  <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
-  <li><a href="#see-file-size-in-mb" id="markdown-toc-see-file-size-in-mb">See file size in MB</a></li>
-  <li><a href="#copy-file-to-clipboard" id="markdown-toc-copy-file-to-clipboard">Copy file to clipboard</a></li>
-  <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
-  <li><a href="#use-large-memory-on-bc3" id="markdown-toc-use-large-memory-on-bc3">Use large memory on BC3</a></li>
-  <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
-  <li><a href="#display-image-on-bc3" id="markdown-toc-display-image-on-bc3">Display Image on BC3</a></li>
-  <li><a href="#configure-vim-compilation" id="markdown-toc-configure-vim-compilation">Configure Vim Compilation</a></li>
+  <li><a href="#general" id="markdown-toc-general">General</a>    <ul>
+      <li><a href="#rsync" id="markdown-toc-rsync"><code class="language-plaintext highlighter-rouge">rsync</code></a></li>
+      <li><a href="#nohup" id="markdown-toc-nohup"><code class="language-plaintext highlighter-rouge">nohup</code></a></li>
+      <li><a href="#pbcopy" id="markdown-toc-pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></a></li>
+      <li><a href="#xclilp" id="markdown-toc-xclilp">xclilp</a></li>
+      <li><a href="#file-size-in-mb" id="markdown-toc-file-size-in-mb">File size in MB</a></li>
+      <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
+      <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
+      <li><a href="#display-image" id="markdown-toc-display-image">Display Image</a></li>
+      <li><a href="#configure-vim-compilation" id="markdown-toc-configure-vim-compilation">Configure Vim Compilation</a></li>
+      <li><a href="#compile-python-38" id="markdown-toc-compile-python-38">Compile Python 3.8</a></li>
+    </ul>
+  </li>
+  <li><a href="#hpc-related" id="markdown-toc-hpc-related">HPC Related</a>    <ul>
+      <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
+      <li><a href="#use-more-memory" id="markdown-toc-use-more-memory">Use More Memory</a></li>
+    </ul>
+  </li>
 </ul>
 
 <hr />
 
-<p>I use the following handy script to make my life easier with the HPC.</p>
+<p>I use the following handy script to make my life easier</p>
 
 <hr />
 
-<h2 id="transfer-files">Transfer files</h2>
+<h2 id="general">General</h2>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
-scp <span class="nt">-r</span> LOCAL_PATH ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH
+<h3 id="rsync"><code class="language-plaintext highlighter-rouge">rsync</code></h3>
 
-<span class="c"># from local to hpc</span>
-scp <span class="nt">-r</span> ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH LOCAL_PATH 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="o">[</span>OPTIONS] SOURCE <span class="o">[</span>SOURCE]... DEST
 </code></pre></div></div>
 
-<p>to make my life easier, I store the <code class="language-plaintext highlighter-rouge">username@host</code> into a envirinmental variable. Typically I added something like the following into the <code class="language-plaintext highlighter-rouge">.basrhc</code> file.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">rsync</code>: The command itself.</li>
+  <li><code class="language-plaintext highlighter-rouge">OPTIONS</code>: Optional flags to specify behavior (e.g., <code class="language-plaintext highlighter-rouge">-a</code> for archive mode, <code class="language-plaintext highlighter-rouge">-v</code> for verbose).</li>
+  <li><code class="language-plaintext highlighter-rouge">SOURCE</code>: The source file(s) or directory(s) you want to copy.</li>
+  <li><code class="language-plaintext highlighter-rouge">DEST</code>: The destination where you want to copy the source to.</li>
+</ul>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export myhpc="USER_NAME@bluecrystalp3.bris.ac.uk"
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="nt">-av</span> /path/to/source/ /path/to/destination/
 </code></pre></div></div>
 
-<p>Therefore, the file exchange commands become the following code.</p>
+<p>The <code class="language-plaintext highlighter-rouge">rsync</code> command is used for synchronizing files and directories between two locations. It is commonly used for backups and mirroring data. The term “rsync” stands for “remote sync”.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
-scp <span class="nt">-r</span> LOCAL_PATH <span class="nv">$myhpc</span>:REMOTE_PATH
+<p>When you run <code class="language-plaintext highlighter-rouge">rsync</code>, it uses a delta-transfer algorithm to minimize data transfer by only sending the differences between the source and destination files. The <code class="language-plaintext highlighter-rouge">OPTIONS</code> can be used to control various aspects of its behavior, such as recursion into directories (<code class="language-plaintext highlighter-rouge">-r</code>), preserving file permissions (<code class="language-plaintext highlighter-rouge">-p</code>), and more. The <code class="language-plaintext highlighter-rouge">-a</code> flag is often used for ‘archive mode’, which is a shorthand for a number of other options (<code class="language-plaintext highlighter-rouge">-rlptgoD</code>) that preserve most attributes and enable recursion.</p>
 
-<span class="c"># from local to hpc</span>
-scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_PATH 
+<h3 id="nohup"><code class="language-plaintext highlighter-rouge">nohup</code></h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>COMMAND <span class="o">[</span>ARG]... <span class="o">[</span>&amp;]
 </code></pre></div></div>
 
-<h2 id="see-file-size-in-mb">See file size in MB</h2>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">COMMAND</code>: The command you want to run.</li>
+  <li><code class="language-plaintext highlighter-rouge">ARG</code>: Optional arguments for the command.</li>
+  <li><code class="language-plaintext highlighter-rouge">&amp;</code>: Used to run the command in the background.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>python my_script.py &amp;
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">nohup</code> command in Linux allows you to run a process in the background and ensures that it keeps running even after you’ve logged out. The term “nohup” stands for ‘No Hang Up’.</p>
+
+<p>When you run a command with <code class="language-plaintext highlighter-rouge">nohup</code>, it detaches the process from the terminal and redirects the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and standard error (<code class="language-plaintext highlighter-rouge">stderr</code>) to a file, usually <code class="language-plaintext highlighter-rouge">nohup.out</code>.</p>
+
+<h3 id="pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pbcopy &lt; INPUT
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pbcopy</code>: The command itself.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt; INPUT</code>: The input source that you want to copy to the clipboard.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"Hello, world!"</span> | pbcopy
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">pbcopy</code> command is used on macOS systems to copy the standard input (<code class="language-plaintext highlighter-rouge">stdin</code>) to the clipboard.</p>
+
+<p>When you run <code class="language-plaintext highlighter-rouge">pbcopy</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> and places the contents into the clipboard, allowing you to paste it elsewhere. Typically, you would pipe (<code class="language-plaintext highlighter-rouge">|</code>) the output of another command into <code class="language-plaintext highlighter-rouge">pbcopy</code> to capture it.</p>
+
+<p>If using ubuntu, put the following in <code class="language-plaintext highlighter-rouge">.bashrc</code>, to make a proxy for <code class="language-plaintext highlighter-rouge">xclilp</code>.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
+</code></pre></div></div>
+
+<h3 id="xclilp">xclilp</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xclip <span class="o">[</span>OPTION]... <span class="o">[</span>FILE]...
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">xclip</code>: The command itself.</li>
+  <li><code class="language-plaintext highlighter-rouge">OPTION</code>: Optional flags to specify behavior (e.g., <code class="language-plaintext highlighter-rouge">-sel clip</code> for clipboard).</li>
+  <li><code class="language-plaintext highlighter-rouge">FILE</code>: Optional file whose content you want to copy.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"Hello, world!"</span> | xclip <span class="nt">-sel</span> clip
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">xclip</code> command is used on Linux systems to interface with the X11 clipboard. It allows you to copy data between the clipboard and standard streams like <code class="language-plaintext highlighter-rouge">stdin</code>, <code class="language-plaintext highlighter-rouge">stdout</code>, and <code class="language-plaintext highlighter-rouge">stderr</code>.</p>
+
+<p>When you run <code class="language-plaintext highlighter-rouge">xclip</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> by default and places the contents into the X11 clipboard. You can specify which X11 selection to use with the <code class="language-plaintext highlighter-rouge">-sel</code> flag. For example, <code class="language-plaintext highlighter-rouge">-sel clip</code> uses the clipboard that is typically used for copy-paste operations.</p>
+
+<h3 id="file-size-in-mb">File size in MB</h3>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span> <span class="nt">--block-size</span><span class="o">=</span>M
 <span class="nb">du</span> <span class="nt">-sh</span> <span class="nb">.</span>
 </code></pre></div></div>
 
-<h2 id="copy-file-to-clipboard">Copy file to clipboard</h2>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>file | pbcopy
-</code></pre></div></div>
-
-<p>If using ubuntu, put the following in <code class="language-plaintext highlighter-rouge">.bashrc</code>,</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
-</code></pre></div></div>
-
-<h2 id="batch-convert-image-format">Batch convert image format</h2>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
-</code></pre></div></div>
-
-<h2 id="use-large-memory-on-bc3">Use large memory on BC3</h2>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#PBS -l mem=128gb</span>
-<span class="c">#PBS -q  himem</span>
-</code></pre></div></div>
-
-<h2 id="get-hash">Get Hash</h2>
+<h3 id="get-hash">Get Hash</h3>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shasum filename
 md5 filename
 openssl md5
 </code></pre></div></div>
 
-<h2 id="display-image-on-bc3">Display Image on BC3</h2>
+<h3 id="batch-convert-image-format">Batch convert image format</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
+</code></pre></div></div>
+
+<h3 id="display-image">Display Image</h3>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
 
-<h2 id="configure-vim-compilation">Configure Vim Compilation</h2>
+<h3 id="configure-vim-compilation">Configure Vim Compilation</h3>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--with-features</span><span class="o">=</span>huge <span class="se">\</span>
             <span class="nt">--enable-multibyte</span> <span class="se">\</span>
@@ -123,6 +181,60 @@ openssl md5
             <span class="nt">--prefix</span><span class="o">=</span>/usr/local
 </code></pre></div></div>
 
+<h3 id="compile-python-38">Compile Python 3.8</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo rm</span> <span class="nt">-rf</span> Python-3.8.6
+<span class="nb">tar</span> <span class="nt">-xzf</span> Python-3.8.6.tgz
+<span class="nb">cd </span>Python-3.8.6
+
+<span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/lib
+<span class="nb">export </span><span class="nv">LD_RUN_PATH</span><span class="o">=</span>/usr/local/lib
+
+./configure  <span class="nt">--enable-optimizations</span><span class="se">\</span>
+    <span class="nt">--prefix</span><span class="o">=</span>/usr/local<span class="se">\</span>
+    <span class="nt">--enable-shared</span><span class="se">\</span>
+    <span class="nt">--enable-loadable-sqlite-extensions</span><span class="se">\</span>
+	<span class="nv">CPPFLAGS</span><span class="o">=</span><span class="s2">"-I/usr/local/include -I/usr/local/include/openssl"</span><span class="se">\</span>
+	<span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">"-L/usr/local/lib -L/usr/local/lib/openssl"</span>
+
+make <span class="nt">-j8</span>
+<span class="nb">sudo </span>make <span class="nb">install
+
+cd</span> ..
+</code></pre></div></div>
+
+<h2 id="hpc-related">HPC Related</h2>
+
+<p>I used BlueCrystal (HPC in the university of Bristol) a lot while doing my PhD. These are the commands I used a lot.</p>
+
+<h3 id="transfer-files">Transfer files</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> LOCAL_PATH ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH
+
+<span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> ab12345@bluecrystalp3.bris.ac.uk:REMOTE_PATH LOCAL_PATH 
+</code></pre></div></div>
+
+<p>We can store the <code class="language-plaintext highlighter-rouge">username@host</code> into a envirinmental variable to make things faster, by adding the following line into the <code class="language-plaintext highlighter-rouge">.basrhc</code> file,</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export myhpc="USER_NAME@bluecrystalp3.bris.ac.uk"
+</code></pre></div></div>
+
+<p>After this, we can simplify our code by including <code class="language-plaintext highlighter-rouge">$myhpc</code>,</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> LOCAL_PATH <span class="nv">$myhpc</span>:REMOTE_PATH
+
+<span class="c"># from local to hpc</span>
+scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_PATH 
+</code></pre></div></div>
+
+<h3 id="use-more-memory">Use More Memory</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#PBS -l mem=128gb</span>
+<span class="c">#PBS -q  himem</span>
+</code></pre></div></div>
 
 </div>
 
