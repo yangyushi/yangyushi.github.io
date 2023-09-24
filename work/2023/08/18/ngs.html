@@ -34,22 +34,24 @@
 
 <div class="center post">
     <ul id="markdown-toc">
-  <li><a href="#barcode" id="markdown-toc-barcode">Barcode</a>    <ul>
+  <li><a href="#测序基础" id="markdown-toc-测序基础">测序基础</a>    <ul>
       <li><a href="#dna-基础" id="markdown-toc-dna-基础">DNA 基础</a></li>
       <li><a href="#pe-测序" id="markdown-toc-pe-测序">PE 测序</a></li>
-      <li><a href="#barcode-拆分策略" id="markdown-toc-barcode-拆分策略">Barcode 拆分策略</a>        <ul>
-          <li><a href="#单端-barcode" id="markdown-toc-单端-barcode">单端 barcode</a></li>
-          <li><a href="#双端-barcode" id="markdown-toc-双端-barcode">双端 barcode</a></li>
-          <li><a href="#单读段-barcode" id="markdown-toc-单读段-barcode">单读段 barcode</a></li>
-        </ul>
-      </li>
+    </ul>
+  </li>
+  <li><a href="#barcode" id="markdown-toc-barcode">Barcode</a>    <ul>
+      <li><a href="#单端-barcode" id="markdown-toc-单端-barcode">单端 barcode</a></li>
+      <li><a href="#双端-barcode" id="markdown-toc-双端-barcode">双端 barcode</a></li>
+      <li><a href="#单读段-barcode" id="markdown-toc-单读段-barcode">单读段 barcode</a></li>
+    </ul>
+  </li>
+  <li><a href="#概率模型" id="markdown-toc-概率模型">概率模型</a>    <ul>
+      <li><a href="#马尔科夫链" id="markdown-toc-马尔科夫链">马尔科夫链</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="barcode">Barcode</h2>
-
-<p><strong>目的</strong>：在测序中，我们经常一次性测序来自不同样品的多个 DNA 片段。为了在测序完成后能区分各个样品，我们会在每个片段上加上一个独特的 DNA 序列，称为 barcode。测序后，我们可以根据这些 barcode 来拆分、分类数据。</p>
+<h2 id="测序基础">测序基础</h2>
 
 <h3 id="dna-基础">DNA 基础</h3>
 
@@ -75,9 +77,13 @@
 <strong>读段 1</strong>：<code class="language-plaintext highlighter-rouge">5' - ATGCACTGA - 3'</code>
 <strong>读段 2</strong>：<code class="language-plaintext highlighter-rouge">5' - TAGCTCAGT - 3'</code></p>
 
-<h3 id="barcode-拆分策略">Barcode 拆分策略</h3>
+<p>###</p>
 
-<h4 id="单端-barcode">单端 barcode</h4>
+<h2 id="barcode">Barcode</h2>
+
+<p><strong>目的</strong>：在测序中，我们经常一次性测序来自不同样品的多个 DNA 片段。为了在测序完成后能区分各个样品，我们会在每个片段上加上一个独特的 DNA 序列，称为 barcode。测序后，我们可以根据这些 barcode 来拆分、分类数据。</p>
+
+<h3 id="单端-barcode">单端 barcode</h3>
 
 <p>只在片段的一个端（如 5’ 端）加入 barcode。<strong>示例</strong>：</p>
 
@@ -91,7 +97,7 @@
   <li>测序读段 1：<code class="language-plaintext highlighter-rouge">5' - GGTTATGCA - 3'</code></li>
 </ul>
 
-<h4 id="双端-barcode">双端 barcode</h4>
+<h3 id="双端-barcode">双端 barcode</h3>
 
 <p>在片段的两端都加入 barcode。<strong>示例</strong>：</p>
 
@@ -106,7 +112,7 @@
   <li>测序读段 2：<code class="language-plaintext highlighter-rouge">5' - GGTTATCGA - 3'</code></li>
 </ul>
 
-<h4 id="单读段-barcode">单读段 barcode</h4>
+<h3 id="单读段-barcode">单读段 barcode</h3>
 
 <p>在 paired-end 测序中，只在一个特定的读段（如 Read1）添加 barcode。<strong>示例</strong>：</p>
 
@@ -119,6 +125,43 @@
 <ul>
   <li>测序读段 1：<code class="language-plaintext highlighter-rouge">5' - GGTTATGCA - 3'</code></li>
 </ul>
+
+<h2 id="概率模型">概率模型</h2>
+
+<h3 id="马尔科夫链">马尔科夫链</h3>
+
+<p>通过 Markov Chain 我们可以精确计算出，在观测到 $n$ 个碱基时，出现 $m$ 个特定类别（ACGT）的碱基</p>
+
+<p>的概率。下面，我们以碱基类别 A 举例。</p>
+
+<p>我们用一个 $n+1$ 维的向量，表示这个概率分布 $\mathbf{x} \in \mathbb{R}^{n+1}$。在这里，$+1$ 的原因是因为我们要考虑“出现 0 次”的状况。我们可以轻松地作出下面的断言：</p>
+
+<ol>
+  <li>当我们没有观察任何碱基的时候，系统状态是
+ $\mathbf{x}_0 = [1, 0, …]^\top$，
+表示 A 必然出现了 0 次。</li>
+  <li>当我们观察第 1 个碱基的时候，我们有 $p$ 的概率观察到 A，系统状态是
+ $\mathbf{x}_1 = [q, p, 0, …]^\top$；
+其中，$q = 1 - p$，表示碱基没有出现的概率。</li>
+  <li>当我们观察第 2 个碱基的时候，我们有以概率 $p$ 多观察到一个 A，系统状态是
+$\mathbf{x}_2 = [qq, pq, pp, 0, …]^\top$；</li>
+</ol>
+
+<p>我们可以把这个过程抽象为一个 Markov Chain，其转移矩阵为，</p>
+
+\[\mathbf{P}_{n \times n} = \begin{bmatrix}
+q &amp;   &amp;   &amp;   &amp;   &amp; \dots  &amp;   &amp; \\
+p &amp; q &amp;   &amp;   &amp;   &amp; \dots  &amp;   &amp; \\
+  &amp; p &amp; q &amp;   &amp;   &amp; \dots  &amp;  &amp; \\
+  &amp;   &amp; p &amp; q &amp;   &amp; \dots  &amp;   &amp; \\
+  &amp;   &amp;   &amp; \vdots  &amp;  &amp;&amp; &amp; \\
+  &amp;   &amp;   &amp;   &amp;   &amp; \dots  &amp; q  &amp;  \\
+  &amp;   &amp;   &amp;   &amp;   &amp; \dots  &amp;  p &amp; 1 \\
+\end{bmatrix}\]
+
+<p>从初始状态 $\mathbf{x}_0$ 开始，我们通过观测 $n$ 次结果，得到最终的状态 $\mathbf{x}_n$，并且</p>
+
+\[\mathbf{x}_n = \left( \mathbf{P}_{n \times n} \right)^n \cdot \mathbf{x}_0\]
 
 </div>
 

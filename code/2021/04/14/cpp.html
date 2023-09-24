@@ -34,6 +34,7 @@
 
 <div class="center post">
     <ul id="markdown-toc">
+  <li><a href="#参考资料" id="markdown-toc-参考资料">参考资料</a></li>
   <li><a href="#迭代" id="markdown-toc-迭代">迭代</a>    <ul>
       <li><a href="#传统循环" id="markdown-toc-传统循环">传统循环</a></li>
       <li><a href="#基于-stl-的迭代" id="markdown-toc-基于-stl-的迭代">基于 STL 的迭代</a></li>
@@ -87,7 +88,8 @@
     </ul>
   </li>
   <li><a href="#优化" id="markdown-toc-优化">优化</a>    <ul>
-      <li><a href="#线性访问数组元素" id="markdown-toc-线性访问数组元素">线性访问数组元素</a></li>
+      <li><a href="#汇编代码" id="markdown-toc-汇编代码">汇编代码</a></li>
+      <li><a href="#线性访问" id="markdown-toc-线性访问">线性访问</a></li>
     </ul>
   </li>
   <li><a href="#其他话题" id="markdown-toc-其他话题">其他话题</a>    <ul>
@@ -97,6 +99,13 @@
       <li><a href="#vim-配置" id="markdown-toc-vim-配置">Vim 配置</a></li>
     </ul>
   </li>
+</ul>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://ppc.cs.aalto.fi/">Programming Parallel Computers</a></li>
+  <li><a href="https://www.coursera.org/specializations/cs-fundamentals">Accelerated Computer Science Fundamentals Specialization</a></li>
 </ul>
 
 <h2 id="迭代">迭代</h2>
@@ -1185,7 +1194,113 @@
 
 <h2 id="优化">优化</h2>
 
-<h3 id="线性访问数组元素">线性访问数组元素</h3>
+<h3 id="汇编代码">汇编代码</h3>
+
+<p>通过 GCC 的 <code class="language-plaintext highlighter-rouge">-S</code> 编译选项，我们可以输出 C++ 代码对应的汇编代码，例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-S</span> <span class="nt">-g</span> <span class="nt">-O3</span> <span class="nt">-march</span><span class="o">=</span>native <span class="nt">-std</span><span class="o">=</span>c++17 src.cc
+</code></pre></div></div>
+
+<p>在网站 <a href="">Compiler Explorer</a> 中，我们可以轻松地查看 C++ 代码在经过不同的编译器选项之后，得到的汇编代码。</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;cfloat&gt;</span><span class="c1"> // for FLT_MAX</span><span class="cp">
+</span>
+<span class="kt">float</span> <span class="nf">find_min</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span> <span class="n">arr1</span><span class="p">,</span> <span class="kt">float</span><span class="o">*</span> <span class="n">arr2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">min_val</span> <span class="o">=</span> <span class="n">FLT_MAX</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">float</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">arr2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">min_val</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">min_val</span><span class="p">,</span> <span class="n">temp</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">min_val</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">arr1</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="n">arr2</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">5.6</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">,</span> <span class="mf">7.8</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr1</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr1</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+    <span class="kt">float</span> <span class="n">min_val</span> <span class="o">=</span> <span class="n">find_min</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"The minimum value is: "</span> <span class="o">&lt;&lt;</span> <span class="n">min_val</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>对于函数 <code class="language-plaintext highlighter-rouge">find_min</code>，其对应的汇编代码是</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find_min(float*, float*, int):
+        testl   %edx, %edx
+        jle     .L5
+        movslq  %edx, %rdx
+        vmovss  .LC0(%rip), %xmm1
+        salq    $2, %rdx
+        xorl    %eax, %eax
+.L4:
+        vmovss  (%rdi,%rax), %xmm0
+        vaddss  (%rsi,%rax), %xmm0, %xmm0
+        addq    $4, %rax
+        vminss  %xmm1, %xmm0, %xmm1
+        cmpq    %rax, %rdx
+        jne     .L4
+        vmovaps %xmm1, %xmm0
+        ret
+.L5:
+        vmovss  .LC0(%rip), %xmm1
+        vmovaps %xmm1, %xmm0
+        ret
+</code></pre></div></div>
+
+<p>其中的一些变量解释如下，</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">%edx</code>: 存储整数参数（<code class="language-plaintext highlighter-rouge">int n</code>）。</li>
+  <li><code class="language-plaintext highlighter-rouge">%rdi</code>, <code class="language-plaintext highlighter-rouge">%rsi</code>: 存储指向浮点数组的指针（<code class="language-plaintext highlighter-rouge">float* arr1</code>, <code class="language-plaintext highlighter-rouge">float* arr2</code>）。</li>
+  <li><code class="language-plaintext highlighter-rouge">%xmm0</code>, <code class="language-plaintext highlighter-rouge">%xmm1</code>: 用于浮点运算的SSE寄存器。</li>
+  <li><code class="language-plaintext highlighter-rouge">%rax</code>, <code class="language-plaintext highlighter-rouge">%rdx</code>: 通用寄存器。</li>
+</ul>
+
+<p>整个代码执行了下面的操作：</p>
+
+<ol>
+  <li><strong>初始化和边缘情况处理</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">testl %edx, %edx</code>: 检查<code class="language-plaintext highlighter-rouge">n</code>是否为零或负数。</li>
+      <li><code class="language-plaintext highlighter-rouge">jle .L5</code>: 如果<code class="language-plaintext highlighter-rouge">n</code>为零或负数，跳转到<code class="language-plaintext highlighter-rouge">.L5</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">movslq %edx, %rdx</code>: 将<code class="language-plaintext highlighter-rouge">n</code>移动到<code class="language-plaintext highlighter-rouge">%rdx</code>并符号扩展。</li>
+      <li><code class="language-plaintext highlighter-rouge">vmovss .LC0(%rip), %xmm1</code>: 用<code class="language-plaintext highlighter-rouge">FLT_MAX</code>初始化<code class="language-plaintext highlighter-rouge">%xmm1</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">salq $2, %rdx</code>: 将<code class="language-plaintext highlighter-rouge">%rdx</code>乘以4（字节偏移）。</li>
+      <li><code class="language-plaintext highlighter-rouge">xorl %eax, %eax</code>: 将<code class="language-plaintext highlighter-rouge">%eax</code>设置为0（循环计数器）。</li>
+    </ul>
+  </li>
+  <li><strong>循环操作（.L4）</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">vmovss (%rdi,%rax), %xmm0</code>: 将<code class="language-plaintext highlighter-rouge">arr1[i]</code>加载到<code class="language-plaintext highlighter-rouge">%xmm0</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">vaddss (%rsi,%rax), %xmm0, %xmm0</code>: 将<code class="language-plaintext highlighter-rouge">arr2[i]</code>添加到<code class="language-plaintext highlighter-rouge">%xmm0</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">addq $4, %rax</code>: 将<code class="language-plaintext highlighter-rouge">%rax</code>增加4（下一个浮点数）。</li>
+      <li><code class="language-plaintext highlighter-rouge">vminss %xmm1, %xmm0, %xmm1</code>: 计算最小值。</li>
+      <li><code class="language-plaintext highlighter-rouge">cmpq %rax, %rdx</code>: 比较<code class="language-plaintext highlighter-rouge">%rax</code>和<code class="language-plaintext highlighter-rouge">%rdx</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">jne .L4</code>: 如果不相等，跳回<code class="language-plaintext highlighter-rouge">.L4</code>。</li>
+    </ul>
+  </li>
+  <li><strong>返回值</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">vmovaps %xmm1, %xmm0</code>: 将结果移动到<code class="language-plaintext highlighter-rouge">%xmm0</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">ret</code>: 返回。</li>
+    </ul>
+  </li>
+  <li><strong>边缘情况返回（.L5）</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">vmovss .LC0(%rip), %xmm1</code>: 用<code class="language-plaintext highlighter-rouge">FLT_MAX</code>初始化<code class="language-plaintext highlighter-rouge">%xmm1</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">vmovaps %xmm1, %xmm0</code>: 将结果移动到<code class="language-plaintext highlighter-rouge">%xmm0</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">ret</code>: 返回。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="线性访问">线性访问</h3>
 
 <ul>
   <li>硬件预取（Hardware Prefetching）机制会自动预加载连续的内存地址，减少从主内存到缓存的数据传输。</li>

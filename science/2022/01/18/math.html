@@ -34,6 +34,22 @@
 
 <div class="center post">
     <ul id="markdown-toc">
+  <li><a href="#马尔可夫链" id="markdown-toc-马尔可夫链">马尔可夫链</a>    <ul>
+      <li><a href="#定义" id="markdown-toc-定义">定义</a></li>
+      <li><a href="#重要的矩阵" id="markdown-toc-重要的矩阵">重要的矩阵</a></li>
+      <li><a href="#状态的分类" id="markdown-toc-状态的分类">状态的分类</a></li>
+      <li><a href="#定义-1" id="markdown-toc-定义-1">定义</a></li>
+      <li><a href="#几何解释" id="markdown-toc-几何解释">几何解释</a></li>
+      <li><a href="#与概率的关系" id="markdown-toc-与概率的关系">与概率的关系</a></li>
+      <li><a href="#单纯复合体" id="markdown-toc-单纯复合体">单纯复合体</a></li>
+    </ul>
+  </li>
+  <li><a href="#核范数与谱范数" id="markdown-toc-核范数与谱范数">核范数与谱范数</a>    <ul>
+      <li><a href="#核范数" id="markdown-toc-核范数">核范数</a></li>
+      <li><a href="#谱范数" id="markdown-toc-谱范数">谱范数</a></li>
+      <li><a href="#半定规划sdp" id="markdown-toc-半定规划sdp">半定规划（SDP）</a></li>
+    </ul>
+  </li>
   <li><a href="#多重比较" id="markdown-toc-多重比较">多重比较</a>    <ul>
       <li><a href="#什么都不做" id="markdown-toc-什么都不做">什么都不做</a></li>
       <li><a href="#bonferroni-correction" id="markdown-toc-bonferroni-correction">Bonferroni correction</a></li>
@@ -64,6 +80,301 @@
   </li>
 </ul>
 
+<h2 id="马尔可夫链">马尔可夫链</h2>
+
+<h3 id="定义">定义</h3>
+
+<p>随机过程（很多随机变量的有序排列 ${ X_i }$）如果满足下面的性质，则被成为马尔可夫过程：</p>
+
+\[\begin{aligned}
+P_{ij} &amp;= \Pr\left\{X_{n+1}=j \vert X_n=i, X_{n-1}=i_{n-1}, \dots, X_0=i_0\right\} \\[1em]
+&amp;= \Pr\left\{ X_{n+1} = j \vert X_n=i \right\}
+\end{aligned}\]
+
+<p>换言之，在时刻 $i$ 的状态 $X_i$ 确定了马尔可夫链的未来状态。</p>
+
+<p>与马尔可夫链相关的问题中，最困难的部分通常是，</p>
+
+<ol>
+  <li>如何选择合适的状态空间；</li>
+  <li>如何定义转移概率。</li>
+</ol>
+
+<h3 id="重要的矩阵">重要的矩阵</h3>
+
+<p>Markov Chain 的性质由它的<strong>转移矩阵（Transition Matrix）</strong>描述，表示 $M$ 个状态之间转移的概率：</p>
+
+\[\begin{aligned}
+\mathbf{P} &amp;= P_{ij} \\[1em] &amp;= \begin{bmatrix}
+p_{11} &amp; p_{12} &amp; \cdots &amp; p_{1M} \\
+p_{21} &amp; p_{22} &amp; \cdots &amp; p_{2M} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
+\end{bmatrix}
+\end{aligned}\]
+
+<p>此外，我们也通过<strong>首次到达时间（first passage time）</strong>矩阵，或者<strong>击中时间（hitting time）</strong>矩阵 $\mathbf{T}$，来描述马尔可夫链的长期行为：</p>
+
+\[\mathbf{T} = T_{ij} = \min(n: X_n = j \vert X_0 = i)\]
+
+<p>每个元素 $T_{ij}$ 表示从状态 $i$ 到状态 $j$ 所需的最小步数 $n$。</p>
+
+<h3 id="状态的分类">状态的分类</h3>
+
+<p><strong>可达（accessible）</strong></p>
+
+<ul>
+  <li>存在一个正整数 $n$ 使得从状态 $i$ 到 $j$ 的转移概率大于零</li>
+  <li>$\exists n: P_{ij}^n &gt; 0$</li>
+  <li>$\Pr(T_{ij} &lt; \infty) &gt; 0$</li>
+</ul>
+
+<p><strong>相通（communicate）</strong></p>
+
+<ul>
+  <li>从 $i$ 到 $j$ 以及从 $j$ 到 $i$ 都可达</li>
+  <li>$\forall j: \Pr(T_{ij} &lt; \infty) &gt; 0 \Rightarrow \Pr(T_{ji}) = 1$</li>
+</ul>
+
+<p><strong>常返（recurrent）</strong></p>
+
+<ul>
+  <li>如果从状态 $i$ 出发，最终以概率 1 返回到状态 $i$。</li>
+  <li>$\Pr(T_{ii} &lt; \infty) = 1$</li>
+  <li>$P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) = 1$</li>
+</ul>
+
+<p><strong>暂态（transient）</strong></p>
+
+<ul>
+  <li>如果一个状态不是常返状态，那么它就是暂态状态。</li>
+  <li>从暂态状态出发，有可能永远不返回到该状态。</li>
+  <li>$P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) &lt; 1$</li>
+</ul>
+
+<p><strong>吸收态（absorbing）</strong></p>
+
+<ul>
+  <li>不能离开的状态。</li>
+  <li>$P_{ii} = 1$ and $P_{ij} = 0 \ \forall j \neq i$</li>
+  <li>拥有吸收态的马尔可夫链，被成为吸收的。</li>
+</ul>
+
+<p><strong>例子</strong></p>
+
+<svg width="323pt" height="109pt" viewBox="0.00 0.00 323.00 109.34" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 105.34)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-105.34 319,-105.34 319,4 -4,4" />
+<!-- 1 -->
+<g id="node1" class="node">
+<title>1</title>
+<ellipse fill="none" stroke="black" cx="18" cy="-24.34" rx="18" ry="18" />
+<text text-anchor="middle" x="18" y="-20.64" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- 2 -->
+<g id="node2" class="node">
+<title>2</title>
+<ellipse fill="none" stroke="black" cx="109" cy="-58.34" rx="18" ry="18" />
+<text text-anchor="middle" x="109" y="-54.64" font-family="Times,serif" font-size="14.00">2</text>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge1" class="edge">
+<title>1&#45;&gt;2</title>
+<path fill="none" stroke="tomato" d="M35.32,-30.57C49.88,-36.13 71.26,-44.3 87.07,-50.34" />
+<polygon fill="tomato" stroke="tomato" points="86.48,-51.99 91.78,-52.14 87.73,-48.72 86.48,-51.99" />
+<text text-anchor="middle" x="63.5" y="-47.34" font-family="Fira Code" font-size="10.00" fill="tomato">0.5</text>
+</g>
+<!-- 4 -->
+<g id="node3" class="node">
+<title>4</title>
+<ellipse fill="none" stroke="black" cx="297" cy="-31.34" rx="18" ry="18" />
+<text text-anchor="middle" x="297" y="-27.64" font-family="Times,serif" font-size="14.00">4</text>
+</g>
+<!-- 1&#45;&gt;4 -->
+<g id="edge2" class="edge">
+<title>1&#45;&gt;4</title>
+<path fill="none" stroke="tomato" d="M35.6,-19.64C70.65,-10.39 154.68,8.23 224,-4.34 242.17,-7.63 261.74,-15.25 275.87,-21.56" />
+<polygon fill="tomato" stroke="tomato" points="275.18,-23.16 280.45,-23.64 276.62,-19.98 275.18,-23.16" />
+<text text-anchor="middle" x="157.5" y="-3.34" font-family="Fira Code" font-size="10.00" fill="tomato">0.5</text>
+</g>
+<!-- 2&#45;&gt;1 -->
+<g id="edge3" class="edge">
+<title>2&#45;&gt;1</title>
+<path fill="none" stroke="royalblue" d="M98.12,-43.99C91.91,-36.29 83.16,-27.54 73,-23.34 62.97,-19.18 50.96,-18.99 40.82,-20.03" />
+<polygon fill="royalblue" stroke="royalblue" points="40.45,-18.31 35.71,-20.67 40.88,-21.78 40.45,-18.31" />
+<text text-anchor="middle" x="63.5" y="-26.34" font-family="Fira Code" font-size="10.00" fill="royalblue">0.5</text>
+</g>
+<!-- 2&#45;&gt;4 -->
+<g id="edge5" class="edge">
+<title>2&#45;&gt;4</title>
+<path fill="none" stroke="royalblue" d="M124.62,-67.43C146.53,-79.87 189.04,-99.33 224,-87.34 246.45,-79.63 267.3,-61.75 280.72,-48.25" />
+<polygon fill="royalblue" stroke="royalblue" points="282.07,-49.37 284.3,-44.57 279.56,-46.93 282.07,-49.37" />
+<text text-anchor="middle" x="206" y="-93.34" font-family="Fira Code" font-size="10.00" fill="royalblue">0.25</text>
+</g>
+<!-- 3 -->
+<g id="node4" class="node">
+<title>3</title>
+<ellipse fill="none" stroke="black" cx="206" cy="-31.34" rx="18" ry="18" />
+<text text-anchor="middle" x="206" y="-27.64" font-family="Times,serif" font-size="14.00">3</text>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge4" class="edge">
+<title>2&#45;&gt;3</title>
+<path fill="none" stroke="royalblue" d="M126.55,-53.63C142.25,-49.17 165.96,-42.43 183.2,-37.53" />
+<polygon fill="royalblue" stroke="royalblue" points="183.99,-39.13 188.32,-36.08 183.04,-35.76 183.99,-39.13" />
+<text text-anchor="middle" x="157.5" y="-50.34" font-family="Fira Code" font-size="10.00" fill="royalblue">0.25</text>
+</g>
+<!-- 4&#45;&gt;4 -->
+<g id="edge9" class="edge">
+<title>4&#45;&gt;4</title>
+<path fill="none" stroke="crimson" d="M289.33,-47.63C287.48,-57.72 290.04,-67.34 297,-67.34 302.76,-67.34 305.51,-60.74 305.23,-52.74" />
+<polygon fill="crimson" stroke="crimson" points="306.95,-52.4 304.67,-47.63 303.48,-52.79 306.95,-52.4" />
+<text text-anchor="middle" x="297" y="-70.34" font-family="Fira Code" font-size="10.00" fill="crimson">1</text>
+</g>
+<!-- 3&#45;&gt;2 -->
+<g id="edge6" class="edge">
+<title>3&#45;&gt;2</title>
+<path fill="none" stroke="seagreen" d="M188.41,-26.59C176.04,-23.91 158.96,-22.04 145,-27.34 137.48,-30.19 130.53,-35.48 124.85,-40.89" />
+<polygon fill="seagreen" stroke="seagreen" points="123.41,-39.86 121.12,-44.63 125.89,-42.33 123.41,-39.86" />
+<text text-anchor="middle" x="157.5" y="-30.34" font-family="Fira Code" font-size="10.00" fill="seagreen">0.4</text>
+</g>
+<!-- 3&#45;&gt;4 -->
+<g id="edge7" class="edge">
+<title>3&#45;&gt;4</title>
+<path fill="none" stroke="seagreen" d="M224.16,-31.34C238.32,-31.34 258.51,-31.34 273.88,-31.34" />
+<polygon fill="seagreen" stroke="seagreen" points="273.89,-33.09 278.89,-31.34 273.89,-29.59 273.89,-33.09" />
+<text text-anchor="middle" x="251.5" y="-34.34" font-family="Fira Code" font-size="10.00" fill="seagreen">0.2</text>
+</g>
+<!-- 3&#45;&gt;3 -->
+<g id="edge8" class="edge">
+<title>3&#45;&gt;3</title>
+<path fill="none" stroke="seagreen" d="M198.33,-47.63C196.48,-57.72 199.04,-67.34 206,-67.34 211.76,-67.34 214.51,-60.74 214.23,-52.74" />
+<polygon fill="seagreen" stroke="seagreen" points="215.95,-52.4 213.67,-47.63 212.48,-52.79 215.95,-52.4" />
+<text text-anchor="middle" x="206" y="-70.34" font-family="Fira Code" font-size="10.00" fill="seagreen">0.4</text>
+</g>
+</g>
+</svg>
+
+<ul>
+  <li>从状态 1 开始，状态 4 可达；但是反过来不成立。</li>
+  <li>状态 1 和 状态 3 相通。</li>
+  <li>状态 4 是常返状态；其他是暂态。</li>
+</ul>
+
+<h3 id="定义-1">定义</h3>
+
+<p>在 $ \mathbb{R}^K $ 中的<strong>单纯形</strong>是所有点 $ p $ 的集合，使得：</p>
+
+<ul>
+  <li>每个组件 $ p_k $ 都是非负的：对于所有 $ k $，都有 $ p_k \geq 0 $。</li>
+  <li>组件的总和为一：$ \sum_{k=1}^{K} p_k = 1 $。</li>
+</ul>
+
+<p>数学上，这可以表示为：</p>
+
+\[\Delta^{K-1} = \{ p \in \mathbb{R}^K : p_k \geq 0, \sum_{k=1}^{K} p_k = 1 \}\]
+
+<h3 id="几何解释">几何解释</h3>
+
+<ul>
+  <li>在 $ \mathbb{R}^2 $（2D 空间）中，单纯形是一个线段。</li>
+  <li>在 $ \mathbb{R}^3 $（3D 空间）中，它是一个三角形。</li>
+  <li>在 $ \mathbb{R}^4 $ 中，它是一个四面体。</li>
+  <li>以此类推…</li>
+</ul>
+
+<h3 id="与概率的关系">与概率的关系</h3>
+
+<p>单纯形与概率分布有着密切的关系：</p>
+<ul>
+  <li>$ (K-1) $-维单纯形中的一个点对应于 $ K $ 个结果上的概率分布。</li>
+  <li>例如，在 $ \mathbb{R}^3 $ 中，单纯形中的一个点可以表示三个事件上的概率分布。</li>
+</ul>
+
+<h3 id="单纯复合体">单纯复合体</h3>
+
+<p><strong>单纯复合体</strong>是由顶点、线段、三角形及其 $ n $-维对应物组成的集合。它是单纯形概念的推广，可以表示由各种维度的单纯形填充的空间。</p>
+
+<h2 id="核范数与谱范数">核范数与谱范数</h2>
+
+<h3 id="核范数">核范数</h3>
+
+<p>对于矩阵$A$，其核范数（Nuclear Norm 或者 Trace Norm，通常记作 $|A|_*$）是其奇异值的总和。</p>
+
+<p><strong>使用Numpy的Python示例</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">compute_nuclear_norm</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">singular_values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">singular_values</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">compute_nuclear_norm</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>核范数最小化的伪代码</strong>:</p>
+
+<p>核范数可以作为矩阵秩在优化问题中的凸替代。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function NuclearNormMinimization(A, mask):
+    使用零初始化矩阵 X
+    当未达到收敛条件:
+        # 梯度步骤: 逼近已知条目
+        基于A的条目（mask为True的地方）更新X
+        # 收缩步骤: 促进低秩
+        对X应用SVD并缩小奇异值
+    return X
+</code></pre></div></div>
+
+<h3 id="谱范数">谱范数</h3>
+
+<p>对于矩阵 $A$，其谱范数（spectral norm, 通常记作 $|A|_2$）是其最大的奇异值。</p>
+
+<p>使用 Numpy 的 Python 示例:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">compute_spectral_norm</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">singular_values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">singular_values</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">compute_spectral_norm</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>带有谱范数约束的优化的伪代码</strong>:</p>
+
+<p>谱范数可以用作优化问题中的约束，以界定矩阵的“大小”或“效果”。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function SpectralNormConstrainedOptimization(A, gamma):
+    使用零初始化矩阵 X
+    当未达到收敛条件:
+        # 梯度步骤: 逼近目标
+        更新 X
+        # 投影步骤: 确保谱范数约束
+        如果 SpectralNorm(X) &gt; gamma:
+            缩放X以满足谱范数 &lt;= gamma
+    return X
+</code></pre></div></div>
+
+<h3 id="半定规划sdp">半定规划（SDP）</h3>
+
+<p>核范数和谱范数都可以整合到形式化为 SDP 的优化问题中。</p>
+
+<p><strong>带有核范数最小化的SDP的伪代码</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function SDPWithNuclearNorm(A):
+    初始化半定矩阵 Y
+    当未达到收敛条件:
+        # 梯度步骤: 逼近数据拟合
+        基于A更新Y
+        # 收缩步骤: 促进结构
+        对Y应用某些操作以鼓励所需结构
+    return Y
+</code></pre></div></div>
+
 <h2 id="多重比较">多重比较</h2>
 
 <p>统计中，$P$ 值的含义是 null 假设为真的概率是 $1-P$。</p>
@@ -84,7 +395,9 @@
 
 <h3 id="bonferroni-correction">Bonferroni correction</h3>
 
-<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
+<blockquote>
+  <p>这个小节参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></p>
+</blockquote>
 
 <p>Bonferroni Correction 的要点：以 $P^\prime$ 作为新的 $P$ 值，$P^\prime = P / n$</p>
 
@@ -94,7 +407,9 @@
 
 <h3 id="benjaminihochberg-procedure">Benjamini–Hochberg procedure</h3>
 
-<p>（这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a>。）</p>
+<blockquote>
+  <p>这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></p>
+</blockquote>
 
 <p>在 Bonferroni Correction 外，另外一个方法是控制 false discovery rate。它的具体做法是</p>
 
@@ -409,12 +724,25 @@
 <h3 id="其他">其他</h3>
 
 \[\begin{aligned}
-(\mathbf{A} \cdot \nabla)  \mathbf{B}
-&amp;= \left( A_i \frac{\partial}{\partial x_i} \right)B_j \\
-&amp;= A_i \left( \frac{\partial B_\color{tomato}{j}}{\partial x_\color{teal}{i}} \right) \\[1em]
-\mathbf{A}\cdot \nabla\mathbf{B}
-&amp;= \mathbf{A}\cdot\mathbf{J}_\mathbf{B} \\
-&amp;= A_i \left( \frac{\partial B_\color{teal}{i}}{\partial x_\color{tomato}{j}} \right)
+(\mathbf{A} \cdot \nabla)  \mathbf{B} &amp;= \left(
+	A_i \frac{\partial}{\partial x_i}
+\right) B_j \\
+&amp;= A_i \left(
+	\frac{
+		\partial B_{\color{tomato}{j}}
+	}{
+		\partial x_{\color{teal}{i}}
+	}
+\right) \\[1em]
+\mathbf{A} \cdot \nabla \mathbf{B} 
+&amp;= \mathbf{A} \cdot \mathbf{J}_\mathbf{B} \\
+&amp;= A_i \left(
+	\frac{
+		\partial B_{\color{teal}{i}}
+	}{
+		\partial x_{\color{tomato}{j}}
+	}
+\right)
 \end{aligned}\]
 
 <p><a href="https://en.wikipedia.org/wiki/Vector_calculus_identities">更多矢量微积分的记号</a></p>

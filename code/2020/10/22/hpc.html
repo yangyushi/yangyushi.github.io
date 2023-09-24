@@ -39,15 +39,12 @@
       <li><a href="#nohup" id="markdown-toc-nohup"><code class="language-plaintext highlighter-rouge">nohup</code></a></li>
       <li><a href="#pbcopy" id="markdown-toc-pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></a></li>
       <li><a href="#xclilp" id="markdown-toc-xclilp">xclilp</a></li>
-      <li><a href="#file-size-in-mb" id="markdown-toc-file-size-in-mb">File size in MB</a></li>
-      <li><a href="#get-hash" id="markdown-toc-get-hash">Get Hash</a></li>
-      <li><a href="#batch-convert-image-format" id="markdown-toc-batch-convert-image-format">Batch convert image format</a></li>
-      <li><a href="#display-image" id="markdown-toc-display-image">Display Image</a></li>
-      <li><a href="#configure-vim-compilation" id="markdown-toc-configure-vim-compilation">Configure Vim Compilation</a></li>
-      <li><a href="#compile-python-38" id="markdown-toc-compile-python-38">Compile Python 3.8</a></li>
+      <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
+      <li><a href="#image" id="markdown-toc-image">Image</a></li>
+      <li><a href="#compilation" id="markdown-toc-compilation">Compilation</a></li>
     </ul>
   </li>
-  <li><a href="#hpc-related" id="markdown-toc-hpc-related">HPC Related</a>    <ul>
+  <li><a href="#hpc" id="markdown-toc-hpc">HPC</a>    <ul>
       <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
       <li><a href="#use-more-memory" id="markdown-toc-use-more-memory">Use More Memory</a></li>
     </ul>
@@ -147,30 +144,41 @@
 
 <p>When you run <code class="language-plaintext highlighter-rouge">xclip</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> by default and places the contents into the X11 clipboard. You can specify which X11 selection to use with the <code class="language-plaintext highlighter-rouge">-sel</code> flag. For example, <code class="language-plaintext highlighter-rouge">-sel clip</code> uses the clipboard that is typically used for copy-paste operations.</p>
 
-<h3 id="file-size-in-mb">File size in MB</h3>
+<h3 id="print-information">Print Information</h3>
+
+<p>File size in MB</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span> <span class="nt">--block-size</span><span class="o">=</span>M
 <span class="nb">du</span> <span class="nt">-sh</span> <span class="nb">.</span>
 </code></pre></div></div>
 
-<h3 id="get-hash">Get Hash</h3>
+<p>Hash Value</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shasum filename
 md5 filename
 openssl md5
 </code></pre></div></div>
 
-<h3 id="batch-convert-image-format">Batch convert image format</h3>
+<p>Check OS distribution</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+</code></pre></div></div>
+
+<h3 id="image">Image</h3>
+
+<p>Converting all png pictures into tif format:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mogrify <span class="nt">-format</span> tif <span class="k">*</span>.png
 </code></pre></div></div>
 
-<h3 id="display-image">Display Image</h3>
+<p>Display Image</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
 
-<h3 id="configure-vim-compilation">Configure Vim Compilation</h3>
+<h3 id="compilation">Compilation</h3>
+
+<p>Configuring Vim:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--with-features</span><span class="o">=</span>huge <span class="se">\</span>
             <span class="nt">--enable-multibyte</span> <span class="se">\</span>
@@ -181,7 +189,7 @@ openssl md5
             <span class="nt">--prefix</span><span class="o">=</span>/usr/local
 </code></pre></div></div>
 
-<h3 id="compile-python-38">Compile Python 3.8</h3>
+<p>Configuring Python 3.8</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo rm</span> <span class="nt">-rf</span> Python-3.8.6
 <span class="nb">tar</span> <span class="nt">-xzf</span> Python-3.8.6.tgz
@@ -203,7 +211,7 @@ make <span class="nt">-j8</span>
 cd</span> ..
 </code></pre></div></div>
 
-<h2 id="hpc-related">HPC Related</h2>
+<h2 id="hpc">HPC</h2>
 
 <p>I used BlueCrystal (HPC in the university of Bristol) a lot while doing my PhD. These are the commands I used a lot.</p>
 
