@@ -130,21 +130,20 @@
 
 <h3 id="马尔科夫链">马尔科夫链</h3>
 
-<p>通过 Markov Chain 我们可以精确计算出，在观测到 $n$ 个碱基时，出现 $m$ 个特定类别（ACGT）的碱基</p>
+<p>通过 Markov Chain 我们可以精确计算出，在观测到 \( n \) 个碱基时，出现 \( m \) 个特定类别（ACGT）的碱基
+的概率。下面，我们以碱基类别 A 举例。</p>
 
-<p>的概率。下面，我们以碱基类别 A 举例。</p>
-
-<p>我们用一个 $n+1$ 维的向量，表示这个概率分布 $\mathbf{x} \in \mathbb{R}^{n+1}$。在这里，$+1$ 的原因是因为我们要考虑“出现 0 次”的状况。我们可以轻松地作出下面的断言：</p>
+<p>我们用一个 \( n+1 \) 维的向量<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>，表示这个概率分布 \( \mathbf{x} \in \mathbb{R}^{n+1} \)。</p>
 
 <ol>
-  <li>当我们没有观察任何碱基的时候，系统状态是
- $\mathbf{x}_0 = [1, 0, …]^\top$，
-表示 A 必然出现了 0 次。</li>
-  <li>当我们观察第 1 个碱基的时候，我们有 $p$ 的概率观察到 A，系统状态是
- $\mathbf{x}_1 = [q, p, 0, …]^\top$；
-其中，$q = 1 - p$，表示碱基没有出现的概率。</li>
-  <li>当我们观察第 2 个碱基的时候，我们有以概率 $p$ 多观察到一个 A，系统状态是
-$\mathbf{x}_2 = [qq, pq, pp, 0, …]^\top$；</li>
+  <li>没有观察任何碱基的时候，系统状态是
+ \( \mathbf{x}_0 = [1, 0, …]^\top \)，
+表示 A 必然出现 0 次。</li>
+  <li>观察 1 个碱基后，我们有 \( p \) 的概率观察到 A，系统状态是
+ \( \mathbf{x}_1 = [q, p, 0, …]^\top \)；
+其中，\( q = 1 - p \)，表示碱基没有出现的概率。</li>
+  <li>当我们观察第 2 个碱基的时候，我们有以概率 \( p \) 多观察到一个 A，系统状态是
+\( \mathbf{x}_2 = [qq, pq, pp, 0, …]^\top \)；</li>
 </ol>
 
 <p>我们可以把这个过程抽象为一个 Markov Chain，其转移矩阵为，</p>
@@ -159,9 +158,17 @@ p &amp; q &amp;   &amp;   &amp;   &amp; \dots  &amp;   &amp; \\
   &amp;   &amp;   &amp;   &amp;   &amp; \dots  &amp;  p &amp; 1 \\
 \end{bmatrix}\]
 
-<p>从初始状态 $\mathbf{x}_0$ 开始，我们通过观测 $n$ 次结果，得到最终的状态 $\mathbf{x}_n$，并且</p>
+<p>从初始状态 \( \mathbf{x}_0 \) 开始，我们通过观测 \( n \) 次结果，得到最终的状态 \( \mathbf{x}_n \)，并且</p>
 
 \[\mathbf{x}_n = \left( \mathbf{P}_{n \times n} \right)^n \cdot \mathbf{x}_0\]
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>在这里，\( +1 \) 的原因是因为我们要考虑“出现 0 次”的状况。我们可以轻松地作出下面的断言： <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
 </div>
 

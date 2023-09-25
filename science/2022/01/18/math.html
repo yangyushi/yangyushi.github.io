@@ -84,14 +84,14 @@
 
 <h3 id="定义">定义</h3>
 
-<p>随机过程（很多随机变量的有序排列 ${ X_i }$）如果满足下面的性质，则被成为马尔可夫过程：</p>
+<p>随机过程（很多随机变量的有序排列 \({ X_i }\)）如果满足下面的性质，则被成为马尔可夫过程：</p>
 
 \[\begin{aligned}
 P_{ij} &amp;= \Pr\left\{X_{n+1}=j \vert X_n=i, X_{n-1}=i_{n-1}, \dots, X_0=i_0\right\} \\[1em]
 &amp;= \Pr\left\{ X_{n+1} = j \vert X_n=i \right\}
 \end{aligned}\]
 
-<p>换言之，在时刻 $i$ 的状态 $X_i$ 确定了马尔可夫链的未来状态。</p>
+<p>换言之，在时刻 \(i\) 的状态 \(X_i\) 确定了马尔可夫链的未来状态。</p>
 
 <p>与马尔可夫链相关的问题中，最困难的部分通常是，</p>
 
@@ -102,7 +102,7 @@ P_{ij} &amp;= \Pr\left\{X_{n+1}=j \vert X_n=i, X_{n-1}=i_{n-1}, \dots, X_0=i_0\r
 
 <h3 id="重要的矩阵">重要的矩阵</h3>
 
-<p>Markov Chain 的性质由它的<strong>转移矩阵（Transition Matrix）</strong>描述，表示 $M$ 个状态之间转移的概率：</p>
+<p>Markov Chain 的性质由它的<strong>转移矩阵（Transition Matrix）</strong>描述，表示 \(M\) 个状态之间转移的概率：</p>
 
 \[\begin{aligned}
 \mathbf{P} &amp;= P_{ij} \\[1em] &amp;= \begin{bmatrix}
@@ -113,35 +113,35 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 \end{bmatrix}
 \end{aligned}\]
 
-<p>此外，我们也通过<strong>首次到达时间（first passage time）</strong>矩阵，或者<strong>击中时间（hitting time）</strong>矩阵 $\mathbf{T}$，来描述马尔可夫链的长期行为：</p>
+<p>此外，我们也通过<strong>首次到达时间（first passage time）</strong>矩阵，或者<strong>击中时间（hitting time）</strong>矩阵 \(\mathbf{T}\)，来描述马尔可夫链的长期行为：</p>
 
 \[\mathbf{T} = T_{ij} = \min(n: X_n = j \vert X_0 = i)\]
 
-<p>每个元素 $T_{ij}$ 表示从状态 $i$ 到状态 $j$ 所需的最小步数 $n$。</p>
+<p>每个元素 \(T_{ij}\) 表示从状态 \(i\) 到状态 \(j\) 所需的最小步数 \(n\)。</p>
 
 <h3 id="状态的分类">状态的分类</h3>
 
 <p><strong>可达（accessible）</strong></p>
 
 <ul>
-  <li>存在一个正整数 $n$ 使得从状态 $i$ 到 $j$ 的转移概率大于零</li>
-  <li>$\exists n: P_{ij}^n &gt; 0$</li>
-  <li>$\Pr(T_{ij} &lt; \infty) &gt; 0$</li>
+  <li>存在一个正整数 \(n\) 使得从状态 \(i\) 到 \(j\) 的转移概率大于零</li>
+  <li>\(\exists n: P_{ij}^n &gt; 0\)</li>
+  <li>\(\Pr(T_{ij} &lt; \infty) &gt; 0\)</li>
 </ul>
 
 <p><strong>相通（communicate）</strong></p>
 
 <ul>
-  <li>从 $i$ 到 $j$ 以及从 $j$ 到 $i$ 都可达</li>
-  <li>$\forall j: \Pr(T_{ij} &lt; \infty) &gt; 0 \Rightarrow \Pr(T_{ji}) = 1$</li>
+  <li>从 \(i\)到 \(j\) 以及从 \(j\) 到 \(i\) 都可达</li>
+  <li>\(\forall j: \Pr(T_{ij} &lt; \infty) &gt; 0 \Rightarrow \Pr(T_{ji}) = 1\)</li>
 </ul>
 
 <p><strong>常返（recurrent）</strong></p>
 
 <ul>
-  <li>如果从状态 $i$ 出发，最终以概率 1 返回到状态 $i$。</li>
-  <li>$\Pr(T_{ii} &lt; \infty) = 1$</li>
-  <li>$P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) = 1$</li>
+  <li>如果从状态 \(i\) 出发，最终以概率 1 返回到状态 \(i\)。</li>
+  <li>\(\Pr(T_{ii} &lt; \infty) = 1\)</li>
+  <li>\(P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) = 1\)</li>
 </ul>
 
 <p><strong>暂态（transient）</strong></p>
@@ -149,14 +149,14 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 <ul>
   <li>如果一个状态不是常返状态，那么它就是暂态状态。</li>
   <li>从暂态状态出发，有可能永远不返回到该状态。</li>
-  <li>$P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) &lt; 1$</li>
+  <li>\(P_i = \lim_{n\rightarrow\infty} \Pr(X_n = i \vert X_0 = i) &lt; 1\)</li>
 </ul>
 
 <p><strong>吸收态（absorbing）</strong></p>
 
 <ul>
   <li>不能离开的状态。</li>
-  <li>$P_{ii} = 1$ and $P_{ij} = 0 \ \forall j \neq i$</li>
+  <li>\( P_{ii} = 1 \) and \( P_{ij} = 0 \ \forall j \neq i \)</li>
   <li>拥有吸收态的马尔可夫链，被成为吸收的。</li>
 </ul>
 
@@ -264,11 +264,11 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h3 id="定义-1">定义</h3>
 
-<p>在 $ \mathbb{R}^K $ 中的<strong>单纯形</strong>是所有点 $ p $ 的集合，使得：</p>
+<p>在 \( \mathbb{R}^K \) 中的<strong>单纯形</strong>是所有点 \( p \) 的集合，使得：</p>
 
 <ul>
-  <li>每个组件 $ p_k $ 都是非负的：对于所有 $ k $，都有 $ p_k \geq 0 $。</li>
-  <li>组件的总和为一：$ \sum_{k=1}^{K} p_k = 1 $。</li>
+  <li>每个组件 \( p_k \)都是非负的：对于所有 \( k \)，都有 \( p_k \geq 0 \)。</li>
+  <li>组件的总和为一：\( \sum_{k=1}^{K} p_k = 1 \)。</li>
 </ul>
 
 <p>数学上，这可以表示为：</p>
@@ -278,9 +278,9 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 <h3 id="几何解释">几何解释</h3>
 
 <ul>
-  <li>在 $ \mathbb{R}^2 $（2D 空间）中，单纯形是一个线段。</li>
-  <li>在 $ \mathbb{R}^3 $（3D 空间）中，它是一个三角形。</li>
-  <li>在 $ \mathbb{R}^4 $ 中，它是一个四面体。</li>
+  <li>在 \( \mathbb{R}^2 \)（2D 空间）中，单纯形是一个线段。</li>
+  <li>在 \( \mathbb{R}^3 \)（3D 空间）中，它是一个三角形。</li>
+  <li>在 \( \mathbb{R}^4 \) 中，它是一个四面体。</li>
   <li>以此类推…</li>
 </ul>
 
@@ -288,19 +288,19 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <p>单纯形与概率分布有着密切的关系：</p>
 <ul>
-  <li>$ (K-1) $-维单纯形中的一个点对应于 $ K $ 个结果上的概率分布。</li>
-  <li>例如，在 $ \mathbb{R}^3 $ 中，单纯形中的一个点可以表示三个事件上的概率分布。</li>
+  <li>\( (K-1) \)-维单纯形中的一个点对应于 \( K \) 个结果上的概率分布。</li>
+  <li>例如，在 \( \mathbb{R}^3 \) 中，单纯形中的一个点可以表示三个事件上的概率分布。</li>
 </ul>
 
 <h3 id="单纯复合体">单纯复合体</h3>
 
-<p><strong>单纯复合体</strong>是由顶点、线段、三角形及其 $ n $-维对应物组成的集合。它是单纯形概念的推广，可以表示由各种维度的单纯形填充的空间。</p>
+<p><strong>单纯复合体</strong>是由顶点、线段、三角形及其 \( n-\)维对应物组成的集合。它是单纯形概念的推广，可以表示由各种维度的单纯形填充的空间。</p>
 
 <h2 id="核范数与谱范数">核范数与谱范数</h2>
 
 <h3 id="核范数">核范数</h3>
 
-<p>对于矩阵$A$，其核范数（Nuclear Norm 或者 Trace Norm，通常记作 $|A|_*$）是其奇异值的总和。</p>
+<p>对于矩阵\( A \)，其核范数（Nuclear Norm 或者 Trace Norm，通常记作 \( |A|_* \)）是其奇异值的总和。</p>
 
 <p><strong>使用Numpy的Python示例</strong>:</p>
 
@@ -330,7 +330,7 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h3 id="谱范数">谱范数</h3>
 
-<p>对于矩阵 $A$，其谱范数（spectral norm, 通常记作 $|A|_2$）是其最大的奇异值。</p>
+<p>对于矩阵 \( A \)，其谱范数（spectral norm, 通常记作 \( |A|_2 \)）是其最大的奇异值。</p>
 
 <p>使用 Numpy 的 Python 示例:</p>
 
@@ -377,11 +377,11 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h2 id="多重比较">多重比较</h2>
 
-<p>统计中，$P$ 值的含义是 null 假设为真的概率是 $1-P$。</p>
+<p>统计中，\( P \) 值的含义是 null 假设为真的概率是 \( 1-P \)。</p>
 
-<p>如果我们以 $P=0.05$ 来判断 null 假设的成立与否，那么我们的「每一次」判断都有 5% 的概率出错——我们测试出来的每一个「统计学显著的差异」都有 5% 的出错几率。</p>
+<p>如果我们以 \( P=0.05 \) 来判断 null 假设的成立与否，那么我们的「每一次」判断都有 5% 的概率出错——我们测试出来的每一个「统计学显著的差异」都有 5% 的出错几率。</p>
 
-<p>如果我们在一个项目中同时做了 $n$ 个统计学检验。那么我们「所有检验结果都为真」的概率是 $(1-P)^n$ ——在 $n$ 很大的时候，<strong>我们几乎注定会出错</strong>！</p>
+<p>如果我们在一个项目中同时做了 \( n \) 个统计学检验。那么我们「所有检验结果都为真」的概率是 \( (1-P)^n \) ——在 \(n\) 很大的时候，<strong>我们几乎注定会出错</strong>！</p>
 
 <p>下面介绍的两个方法都用与减轻 multiple comparison 的副作用。它们的大概作用都是「降低 false positive」的几率。不过这也会同时增加我们的 false negative 的概率。</p>
 
@@ -395,29 +395,25 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h3 id="bonferroni-correction">Bonferroni correction</h3>
 
-<blockquote>
-  <p>这个小节参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></p>
-</blockquote>
+<font color="gray"> 这个小节参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></font>
 
-<p>Bonferroni Correction 的要点：以 $P^\prime$ 作为新的 $P$ 值，$P^\prime = P / n$</p>
+<p>Bonferroni Correction 的要点：以 \( P^\prime \) 作为新的 \( P \) 值，\( P^\prime = P / n \)</p>
 
-<p>这个方法的缺点是，如果我们有很多统计学分析（$n = 1000$)，那么我们的 $P^\prime$ 会很小：这回让我们把很多「不符合」null 假设的比较设定为 null 假设。换言之，我们会产生很多的 false negative。</p>
+<p>这个方法的缺点是，如果我们有很多统计学分析（\( n = 1000 \))，那么我们的 \( P^\prime \) 会很小：这回让我们把很多「不符合」null 假设的比较设定为 null 假设。换言之，我们会产生很多的 false negative。</p>
 
-<p>此外，我们还面临着「历史」的问题：如果我们在 10 年前分析了 100 个样品，我们「现在」的统计分析是否需要将那 100 个分析算在我们的 $n$ 里？——这个问题没有统一的答案。</p>
+<p>此外，我们还面临着「历史」的问题：如果我们在 10 年前分析了 100 个样品，我们「现在」的统计分析是否需要将那 100 个分析算在我们的 \( n \) 里？——这个问题没有统一的答案。</p>
 
 <h3 id="benjaminihochberg-procedure">Benjamini–Hochberg procedure</h3>
 
-<blockquote>
-  <p>这个 小节 参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></p>
-</blockquote>
+<font color="gray"> 这个小节参考了<a href="http://www.biostathandbook.com/multiplecomparisons.html">这个网站</a></font>
 
 <p>在 Bonferroni Correction 外，另外一个方法是控制 false discovery rate。它的具体做法是</p>
 
 <ol>
-  <li>计算出所有统计分析的 P 值</li>
-  <li>将 P 值由小到大「排序」。我们假设某一个实验的排序结果为 $i$ ($i=1$ 表示 $P$ 值最小的结果)。</li>
-  <li>我们人工选择一个 $Q$ 值，这个值被称为 false discovery rate。</li>
-  <li>对于「每一个」统计分析结果，我们它对应的 $(i/m)Q$</li>
+  <li>计算出所有统计分析的 \( P \) 值</li>
+  <li>将 P 值由小到大「排序」。我们假设某一个实验的排序结果为 \( i \) (\( i=1 \) 表示 \( P \) 值最小的结果)。</li>
+  <li>我们人工选择一个 \( Q \) 值，这个值被称为 false discovery rate。</li>
+  <li>对于「每一个」统计分析结果，我们它对应的 \( (i/m)Q \)</li>
 </ol>
 
 <p>上面的结果之后，我们会得到两列数据</p>
@@ -474,19 +470,19 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
   </tbody>
 </table>
 
-<p>我们取这样的 $P$ 值作为差异显著的判断标准：最大的，小于 $(i/m)Q$ 的 $P$。</p>
+<p>我们取这样的 \( P \) 值作为差异显著的判断标准：最大的，小于 \( (i/m)Q \) 的 \( P \)。</p>
 
-<p>对应上面的表格，我们会选择「第五行」数据对应的 $P$ 值，0.042，作为我们的判断标准。</p>
+<p>对应上面的表格，我们会选择「第五行」数据对应的 \( P \) 值，0.042，作为我们的判断标准。</p>
 
-<p>有的时候，我们把 $P (m / i)$ 称为 Benjamini-Hochberg adjusted P value。只要它小于我们设定的 $Q$，我们就认为这个结果是显著的。</p>
+<p>有的时候，我们把 \( P (m / i) \) 称为 Benjamini-Hochberg adjusted P value。只要它小于我们设定的 \( Q \)，我们就认为这个结果是显著的。</p>
 
-<p>这个方法会导致一个奇怪的结论：如果我们分析了 1000 个结果，其中最大的 $P$ 值是 0.24，最小的 $P$ 值是 0.1。按照这个小节的方法，我们会拒绝所有的 null 假设（认为我们的样品有统计学显著性），即使它们的 $P$ 值都大于 0.05。</p>
+<p>这个方法会导致一个奇怪的结论：如果我们分析了 1000 个结果，其中最大的 \( P \) 值是 0.24，最小的 \( P \) 值是 0.1。按照这个小节的方法，我们会拒绝所有的 null 假设（认为我们的样品有统计学显著性），即使它们的 \( P \) 值都大于 0.05。</p>
 
-<p>这其实也是合理的：如果我们想要接受 1000 个 null 假设，我们最大的 $P$ 值应该挺大的——在 0.9 左右。</p>
+<p>这其实也是合理的：如果我们想要接受 1000 个 null 假设，我们最大的 \( P \) 值应该挺大的——在 0.9 左右。</p>
 
-<p>与 Bonferroni 方法相比，这个方法不会产生「当统计检验数目 $n$ 很大时，接受所有的 null 假设」的情况。</p>
+<p>与 Bonferroni 方法相比，这个方法不会产生「当统计检验数目 \( n \) 很大时，接受所有的 null 假设」的情况。</p>
 
-<p>对于 $Q$ 值，0.1 或者 0.2 是很严格的标准了——有时候有人会用 0.05，这可能是此人混淆了 $Q$ 值与 $P$ 值。</p>
+<p>对于 \( Q \) 值，0.1 或者 0.2 是很严格的标准了——有时候有人会用 0.05，这可能是此人混淆了 \( Q \) 值与 $P$ 值。</p>
 
 <p>注意：这个方法默认所有的测试都是「相互独立」的。如果我们是比较一个 control 组和其他很多实验组，这个方法是不适用的。举例而言，如果 control &gt; A &amp;&amp; A &gt; B 那么 control 一定大于 B。</p>
 
@@ -519,22 +515,22 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 \bf{V_{n \times n}}
 \end{align}\]
 
-<p>其中，$\bf{U}$ 和 $\bf{V}$ 都是酉矩阵，它们表示旋转操作，同时它们的行/列都是标准正交基（基向量的长度为 1，两两正交）。</p>
+<p>其中，\( \bf{U} \) 和 \( \bf{V} \) 都是酉矩阵，它们表示旋转操作，同时它们的行/列都是标准正交基（基向量的长度为 1，两两正交）。</p>
 
 <h3 id="svd-和特征向量特征值">SVD 和特征向量/特征值</h3>
 
-<p>我们想要得到的其实是类似于「特征值」的东西，对于方阵 $\bf{X}$，它的特征值 $\upsilon$ 满足</p>
+<p>我们想要得到的其实是类似于「特征值」的东西，对于方阵 \( \bf{X} \)，它的特征值 \( \upsilon \) 满足</p>
 
 \[\mathbf{X} \mathbf{\upsilon} = \lambda \mathbf{\upsilon}\]
 
-<p>对于不是方阵的 $A$，我们能找到两个类似于特征值的东西（$\bf{v}$, $\bf{u}$），叫做「一个奇异向量」。对应的数值 $\sigma$ 叫做「一个奇异值」：</p>
+<p>对于不是方阵的 \( A \)，我们能找到两个类似于特征值的东西（\( \bf{v} \), \( \bf{u} \)），叫做「一个奇异向量」。对应的数值 \( \sigma \) 叫做「一个奇异值」：</p>
 
 \[\begin{align}
 \bf{A^T} u &amp;= \sigma \bf{v} &amp; \bf{u}\text{: 左奇异向量} \\
 \bf{A} v &amp;= \sigma \bf{u} &amp; \bf{v} \text{: 右奇异向量}
 \end{align}\]
 
-<p>如果我们给上面的公式左右分别左乘上 $\bf{A}$ 和 $\bf{A^T}$，我们得到</p>
+<p>如果我们给上面的公式左右分别左乘上 \( \bf{A} \) 和 \( \bf{A^T} \)，我们得到</p>
 
 \[\begin{aligned}
 \bf{AA^T} u &amp;= \sigma \bf{Av}\\
@@ -545,11 +541,11 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 &amp; (\bf{v} \text{ 是} \bf{A^TA} \text{ 的特征值})\\
 \end{aligned}\]
 
-<p>在这里，我知考虑了实数矩阵——如果考虑复数的话，我需要计算 $\bf{A}$ 的共轭转置 $\bf{A^\ast}$。</p>
+<p>在这里，我知考虑了实数矩阵——如果考虑复数的话，我需要计算 \( \bf{A} \) 的共轭转置 \( \bf{A^\ast} \)。</p>
 
 <h3 id="奇异向量和-svd">奇异向量和 SVD</h3>
 
-<p>公式 (1) 中的 $\bf{U}$ 和 $\bf{V}$ 是所有包含了所有左/右奇异向量的矢量空间的标准正交基。而公式 (1) 中的 $\Sigma$ 则表示了每个奇异向量对应的奇异值。</p>
+<p>公式 (1) 中的 \( \bf{U} \) 和 \( \bf{V} \) 是所有包含了所有左/右奇异向量的矢量空间的标准正交基。而公式 (1) 中的 \( \Sigma \) 则表示了每个奇异向量对应的奇异值。</p>
 
 <p>让我们重新审视公式 (1)</p>
 
@@ -563,12 +559,12 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 \bf{A} = \bf{U} \bf{\Sigma} \bf{V^T} \bf{I}
 \end{aligned}\]
 
-<p>其中，$\bf{I}$ 是标准正交基。上面的公式告诉了我们怎么把 $\bf{I}$ 变成 $\bf{A}$：我们首先把 $\bf{I}$ 映射到右奇异基向量（旋转）；按照奇异值大小缩放各个基向量；再把结果映射到左奇异基向量（旋转）。</p>
+<p>其中，\( \bf{I} \) 是标准正交基。上面的公式告诉了我们怎么把 \( \bf{I} \) 变成 \( \bf{A} \)：我们首先把 \( \bf{I} \) 映射到右奇异基向量（旋转）；按照奇异值大小缩放各个基向量；再把结果映射到左奇异基向量（旋转）。</p>
 
 <h3 id="svd-中的小知识点">SVD 中的小知识点</h3>
 
 <ul>
-  <li>$\Sigma$ 中的奇异值的「有序集合」被称为矩阵的「谱」spectrum。</li>
+  <li>\( \Sigma \) 中的奇异值的「有序集合」被称为矩阵的「谱」spectrum。</li>
   <li>奇异值之间的差影响着解的稳定性</li>
   <li>最大和最小的奇异值绝对值之间的比率（条件数）影响着一个迭代求解器找到矩阵解的速度。</li>
 </ul>
@@ -577,13 +573,13 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h3 id="pca-的目的">PCA 的目的</h3>
 
-<p>我们使用 PCA 来压缩数据。假设我们有 $m$ 个属于 $\mathbb{R}^d$ 列向量：$\bf{x_1}, \dots \bf{x_m}$，我们用一个矩阵 $\mathbf{x}\in\mathbb{R}^{d, m}$ 来描述所有的数据点。我们希望找到一个矩阵 $\mathbf{W} \in \mathbb{R}^{d, n}$，来将 $\bf{x}$ 映射到低维空间：</p>
+<p>我们使用 PCA 来压缩数据。假设我们有 \( m \) 个属于 \( \mathbb{R}^d \) 列向量：\( \bf{x_1}, \dots \bf{x_m} \)，我们用一个矩阵 \( \mathbf{x}\in\mathbb{R}^{d, m} \) 来描述所有的数据点。我们希望找到一个矩阵 \( \mathbf{W} \in \mathbb{R}^{d, n} \)，来将 \( \bf{x} \) 映射到低维空间：</p>
 
 \[\begin{align}
 \mathbf{y} &amp;= \mathbf{Wx} &amp; (\ \mathbf{y} \in \mathbb{R}^n, n &lt; d)
 \end{align}\]
 
-<p>同样，我们也需要另一个矩阵 $\mathbf{U} \in \mathbb{R}^{n, d}$ 来将 $\bf{y}$ 还原为一个「同原始 $\bf{x}$ 接近」的 $\bf{\tilde{x}}$。我们通过让两者「尽量接近」来确定最好的 $\bf{U}$ 和 $\bf{W}$：</p>
+<p>同样，我们也需要另一个矩阵 \( \mathbf{U} \in \mathbb{R}^{n, d} \) 来将 \( \bf{y} \) 还原为一个「同原始 \( \bf{x} \) 接近」的 \( \bf{\tilde{x}} \)。我们通过让两者「尽量接近」来确定最好的 \( \bf{U} \) 和 \( \bf{W} \)：</p>
 
 \[\begin{align}
 \underset{
@@ -597,11 +593,11 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <h3 id="找到-u-和-w">找到 U 和 W</h3>
 
-<p>我们首先可以证明，我们想要的，符合公式 (6) 的， $\bf{U}$ 与 $\bf{W}$ 满足下面的性质（其实就是说，这两个都是旋转矩阵）</p>
+<p>我们首先可以证明，我们想要的，符合公式 (6) 的， \( \bf{U} \) 与 \( \bf{W} \) 满足下面的性质（其实就是说，这两个都是旋转矩阵）</p>
 
 <ol>
-  <li>$\bf{U}$ 的列向量相互正交，即 $\bf U^\top U=I$</li>
-  <li>$\bf W = U^\top$</li>
+  <li>\( \bf{U} \) 的列向量相互正交，即 \( \bf U^\top U= \)I</li>
+  <li>\( \bf W = U^\top \)</li>
 </ol>
 
 <p>根据上面的辅助定理，我们可以把公式 (6) 重新写成</p>
@@ -618,60 +614,88 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <p>我们可以把需要 minimise 的部分写成</p>
 
-\[\begin{aligned}\left\|\mathbf{x}-U U^{\top} \mathbf{x}\right\|^{2} &amp;=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top} \mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\ &amp;=\|\mathbf{x}\|^{2}-\operatorname{trace}\left(U^{\top} \mathbf{x} \mathbf{x}^{\top} U\right) \end{aligned}\]
+\[\begin{aligned}
+\left\|
+    \mathbf{x}-U U^{\top} \mathbf{x}
+\right\|^{2}
+&amp;=\|\mathbf{x}\|^{2}-2 \mathbf{x}^{\top} U U^{\top}
+\mathbf{x}+\mathbf{x}^{\top} U U^{\top} U U^{\top} \mathbf{x} \\
+&amp;=\|\mathbf{x}\|^{2}-\mathbf{x}^{\top} U U^{\top} \mathbf{x} \\
+&amp;=\|\mathbf{x}\|^{2}-\operatorname{trace}
+\left(U^{\top}
+    \mathbf{x} \mathbf{x}^{\top} U
+\right)
+\end{aligned}\]
 
-<p>其中，$\text{trace}$ 的意思是对对角项求和，是一个线性算符，这让我们可以最终把公式 (6) 写成</p>
+<p>其中，\( \text{trace} \) 的意思是对对角项求和，是一个线性算符，这让我们可以最终把公式 (6) 写成</p>
 
-\[\underset{U \in \mathbb{R}^{d, n} : U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}\left(U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U\right)\]
+\[\underset{U \in \mathbb{R}^{d, n} :
+U^{\top} U=I}{\operatorname{argmax}} \operatorname{trace}
+\left(
+    U^{\top} \sum_{i=1}^{m} \mathbf{x}_{i} \mathbf{x}_{i}^{\top} U
+\right)\]
 
 <h2 id="向量微分算子">向量微分算子</h2>
 
-<p>Del 算子或稱 Nabla 算子，在中文中也叫向量微分算子、劈形算子、倒三角算子，符号为 $\nabla$。</p>
+<p>Del 算子或稱 Nabla 算子，在中文中也叫向量微分算子、劈形算子、倒三角算子，符号为 \( \nabla \)。</p>
 
 <p>Nabla 主要的作用就是用来简写「散度」、「梯度」和「旋度」。我们可以把它看成一个向量。</p>
 
 <p>三维空间中</p>
 
-\[\nabla=\vec{e}_{x} \frac{\partial}{\partial x}+\vec{e}_{y} \frac{\partial}{\partial y}+\vec{e}_{z} \frac{\partial}{\partial z}=\left(\frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z}\right)\]
+\[\nabla
+= \vec{e}_{x} \frac{\partial}{\partial x} + 
+  \vec{e}_{y} \frac{\partial}{\partial y} +
+  \vec{e}_{z} \frac{\partial}{\partial z}
+= \left(
+    \frac{\partial}{\partial x},
+    \frac{\partial}{\partial y},
+    \frac{\partial}{\partial z}
+\right)\]
 
 <p>n 维空间中</p>
 
-\[\nabla=\sum_{i=1}^{n} \vec{e}_{i} \frac{\partial}{\partial x_{i}}=\left(\frac{\partial}{\partial x_{1}}, \cdots, \frac{\partial}{\partial x_{n}}\right)\]
+\[\nabla
+=\sum_{i=1}^{n} \vec{e}_{i} \frac{\partial}{\partial x_{i}}
+=\left(
+    \frac{\partial}{\partial x_{1}}, \cdots, \frac{\partial}{\partial x_{n}}
+\right)\]
 
 <h3 id="散度">散度</h3>
 
 <ul>
   <li>
-    <p>记号： $\nabla \cdot \mathbf{A}$</p>
+    <p>记号： \( \nabla \cdot \mathbf{A} \)</p>
   </li>
   <li>
-    <p>维度： $\mathbb{R}^n \rightarrow \mathbb{R}$</p>
+    <p>维度： \( \mathbb{R}^n \rightarrow \mathbb{R} \)</p>
   </li>
   <li>
     <p>意义：散度描述的是向量场里一个点是汇聚点还是发源点，形象地说，就是这包含这一点的一个微小体元中的向量是“向外”居多还是“向内”居多。</p>
   </li>
   <li>
-    <p>分量表示
-\(\begin{aligned}
-\nabla \cdot \mathbf{A} &amp;= \operatorname{div} \mathbf{A} \\
-&amp;= \left(
-	\frac{\partial}{\partial x},
-	\frac{\partial}{\partial y},
-	\frac{\partial}{\partial z}
-\right) \cdot (A_x, A_y, A_z)\\[0.5em]
-&amp;= \frac{\partial A_{x}}{\partial x}+\frac{\partial A_{y}}{\partial y}+\frac{\partial A_{z}}{\partial z}
-\end{aligned}\)</p>
+    <p>分量表示</p>
   </li>
 </ul>
+
+\[\begin{aligned}
+\nabla \cdot \mathbf{A} &amp;= \operatorname{div} \mathbf{A} \\
+&amp;= \left(
+\frac{\partial}{\partial x},
+\frac{\partial}{\partial y},
+\frac{\partial}{\partial z}
+\right) \cdot (A_x, A_y, A_z)\\[0.5em]
+&amp;= \frac{\partial A_{x}}{\partial x}+\frac{\partial A_{y}}{\partial y}+\frac{\partial A_{z}}{\partial z}
+\end{aligned}\]
 
 <h3 id="梯度">梯度</h3>
 
 <ul>
   <li>
-    <p>记号：$\nabla \mathbf{A}$</p>
+    <p>记号：\( \nabla \mathbf{A} \)</p>
   </li>
   <li>
-    <p>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</p>
+    <p>维度：\( \mathbb{R}^n \rightarrow \mathbb{R}^n \)</p>
   </li>
   <li>意义：
     <ul>
@@ -679,24 +703,25 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
       <li>大小：多元函数的某一个点上，最大增长的「增长率」</li>
     </ul>
   </li>
-  <li>分量表示
-  \(\begin{aligned}
-  \nabla \mathbf{A}
-  &amp;= \text{grad}\,\mathbf{A} = \mathbf{J}_\mathbf{A} \\[0.5em]
-  &amp;= \left(
-  	\frac{\partial \textbf{A}}{\partial x},
-  	\frac{\partial \textbf{A}}{\partial y},
-  	\frac{\partial \textbf{A}}{\partial z}
-  \right)\\[0.5em]
-  &amp;= \left( \frac{\partial A_i}{ \partial x_j} \right)_{ij}
-  \end{aligned}\)</li>
+  <li>分量表示</li>
 </ul>
+
+\[\begin{aligned}
+\nabla \mathbf{A}
+&amp;= \text{grad}\,\mathbf{A} = \mathbf{J}_\mathbf{A} \\[0.5em]
+&amp;= \left(
+    \frac{\partial \textbf{A}}{\partial x},
+    \frac{\partial \textbf{A}}{\partial y},
+    \frac{\partial \textbf{A}}{\partial z}
+\right)\\[0.5em]
+&amp;= \left( \frac{\partial A_i}{ \partial x_j} \right)_{ij}
+\end{aligned}\]
 
 <h3 id="旋度">旋度</h3>
 
 <ul>
-  <li>记号：$\nabla \times \mathbf{A}$</li>
-  <li>维度：$\mathbb{R}^n \rightarrow \mathbb{R}^n$</li>
+  <li>记号：\( \nabla \times \mathbf{A} \)</li>
+  <li>维度：\( \mathbb{R}^n \rightarrow \mathbb{R}^n \)</li>
   <li>意义：在向量场每个点上，点的<strong>旋度</strong>表示为一个<strong>向量</strong>。这个向量的特性（长度和方向）刻画了在这个点上的旋转。</li>
   <li>分量表示:</li>
 </ul>
@@ -712,14 +737,18 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 
 <p>矢量拉普拉斯算符（vector Laplacian）作用在 <strong>矢量</strong>场 上，返回一个<strong>矢量</strong>。类似地，标量拉普拉斯算符（scalar Laplacian）作用在 <strong>标量</strong>场 上，返回一个<strong>标</strong>量。</p>
 
-<p>作用在 矢量场 $\mathbf{A}$ 的 矢量拉普拉斯算符 写成 $\nabla^2$，定义为
-\(\nabla^2 = \nabla(\nabla \cdot \mathbf{A})
-         - \nabla\times(\nabla \times \mathbf{A})\)
-在 笛卡尔坐标系 下，上面的定义可以被（极大地）简化为
-\(\nabla^2\mathbf{A} = \left( 
+<p>作用在 矢量场 \( \mathbf{A} \) 的 矢量拉普拉斯算符 写成 \( \nabla^2 \)，定义为</p>
+
+\[\nabla^2 = \nabla(\nabla \cdot \mathbf{A})
+         - \nabla\times(\nabla \times \mathbf{A})\]
+
+<p>在 笛卡尔坐标系 下，上面的定义可以被（极大地）简化为</p>
+
+\[\nabla^2\mathbf{A} = \left( 
 \nabla^2 A_x, \nabla^2 A_y, \nabla^2 A_z
-\right)\)
-其中，$A_x， A_y, A_z$ 是矢量场 $\mathbf{A}$ 的分量</p>
+\right)\]
+
+<p>其中，\( A_x， A_y, A_z \) 是矢量场 \( \mathbf{A} \) 的分量</p>
 
 <h3 id="其他">其他</h3>
 
@@ -746,7 +775,6 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
 \end{aligned}\]
 
 <p><a href="https://en.wikipedia.org/wiki/Vector_calculus_identities">更多矢量微积分的记号</a></p>
-
 
 </div>
 
