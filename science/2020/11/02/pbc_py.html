@@ -35,9 +35,9 @@
 <div class="center post">
     <ul id="markdown-toc">
   <li><a href="#pair-distances-with-pbc" id="markdown-toc-pair-distances-with-pbc">Pair distances with PBC</a></li>
-  <li><a href="#the-straightforward-way" id="markdown-toc-the-straightforward-way">The Straightforward Way</a></li>
-  <li><a href="#a-faster-implementation" id="markdown-toc-a-faster-implementation">A Faster Implementation</a></li>
-  <li><a href="#another-good-implementation" id="markdown-toc-another-good-implementation">Another Good Implementation</a></li>
+  <li><a href="#nested-for-loop" id="markdown-toc-nested-for-loop">Nested For Loop</a></li>
+  <li><a href="#pdist-from-scipy" id="markdown-toc-pdist-from-scipy"><code class="language-plaintext highlighter-rouge">pdist</code> from Scipy</a></li>
+  <li><a href="#allen--tildesley" id="markdown-toc-allen--tildesley">Allen &amp; Tildesley</a></li>
   <li><a href="#compare" id="markdown-toc-compare">Compare</a></li>
 </ul>
 
@@ -49,7 +49,7 @@
 
 <h2 id="pair-distances-with-pbc">Pair distances with PBC</h2>
 
-<p>When we are simulating a system, the particles in the system often interact with different forms of pairwise potentials like the <a href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">Lennard-Jones potential</a>. One crutial step for the calculation of the potential energy, hence the forces on each particles, is determing the pairwise distances.</p>
+<p>When we simulate a soft matter system, the particles often interact with different forms of pairwise potentials like the <a href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">Lennard-Jones potential</a>. One crucial step for the calculation of the potential energy, hence the forces on each particles, is determing the pairwise distances.</p>
 
 <p>With PBC, we have the following situation</p>
 
@@ -67,11 +67,11 @@
 
 <p>where the distance of <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> are <code class="language-plaintext highlighter-rouge">d_ij</code>.</p>
 
-<p>The particles labeled with <code class="language-plaintext highlighter-rouge">i', i", j', j"</code> are the <strong>equivalences</strong> of  <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> in the neighbour boxes, as the result of the PBC. Here, since <code class="language-plaintext highlighter-rouge">d_ij'</code> is smaller than <code class="language-plaintext highlighter-rouge">d_ij</code>, we should select <code class="language-plaintext highlighter-rouge">d_ij'</code> as the distance instead of <code class="language-plaintext highlighter-rouge">d_ij</code>, for the calculation of short-ranged interaction like LJ. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
+<p>The particles labeled with <code class="language-plaintext highlighter-rouge">i', i", j', j"</code> are the <strong>equivalences</strong> of  <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> in the neighbour boxes, as the result of the PBC. Here, since the value of <code class="language-plaintext highlighter-rouge">d_ij'</code> is smaller than that of <code class="language-plaintext highlighter-rouge">d_ij</code>, we should select <code class="language-plaintext highlighter-rouge">d_ij'</code> as the distance instead of <code class="language-plaintext highlighter-rouge">d_ij</code>, for the calculation of short-ranged interaction like LJ. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
 
-<h2 id="the-straightforward-way">The Straightforward Way</h2>
+<h2 id="nested-for-loop">Nested For Loop</h2>
 
-<p>The most straightforward way is to do exactly what was discussed inside a for loop. Me and Fergus exhibited this method in <a href="https://github.com/FJMOORE/Hard-Sphere-Monte-Carlo">our pedagogical code</a>. Here is a “minimal” code for the relevant part.</p>
+<p>The straightforward way is to perform the literal calculation inside a <code class="language-plaintext highlighter-rouge">for</code> loop. Me and Fergus exhibited this method in <a href="https://github.com/FJMOORE/Hard-Sphere-Monte-Carlo">our pedagogical code</a>. Here is a “minimal” code for the relevant part.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
@@ -92,9 +92,9 @@
 <span class="n">pair_distances</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">pair_distances</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>However, this is quite slow because we are using Python. The above code taks about 5000 ms on my computer.</p>
+<p>However, this is quite slow because we are using Python, which is infamously slow for nested <code class="language-plaintext highlighter-rouge">for</code> loops. The above code takes about 5000 ms to execute on my laptop.</p>
 
-<h2 id="a-faster-implementation">A Faster Implementation</h2>
+<h2 id="pdist-from-scipy"><code class="language-plaintext highlighter-rouge">pdist</code> from Scipy</h2>
 
 <p>Inspired by <a href="https://francescoturci.net/2016/03/16/clustering-and-periodic-boundaries/">Francesco’s post</a>, we can use the very fast function <code class="language-plaintext highlighter-rouge">pdist</code> from package <code class="language-plaintext highlighter-rouge">scipy</code> to calculate the pair distances. The “minimal” code is presented here.</p>
 
@@ -114,9 +114,9 @@
 </span><span class="n">dist_nd</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">dist_nd_sq</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>It is significantly faster than the straightforward way, and it taks about 800 ms on my computer.</p>
+<p>It is significantly faster than the straightforward way, and it takes about 800 ms on my laptop.</p>
 
-<h2 id="another-good-implementation">Another Good Implementation</h2>
+<h2 id="allen--tildesley">Allen &amp; Tildesley</h2>
 
 <p>There is also another good implementation from the <a href="https://github.com/Allen-Tildesley/examples/blob/master/python_examples/md_lj_module.py#L121">example python code</a> from <a href="https://books.google.co.uk/books?id=WFExDwAAQBAJ">Allen &amp; Tildesley’s book</a>. The “minimal” code is presented here, where I</p>
 
@@ -140,7 +140,7 @@
 
 <p>It is less efficient comparing with the previous solution, taking about 900 ms on my computer. However, we have access to the pairwise shift during the calculation, which is a plus for implementing strange agent-based models.</p>
 
-<p>In addition, we can write the code into a more compact form thanks to the <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">broadcasting rules</a> of <code class="language-plaintext highlighter-rouge">numpy</code>, like the following example.</p>
+<p>We could further transform the code into a more compact form thanks to the <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">broadcasting rules</a> of <code class="language-plaintext highlighter-rouge">numpy</code>,</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
@@ -149,7 +149,7 @@
 <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
 
 <span class="n">pos_in_box</span> <span class="o">=</span> <span class="n">positions</span><span class="p">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">box</span>  <span class="c1"># convert the unit to box, shape (dim, N)
-</span><span class="n">pair_shift</span> <span class="o">=</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># tricky broadcasting
+</span><span class="n">pair_shift</span> <span class="o">=</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_in_box</span><span class="p">[:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># broadcasting
 </span><span class="n">pair_shift</span> <span class="o">=</span> <span class="n">pair_shift</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nf">rint</span><span class="p">(</span><span class="n">pair_shift</span><span class="p">)</span>
 <span class="n">dist_nd</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">norm</span><span class="p">(</span><span class="n">pair_shift</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">box</span>  <span class="c1"># conver the unit back
 </span></code></pre></div></div>
@@ -158,7 +158,7 @@
 
 <h2 id="compare">Compare</h2>
 
-<p>I compared the three different methods with <a href="https://gist.github.com/yangyushi/1d031dea79f1be43d3cafc6079e3fe45">the code on my gist</a>, and they give identical results. The efficency varies a lot. And the second method is the most efficent one.</p>
+<p>I compared the three different methods with <a href="https://gist.github.com/yangyushi/1d031dea79f1be43d3cafc6079e3fe45">the code on my gist</a>, and they give identical results. The efficiency varies a lot. And the second method (using <code class="language-plaintext highlighter-rouge">pdist</code> in Scipy) is the fastest version.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3.8901 s spent by method 1
 0.0230 s spent by method 2
