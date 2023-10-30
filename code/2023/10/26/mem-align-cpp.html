@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Memory Alignment in C++</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="main">
+        <div id="side_bar">
+    26 Oct 2023
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#basic-data-types" id="markdown-toc-basic-data-types">Basic Data Types</a></li>
+  <li><a href="#vector-types" id="markdown-toc-vector-types">Vector Types</a></li>
+  <li><a href="#classes-and-structs" id="markdown-toc-classes-and-structs">Classes and Structs</a></li>
+</ul>
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Memory alignment refers to the way data is arranged and accessed in computer memory. Data types have an intrinsic alignment requirement, which ensures efficient access and correct behaviour on a given architecture.</p>
+
+<ul>
+  <li><strong>Aligned Memory Access</strong>: Accessing memory on its alignment boundary often results in faster operations.</li>
+  <li><strong>Misaligned Memory Access</strong>: Can lead to performance penalties or even crashes, especially with some processors and SIMD instruction sets.</li>
+</ul>
+
+<p>The C++11 standard introduced the <code class="language-plaintext highlighter-rouge">alignof</code> operator, which can be used to query the alignment requirement of a type:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="k">alignof</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  <span class="c1">// output 8</span>
+</code></pre></div></div>
+
+<h2 id="basic-data-types">Basic Data Types</h2>
+
+<p>For many basic data types:</p>
+
+<ul>
+  <li>The alignment requirement is often the same as the size.</li>
+  <li>An <code class="language-plaintext highlighter-rouge">int</code> might be 4 bytes in size with a 4-byte alignment requirement.</li>
+  <li>A <code class="language-plaintext highlighter-rouge">double</code> might be 8 bytes in size with an 8-byte alignment requirement.</li>
+</ul>
+
+<h2 id="vector-types">Vector Types</h2>
+
+<p>Typically, vector types in C++ behave like any other data type.
+They can be passed as parameters, returned from functions, and used in arrays.
+The compiler handles these gracefully for static memory allocation.</p>
+
+<p>Example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">float8_t</span> <span class="nf">example</span><span class="p">(</span><span class="n">float8_t</span> <span class="n">a</span><span class="p">,</span> <span class="n">float8_t</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">float8_t</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">float8_t</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>However, pointers to vector data need to point to memory blocks that are <strong>aligned</strong>,
+which means the Memory address must be a multiple of 32<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> (bytes).
+If the alignment requirement are not satisifed, the programme may crash.</p>
+
+<p><strong>Example of broken code:</strong></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">crash</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">float8_t</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">};</span>
+    <span class="n">float8_t</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">float8_t</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float8_t</span><span class="p">));</span>
+    <span class="n">float8_t</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">float8_t</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float8_t</span><span class="p">));</span>
+    <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="o">*</span><span class="n">q</span><span class="p">;</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This may cause a <code class="language-plaintext highlighter-rouge">segmentation fault</code><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>. To avoid such error, we can ensure memory allocation alignment with following methods,</p>
+
+<ol>
+  <li>From <code class="language-plaintext highlighter-rouge">C++17</code> onwards, use standard containers with vector types<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>: <code class="language-plaintext highlighter-rouge">std::vector&lt;float8_t&gt; x(10);</code></li>
+  <li>For older compilers, consider <code class="language-plaintext highlighter-rouge">posix_memalign</code> or <code class="language-plaintext highlighter-rouge">aligned_alloc</code><sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> from the C11 and C++17 libraries.</li>
+</ol>
+
+<h2 id="classes-and-structs">Classes and Structs</h2>
+
+<p>Classes and structs derive their alignment requirements from their members:</p>
+
+<ol>
+  <li><strong>Alignment Requirement of a <code class="language-plaintext highlighter-rouge">Class</code>/<code class="language-plaintext highlighter-rouge">Struct</code></strong>: Maximum alignment requirement of its members.</li>
+  <li><strong>Size</strong>: Typically a multiple of its alignment requirement.</li>
+  <li><strong>Padding</strong>: Compiler might insert padding to ensure members’ proper alignment.</li>
+</ol>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>        <span class="c1">// 1 byte</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>         <span class="c1">// 4 bytes, with a typical 4-byte alignment</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>        <span class="c1">// 1 byte</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>To ensure <code class="language-plaintext highlighter-rouge">b</code> is aligned, padding might be added after <code class="language-plaintext highlighter-rouge">a</code> and potentially after <code class="language-plaintext highlighter-rouge">c</code>.</p>
+
+<p>While padding ensures correct and optimal memory accesses, there are ways to control or eliminate it. For instance, many compilers offer directives to control padding:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma pack(push, 1)
+</span><span class="k">class</span> <span class="nc">PackedExample</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="cp">#pragma pack(pop)
+</span></code></pre></div></div>
+
+<p>In addition, reordering members based on alignment can reduce padding:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OptimizedExample</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Finally, we can use <strong>bit-fields</strong>, to achieve compact storage for flags or small integers.</p>
+
+<p>A bit-field is defined inside a structure (or union) and allows you to specify a fixed number of bits for an integer type. The syntax is as follows:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">struct_type</span> <span class="n">member_name</span> <span class="o">:</span> <span class="n">number_of_bits</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Here’s a basic example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">struct</span> <span class="nc">BitFieldExample</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flag1</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// Uses only 1 bit</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flag2</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// Uses another bit</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">value</span> <span class="o">:</span> <span class="mi">6</span><span class="p">;</span>  <span class="c1">// Uses 6 bits</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">BitFieldExample</span> <span class="n">example</span><span class="p">;</span>
+
+    <span class="c1">// Setting the values</span>
+    <span class="n">example</span><span class="p">.</span><span class="n">flag1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Setting flag1 to true</span>
+    <span class="n">example</span><span class="p">.</span><span class="n">flag2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Setting flag2 to false</span>
+    <span class="n">example</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span> <span class="c1">// Setting value to 42, which is within the 6-bit range [0, 63]</span>
+
+    <span class="c1">// Accessing the values</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Flag1: "</span> <span class="o">&lt;&lt;</span> <span class="n">example</span><span class="p">.</span><span class="n">flag1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Flag2: "</span> <span class="o">&lt;&lt;</span> <span class="n">example</span><span class="p">.</span><span class="n">flag2</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Value: "</span> <span class="o">&lt;&lt;</span> <span class="n">example</span><span class="p">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Toggle the flags</span>
+    <span class="n">example</span><span class="p">.</span><span class="n">flag1</span> <span class="o">=</span> <span class="o">!</span><span class="n">example</span><span class="p">.</span><span class="n">flag1</span><span class="p">;</span> <span class="c1">// Setting flag1 to false (toggle)</span>
+    <span class="n">example</span><span class="p">.</span><span class="n">flag2</span> <span class="o">=</span> <span class="o">!</span><span class="n">example</span><span class="p">.</span><span class="n">flag2</span><span class="p">;</span> <span class="c1">// Setting flag2 to true (toggle)</span>
+
+    <span class="c1">// Increment the value</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">example</span><span class="p">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">63</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">example</span><span class="p">.</span><span class="n">value</span><span class="o">++</span><span class="p">;</span> <span class="c1">// Increment value by 1</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Bit-fields are often used in scenarios like:</p>
+
+<ul>
+  <li><strong>Protocol Headers</strong>: When working with low-level networking, bit-fields can be used to represent protocol header structures.</li>
+  <li><strong>Hardware Register Representations</strong>: When doing low-level hardware programming or embedded programming, hardware registers often have specific bits set aside for specific flags or values.</li>
+  <li><strong>Compact Data Structures</strong>: In scenarios where memory is a constraint and you want a compact representation of your data.</li>
+</ul>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>SIMD architectures such as SSE and AVX on x86 processors have specific alignment requirements. <strong>SSE</strong>: Requires 16-byte alignment for its 128-bit registers. <strong>AVX</strong>: Requires 32-byte alignment for its 256-bit registers. <strong>AVX-512</strong>: Requires 64-byte alignment for its 512-bit registers. If the vector type <code class="language-plaintext highlighter-rouge">float8_t</code> in the example uses AVX instructions (which handle <strong>8 single-precision floating-point (fp32) numbers</strong> simultaneously, thus occupying <strong>256 bits</strong> or <strong>32 bytes</strong>), then it would require 32-<strong>byte</strong> alignment. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>The line <code class="language-plaintext highlighter-rouge">*p = a;</code> might be attempting to use SIMD instructions to store the <code class="language-plaintext highlighter-rouge">float8_t</code> value <code class="language-plaintext highlighter-rouge">a</code> into the memory pointed to by <code class="language-plaintext highlighter-rouge">p</code>. If <code class="language-plaintext highlighter-rouge">p</code> isn’t 32-byte aligned, this can result in a crash. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>Prefer <code class="language-plaintext highlighter-rouge">std::vector</code> when possible. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>If using these methods, it’s crucial to free memory correctly to prevent errors. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>

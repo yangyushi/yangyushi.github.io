@@ -34,11 +34,20 @@
 
 <div class="center post">
     <ul id="markdown-toc">
-  <li><a href="#马尔可夫链" id="markdown-toc-马尔可夫链">马尔可夫链</a>    <ul>
+  <li><a href="#泛函导数" id="markdown-toc-泛函导数">泛函导数</a>    <ul>
       <li><a href="#定义" id="markdown-toc-定义">定义</a></li>
+      <li><a href="#计算步骤" id="markdown-toc-计算步骤">计算步骤</a></li>
+      <li><a href="#例子" id="markdown-toc-例子">例子</a></li>
+    </ul>
+  </li>
+  <li><a href="#马尔可夫链" id="markdown-toc-马尔可夫链">马尔可夫链</a>    <ul>
+      <li><a href="#定义-1" id="markdown-toc-定义-1">定义</a></li>
       <li><a href="#重要的矩阵" id="markdown-toc-重要的矩阵">重要的矩阵</a></li>
       <li><a href="#状态的分类" id="markdown-toc-状态的分类">状态的分类</a></li>
-      <li><a href="#定义-1" id="markdown-toc-定义-1">定义</a></li>
+    </ul>
+  </li>
+  <li><a href="#单纯形" id="markdown-toc-单纯形">单纯形</a>    <ul>
+      <li><a href="#定义-2" id="markdown-toc-定义-2">定义</a></li>
       <li><a href="#几何解释" id="markdown-toc-几何解释">几何解释</a></li>
       <li><a href="#与概率的关系" id="markdown-toc-与概率的关系">与概率的关系</a></li>
       <li><a href="#单纯复合体" id="markdown-toc-单纯复合体">单纯复合体</a></li>
@@ -80,9 +89,65 @@
   </li>
 </ul>
 
-<h2 id="马尔可夫链">马尔可夫链</h2>
+<h2 id="泛函导数">泛函导数</h2>
+
+<p>当处理从函数到实数的映射的泛函时，我们经常需要理解输入函数的小变化如何影响输出值。这个概念通过泛函导数得到体现。</p>
 
 <h3 id="定义">定义</h3>
+
+<p>泛函导数衡量由于其参数函数的小变化而导致的泛函变化。如果你熟悉普通的导数 —— 你找出一个函数因为它的变量小变化而如何变化 —— 泛函导数是泛函和函数的类似物。</p>
+
+<p>对于依赖于函数 \( f(x) \) 的泛函 \( F[f] \)，在点 \( y \) 的泛函导数表示为：</p>
+
+\[\frac{\delta F[f]}{\delta f(y)}\]
+
+<h3 id="计算步骤">计算步骤</h3>
+
+<p>要计算泛函导数，按照以下步骤：</p>
+
+<ol>
+  <li><strong>引入变分:</strong> 考虑小的变分 \( \epsilon \eta(x) \) 使函数变为 \( f(x) \to f(x) + \epsilon \eta(x) \)，其中 \( \epsilon \) 是一个小参数。</li>
+  <li><strong>用变分表示泛函:</strong> 用变化后的函数 \( f(x) + \epsilon \eta(x) \) 重写泛函 \( F[f] \)。这会使泛函成为关于 \( \epsilon \) 的函数，即 \( F[\epsilon] \)。</li>
+  <li><strong>泰勒展开:</strong> 围绕 \( \epsilon = 0 \)，对 \( F[\epsilon] \) 作泰勒展开。</li>
+  <li><strong>提取泛函导数:</strong> 泰勒展开中 \( \epsilon \) 的<strong>线性项的系数</strong>，给出了泛函导数。</li>
+</ol>
+
+<p>对于标准函数 \( g \)，围绕 \( \epsilon = 0 \) 的泰勒展开为：</p>
+
+\[g(\epsilon) = g(0) + \epsilon g'(0) + \frac{\epsilon^2}{2!} g''(0) + \dots\]
+
+<p>将这个概念应用于我们的泛函变化，我们得到：</p>
+
+\[F[\epsilon] = F[0] + \epsilon \left. \frac{dF}{d\epsilon} \right|_{\epsilon=0} + O(\epsilon^2)\]
+
+<h3 id="例子">例子</h3>
+
+<p>让我们使用一个简单的例子来遍历这个过程。</p>
+
+<p>考虑泛函：</p>
+
+\[F[f] = \int_{a}^{b} f(x)^2 \, dx\]
+
+<p>我们的目标是找到泛函导数 \( \frac{\delta F[f]}{\delta f(y)} \)。</p>
+
+<p>首先，我们引入变分: \( f(x) \to f(x) + \epsilon \eta(x) \)，并且将泛函 \( F \) 表示为:</p>
+
+\[F[\epsilon] = \int_{a}^{b} (f(x) + \epsilon \eta(x))^2 \, dx\]
+
+<p>之后，我们围绕 \( \epsilon = 0 \)，对 \( F \) 做泰勒展开。
+\( F[\epsilon] \) 在 \( \epsilon = 0 \) 时，等价于 \( F[f] \)。关于 \( \epsilon \) 的微分如下：</p>
+
+\[\left. \frac{dF}{d\epsilon} \right|_{\epsilon=0} = \int_{a}^{b} 2f(x) \eta(x) \, dx\]
+
+<p>最后，我们提取泛函导数:</p>
+
+\[\frac{\delta F[f]}{\delta f(y)} = 2f(y)\]
+
+<p>此结果告诉我们，泛函 \( F \) 在点 \( y \) 的方向上最快地增加是函数 \( 2f(y) \)。</p>
+
+<h2 id="马尔可夫链">马尔可夫链</h2>
+
+<h3 id="定义-1">定义</h3>
 
 <p>随机过程（很多随机变量的有序排列 \({ X_i }\)）如果满足下面的性质，则被成为马尔可夫过程：</p>
 
@@ -262,7 +327,9 @@ p_{M1} &amp; p_{M2} &amp; \cdots &amp; p_{MM}
   <li>状态 4 是常返状态；其他是暂态。</li>
 </ul>
 
-<h3 id="定义-1">定义</h3>
+<h2 id="单纯形">单纯形</h2>
+
+<h3 id="定义-2">定义</h3>
 
 <p>在 \( \mathbb{R}^K \) 中的<strong>单纯形</strong>是所有点 \( p \) 的集合，使得：</p>
 

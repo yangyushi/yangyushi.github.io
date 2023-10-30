@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>incident about invalid libgomp</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="main">
+        <div id="side_bar">
+    24 Oct 2023
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#background" id="markdown-toc-background">Background</a></li>
+  <li><a href="#root-cause" id="markdown-toc-root-cause">Root Cause</a>    <ul>
+      <li><a href="#why-the-misconfiguration" id="markdown-toc-why-the-misconfiguration">Why the Misconfiguration</a></li>
+      <li><a href="#resolution" id="markdown-toc-resolution">Resolution</a></li>
+      <li><a href="#future-precautions" id="markdown-toc-future-precautions">Future Precautions</a></li>
+    </ul>
+  </li>
+  <li><a href="#diagnostic-tools" id="markdown-toc-diagnostic-tools">Diagnostic Tools</a></li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ul>
+
+<h2 id="background">Background</h2>
+
+<p>I got very strange issue when Compiling R from source code, where I was told the libraries that <code class="language-plaintext highlighter-rouge">libgomp.so</code> depends could not be found.</p>
+
+<p>I am working on a remote server without sudo privilege so I compiled everything form source code and generally place everything under <code class="language-plaintext highlighter-rouge">$HOME/.local</code>.</p>
+
+<p>I recently compiled my own gcc-11 with the gcc-7.5 provided by the server. And I get error when trying to compile R from the new gcc-11.</p>
+
+<h2 id="root-cause">Root Cause</h2>
+
+<p>The file <code class="language-plaintext highlighter-rouge">$HOME/.local/lib/libgomp.so</code><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> was, very suprisingly, a soft link to <code class="language-plaintext highlighter-rouge">$HOME/local/lib/libomp.so</code><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>.
+This unconventional setup was likely causing the linker errors, as the R compilation process was expecting the genuine <code class="language-plaintext highlighter-rouge">libgomp.so</code><sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> library and not the LLVM version.</p>
+
+<h3 id="why-the-misconfiguration">Why the Misconfiguration</h3>
+
+<ol>
+  <li>Manual intervention in an attempt to patch another issue.</li>
+  <li>A mix-up during package management or installation.</li>
+  <li>A misconfiguration during a custom build of GCC or another software.</li>
+</ol>
+
+<h3 id="resolution">Resolution</h3>
+
+<ol>
+  <li>The problematic symlink (<code class="language-plaintext highlighter-rouge">libgomp.so</code> pointing to <code class="language-plaintext highlighter-rouge">libomp.so</code>) was identified and renamed.</li>
+  <li>After correcting the symlink issue, the R source code compilation proceeded without the earlier errors.</li>
+</ol>
+
+<h3 id="future-precautions">Future Precautions</h3>
+
+<ol>
+  <li>Document any expedients or shortcuts taken during system configuration.</li>
+  <li>Use version control for system configurations or personal scripts.</li>
+  <li>Periodically review and audit custom configurations.</li>
+  <li>Employ isolated environments for experimental work or testing.</li>
+  <li>Regularly back up systems, especially before making major changes.</li>
+</ol>
+
+<h2 id="diagnostic-tools">Diagnostic Tools</h2>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">ldd</code></strong>: Checks the shared library dependencies of a binary or library. This tool initially indicated that <code class="language-plaintext highlighter-rouge">libomp.so</code> wasn’t recognized as a dynamic executable.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">file</code></strong>: Determines the type of a given file. This tool confirmed that <code class="language-plaintext highlighter-rouge">libomp.so</code> was an ELF 64-bit shared object but hinted at a possible FreeBSD targeting<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup>.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">objdump</code></strong>: Displays information about object files. It can show dynamic linking information when used with the <code class="language-plaintext highlighter-rouge">-p</code> flag.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">readelf</code></strong>: Provides detailed information about ELF binaries and shared objects. The <code class="language-plaintext highlighter-rouge">-d</code> option can display dynamic linking information, providing insights similar to <code class="language-plaintext highlighter-rouge">ldd</code>.</li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The issue underscores the importance of ensuring system configurations, especially library linkages, are correctly set up. Utilizing diagnostic tools such as <code class="language-plaintext highlighter-rouge">ldd</code>, <code class="language-plaintext highlighter-rouge">file</code>, <code class="language-plaintext highlighter-rouge">objdump</code>, and <code class="language-plaintext highlighter-rouge">readelf</code> proved invaluable in identifying the problem. An unconventional symlink led to unexpected compilation issues, highlighting the need for careful documentation and periodic review of system modifications.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>which should have been GCC’s OpenMP runtime library. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>LLVM’s OpenMP runtime library. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>which locates at <code class="language-plaintext highlighter-rouge">$HOME/.local/lib64</code> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>this is essentially how I realised something being strange, as I should not have compiled anything for FreeBSD. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
