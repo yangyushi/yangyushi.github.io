@@ -62,10 +62,21 @@
       <li><a href="#valgrind" id="markdown-toc-valgrind">Valgrind</a></li>
     </ul>
   </li>
+  <li><a href="#深入多态" id="markdown-toc-深入多态">深入多态</a>    <ul>
+      <li><a href="#编译时多态" id="markdown-toc-编译时多态">编译时多态</a></li>
+      <li><a href="#运行时多态" id="markdown-toc-运行时多态">运行时多态</a></li>
+    </ul>
+  </li>
   <li><a href="#指针" id="markdown-toc-指针">指针</a>    <ul>
       <li><a href="#声明" id="markdown-toc-声明">声明</a></li>
       <li><a href="#null-指针" id="markdown-toc-null-指针"><code class="language-plaintext highlighter-rouge">null</code> 指针</a></li>
       <li><a href="#this-指针" id="markdown-toc-this-指针"><code class="language-plaintext highlighter-rouge">this</code> 指针</a></li>
+    </ul>
+  </li>
+  <li><a href="#智能指针" id="markdown-toc-智能指针">智能指针</a>    <ul>
+      <li><a href="#独占指针unique-pointer" id="markdown-toc-独占指针unique-pointer">独占指针（Unique Pointer）</a></li>
+      <li><a href="#共享指针shared-pointer" id="markdown-toc-共享指针shared-pointer">共享指针（Shared Pointer）</a></li>
+      <li><a href="#弱指针weak-pointer" id="markdown-toc-弱指针weak-pointer">弱指针（Weak Pointer）</a></li>
     </ul>
   </li>
   <li><a href="#面向对象" id="markdown-toc-面向对象">面向对象</a>    <ul>
@@ -681,6 +692,76 @@
 
 <p>Valgrind 是一个非常强大的工具，对于内存调试和性能分析非常有用。了解其基本用法和功能可以帮助您更有效地进行 C++ 开发。</p>
 
+<h2 id="深入多态">深入多态</h2>
+
+<p>多态是面向对象编程中的一个核心概念，它允许对象被当作其父类的实例，而不是它们实际的类。在 C++ 中，有两种类型的多态：编译时（静态）多态和运行时（动态）多态。</p>
+
+<h3 id="编译时多态">编译时多态</h3>
+
+<p>编译时多态在编译过程中通过诸如函数重载、操作符重载和模板等机制得到解决。编译器根据参数类型和参数数量确定适当的函数调用。函数重载示例如下</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"打印整数: "</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">double</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"打印浮点数: "</span> <span class="o">&lt;&lt;</span> <span class="n">f</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="运行时多态">运行时多态</h3>
+
+<p>运行时多态通过继承和虚函数实现。它允许一个函数根据函数正在操作的实际对象的类型来执行不同的操作。下面的代码展示了基类和派生类示例</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"某种动物的声音"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Cat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Animal</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"喵"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>当你创建一个 <code class="language-plaintext highlighter-rouge">Cat</code> 对象并将其当作 <code class="language-plaintext highlighter-rouge">Animal</code> 对待时，会调用 <code class="language-plaintext highlighter-rouge">Cat</code> 的 <code class="language-plaintext highlighter-rouge">speak</code> 方法，演示了运行时多态。</p>
+
+<p>派生类的内存布局在开始处包含基类的布局，这允许基类指针正确地引用派生类对象。内存布局如下面的 ASCII 图所示</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Cat* ptr = new Cat();
+
++------------------+ 
+|   Animal 部分    | &lt;- ptr 指向这部分的开始
+|------------------|
+| - Animal 数据    | &lt;- 基类数据成员
++------------------+
+|   Cat 部分       | 
+|------------------|
+| - Cat 数据       | &lt;- 派生类数据成员
++------------------+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ptr</code> 指向 <code class="language-plaintext highlighter-rouge">Cat</code> 对象的开始，这包括 <code class="language-plaintext highlighter-rouge">Animal</code> 部分，因为派生类对象的布局是以基类的布局开始的。</p>
+
+<p>虚函数表用于在运行时解决函数调用。每个有虚函数的类都有自己的 vtable，如下面的 ASCII 图所示</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+------------------+
+|   Animal 类的    | 
+|   vtable         | 
++------------------+
+| Animal::speak()  | &lt;- 指向 Animal 的 speak 函数
++------------------+
+
++------------------+
+|   Cat 类的       | 
+|   vtable         | 
++------------------+
+| Cat::speak()     | &lt;- 指向 Cat 重写的 speak 函数
++------------------+
+</code></pre></div></div>
+
+<p>这个 vtable 机制确保了基于对象的实际类型调用正确的函数。</p>
+
 <h2 id="指针">指针</h2>
 
 <ul>
@@ -770,6 +851,61 @@
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">FOO</span><span class="o">::</span><span class="n">is_self</span> <span class="p">(</span><span class="n">FOO</span> <span class="o">&amp;</span><span class="n">object</span><span class="p">){</span>
     <span class="k">return</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">object</span> <span class="o">==</span> <span class="k">this</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="智能指针">智能指针</h2>
+
+<ul>
+  <li>C++中的智能指针允许在不使用<code class="language-plaintext highlighter-rouge">new</code>和<code class="language-plaintext highlighter-rouge">delete</code>的情况下使用指针。</li>
+  <li>需要包含头文件：<code class="language-plaintext highlighter-rouge">&lt;memory&gt;</code></li>
+  <li>智能指针的类型：
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">std::unique_ptr</code></li>
+      <li><code class="language-plaintext highlighter-rouge">std::shared_ptr</code></li>
+      <li><code class="language-plaintext highlighter-rouge">std::weak_ptr</code></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">std::unique_ptr</code>更受欢迎因为它的开销较小，但需要小心管理作用域。</li>
+</ul>
+
+<h3 id="独占指针unique-pointer">独占指针（Unique Pointer）</h3>
+
+<p>管理单个对象，并在指针超出作用域时自动销毁对象。构建 unique pointer 的代码如下：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">e</span><span class="p">(</span><span class="k">new</span> <span class="nf">E</span><span class="p">());</span>
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">();</span>  <span class="c1">// protect against exception</span>
+</code></pre></div></div>
+
+<p>其中，当我们直接使用 <code class="language-plaintext highlighter-rouge">new</code> 创建 <code class="language-plaintext highlighter-rouge">std::unique_ptr</code> 时，实际上进行了两个步骤：</p>
+
+<ol>
+  <li>为 <code class="language-plaintext highlighter-rouge">E</code> 分配内存。</li>
+  <li>调用 <code class="language-plaintext highlighter-rouge">E</code> 的构造函数。</li>
+</ol>
+
+<p>如果我们的程序在</p>
+
+<ol>
+  <li>内存分配之后、构造函数调用之前，或</li>
+  <li>构造函数调用期间</li>
+</ol>
+
+<p>抛出异常，会导致内存泄漏，因为分配的内存尚未分配给智能指针。相比之下，<code class="language-plaintext highlighter-rouge">std::make_unique</code> 在单个操作中处理分配和构造。如果在此过程中发生异常，<code class="language-plaintext highlighter-rouge">std::make_unique</code> 将自动清理（即释放）内存，从而防止内存泄漏。换言之，因为<strong>内存分配</strong>和<strong>构造函数调用</strong>被封装在同一个原子操作内，所以没有<strong>间隙</strong>可以让异常留下<strong>未被智能指针管理的已分配内存</strong>。</p>
+
+<h3 id="共享指针shared-pointer">共享指针（Shared Pointer）</h3>
+
+<p>通过引用计数来管理对象，有轻微的内存开销。 <strong>示例</strong>：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">e1</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">e1</span><span class="p">;</span> <span class="c1">// e1 和 e2 管理同一个对象</span>
+</code></pre></div></div>
+
+<h3 id="弱指针weak-pointer">弱指针（Weak Pointer）</h3>
+
+<p>复制<code class="language-plaintext highlighter-rouge">shared_ptr</code>但不增加引用计数。 <strong>示例</strong>：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Entity</span><span class="o">&gt;</span> <span class="n">e1</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Entity</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">Entity</span><span class="o">&gt;</span> <span class="n">e0</span> <span class="o">=</span> <span class="n">e1</span><span class="p">;</span> <span class="c1">// e0引用由e1管理的对象</span>
 </code></pre></div></div>
 
 <h2 id="面向对象">面向对象</h2>
