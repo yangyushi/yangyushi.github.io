@@ -34,17 +34,15 @@
 
 <div class="center post">
     <ul id="markdown-toc">
-  <li><a href="#general" id="markdown-toc-general">General</a>    <ul>
-      <li><a href="#rsync" id="markdown-toc-rsync"><code class="language-plaintext highlighter-rouge">rsync</code></a></li>
-      <li><a href="#nohup" id="markdown-toc-nohup"><code class="language-plaintext highlighter-rouge">nohup</code></a></li>
-      <li><a href="#pbcopy" id="markdown-toc-pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></a></li>
-      <li><a href="#xclilp" id="markdown-toc-xclilp">xclilp</a></li>
-      <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
-      <li><a href="#image" id="markdown-toc-image">Image</a></li>
-      <li><a href="#compilation" id="markdown-toc-compilation">Compilation</a></li>
-    </ul>
-  </li>
-  <li><a href="#hpc" id="markdown-toc-hpc">HPC</a>    <ul>
+  <li><a href="#find" id="markdown-toc-find"><code class="language-plaintext highlighter-rouge">find</code></a></li>
+  <li><a href="#rsync" id="markdown-toc-rsync"><code class="language-plaintext highlighter-rouge">rsync</code></a></li>
+  <li><a href="#nohup" id="markdown-toc-nohup"><code class="language-plaintext highlighter-rouge">nohup</code></a></li>
+  <li><a href="#pbcopy" id="markdown-toc-pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></a></li>
+  <li><a href="#xclilp" id="markdown-toc-xclilp">xclilp</a></li>
+  <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
+  <li><a href="#image" id="markdown-toc-image">Image</a></li>
+  <li><a href="#compile-things" id="markdown-toc-compile-things">Compile Things</a></li>
+  <li><a href="#hpc-related" id="markdown-toc-hpc-related">HPC Related</a>    <ul>
       <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
       <li><a href="#use-more-memory" id="markdown-toc-use-more-memory">Use More Memory</a></li>
     </ul>
@@ -57,9 +55,43 @@
 
 <hr />
 
-<h2 id="general">General</h2>
+<h2 id="find"><code class="language-plaintext highlighter-rouge">find</code></h2>
 
-<h3 id="rsync"><code class="language-plaintext highlighter-rouge">rsync</code></h3>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Find files by name</span>
+find /path/to/search <span class="nt">-name</span> <span class="s2">"filename.txt"</span>
+
+<span class="c"># Case insensitive search</span>
+find /path/to/search <span class="nt">-iname</span> <span class="s2">"filename.txt"</span>
+
+<span class="c"># Find directories only</span>
+find /path/to/search <span class="nt">-type</span> d <span class="nt">-name</span> <span class="s2">"directory_name"</span>
+
+<span class="c"># Find files based on file size (e.g., larger than 50MB)</span>
+find /path/to/search <span class="nt">-type</span> f <span class="nt">-size</span> +50M
+
+<span class="c"># Find files and execute a command on each file (e.g., list details)</span>
+find /path/to/search <span class="nt">-name</span> <span class="s2">"*.txt"</span> <span class="nt">-exec</span> <span class="nb">ls</span> <span class="nt">-lh</span> <span class="o">{}</span> <span class="se">\;</span>
+
+<span class="c"># Find files modified in the last 7 days</span>
+find /path/to/search <span class="nt">-mtime</span> <span class="nt">-7</span>
+
+<span class="c"># Find and delete files (e.g., files with .bak extension)</span>
+find /path/to/search <span class="nt">-name</span> <span class="s2">"*.bak"</span> <span class="nt">-delete</span>
+
+<span class="c"># Find files with specific permissions (e.g., 644)</span>
+find /path/to/search <span class="nt">-type</span> f <span class="nt">-perm</span> 644
+
+<span class="c"># Find files owned by a specific user</span>
+find /path/to/search <span class="nt">-user</span> username
+
+<span class="c"># Find files that meet multiple conditions (e.g., type file, ends with .txt, larger than 1MB)</span>
+find /path/to/search <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s2">"*.txt"</span> <span class="nt">-size</span> +1M
+
+<span class="c"># Exclude a specific directory (e.g., node_modules) from the search</span>
+find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-name</span> <span class="s2">"filename.txt"</span> <span class="nt">-print</span>
+</code></pre></div></div>
+
+<h2 id="rsync"><code class="language-plaintext highlighter-rouge">rsync</code></h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="o">[</span>OPTIONS] SOURCE <span class="o">[</span>SOURCE]... DEST
 </code></pre></div></div>
@@ -80,7 +112,7 @@
 
 <p>When you run <code class="language-plaintext highlighter-rouge">rsync</code>, it uses a delta-transfer algorithm to minimize data transfer by only sending the differences between the source and destination files. The <code class="language-plaintext highlighter-rouge">OPTIONS</code> can be used to control various aspects of its behavior, such as recursion into directories (<code class="language-plaintext highlighter-rouge">-r</code>), preserving file permissions (<code class="language-plaintext highlighter-rouge">-p</code>), and more. The <code class="language-plaintext highlighter-rouge">-a</code> flag is often used for ‘archive mode’, which is a shorthand for a number of other options (<code class="language-plaintext highlighter-rouge">-rlptgoD</code>) that preserve most attributes and enable recursion.</p>
 
-<h3 id="nohup"><code class="language-plaintext highlighter-rouge">nohup</code></h3>
+<h2 id="nohup"><code class="language-plaintext highlighter-rouge">nohup</code></h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>COMMAND <span class="o">[</span>ARG]... <span class="o">[</span>&amp;]
 </code></pre></div></div>
@@ -100,7 +132,7 @@
 
 <p>When you run a command with <code class="language-plaintext highlighter-rouge">nohup</code>, it detaches the process from the terminal and redirects the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and standard error (<code class="language-plaintext highlighter-rouge">stderr</code>) to a file, usually <code class="language-plaintext highlighter-rouge">nohup.out</code>.</p>
 
-<h3 id="pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></h3>
+<h2 id="pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pbcopy &lt; INPUT
 </code></pre></div></div>
@@ -124,7 +156,7 @@
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
 </code></pre></div></div>
 
-<h3 id="xclilp">xclilp</h3>
+<h2 id="xclilp">xclilp</h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xclip <span class="o">[</span>OPTION]... <span class="o">[</span>FILE]...
 </code></pre></div></div>
@@ -144,7 +176,7 @@
 
 <p>When you run <code class="language-plaintext highlighter-rouge">xclip</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> by default and places the contents into the X11 clipboard. You can specify which X11 selection to use with the <code class="language-plaintext highlighter-rouge">-sel</code> flag. For example, <code class="language-plaintext highlighter-rouge">-sel clip</code> uses the clipboard that is typically used for copy-paste operations.</p>
 
-<h3 id="print-information">Print Information</h3>
+<h2 id="print-information">Print Information</h2>
 
 <p>File size in MB</p>
 
@@ -164,7 +196,7 @@ openssl md5
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
 </code></pre></div></div>
 
-<h3 id="image">Image</h3>
+<h2 id="image">Image</h2>
 
 <p>Converting all png pictures into tif format:</p>
 
@@ -176,7 +208,7 @@ openssl md5
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
 
-<h3 id="compilation">Compilation</h3>
+<h2 id="compile-things">Compile Things</h2>
 
 <p>Configuring Vim:</p>
 
@@ -211,7 +243,7 @@ make <span class="nt">-j8</span>
 cd</span> ..
 </code></pre></div></div>
 
-<h2 id="hpc">HPC</h2>
+<h2 id="hpc-related">HPC Related</h2>
 
 <p>I used BlueCrystal (HPC in the university of Bristol) a lot while doing my PhD. These are the commands I used a lot.</p>
 
