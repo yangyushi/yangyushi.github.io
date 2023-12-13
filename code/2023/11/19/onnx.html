@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Neural Network represented by ONNX</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="main">
+        <div id="side_bar">
+    19 Nov 2023
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#onnxruntime" id="markdown-toc-onnxruntime">ONNXRuntime</a></li>
+  <li><a href="#profiling-the-model" id="markdown-toc-profiling-the-model">Profiling the Model</a></li>
+  <li><a href="#other-tools" id="markdown-toc-other-tools">Other Tools</a>    <ul>
+      <li><a href="#netron" id="markdown-toc-netron">Netron</a></li>
+      <li><a href="#onnx-graphsurgeon" id="markdown-toc-onnx-graphsurgeon">ONNX GraphSurgeon</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>A machine learning model is often represetned as a <em>computation graph</em> in the ONNX format.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
+
+<p>Operationally, we train our model and then (somehow) export the model to a <code class="language-plaintext highlighter-rouge">*.onnx</code> file on our harddrive.
+This file includes the definition of our model, a <em>computation graph</em><sup id="fnref:0" role="doc-noteref"><a href="#fn:0" class="footnote" rel="footnote">2</a></sup>, and the corresponding weights.</p>
+
+<p>The building blocks of a ONNX computation graph are:</p>
+
+<ul>
+  <li>Nodes: the input/output tensors or the operators (a single unit to carry out a specific calculation).</li>
+  <li>Initializers: the constants<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> within the graph, often act as the <em>weight</em> of the model.</li>
+  <li>Attributes: Fixed parameters of an operator<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup>.</li>
+</ul>
+
+<p>For instance, a linear regression model: <code class="language-plaintext highlighter-rouge">y = a x + c</code>, could be represented with,</p>
+
+<ul>
+  <li>inputs
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">x</code>: a input tensor</li>
+      <li><code class="language-plaintext highlighter-rouge">a</code>: a initializer</li>
+      <li><code class="language-plaintext highlighter-rouge">c</code>: a initializer</li>
+    </ul>
+  </li>
+  <li>output: tensor <code class="language-plaintext highlighter-rouge">y</code></li>
+  <li>operators:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">MatMul</code>: take two inputs, <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">a</code></li>
+      <li><code class="language-plaintext highlighter-rouge">Add</code>: take two inputs, the output of <code class="language-plaintext highlighter-rouge">MatMul</code> and <code class="language-plaintext highlighter-rouge">c</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="onnxruntime">ONNXRuntime</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">onnxruntime</code> library provides C++/Python/C# APIs to execute an ONNX model, so that the inference process can be executed on various platforms including CPU and GPU.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">onnxruntime</code> library also provides some model optimization methods like basic operator fusion<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">5</a></sup> and quantization<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">6</a></sup>.</p>
+
+<p>The very nice feature about <code class="language-plaintext highlighter-rouge">onnxruntime</code> is its support of various <a href="https://onnxruntime.ai/docs/execution-providers/">execution providers</a> (EP). Effectively this means we can write a single standard codebase with the <code class="language-plaintext highlighter-rouge">onnxruntime</code> API, and make it run on different devices, simply by changing the EP in the configuration. Sounds good, right?</p>
+
+<p>As far as I know, the standard release version<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">7</a></sup> only contains 3 EPs:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CPUExecutionProvider</code>: support the model to be executed on a general CPU<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">8</a></sup>.</li>
+  <li><code class="language-plaintext highlighter-rouge">CUDAExecutionProvider</code>: support the model  to be executed on a Nvidia GPU.</li>
+  <li><code class="language-plaintext highlighter-rouge">TensorrtExecutionProvider</code>: support the model to be executed on a Nvidia GPU, but in a (significantly) optimized engine named <code class="language-plaintext highlighter-rouge">TensorRT</code>.<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">9</a></sup></li>
+</ul>
+
+<p>If we want to use more EPs, we have to build our own <code class="language-plaintext highlighter-rouge">onnxruntime</code> from the source code. For instance, if we want to use the <code class="language-plaintext highlighter-rouge">OpenVINOExecutionProvider</code>, we have to perform two steps,</p>
+
+<ol>
+  <li>Download the source code of <code class="language-plaintext highlighter-rouge">openvino</code> and build it.</li>
+  <li>Download the source code of <code class="language-plaintext highlighter-rouge">onnxruntime</code> and build it, following the <a href="https://onnxruntime.ai/docs/build/eps.html">EP-specific building instruction</a>.</li>
+</ol>
+
+<p>Here is an example of step 2, where I used the code to build <code class="language-plaintext highlighter-rouge">onnxruntime</code> with <code class="language-plaintext highlighter-rouge">OpenVINOExecutionProvider</code> supported.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">DIR_OPENVINO</span><span class="o">=</span>../openvino
+<span class="nv">DIR_CUDA</span><span class="o">=</span><span class="nv">$HOME</span>/.local/cuda
+<span class="nv">DIR_TRT</span><span class="o">=</span><span class="nv">$HOME</span>/.local/tensorrt
+
+<span class="nb">source</span> <span class="nv">$DIR_OPENVINO</span>/setupvar.sh
+./build.sh <span class="nt">--config</span> Release <span class="se">\</span>
+          <span class="nt">--build_shared_lib</span> <span class="se">\</span>
+          <span class="nt">--parallel</span> <span class="se">\</span>
+          <span class="nt">--skip_submodule_sync</span> <span class="se">\</span>
+          <span class="nt">--use_cuda</span> <span class="se">\</span>
+          <span class="nt">--cuda_home</span> <span class="nv">$DIR_CUDA</span> <span class="se">\</span>
+          <span class="nt">--cudnn_home</span> <span class="nv">$DIR_CUDA</span> <span class="se">\</span>
+          <span class="nt">--use_tensorrt</span> <span class="nt">--tensorrt_home</span> <span class="nv">$DIR_TRT</span> <span class="se">\</span>
+          <span class="nt">--use_openvino</span> CPU_FP32 <span class="se">\</span>
+          <span class="nt">--build_wheel</span>
+</code></pre></div></div>
+
+<p>We can check the availabe EPs with the Python API provided by <code class="language-plaintext highlighter-rouge">onnxruntime</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="n">onnxruntime</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">onnxruntime</span><span class="p">.</span><span class="nf">get_available_providers</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">[</span><span class="sh">'</span><span class="s">OpenVINOExecutionProvider</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">CPUExecutionProvider</span><span class="sh">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="profiling-the-model">Profiling the Model</h2>
+
+<p>We want our neural network code to execute fast. We do this by working hard on the slow part. We know which part of our model is slow by <strong>profiling</strong> the execution/inference process.</p>
+
+<p>If we use onnxruntime to execute our ONNX model, we can enable profiling by setting the attribute <code class="language-plaintext highlighter-rouge">enable_profiling</code> of the <code class="language-plaintext highlighter-rouge">SessionOptions</code> instance to <code class="language-plaintext highlighter-rouge">True</code>. Here is an exmple.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">onnxruntime</span> <span class="k">as</span> <span class="n">ort</span>
+
+<span class="n">sess_options</span> <span class="o">=</span> <span class="n">ort</span><span class="p">.</span><span class="nc">SessionOptions</span><span class="p">()</span>
+<span class="n">sess_options</span><span class="p">.</span><span class="n">enable_profiling</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">ort</span><span class="p">.</span><span class="nc">InferenceSession</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">your_model.onnx</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sess_options</span><span class="o">=</span><span class="n">sess_options</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Run your model ...
+</span>
+<span class="n">session</span><span class="p">.</span><span class="nf">end_profiling</span><span class="p">()</span>
+</code></pre></div></div>
+<p>The code above would generate a JSON file (<code class="language-plaintext highlighter-rouge">.json</code>), which recorded the start time and end time for each nodes.</p>
+
+<p>It is convenient to use the <strong>Chrome tracing tool</strong> to visualise the json file. To start the tool, we type the following URL on a Chrome/Chromium browser,</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chrome://tracing
+</code></pre></div></div>
+
+<p>And load the JSON file by clicking the <code class="language-plaintext highlighter-rouge">load</code> button.</p>
+
+<h2 id="other-tools">Other Tools</h2>
+
+<h3 id="netron">Netron</h3>
+
+<p>A viewer for neural network models, including ONNX.</p>
+
+<p>You can just open the <code class="language-plaintext highlighter-rouge">.onnx</code> file with <code class="language-plaintext highlighter-rouge">Netron</code> and see the computation graph rendered as, well, a <em>graph</em>!</p>
+
+<p>It is fun (and challenging) to follow the computation graph in the rendered picture in Netron. I encourage everyone to trace the input tensor all the way through the graph once. You are likely to learn something new!</p>
+
+<h3 id="onnx-graphsurgeon">ONNX GraphSurgeon</h3>
+
+<p>Nvidia’s <a href="https://github.com/NVIDIA/TensorRT/tree/master/tools/onnx-graphsurgeon">Onnx GraphSurgeon</a> is a Python package for editing the computation graph represented by ONNX.</p>
+
+<p>It is basically a wrapper around the <code class="language-plaintext highlighter-rouge">onnx</code> package, but the APIs are more intuitive, well, at least for me.</p>
+
+<p>It is distributed with the TensorRT package, but it is self contained. You can install it to edit your <code class="language-plaintext highlighter-rouge">.onnx</code> file without installing TensorRT.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>we will use the term “model”, “computation graph”, “onnx model”, and “neural network” interchangably in this note. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:0" role="doc-endnote">
+      <p>Mathematically, a graph is composed of nodes and edges. For machine learning models, the computation graph corresponds to the execution instructions to compute the required result. <a href="#fnref:0" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>the name intializer is unfortunately misleading. In fact it is called <em>constant</em> in <code class="language-plaintext highlighter-rouge">onnx_graphsurgeon</code> package developed by Nvidia, which is a wrapper of the <code class="language-plaintext highlighter-rouge">onnx</code> package. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>for instance, the <code class="language-plaintext highlighter-rouge">Gemm</code> operator has parameters <code class="language-plaintext highlighter-rouge">alpha</code>, <code class="language-plaintext highlighter-rouge">beta</code>, <code class="language-plaintext highlighter-rouge">transA</code>, and <code class="language-plaintext highlighter-rouge">transB</code>. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>As far as I know, <code class="language-plaintext highlighter-rouge">onnxruntime</code> automatically fuse <code class="language-plaintext highlighter-rouge">MatMul</code> and <code class="language-plaintext highlighter-rouge">Add</code> into <code class="language-plaintext highlighter-rouge">GEMM</code>. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>In the default setting, <code class="language-plaintext highlighter-rouge">onnxruntime</code> insert quantization and de-quantization operators for every node in the computation graph, to reduce the precision of the model weight from 32-bit float point (<code class="language-plaintext highlighter-rouge">float</code> in C++, <code class="language-plaintext highlighter-rouge">np.float32</code> in Python) to 8-bit signed integer. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>You can get the release easily from PyPI with <code class="language-plaintext highlighter-rouge">pip install onnxruntime-gpu</code> <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>I only used onnxruntime on the X68 architecture. I never tested it on ARM or RISC-V. I suspect the onnxruntime folks would support ARM given the success of Macbooks. But I am not privileged to get a good Mac for myself! <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>TensorRT is extremely powerful. I have witnessed 5x to 10x performance boost simply by converting a <code class="language-plaintext highlighter-rouge">.onnx</code> file to a TensorRT engine, with a reduced GPU memory consumption. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
