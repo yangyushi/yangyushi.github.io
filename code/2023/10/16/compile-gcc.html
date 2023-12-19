@@ -35,34 +35,204 @@
 <div class="center post">
     <ul id="markdown-toc">
   <li><a href="#general-steps" id="markdown-toc-general-steps">General Steps</a></li>
+  <li><a href="#dependency" id="markdown-toc-dependency">Dependency</a></li>
+  <li><a href="#building" id="markdown-toc-building">Building</a>    <ul>
+      <li><a href="#gnu-autotools" id="markdown-toc-gnu-autotools">GNU Autotools</a></li>
+      <li><a href="#gmp" id="markdown-toc-gmp">gmp</a></li>
+      <li><a href="#isl" id="markdown-toc-isl">isl</a></li>
+      <li><a href="#mpfr" id="markdown-toc-mpfr">mpfr</a></li>
+      <li><a href="#mpc" id="markdown-toc-mpc">mpc</a></li>
+      <li><a href="#gcc" id="markdown-toc-gcc">gcc</a></li>
+    </ul>
+  </li>
   <li><a href="#notes" id="markdown-toc-notes">Notes</a></li>
 </ul>
 
 <p>Sometimes we need our own version of <code class="language-plaintext highlighter-rouge">gcc</code> (often the latest versions) to use the new features in C++.
-This means we need to compile the souce code on the machine, which can be difficult.</p>
+This means we need to compile the source code on the machine, which can be difficult.</p>
 
 <h2 id="general-steps">General Steps</h2>
 
 <ol>
   <li>Download the source code.</li>
   <li>Perform a <strong>out-of-source</strong> build.</li>
-  <li>Installing dependencies:
-    <ul>
-      <li>libmpc</li>
-      <li>mpfr</li>
-      <li>gmp</li>
-      <li>isl</li>
-    </ul>
-  </li>
-  <li>Configure.</li>
-  <li>Compile (make).</li>
+  <li>Installing dependencies: <code class="language-plaintext highlighter-rouge">mpc</code>, <code class="language-plaintext highlighter-rouge">mpfr</code>, <code class="language-plaintext highlighter-rouge">gmp</code>, <code class="language-plaintext highlighter-rouge">isl</code></li>
+  <li>Configure with <code class="language-plaintext highlighter-rouge">configure</code>.</li>
+  <li>Compile &amp; Link with <code class="language-plaintext highlighter-rouge">make</code></li>
 </ol>
+
+<h2 id="dependency">Dependency</h2>
+
+<p>The relationship between all packages are</p>
+
+<svg width="222pt" height="260pt" viewBox="0.00 0.00 222.15 260.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 256)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-256 218.15,-256 218.15,4 -4,4" />
+<!-- gcc -->
+<g id="node1" class="node">
+<title>gcc</title>
+<ellipse fill="none" stroke="black" cx="82" cy="-234" rx="27" ry="18" />
+<text text-anchor="middle" x="82" y="-230.3" font-family="Times,serif" font-size="14.00">gcc</text>
+</g>
+<!-- isl -->
+<g id="node2" class="node">
+<title>isl</title>
+<ellipse fill="none" stroke="black" cx="27" cy="-90" rx="27" ry="18" />
+<text text-anchor="middle" x="27" y="-86.3" font-family="Times,serif" font-size="14.00">isl</text>
+</g>
+<!-- gcc&#45;&gt;isl -->
+<g id="edge1" class="edge">
+<title>gcc&#45;&gt;isl</title>
+<path fill="none" stroke="black" d="M75.58,-216.43C66.15,-192.09 48.46,-146.4 37.23,-117.4" />
+<polygon fill="black" stroke="black" points="40.42,-115.96 33.55,-107.9 33.89,-118.49 40.42,-115.96" />
+</g>
+<!-- gmp -->
+<g id="node3" class="node">
+<title>gmp</title>
+<ellipse fill="none" stroke="black" cx="101" cy="-18" rx="31.4" ry="18" />
+<text text-anchor="middle" x="101" y="-14.3" font-family="Times,serif" font-size="14.00">gmp</text>
+</g>
+<!-- gcc&#45;&gt;gmp -->
+<g id="edge7" class="edge">
+<title>gcc&#45;&gt;gmp</title>
+<path fill="none" stroke="black" d="M83.52,-215.85C86.81,-178.83 94.59,-91.18 98.57,-46.39" />
+<polygon fill="black" stroke="black" points="102.07,-46.5 99.47,-36.23 95.1,-45.88 102.07,-46.5" />
+</g>
+<!-- mpc -->
+<g id="node4" class="node">
+<title>mpc</title>
+<ellipse fill="none" stroke="black" cx="141" cy="-162" rx="30.59" ry="18" />
+<text text-anchor="middle" x="141" y="-158.3" font-family="Times,serif" font-size="14.00">mpc</text>
+</g>
+<!-- gcc&#45;&gt;mpc -->
+<g id="edge3" class="edge">
+<title>gcc&#45;&gt;mpc</title>
+<path fill="none" stroke="black" d="M94.8,-217.81C102.5,-208.67 112.47,-196.85 121.17,-186.52" />
+<polygon fill="black" stroke="black" points="124.05,-188.55 127.81,-178.64 118.69,-184.03 124.05,-188.55" />
+</g>
+<!-- isl&#45;&gt;gmp -->
+<g id="edge2" class="edge">
+<title>isl&#45;&gt;gmp</title>
+<path fill="none" stroke="black" d="M41.98,-74.83C52.3,-65.07 66.22,-51.9 77.95,-40.8" />
+<polygon fill="black" stroke="black" points="80.42,-43.28 85.28,-33.87 75.61,-38.2 80.42,-43.28" />
+</g>
+<!-- mpc&#45;&gt;gmp -->
+<g id="edge4" class="edge">
+<title>mpc&#45;&gt;gmp</title>
+<path fill="none" stroke="black" d="M136.25,-144.15C129.4,-119.81 116.65,-74.57 108.51,-45.67" />
+<polygon fill="black" stroke="black" points="111.82,-44.5 105.74,-35.82 105.08,-46.4 111.82,-44.5" />
+</g>
+<!-- mpfr -->
+<g id="node5" class="node">
+<title>mpfr</title>
+<ellipse fill="none" stroke="black" cx="181" cy="-90" rx="33.29" ry="18" />
+<text text-anchor="middle" x="181" y="-86.3" font-family="Times,serif" font-size="14.00">mpfr</text>
+</g>
+<!-- mpc&#45;&gt;mpfr -->
+<g id="edge5" class="edge">
+<title>mpc&#45;&gt;mpfr</title>
+<path fill="none" stroke="black" d="M150.28,-144.76C155.05,-136.4 160.99,-126.02 166.37,-116.61" />
+<polygon fill="black" stroke="black" points="169.57,-118.05 171.5,-107.63 163.49,-114.58 169.57,-118.05" />
+</g>
+<!-- mpfr&#45;&gt;gmp -->
+<g id="edge6" class="edge">
+<title>mpfr&#45;&gt;gmp</title>
+<path fill="none" stroke="black" d="M164.03,-74.15C152.75,-64.28 137.75,-51.15 125.21,-40.19" />
+<polygon fill="black" stroke="black" points="127.22,-37.3 117.39,-33.35 122.62,-42.56 127.22,-37.3" />
+</g>
+</g>
+</svg>
+
+<p>Therefore, we can install the packages in the following order,</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gmp -&gt; isl -&gt; mpfr -&gt; mpc -&gt; gcc
+</code></pre></div></div>
+
+<h2 id="building">Building</h2>
+
+<h3 id="gnu-autotools">GNU Autotools</h3>
+
+<p>The building process or all preceding libraries are handled by the <a href="https://en.wikipedia.org/wiki/GNU_Autotools">GNU Autotools</a>, and we typically interact with the building system via the following command:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure
+make
+<span class="nb">sudo </span>make <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>Afterwards, the package will be installed to the default directory <code class="language-plaintext highlighter-rouge">/usr/local</code>. This is the reason why we need to use <code class="language-plaintext highlighter-rouge">sudo</code> privilege in the final step. Because we need to copy the building results into places like <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> and <code class="language-plaintext highlighter-rouge">/usr/local/lib</code>, which require <code class="language-plaintext highlighter-rouge">sudo</code> privilege.</p>
+
+<p>If we want to install the library/binary into a custom place, we need to specify the <code class="language-plaintext highlighter-rouge">--prefix</code> option. My personal reference is to install all custom libraries into <code class="language-plaintext highlighter-rouge">$HOME/.local</code>, with command</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>Since the packages are installed into user–owned directories, we can do <code class="language-plaintext highlighter-rouge">make install</code> directly without <code class="language-plaintext highlighter-rouge">sudo</code> privilege. This is extremely helpful if we were working on a cluster and we want customised environment<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<p>I highly recommend to read the help information for the configuration by,</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--help</span>
+</code></pre></div></div>
+
+<p>I always find ways to solve my building problems by reading it carefully.</p>
+
+<h3 id="gmp">gmp</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="isl">isl</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="nt">--with-gmp-prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="mpfr">mpfr</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="nt">--with-gmp</span><span class="o">=</span><span class="nv">$HOME</span>/.local
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="mpc">mpc</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="nt">--with-gmp</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="nt">--with-mpfr</span><span class="o">=</span><span class="nv">$HOME</span>/.local
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="gcc">gcc</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="se">\</span>
+<span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="se">\</span>
+<span class="nt">--with-gmp</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="se">\</span>
+<span class="nt">--with-mpc</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="se">\</span>
+<span class="nt">--with-mpfr</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="se">\</span>
+<span class="nt">--with-isl</span><span class="o">=</span><span class="nv">$HOME</span>/.local <span class="se">\</span>
+<span class="nt">--enable-languages</span><span class="o">=</span>c,c++,fortran <span class="se">\</span>
+<span class="nt">--disable-multilib</span>
+make
+make <span class="nb">install</span>
+</code></pre></div></div>
 
 <h2 id="notes">Notes</h2>
 
 <ul>
   <li>We need to <a href="https://stackoverflow.com/a/24377214/4116538">unset C/C++ related flags</a> with command <code class="language-plaintext highlighter-rouge">unset</code>.</li>
 </ul>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>The administrator may get pissed off and refuse to debug my code. But I find it worthwhile. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
 </div>
 
