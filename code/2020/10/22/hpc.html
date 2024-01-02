@@ -34,11 +34,12 @@
 
 <div class="center post">
     <ul id="markdown-toc">
+  <li><a href="#chmod" id="markdown-toc-chmod"><code class="language-plaintext highlighter-rouge">chmod</code></a></li>
   <li><a href="#find" id="markdown-toc-find"><code class="language-plaintext highlighter-rouge">find</code></a></li>
   <li><a href="#rsync" id="markdown-toc-rsync"><code class="language-plaintext highlighter-rouge">rsync</code></a></li>
   <li><a href="#nohup" id="markdown-toc-nohup"><code class="language-plaintext highlighter-rouge">nohup</code></a></li>
   <li><a href="#pbcopy" id="markdown-toc-pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></a></li>
-  <li><a href="#xclilp" id="markdown-toc-xclilp">xclilp</a></li>
+  <li><a href="#xclilp" id="markdown-toc-xclilp"><code class="language-plaintext highlighter-rouge">xclilp</code></a></li>
   <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
   <li><a href="#image" id="markdown-toc-image">Image</a></li>
   <li><a href="#compile-things" id="markdown-toc-compile-things">Compile Things</a></li>
@@ -49,11 +50,69 @@
   </li>
 </ul>
 
-<hr />
+<h2 id="chmod"><code class="language-plaintext highlighter-rouge">chmod</code></h2>
 
-<p>I use the following handy script to make my life easier</p>
+<p>Example,</p>
 
-<hr />
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">chmod +x FILENAME</code>: give executable permission for file named FILENAME for all users</li>
+  <li><code class="language-plaintext highlighter-rouge">chmod 664 FILENAME</code>: change the permission for FILENAME to <code class="language-plaintext highlighter-rouge">-rw-rw-r--</code>, meaning
+    <ul>
+      <li>write and read, <code class="language-plaintext highlighter-rouge">rw</code>, for owner</li>
+      <li>write and read, <code class="language-plaintext highlighter-rouge">rw</code>, for group member</li>
+      <li>read only, <code class="language-plaintext highlighter-rouge">r</code>, for other users.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Some useful octal notations are in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Octal Notation</th>
+      <th>Symbolic Notation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>000</td>
+      <td><code class="language-plaintext highlighter-rouge">----------</code></td>
+    </tr>
+    <tr>
+      <td>111</td>
+      <td><code class="language-plaintext highlighter-rouge">---x--x--x</code></td>
+    </tr>
+    <tr>
+      <td>222</td>
+      <td><code class="language-plaintext highlighter-rouge">--w--w--w-</code></td>
+    </tr>
+    <tr>
+      <td>333</td>
+      <td><code class="language-plaintext highlighter-rouge">--wx-wx-wx</code></td>
+    </tr>
+    <tr>
+      <td>444</td>
+      <td><code class="language-plaintext highlighter-rouge">-r--r--r--</code></td>
+    </tr>
+    <tr>
+      <td>555</td>
+      <td><code class="language-plaintext highlighter-rouge">-r-xr-xr-x</code></td>
+    </tr>
+    <tr>
+      <td>666</td>
+      <td><code class="language-plaintext highlighter-rouge">-rw-rw-rw-</code></td>
+    </tr>
+    <tr>
+      <td>777</td>
+      <td><code class="language-plaintext highlighter-rouge">-rwxrwxrwx</code></td>
+    </tr>
+    <tr>
+      <td>664</td>
+      <td><code class="language-plaintext highlighter-rouge">-rw-rw-r--</code></td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="find"><code class="language-plaintext highlighter-rouge">find</code></h2>
 
@@ -156,7 +215,7 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pbcopy</span><span class="o">=</span><span class="s1">'xclip -selection clipboard'</span>
 </code></pre></div></div>
 
-<h2 id="xclilp">xclilp</h2>
+<h2 id="xclilp"><code class="language-plaintext highlighter-rouge">xclilp</code></h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xclip <span class="o">[</span>OPTION]... <span class="o">[</span>FILE]...
 </code></pre></div></div>
