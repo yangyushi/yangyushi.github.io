@@ -42,6 +42,7 @@
   <li><a href="#xclilp" id="markdown-toc-xclilp"><code class="language-plaintext highlighter-rouge">xclilp</code></a></li>
   <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
   <li><a href="#image" id="markdown-toc-image">Image</a></li>
+  <li><a href="#download-things" id="markdown-toc-download-things">Download Things</a></li>
   <li><a href="#compile-things" id="markdown-toc-compile-things">Compile Things</a></li>
   <li><a href="#hpc-related" id="markdown-toc-hpc-related">HPC Related</a>    <ul>
       <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
@@ -265,6 +266,16 @@ openssl md5
 <p>Display Image</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
+</code></pre></div></div>
+
+<h2 id="download-things">Download Things</h2>
+
+<p>Get moderate sized MP4 videos from the Youtube.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yt-dlp <span class="se">\</span>
+    <span class="nt">-f</span> <span class="s2">"bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"</span><span class="se">\</span>
+    <span class="nt">-N</span> 4 <span class="se">\</span>
+    
 </code></pre></div></div>
 
 <h2 id="compile-things">Compile Things</h2>
