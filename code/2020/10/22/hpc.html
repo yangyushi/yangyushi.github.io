@@ -45,6 +45,11 @@
   <li><a href="#download-things" id="markdown-toc-download-things">Download Things</a></li>
   <li><a href="#hardware-info" id="markdown-toc-hardware-info">Hardware Info</a></li>
   <li><a href="#compile-things" id="markdown-toc-compile-things">Compile Things</a></li>
+  <li><a href="#cuda-related" id="markdown-toc-cuda-related">CUDA Related</a>    <ul>
+      <li><a href="#install" id="markdown-toc-install">Install</a></li>
+      <li><a href="#unknown-error" id="markdown-toc-unknown-error">Unknown Error</a></li>
+    </ul>
+  </li>
   <li><a href="#hpc-related" id="markdown-toc-hpc-related">HPC Related</a>    <ul>
       <li><a href="#transfer-files" id="markdown-toc-transfer-files">Transfer files</a></li>
       <li><a href="#use-more-memory" id="markdown-toc-use-more-memory">Use More Memory</a></li>
@@ -320,6 +325,27 @@ make <span class="nt">-j8</span>
 
 cd</span> ..
 </code></pre></div></div>
+
+<h2 id="cuda-related">CUDA Related</h2>
+
+<h3 id="install">Install</h3>
+
+<p>the coda toolchain, instead of the driver, is specified by the <code class="language-plaintext highlighter-rouge">--toolkit</code> option.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./cuda_11.8.0_520.61.05_linux.run <span class="nt">--toolkit</span>
+</code></pre></div></div>
+
+<h3 id="unknown-error">Unknown Error</h3>
+
+<p>Error: <code class="language-plaintext highlighter-rouge">CUDA initialization: CUDA unknown error</code></p>
+
+<p>Solution:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>rmmod nvidia_uvm
+<span class="nb">sudo </span>modprobe nvidia_uvm
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/73992912">Reference</a></p>
 
 <h2 id="hpc-related">HPC Related</h2>
 
