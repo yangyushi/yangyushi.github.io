@@ -86,7 +86,6 @@ nav a {
   font-size: 13px;
   line-height: 1.5;
   min-width: 500px;
-  overflow: visible;
 }
 
 .current {
@@ -230,7 +229,6 @@ blockquote:after {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
-  overflow: visible;
 }
 
 .two_column {

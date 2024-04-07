@@ -337,7 +337,12 @@ cd</span> ..
 
 <h3 id="unknown-error">Unknown Error</h3>
 
-<p>Error: <code class="language-plaintext highlighter-rouge">CUDA initialization: CUDA unknown error</code></p>
+<p>Several errors can occur because Nvidia kernel is breaks, includeing</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CUDA initialization: CUDA unknown error</code></li>
+  <li><code class="language-plaintext highlighter-rouge">RuntimeError: Torch is not able to use GPU</code></li>
+</ul>
 
 <p>Solution:</p>
 
@@ -381,7 +386,6 @@ scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_
 </code></pre></div></div>
 
 </div>
-
 
     </div>
 
