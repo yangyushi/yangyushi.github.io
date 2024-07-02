@@ -274,6 +274,17 @@ openssl md5
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>display picture.png
 </code></pre></div></div>
 
+<p>Convert fonts in PDF to curves</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gs <span class="nt">-o</span> out.pdf <span class="nt">-dNoOutputFonts</span> <span class="nt">-sDEVICE</span><span class="o">=</span>pdfwrite <span class="k">in</span>.pdf
+</code></pre></div></div>
+
+<p>Convert PDF to EPS</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gs <span class="nt">-q</span> <span class="nt">-dNOCACHE</span> <span class="nt">-dNOPAUSE</span> <span class="nt">-dBATCH</span> <span class="nt">-dSAFER</span> <span class="nt">-sDEVICE</span><span class="o">=</span>eps2write<span class="se">\</span>
+    <span class="nt">-sOutputFile</span><span class="o">=</span>out.eps <span class="k">in</span>.pdf
+</code></pre></div></div>
+
 <h2 id="download-things">Download Things</h2>
 
 <p>Get moderate sized MP4 videos from the Youtube.</p>
@@ -386,6 +397,7 @@ scp <span class="nt">-r</span> <span class="nv">$myhpc</span>:REMOTE_PATH LOCAL_
 </code></pre></div></div>
 
 </div>
+
 
     </div>
 
