@@ -1,0 +1,1686 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LangChain for LLM Application Development</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+
+    <script src="/assets/js/toc.js"></script>
+    <script src="/assets/js/highlight.pack.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+
+  <body>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="main">
+        <div id="side_bar">
+    21 Jul 2024
+</div>
+
+<div class="center post">
+    <ul id="markdown-toc">
+  <li><a href="#models-prompts-and-parsers" id="markdown-toc-models-prompts-and-parsers">Models, Prompts, and Parsers</a>    <ul>
+      <li><a href="#using-an-llm-via-ollama" id="markdown-toc-using-an-llm-via-ollama">Using an LLM via Ollama</a></li>
+      <li><a href="#chatting-with-a-template" id="markdown-toc-chatting-with-a-template">Chatting with a template</a></li>
+      <li><a href="#use-llm-to-get-json-output" id="markdown-toc-use-llm-to-get-json-output">Use LLM to get JSON output</a></li>
+    </ul>
+  </li>
+  <li><a href="#memory" id="markdown-toc-memory">Memory</a>    <ul>
+      <li><a href="#conversationbuffermemory" id="markdown-toc-conversationbuffermemory">ConversationBufferMemory</a></li>
+      <li><a href="#clear-memory" id="markdown-toc-clear-memory">clear memory</a></li>
+      <li><a href="#add-extra-memory" id="markdown-toc-add-extra-memory">add extra memory</a></li>
+      <li><a href="#window-memory" id="markdown-toc-window-memory">Window Memory</a></li>
+      <li><a href="#memory-with-a-fixed-token-size" id="markdown-toc-memory-with-a-fixed-token-size">Memory with a Fixed Token size</a></li>
+      <li><a href="#summary-in-the-memory" id="markdown-toc-summary-in-the-memory">Summary in the Memory</a></li>
+    </ul>
+  </li>
+  <li><a href="#chains-in-langchain" id="markdown-toc-chains-in-langchain">Chains in LangChain</a>    <ul>
+      <li><a href="#llmchain" id="markdown-toc-llmchain">LLMChain</a></li>
+      <li><a href="#simple-sequential-chain" id="markdown-toc-simple-sequential-chain">Simple Sequential Chain</a></li>
+      <li><a href="#sequential-chain" id="markdown-toc-sequential-chain">Sequential Chain</a></li>
+      <li><a href="#router-chain" id="markdown-toc-router-chain">Router Chain</a></li>
+    </ul>
+  </li>
+  <li><a href="#qa-for-documents" id="markdown-toc-qa-for-documents">QA for Documents</a>    <ul>
+      <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
+      <li><a href="#creating-the-vector-db" id="markdown-toc-creating-the-vector-db">Creating the Vector DB</a></li>
+      <li><a href="#generate-response-given-a-query" id="markdown-toc-generate-response-given-a-query">Generate response given a query</a></li>
+      <li><a href="#rag-step-by-step" id="markdown-toc-rag-step-by-step">RAG Step-by-Step</a>        <ul>
+          <li><a href="#load-the-documents" id="markdown-toc-load-the-documents">Load the Documents</a></li>
+          <li><a href="#create-the-vector-database" id="markdown-toc-create-the-vector-database">Create the Vector Database</a></li>
+          <li><a href="#generate-the-response" id="markdown-toc-generate-the-response">Generate the Response</a></li>
+        </ul>
+      </li>
+      <li><a href="#retrieval-qa-chain" id="markdown-toc-retrieval-qa-chain">Retrieval QA Chain</a></li>
+    </ul>
+  </li>
+  <li><a href="#retrievel-methods" id="markdown-toc-retrievel-methods">Retrievel Methods</a>    <ul>
+      <li><a href="#stuff" id="markdown-toc-stuff">Stuff</a></li>
+      <li><a href="#map-reduce" id="markdown-toc-map-reduce">Map Reduce</a></li>
+      <li><a href="#refine" id="markdown-toc-refine">Refine</a></li>
+      <li><a href="#map-rerank" id="markdown-toc-map-rerank">Map Rerank</a></li>
+    </ul>
+  </li>
+  <li><a href="#llm-evaluation" id="markdown-toc-llm-evaluation">LLM Evaluation</a>    <ul>
+      <li><a href="#general-instruction" id="markdown-toc-general-instruction">General Instruction</a></li>
+      <li><a href="#setting-up" id="markdown-toc-setting-up">Setting Up</a></li>
+      <li><a href="#creating-examples-manually" id="markdown-toc-creating-examples-manually">Creating Examples Manually</a></li>
+      <li><a href="#generating-examples-with-llms" id="markdown-toc-generating-examples-with-llms">Generating Examples with LLMs</a></li>
+      <li><a href="#manually-evaluate" id="markdown-toc-manually-evaluate">Manually Evaluate</a></li>
+      <li><a href="#llm-assisted-evaluation" id="markdown-toc-llm-assisted-evaluation">LLM assisted evaluation</a></li>
+      <li><a href="#debug" id="markdown-toc-debug">Debug</a></li>
+    </ul>
+  </li>
+  <li><a href="#agents" id="markdown-toc-agents">Agents</a>    <ul>
+      <li><a href="#creating-a-tool-calling-llm" id="markdown-toc-creating-a-tool-calling-llm">Creating a tool calling LLM</a>        <ul>
+          <li><a href="#detail-ollama-model" id="markdown-toc-detail-ollama-model">Detail: Ollama model</a></li>
+          <li><a href="#code" id="markdown-toc-code">Code</a></li>
+        </ul>
+      </li>
+      <li><a href="#creating-an-agent" id="markdown-toc-creating-an-agent">Creating an Agent</a></li>
+      <li><a href="#custom-tool" id="markdown-toc-custom-tool">Custom Tool</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>This is the notes that I took when walking through <a href="https://learn.deeplearning.ai/courses/langchain/lesson/1/introduction">this lecture</a>.</p>
+
+<hr />
+
+<p>I did two important modifications,</p>
+
+<ol>
+  <li>I used a local LLM served by Ollama instead of chatGPT in OpenAI.</li>
+  <li>I used a new version (0.2.7) and fixed a lot compatible issues as the original course was for (0.1.x).</li>
+</ol>
+
+<h2 id="models-prompts-and-parsers">Models, Prompts, and Parsers</h2>
+
+<h3 id="using-an-llm-via-ollama">Using an LLM via Ollama</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain_community.llms</span> <span class="kn">import</span> <span class="n">Ollama</span>
+
+<span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+<span class="n">llm</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="sh">"</span><span class="s">hello, what is your name?</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># output
+</span><span class="sh">'</span><span class="s">Hello! I</span><span class="se">\'</span><span class="s">m LLaMA, a large language model ...</span><span class="sh">'</span>
+</code></pre></div></div>
+
+<h3 id="chatting-with-a-template">Chatting with a template</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span> <span class="n">langchain.output_parsers</span> <span class="kn">import</span> <span class="n">ResponseSchema</span>
+<span class="kn">from</span> <span class="n">langchain.output_parsers</span> <span class="kn">import</span> <span class="n">StructuredOutputParser</span>
+</code></pre></div></div>
+
+<p>Here is an example where we use LLM to Process customer emails.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">template_string</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">Translate the text </span><span class="se">\
+</span><span class="s">that is delimited by triple brackticks </span><span class="se">\
+</span><span class="s">into a style that is {style}. </span><span class="se">\
+</span><span class="s">text: ```{text}```
+</span><span class="sh">"""</span>
+<span class="n">prompt_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span><span class="n">template_string</span><span class="p">)</span>
+
+<span class="n">customer_email</span> <span class="o">=</span> <span class="sh">"""</span><span class="se">\
+</span><span class="s">Arrr, I be fuming that me blender lid </span><span class="se">\
+</span><span class="s">flew off and splattered me kitchen walls </span><span class="se">\
+</span><span class="s">with smoothie! And to make matters worse, </span><span class="se">\
+</span><span class="s">the warranty don</span><span class="sh">'</span><span class="s">t cover the cost of </span><span class="se">\
+</span><span class="s">cleaning up me kitchen. I need yer help </span><span class="se">\
+</span><span class="s">right now, matey!
+</span><span class="sh">"""</span>
+<span class="n">style</span> <span class="o">=</span> <span class="sh">"</span><span class="s">American English in a calm and respectful tone</span><span class="sh">"</span>
+
+<span class="n">customer_messages</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="p">.</span><span class="nf">format_messages</span><span class="p">(</span>
+    <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="n">customer_email</span>
+<span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">llm</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">customer_messages</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Generated output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Here</span><span class="sh">'</span><span class="s">s the translation:
+
+</span><span class="sh">"</span><span class="s">I</span><span class="sh">'</span><span class="n">m</span> <span class="n">really</span> <span class="n">upset</span> <span class="n">about</span> <span class="p">...</span><span class="sh">"</span><span class="s">
+</span></code></pre></div></div>
+
+<h3 id="use-llm-to-get-json-output">Use LLM to get JSON output</h3>
+
+<p>We want to extract result in the format of Python dictionary, which corresponds to a JSON dataset.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="sh">"</span><span class="s">gift</span><span class="sh">"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+  <span class="sh">"</span><span class="s">delivery_days</span><span class="sh">"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="sh">"</span><span class="s">price_value</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">pretty affordable!</span><span class="sh">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can use <code class="language-plaintext highlighter-rouge">LangChain</code> to achieve this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">customer_review</span> <span class="o">=</span> <span class="sh">"""</span><span class="se">\
+</span><span class="s">This leaf blower is pretty amazing.  It has four settings:</span><span class="se">\
+</span><span class="s">candle blower, gentle breeze, windy city, and tornado. </span><span class="se">\
+</span><span class="s">It arrived in two days, just in time for my wife</span><span class="sh">'</span><span class="s">s </span><span class="se">\
+</span><span class="s">anniversary present. </span><span class="se">\
+</span><span class="s">I think my wife liked it so much she was speechless. </span><span class="se">\
+</span><span class="s">So far I</span><span class="sh">'</span><span class="s">ve been the only one using it, and I</span><span class="sh">'</span><span class="s">ve been </span><span class="se">\
+</span><span class="s">using it every other morning to clear the leaves on our lawn. </span><span class="se">\
+</span><span class="s">It</span><span class="sh">'</span><span class="s">s slightly more expensive than the other leaf blowers </span><span class="se">\
+</span><span class="s">out there, but I think it</span><span class="sh">'</span><span class="s">s worth it for the extra features.
+</span><span class="sh">"""</span>
+
+<span class="n">review_template</span> <span class="o">=</span> <span class="sh">"""</span><span class="se">\
+</span><span class="s">For the following text, extract the following information:
+
+gift: Was the item purchased as a gift for someone else? </span><span class="se">\
+</span><span class="s">Answer True if yes, False if not or unknown.
+
+delivery_days: How many days did it take for the product </span><span class="se">\
+</span><span class="s">to arrive? If this information is not found, output -1.
+
+price_value: Extract any sentences about the value or price,</span><span class="se">\
+</span><span class="s">and output them as a comma separated Python list.
+
+Format the output as JSON with the following keys:
+gift
+delivery_days
+price_value
+
+text: {text}
+</span><span class="sh">"""</span>
+
+<span class="n">prompt_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span><span class="n">review_template</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s use the local LLM to get the response.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">messages</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="p">.</span><span class="nf">format_messages</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">customer_review</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The generated result:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sh">"""</span><span class="s">
+Here is the extracted information in JSON format:
+
+```json
+{
+    </span><span class="sh">"</span><span class="s">gift</span><span class="sh">"</span><span class="s">: True,
+    </span><span class="sh">"</span><span class="s">delivery_days</span><span class="sh">"</span><span class="s">: 2,
+    </span><span class="sh">"</span><span class="s">price_value</span><span class="sh">"</span><span class="s">: [</span><span class="sh">"</span><span class="s">It</span><span class="sh">'</span><span class="s">s slightly more expensive ...</span><span class="sh">"</span><span class="s">]
+}
+```
+
+Let me explain my reasoning:
+</span><span class="gp">...</span>
+<span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>We need to use <code class="language-plaintext highlighter-rouge">output_parsers</code> to extract <code class="language-plaintext highlighter-rouge">dict</code> objects from the output string.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gift_schema</span> <span class="o">=</span> <span class="nc">ResponseSchema</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">gift</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">Was the item purchased as a gift for someone else?</span><span class="se">\
+</span><span class="s">        Answer `true` if yes, `false` if not or unknown.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">delivery_days_schema</span> <span class="o">=</span> <span class="nc">ResponseSchema</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">delivery_days</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">How many days did it take for the product to arrive?</span><span class="se">\
+</span><span class="s">        If this information is not found, output `-1`.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">price_value_schema</span> <span class="o">=</span> <span class="nc">ResponseSchema</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">price_value</span><span class="sh">"</span><span class="p">,</span> 
+    <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">Extract any sentences about the value or </span><span class="se">\
+</span><span class="s">        price, and output them as a comma separated Python list.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">response_schemas</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">gift_schema</span><span class="p">,</span> <span class="n">delivery_days_schema</span><span class="p">,</span> <span class="n">price_value_schema</span>
+<span class="p">]</span>
+
+<span class="n">output_parser</span> <span class="o">=</span> <span class="n">StructuredOutputParser</span><span class="p">.</span><span class="nf">from_response_schemas</span><span class="p">(</span>
+    <span class="n">response_schemas</span>
+<span class="p">)</span>
+<span class="n">format_instruction</span> <span class="o">=</span> <span class="n">output_parser</span><span class="p">.</span><span class="nf">get_format_instructions</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">format_instruction</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The output should be a markdown code snippet formatted in the following schema, including the leading and trailing “```json” and “```”:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"gift"</span><span class="o">:</span> <span class="n">string</span>  <span class="c1">// Was the item purchased...</span>
+    <span class="s">"delivery_days"</span><span class="o">:</span> <span class="n">string</span>  <span class="c1">// How many days did ...</span>
+    <span class="s">"price_value"</span><span class="o">:</span> <span class="n">string</span>  <span class="c1">// Extract any sentences ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now we include the <code class="language-plaintext highlighter-rouge">format_instruction</code> to the prompt template</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">review_template_json</span> <span class="o">=</span> <span class="sh">"""</span><span class="se">\
+</span><span class="s">For the following text, extract the following information:
+
+gift: Was the item purchased as a gift for someone else? </span><span class="se">\
+</span><span class="s">Answer True if yes, False if not or unknown.
+
+delivery_days: How many days did it take for the product</span><span class="se">\
+</span><span class="s">to arrive? If this information is not found, output -1.
+
+price_value: Extract any sentences about the value or price,</span><span class="se">\
+</span><span class="s">and output them as a comma separated Python list.
+
+text: {text}
+
+{format_instructions}
+
+No not respond anything other than a valid json snippet!
+</span><span class="sh">"""</span>
+
+<span class="n">prompt_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="n">review_template_json</span>
+<span class="p">)</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="p">.</span><span class="nf">format_messages</span><span class="p">(</span>
+    <span class="n">text</span><span class="o">=</span><span class="n">customer_review</span><span class="p">,</span>
+    <span class="n">format_instructions</span><span class="o">=</span><span class="n">format_instruction</span>  <span class="c1">#  new format
+</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here is the output response.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"gift"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"delivery_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"price_value"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"slightly more expensive ..."</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can use the <code class="language-plaintext highlighter-rouge">output_parser</code> to extract the Python dictionary object from the generated output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">output_parser</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>here is the output results.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="sh">'</span><span class="s">gift</span><span class="sh">'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">delivery_days</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">price_value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="sh">"</span><span class="s">slightly more expensive ....</span><span class="sh">"</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="memory">Memory</h2>
+
+<p>There are several types of memory in LangChain</p>
+
+<ul>
+  <li>Buffer Memory (<code class="language-plaintext highlighter-rouge">ConversationBufferMemory</code>)</li>
+  <li>Buffer Window Memory (<code class="language-plaintext highlighter-rouge">ConversationBufferWindowMemory</code>)</li>
+  <li>Token Buffer Memory (<code class="language-plaintext highlighter-rouge">ConversationTokenBufferMemory</code>)</li>
+  <li>Summary Buffer Memory (<code class="language-plaintext highlighter-rouge">ConversationSummaryBufferMemory</code>)</li>
+  <li>Vector Data Memory (store result in a vector DB)</li>
+  <li>Entity Memory (use LLM to learn details about entities)</li>
+</ul>
+
+<p>We can manipulate the memroy via the folowing methods.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">load_memory_variables()</code>: to replace memory with a python dictionary.</li>
+  <li><code class="language-plaintext highlighter-rouge">buffer</code>: to get the content in the memory.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.chains</span> <span class="kn">import</span> <span class="n">ConversationChain</span>
+<span class="kn">from</span> <span class="n">langchain.memory</span> <span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
+<span class="kn">from</span> <span class="n">langchain.memory</span> <span class="kn">import</span> <span class="n">ConversationBufferWindowMemory</span>
+<span class="kn">from</span> <span class="n">langchain.memory</span> <span class="kn">import</span> <span class="n">ConversationTokenBufferMemory</span>
+<span class="kn">from</span> <span class="n">langchain.memory</span> <span class="kn">import</span> <span class="n">ConversationSummaryBufferMemory</span>
+
+<span class="kn">from</span> <span class="n">langchain_core.runnables.history</span> <span class="kn">import</span> <span class="n">RunnableWithMessageHistory</span>
+</code></pre></div></div>
+
+<h3 id="conversationbuffermemory">ConversationBufferMemory</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+<span class="n">memory</span> <span class="o">=</span> <span class="nc">ConversationBufferMemory</span><span class="p">()</span>
+<span class="n">conversation</span> <span class="o">=</span> <span class="nc">ConversationChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">Hi, my name is Andrew</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here is the first response</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sh">"</span><span class="s">Nice to meet you too, Andrew! My name is Ada,...</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<p>We can ask another question</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">What is 1+1?</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here is the second response.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sh">"</span><span class="s">A classic question! The answer to 1+1 is indeed... 2! ...</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<p>Finally we ask our name again.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">What is my name?</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The chatbot can answer correctly because of the memory.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sh">"</span><span class="s">Easy one! Your name is Andrew, correct? ...</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<p>Let’s check the memory buffer – it will be the overall conversation history.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">memory</span><span class="p">.</span><span class="nb">buffer</span><span class="p">)</span>
+
+<span class="sh">"""</span><span class="s">
+Human: Hi, my name is Andrew
+AI: Nice to meet you too, Andrew! ...
+Human: What is 1+1?
+AI: A classic question! ...
+Human: What is my name?
+AI: Easy one! Your name is Andrew, correct? ...
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h3 id="clear-memory">clear memory</h3>
+
+<p>We can use the following command to clear the history in the memory.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">memory</span><span class="p">.</span><span class="nf">load_memory_variables</span><span class="p">({})</span>
+</code></pre></div></div>
+
+<h3 id="add-extra-memory">add extra memory</h3>
+
+<p>we can use <code class="language-plaintext highlighter-rouge">save_context</code> to add content maually to the memory (prompt history)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">memory</span><span class="p">.</span><span class="nf">save_context</span><span class="p">(</span>
+    <span class="p">{</span><span class="sh">"</span><span class="s">input</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Hi</span><span class="sh">"</span><span class="p">},</span> 
+    <span class="p">{</span><span class="sh">"</span><span class="s">output</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">What</span><span class="sh">'</span><span class="s">s up</span><span class="sh">"</span><span class="p">}</span>
+<span class="p">)</span>
+                    
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">What</span><span class="sh">'</span><span class="s">s up with you?</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>here is the response</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sh">"</span><span class="s">Ha ha, nice one, Andrew! ...</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<h3 id="window-memory">Window Memory</h3>
+
+<p>We can also use a “windowed” memory where only the latest/newest conversations are remembered.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+<span class="n">memory</span> <span class="o">=</span> <span class="nc">ConversationBufferWindowMemory</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">conversation</span> <span class="o">=</span> <span class="nc">ConversationChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here is our first conversation. I ask the LLM to respond me in Chinese and to be as concise as possible.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conversation.predict(
+	input="你好，你会说中文吗？请用中文回答，并且尽量简洁。"
+)
+
+'哈喽！我可以说中文 ...'  # LLM response
+</code></pre></div></div>
+
+<p>Here is our second conversation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">我的名字叫 XXX，你呢</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="sh">'</span><span class="s">哈喽 XXX！我的名称是 LLaMA ...</span><span class="sh">'</span>  <span class="c1"># LLM response
+</span></code></pre></div></div>
+
+<p>Since we set the memory window <code class="language-plaintext highlighter-rouge">k = 1</code>, the next conversation will not include the initial chat. The chat will not be in Chinese anymore and it won’t be concise.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">你可以教我西班牙语吗?</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="sh">"</span><span class="s">¡Hola! Of course, I</span><span class="sh">'</span><span class="s">d be happy to help ...</span><span class="sh">"</span>  <span class="c1"># LLM response
+</span></code></pre></div></div>
+
+<h3 id="memory-with-a-fixed-token-size">Memory with a Fixed Token size</h3>
+
+<p>We need <code class="language-plaintext highlighter-rouge">tiktoken</code> and <code class="language-plaintext highlighter-rouge">transformers</code> to use this memory buffer. Run</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>tiktoken transformers
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="nc">ConversationTokenBufferMemory</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">max_token_limit</span><span class="o">=</span><span class="mi">500</span>
+<span class="p">)</span>
+
+<span class="n">conversation</span> <span class="o">=</span> <span class="nc">ConversationChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">你好，你会说中文吗？请用中文回答，并且尽量简洁。</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="sh">'</span><span class="s">你好！我可以说中文 ...</span><span class="sh">'</span>  <span class="c1"># LLM response
+</span>
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">你可以用中文教我西班牙语吗？</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="sh">'</span><span class="s">I would be happy to help you ...</span><span class="sh">'</span>  <span class="c1"># LLM response
+</span></code></pre></div></div>
+
+<h3 id="summary-in-the-memory">Summary in the Memory</h3>
+
+<p>We can compress the memory:</p>
+
+<ul>
+  <li>Use an LLM to write a summary for the conversation</li>
+  <li>Use the summary as the history</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="nc">ConversationSummaryBufferMemory</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">max_token_limit</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+
+<span class="n">conversation</span> <span class="o">=</span> <span class="nc">ConversationChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here are the conversations.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">你好，你会说中文吗？请用中文回答，并且尽量简洁。</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="sh">'</span><span class="s">你好！我可以说中文 ...</span><span class="sh">'</span>  <span class="c1"># LLM response
+</span>
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">哇塞你真厉害！</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="sh">'</span><span class="s">哈哈，谢谢你的夸奖！ ... </span><span class="sh">'</span>  <span class="c1"># LLM response
+</span>
+<span class="n">conversation</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="sh">"</span><span class="s">你可以用中文教我西班牙语的基本语法吗？</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="c1"># LLM response
+</span><span class="sh">"""</span><span class="s">
+</span><span class="sh">'</span><span class="s">System: Current summary:</span><span class="se">\n\n</span><span class="s">The human greets the AI and asks if it can speak Chinese. The AI responds by saying hello, confirming its ability to communicate in Chinese, and noting that it has learned a large amount of Chinese data, allowing for an exchange in Chinese. The human then introduces themselves as XXX and asks about the significance of their name. The AI analyzes the name</span><span class="se">\'</span><span class="s">s components, including </span><span class="sh">"</span><span class="s">Yang</span><span class="sh">"</span><span class="s"> as an old Chinese surname and </span><span class="sh">"</span><span class="s">Yu Shi</span><span class="sh">"</span><span class="s"> as a traditional form of Chinese poetry, suggesting that the name may express appreciation for nature or artistic pursuit.</span><span class="se">\n\n</span><span class="s">New lines of conversation:</span><span class="se">\n\n</span><span class="s">Human: 你可以用中文教我西班牙语的基本语法吗？</span><span class="se">\n</span><span class="s">AI:</span><span class="se">\n\n\n</span><span class="s">New summary:</span><span class="se">\n\n</span><span class="s">The human greets the AI and asks if it can speak Chinese. The AI responds by saying hello, confirming its ability to communicate in Chinese, and noting that it has learned a large amount of Chinese data, allowing for an exchange in Chinese. The human then introduces themselves as Yang Yu Po and asks about the significance of their name. The AI analyzes the name</span><span class="se">\'</span><span class="s">s components, including </span><span class="sh">"</span><span class="s">Yang</span><span class="sh">"</span><span class="s"> as an old Chinese surname and </span><span class="sh">"</span><span class="s">Yu Shi</span><span class="sh">"</span><span class="s"> as a traditional form of Chinese poetry, suggesting that the name may express appreciation for nature or artistic pursuit. The human then asks if the AI can teach them basic Spanish grammar in Chinese, and the AI is happy to help.</span><span class="se">\n\n</span><span class="s">Please go ahead and continue the conversation! 😊</span><span class="sh">'</span><span class="s">
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h2 id="chains-in-langchain">Chains in LangChain</h2>
+
+<p>Here we explain the concenpt of <code class="language-plaintext highlighter-rouge">chains</code> from <code class="language-plaintext highlighter-rouge">langchain</code>.</p>
+
+<p>In this section, we also read a data in the file <code class="language-plaintext highlighter-rouge">Data.csv</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="n">langchain.chains</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LLMChain</span><span class="p">,</span> <span class="n">SimpleSequentialChain</span><span class="p">,</span> <span class="n">SequentialChain</span>
+<span class="p">)</span>
+
+<span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">Data.csv</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="llmchain">LLMChain</h3>
+
+<p>The most simple chain. The API changed in 2024. for old LangChain Versions &lt;= 0.1, using the following format</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chain</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">chain</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">product</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>The following code exhibits the newer version (0.2+).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">What is the best name to describe </span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">a company that makes {product}?</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">Give me a concise and terse answer please.</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">product</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Queen Size Sheet Set</span><span class="sh">"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">product</span><span class="p">))</span>
+
+<span class="sh">"</span><span class="s">Royal Slumber Co.</span><span class="sh">"</span>  <span class="c1"># LLM Response
+</span></code></pre></div></div>
+
+<h3 id="simple-sequential-chain">Simple Sequential Chain</h3>
+
+<p>It works for the case where each individual chains have <strong>a single input and a single output</strong>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">prompt_name</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">What is the best name to describe </span><span class="se">\
+</span><span class="s">    a company that makes {product}?</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">Give me a concise and terse answer please.</span><span class="sh">"</span>
+
+<span class="p">)</span>
+<span class="n">prompt_desc</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">Write a 20 words description for the following</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">company:{company_name}</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">Give me a concise and terse answer please.</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="n">chain_name</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_name</span><span class="p">)</span>
+<span class="n">chain_desc</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_desc</span><span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="nc">SimpleSequentialChain</span><span class="p">(</span>
+    <span class="n">chains</span><span class="o">=</span><span class="p">[</span><span class="n">chain_name</span><span class="p">,</span> <span class="n">chain_desc</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">product</span><span class="p">)[</span><span class="sh">'</span><span class="s">output</span><span class="sh">'</span><span class="p">]</span>
+
+<span class="c1"># Output
+</span><span class="sh">"</span><span class="s">RoyalRests Inc. provides luxurious services ...</span><span class="sh">"</span> <span class="c1">#LLM Response
+</span></code></pre></div></div>
+
+<h3 id="sequential-chain">Sequential Chain</h3>
+
+<p>Sequential Chain allow use to construct complicated workflows</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    A(French Review) --&gt; B[English Review]
+    B --&gt; S[English Summary]
+    A --&gt; L[Language]
+    L --&gt; R(French Response)
+    S --&gt; R
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">prompt_tran</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">Translate the following review to english:</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n\n</span><span class="s">{review}</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n</span><span class="s">be concise and do not add anything other than the review text.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">prompt_summ</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">Can you summarize the following review in 1 sentence:</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n\n</span><span class="s">{review_english}</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n</span><span class="s">be concise and do not add anything other than the review text.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">prompt_lang</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">What language is the following review:</span><span class="se">\n\n</span><span class="s">{review}</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n</span><span class="s">be concise and do not add anything other than the language name.</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">prompt_resp</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">Write a follow up response to the following </span><span class="sh">"</span>
+    <span class="sh">"</span><span class="s">summary in the specified language:</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n\n</span><span class="s">Summary: {summary}</span><span class="se">\n\n</span><span class="s">Language: {language}</span><span class="sh">"</span>
+    <span class="sh">"</span><span class="se">\n</span><span class="s">be concise and do not add anything other than the response.</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="n">chain_tran</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_tran</span><span class="p">,</span> <span class="n">output_key</span><span class="o">=</span><span class="sh">"</span><span class="s">review_english</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">chain_summ</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_summ</span><span class="p">,</span> <span class="n">output_key</span><span class="o">=</span><span class="sh">"</span><span class="s">summary</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">chain_lang</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_lang</span><span class="p">,</span> <span class="n">output_key</span><span class="o">=</span><span class="sh">"</span><span class="s">language</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">chain_resp</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_resp</span><span class="p">,</span> <span class="n">output_key</span><span class="o">=</span><span class="sh">"</span><span class="s">response</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="nc">SequentialChain</span><span class="p">(</span>
+    <span class="n">chains</span><span class="o">=</span><span class="p">[</span><span class="n">chain_tran</span><span class="p">,</span> <span class="n">chain_summ</span><span class="p">,</span> <span class="n">chain_lang</span><span class="p">,</span> <span class="n">chain_resp</span><span class="p">],</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">review</span><span class="sh">"</span><span class="p">],</span>
+    <span class="n">output_variables</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">review_english</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">summary</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">response</span><span class="sh">"</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="n">review</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">Review</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">review</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">## </span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">content</span> <span class="o">+</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The output is too long so we omit it.</p>
+
+<h3 id="router-chain">Router Chain</h3>
+
+<ul>
+  <li>Several specialist chains for specific tasks.</li>
+  <li>A router chain to choose which specialist chain to use.</li>
+  <li>A default chain is called when the router can not decide.</li>
+</ul>
+
+<pre><code class="language-mermaid">flowchart LR
+
+I(Input) --&gt; R(Router)
+R --&gt; P(Physics)
+R --&gt; C(Computer Science)
+R --&gt; D(default)
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.chains.router</span> <span class="kn">import</span> <span class="n">MultiPromptChain</span>
+<span class="kn">from</span> <span class="n">langchain.chains.router.llm_router</span> <span class="kn">import</span> <span class="n">LLMRouterChain</span><span class="p">,</span><span class="n">RouterOutputParser</span>
+</code></pre></div></div>
+
+<p>Here we create the chains for the router to choose from.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">physics_template</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">You are a very smart physics professor. </span><span class="se">\
+</span><span class="s">You are great at answering questions about physics in a concise</span><span class="se">\
+</span><span class="s">and easy to understand manner. </span><span class="se">\
+</span><span class="s">When you don</span><span class="sh">'</span><span class="s">t know the answer to a question you admit</span><span class="se">\
+</span><span class="s">that you don</span><span class="sh">'</span><span class="s">t know.
+Try to be as concise as possible.
+
+Here is a question:
+{input}</span><span class="sh">"""</span>
+
+<span class="n">computerscience_template</span> <span class="o">=</span> <span class="sh">"""</span><span class="s"> You are a successful computer scientist.</span><span class="se">\
+</span><span class="s">You have a passion for creativity, collaboration,</span><span class="se">\
+</span><span class="s">forward-thinking, confidence, strong problem-solving capabilities,</span><span class="se">\
+</span><span class="s">understanding of theories and algorithms, and excellent communication </span><span class="se">\
+</span><span class="s">skills. You are great at answering coding questions. </span><span class="se">\
+</span><span class="s">You are so good because you know how to solve a problem by </span><span class="se">\
+</span><span class="s">describing the solution in imperative steps </span><span class="se">\
+</span><span class="s">that a machine can easily interpret and you know how to </span><span class="se">\
+</span><span class="s">choose a solution that has a good balance between </span><span class="se">\
+</span><span class="s">time complexity and space complexity. 
+Try to be as concise as possible.
+
+Here is a question:
+{input}</span><span class="sh">"""</span>
+
+<span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">physics</span><span class="sh">"</span><span class="p">,</span> 
+        <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Good for answering questions about physics</span><span class="sh">"</span><span class="p">,</span> 
+        <span class="sh">"</span><span class="s">prompt_template</span><span class="sh">"</span><span class="p">:</span> <span class="n">physics_template</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">computer science</span><span class="sh">"</span><span class="p">,</span> 
+        <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Good for answering computer science questions</span><span class="sh">"</span><span class="p">,</span> 
+        <span class="sh">"</span><span class="s">prompt_template</span><span class="sh">"</span><span class="p">:</span> <span class="n">computerscience_template</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">destination_chains</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">p_info</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">p_info</span><span class="p">[</span><span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">]</span>
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">p_info</span><span class="p">[</span><span class="sh">"</span><span class="s">prompt_template</span><span class="sh">"</span><span class="p">]</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">prompt_template</span><span class="p">)</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">)</span>
+    <span class="n">destination_chains</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">chain</span>
+
+
+<span class="n">default_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span><span class="sh">"</span><span class="s">{input}</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">default_chain</span> <span class="o">=</span> <span class="nc">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">default_prompt</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here we prepare for the router chain</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">destinations</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">p</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">p</span><span class="p">[</span><span class="sh">'</span><span class="s">description</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">]</span>
+<span class="n">destinations_str</span> <span class="o">=</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">destinations</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">destinations_str</span><span class="p">)</span>
+
+<span class="c1"># Output
+</span><span class="sh">"""</span><span class="s">
+physics: Good for answering questions about physics
+computer science: Good for answering computer science questions
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>Now we use this very long prompt to guild the LLM.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MULTI_PROMPT_ROUTER_TEMPLATE</span> <span class="o">=</span> <span class="sa">r</span><span class="sh">"""</span><span class="s">Given a raw text input to a \
+language model select the model prompt best suited for the input. \
+You will be given the names of the available prompts and a \
+description of what the prompt is best suited for. \
+You may also revise the original input if you think that revising\
+it will ultimately lead to a better response from the language model.
+
+&lt;&lt; FORMATTING &gt;&gt;
+Return a markdown code snippet with a JSON object formatted to look like:
+\`\`\`json
+}}
+\`\`\`
+
+REMEMBER: </span><span class="sh">"</span><span class="s">destination</span><span class="sh">"</span><span class="s"> MUST be one of the candidate prompt \
+names specified below OR it can be </span><span class="sh">"</span><span class="s">DEFAULT</span><span class="sh">"</span><span class="s"> if the input is not\
+well suited for any of the candidate prompts.
+REMEMBER: </span><span class="sh">"</span><span class="s">next_inputs</span><span class="sh">"</span><span class="s"> can just be the original input \
+if you don</span><span class="sh">'</span><span class="s">t think any modifications are needed.
+
+&lt;&lt; CANDIDATE PROMPTS &gt;&gt;
+{destinations}
+
+&lt;&lt; INPUT &gt;&gt;
+
+
+&lt;&lt; OUTPUT (remember to include the ```json)&gt;&gt;
+</span><span class="sh">"""</span>
+
+<span class="n">router_template</span> <span class="o">=</span> <span class="n">MULTI_PROMPT_ROUTER_TEMPLATE</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span>
+    <span class="n">destinations</span><span class="o">=</span><span class="n">destinations_str</span>
+<span class="p">)</span>
+
+<span class="n">router_prompt</span> <span class="o">=</span> <span class="nc">PromptTemplate</span><span class="p">(</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">router_template</span><span class="p">,</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">input</span><span class="sh">"</span><span class="p">],</span>
+    <span class="n">output_parser</span><span class="o">=</span><span class="nc">RouterOutputParser</span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we create the chain with the router.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">router_chain</span> <span class="o">=</span> <span class="n">LLMRouterChain</span><span class="p">.</span><span class="nf">from_llm</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">router_prompt</span><span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="nc">MultiPromptChain</span><span class="p">(</span>
+    <span class="n">router_chain</span><span class="o">=</span><span class="n">router_chain</span><span class="p">,</span> 
+    <span class="n">destination_chains</span><span class="o">=</span><span class="n">destination_chains</span><span class="p">,</span> 
+    <span class="n">default_chain</span><span class="o">=</span><span class="n">default_chain</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="c1"># LLM will choose Physics
+</span><span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="sh">"</span><span class="s">What is Percus Yevick equation?</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># LLM will use Computer Science
+</span><span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="sh">"</span><span class="s">what is the travelling salesman problem</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Console Output
+</span><span class="sh">"""</span><span class="s">
+→ Entering new MultiPromptChain chain...
+    ✦ computer science: {
+        </span><span class="sh">'</span><span class="s">input</span><span class="sh">'</span><span class="s">: </span><span class="sh">"</span><span class="s">Is there a specific solution ...?</span><span class="sh">"</span><span class="s">
+    }
+→ Finished chain.
+</span><span class="sh">"""</span>
+
+<span class="c1"># LLM response
+</span><span class="sh">"""</span><span class="s">
+A classic problem!
+
+For TSP, I</span><span class="sh">'</span><span class="s">d recommend exploring dynamic programming
+approaches like Christofides Algorithm or 2-Opt
+Heuristics. These methods balance time and space
+complexity well.
+</span><span class="sh">"""</span>
+
+<span class="c1"># LLM will use Computer Science
+</span><span class="n">chain</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="sh">"</span><span class="s">what is NGS?</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Console Output
+</span><span class="sh">"""</span><span class="s">
+→ Entering new MultiPromptChain chain ...
+    computer science: {
+        </span><span class="sh">'</span><span class="s">input</span><span class="sh">'</span><span class="s">: </span><span class="sh">'</span><span class="s">What is Next Generation Sequencing (NGS)?</span><span class="sh">'</span><span class="s">
+    }
+→ Finished chain.
+</span><span class="sh">"""</span>
+
+<span class="c1"># LLM Response
+</span><span class="sh">"""</span><span class="s">
+Next-Generation Sequencing (NGS) refers to the technology
+used in DNA sequencing, which allows for rapid and
+cost-effective analysis of an individual</span><span class="sh">'</span><span class="s">s entire genome
+or specific regions of interest. NGS enables the simultaneous
+analysis of millions of DNA fragments, resulting in faster
+turnaround times and higher resolution than traditional
+Sanger sequencing methods.
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h2 id="qa-for-documents">QA for Documents</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.document_loaders</span> <span class="kn">import</span> <span class="n">CSVLoader</span>
+<span class="kn">from</span> <span class="n">langchain.indexes</span> <span class="kn">import</span> <span class="n">VectorstoreIndexCreator</span>
+<span class="kn">from</span> <span class="n">langchain.vectorstores</span> <span class="kn">import</span> <span class="n">DocArrayInMemorySearch</span>
+<span class="kn">from</span> <span class="n">langchain_community.embeddings</span> <span class="kn">import</span> <span class="n">OllamaEmbeddings</span>
+<span class="kn">from</span> <span class="n">langchain.chains</span> <span class="kn">import</span> <span class="n">RetrievalQA</span>
+<span class="kn">from</span> <span class="n">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+</code></pre></div></div>
+
+<h3 id="overview">Overview</h3>
+
+<p>To do a RAG we need</p>
+
+<ul>
+  <li>an embedding model</li>
+  <li>a vector database</li>
+  <li>chunk the documents and index them in the vector DB</li>
+  <li>match query with the embedding model</li>
+  <li>generate the response with the LLM</li>
+</ul>
+
+<h3 id="creating-the-vector-db">Creating the Vector DB</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EMBEDDING_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">all-minilm</span><span class="sh">"</span>
+<span class="nb">file</span> <span class="o">=</span> <span class="sh">'</span><span class="s">OutdoorClothingCatalog_1000.csv</span><span class="sh">'</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="nc">CSVLoader</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="nb">file</span><span class="p">)</span>
+<span class="n">index</span> <span class="o">=</span> <span class="nc">VectorstoreIndexCreator</span><span class="p">(</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="nc">OllamaEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">EMBEDDING_MODEL</span><span class="p">),</span>
+    <span class="n">vectorstore_cls</span><span class="o">=</span><span class="n">DocArrayInMemorySearch</span>
+<span class="p">).</span><span class="nf">from_loaders</span><span class="p">([</span><span class="n">loader</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h3 id="generate-response-given-a-query">Generate response given a query</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span><span class="sh">"""</span><span class="se">\
+</span><span class="s">Please list all your shirts with sun protection
+in a table in markdown and summarize each one.
+</span><span class="sh">"""</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">index</span><span class="p">.</span><span class="nf">query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span>
+
+<span class="nf">display</span><span class="p">(</span><span class="nc">Markdown</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Here are the shirts with sun protection listed in a table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Shirts</th>
+      <th>Description</th>
+      <th>Sun Protection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sun Shield Shirt</td>
+      <td>High-performance sun shirt for UV ray protection</td>
+      <td>SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Tropical Breeze Shirt</td>
+      <td>Lightweight, breathable long-sleeve UPF shirt for superior sun protection</td>
+      <td>SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Women’s Tropical Tee, Sleeveless</td>
+      <td>Five-star sleeveless button-up shirt with SunSmart UPF 50+ rating</td>
+      <td>SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Girls’ Beachside Breeze Shirt, Half-Sleeve</td>
+      <td>Rash guard-style swim shirt with built-in UPF 50+ protection</td>
+      <td>SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Summary:
+All the shirts listed have high-performance fabric with SPF 50+ sun protection, blocking 98% of the sun’s harmful UV rays. They are suitable for outdoor activities such as swimming, fishing, and travel to protect skin from damage.</p>
+
+<h3 id="rag-step-by-step">RAG Step-by-Step</h3>
+
+<h4 id="load-the-documents">Load the Documents</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">loader</span> <span class="o">=</span> <span class="nc">CSVLoader</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="nb">file</span><span class="p">)</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">loader</span><span class="p">.</span><span class="nf">load</span><span class="p">()</span>
+<span class="c1"># docs[0] print
+</span><span class="sh">"""</span><span class="s">
+Document(
+  metadata={
+    </span><span class="sh">'</span><span class="s">source</span><span class="sh">'</span><span class="s">: </span><span class="sh">'</span><span class="s">OutdoorClothingCatalog_1000.csv</span><span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="s">row</span><span class="sh">'</span><span class="s">: 0
+  },
+  page_content=</span><span class="sh">"</span><span class="s">...</span><span class="sh">"</span><span class="s">
+)
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h4 id="create-the-vector-database">Create the Vector Database</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embeddings</span> <span class="o">=</span> <span class="nc">OllamaEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">EMBEDDING_MODEL</span><span class="p">)</span>
+<span class="n">embed</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">.</span><span class="nf">embed_query</span><span class="p">(</span><span class="sh">"</span><span class="s">Hi my name is Yushi</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">len</span><span class="p">(</span><span class="n">embed</span><span class="p">)</span> <span class="c1"># -&gt; 384
+</span><span class="n">embed</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># [-0.4055, 0.2655, 0.1268, 0.4260, -0.5726]
+</span>
+<span class="c1"># vector database in memory
+</span><span class="n">db</span> <span class="o">=</span> <span class="n">DocArrayInMemorySearch</span><span class="p">.</span><span class="nf">from_documents</span><span class="p">(</span>
+    <span class="n">docs</span><span class="p">,</span> <span class="n">embeddings</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="generate-the-response">Generate the Response</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="nf">as_retriever</span><span class="p">()</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Please suggest a shirt with sunblocking</span><span class="sh">"</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="nf">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qdocs</span> <span class="o">=</span> <span class="sh">""</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">docs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">docs</span><span class="p">))]</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span>
+    <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">qdocs</span><span class="si">}</span><span class="s"> Question: Please list all your </span><span class="se">\
+</span><span class="s">shirts with sun protection in a table in markdown</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="nf">display</span><span class="p">(</span><span class="nc">Markdown</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Here is the list of shirts with sun protection in a table format using Markdown:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Shirt Name</th>
+      <th>Description</th>
+      <th>Sun Protection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sun Shield Shirt</td>
+      <td>Block the sun, not the fun - our high-performance sun shirt is guaranteed to protect from harmful UV rays.</td>
+      <td>UPF 50+ rated, blocks 98% of the sun’s harmful rays</td>
+    </tr>
+    <tr>
+      <td>Tropical Breeze Shirt</td>
+      <td>Beat the heat in this lightweight, breathable long-sleeve men’s UPF shirt, offering superior SunSmart protection from the sun’s harmful rays.</td>
+      <td>UPF 50+ rated, blocks 98% of the sun’s harmful rays</td>
+    </tr>
+    <tr>
+      <td>Women’s Tropical Tee, Sleeveless</td>
+      <td>Our five-star sleeveless button-up shirt has a fit to flatter and SunSmart protection to block the sun’s harmful UV rays.</td>
+      <td>UPF 50+ rated, blocks 98% of the sun’s harmful rays</td>
+    </tr>
+    <tr>
+      <td>Men’s Plaid Tropic Shirt, Short-Sleeve</td>
+      <td>Our Ultracomfortable sun protection is rated to UPF 50+, helping you stay cool and dry.</td>
+      <td>UPF 50+ rated, blocks 98% of the sun’s harmful rays</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note: All shirts have a UPF (Ultraviolet Protection Factor) rating of 50+, which means they block at least 95% of UVB rays and at least 90% of UVA rays.</p>
+
+<h3 id="retrieval-qa-chain">Retrieval QA Chain</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">RetrievalQA</code> chain can achieve identical RAG results.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qa_stuff</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="p">.</span><span class="nf">from_chain_type</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> 
+    <span class="n">chain_type</span><span class="o">=</span><span class="sh">"</span><span class="s">stuff</span><span class="sh">"</span><span class="p">,</span>  <span class="c1"># "stuffs" all documents into context
+</span>    <span class="n">retriever</span><span class="o">=</span><span class="n">db</span><span class="p">.</span><span class="nf">as_retriever</span><span class="p">(),</span> 
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Please list all your shirts with sun protection</span><span class="sh">"</span>
+<span class="n">query</span> <span class="o">+=</span> <span class="sh">"</span><span class="s"> in a table in markdown.</span><span class="sh">"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">qa_stuff</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+<span class="c1"># console output
+</span><span class="sh">"""</span><span class="s">
+→ Entering new RetrievalQA chain
+→ Finished chain.
+</span><span class="sh">"""</span>
+
+<span class="nf">display</span><span class="p">(</span><span class="nc">Markdown</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="sh">'</span><span class="s">result</span><span class="sh">'</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<p>Here are the shirts with sun protection listed in a table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Shirt Name</th>
+      <th>Sun Protection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sun Shield Shirt by [name]</td>
+      <td>UPF 50+, SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Women’s Tropical Tee, Sleeveless</td>
+      <td>UPF 50+, SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Tropical Breeze Shirt</td>
+      <td>UPF 50+, SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+    <tr>
+      <td>Girls’ Beachside Breeze Shirt, Half-Sleeve</td>
+      <td>UPF 50+, SPF 50+ (blocks 98% of sun’s harmful rays)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Let me know if you need anything else!</p>
+
+<h2 id="retrievel-methods">Retrievel Methods</h2>
+
+<h3 id="stuff">Stuff</h3>
+
+<p>put all retrieved chunks into the context. Then call LLM once. The <strong>most common method</strong>.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+A[Documents] --&gt; B(chunk)
+A --&gt; C(chunk)
+A --&gt; D(chunk)
+B --&gt; L[LLM]
+C --&gt; L
+D --&gt; L  --&gt; R[Response]
+</code></pre>
+
+<h3 id="map-reduce">Map Reduce</h3>
+
+<p>pass each chunk and query to LLM, then use LLM to process the responses. The <strong>second most common method</strong>.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+A[Documents] --&gt; B(chunk) --&gt; LB[LLM]
+A --&gt; C(chunk) --&gt; LC[LLM]
+A --&gt; D(chunk) --&gt; LD[LLM]
+LB --&gt; L[LLM]
+LC --&gt; L
+LD --&gt; L  --&gt; R[Response]
+</code></pre>
+
+<h3 id="refine">Refine</h3>
+
+<p>Builds the answer iteratively.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+A[Documents] --&gt; B(chunk) --&gt; LB[LLM]
+A --&gt; C(chunk) --&gt; LC[LLM]
+A --&gt; D(chunk) --&gt; LD[LLM]
+LB --&gt; LC
+LC --&gt; LD
+LD --&gt; R[Response]
+</code></pre>
+
+<h3 id="map-rerank">Map Rerank</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+A[Documents] --&gt; B(chunk) --&gt; LB[LLM] --&gt; SB(Score 40)
+A --&gt; C(chunk) --&gt; LC[LLM] --&gt; SC(Score 60) --&gt; R[Response]
+A --&gt; D(chunk) --&gt; LD[LLM] --&gt; SD(Score 32)
+</code></pre>
+
+<h2 id="llm-evaluation">LLM Evaluation</h2>
+
+<h3 id="general-instruction">General Instruction</h3>
+
+<ol>
+  <li>Visualisation: to understand the input/output data.</li>
+  <li>Create examples for evaluation.</li>
+  <li>Use LLM to evaluate.</li>
+</ol>
+
+<p>Here is a Step by Step guide.</p>
+
+<h3 id="setting-up">Setting Up</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="sh">'</span><span class="s">OutdoorClothingCatalog_1000.csv</span><span class="sh">'</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="nc">CSVLoader</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="nb">file</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">loader</span><span class="p">.</span><span class="nf">load</span><span class="p">()</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="nc">VectorstoreIndexCreator</span><span class="p">(</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="nc">OllamaEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">EMBEDDING_MODEL</span><span class="p">),</span>
+    <span class="n">vectorstore_cls</span><span class="o">=</span><span class="n">DocArrayInMemorySearch</span>
+<span class="p">).</span><span class="nf">from_loaders</span><span class="p">([</span><span class="n">loader</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">qa</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="p">.</span><span class="nf">from_chain_type</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> 
+    <span class="n">chain_type</span><span class="o">=</span><span class="sh">"</span><span class="s">stuff</span><span class="sh">"</span><span class="p">,</span> 
+    <span class="n">retriever</span><span class="o">=</span><span class="n">index</span><span class="p">.</span><span class="n">vectorstore</span><span class="p">.</span><span class="nf">as_retriever</span><span class="p">(),</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>To evaluate the result, we should create standard “Question” + “Answer” examples.</p>
+
+<h3 id="creating-examples-manually">Creating Examples Manually</h3>
+
+<p>We can generate such examples (Question + Answer) by</p>
+
+<ol>
+  <li>Observing the data.</li>
+  <li>Asking a question ourselves.</li>
+  <li>Answer the question ourselves.</li>
+</ol>
+
+<p>Here is an example</p>
+
+<pre><code class="language-txt"># data[10].page_content
+
+: 10
+name: Cozy Comfort Pullover Set, Stripe
+description: Perfect for lounging, this striped knit set lives up to its name. We used ultrasoft fabric and an easy design that's as comfortable at bedtime as it is when we have to make a quick run out.
+
+Size &amp; Fit
+- Pants are Favorite Fit: Sits lower on the waist.
+- Relaxed Fit: Our most generous fit sits farthest from the body.
+
+Fabric &amp; Care
+- In the softest blend of 63% polyester, 35% rayon and 2% spandex.
+
+Additional Features
+- Relaxed fit top with raglan sleeves and rounded hem.
+- Pull-on pants have a wide elastic waistband and drawstring, side pockets and a modern slim leg.
+
+Imported.
+</code></pre>
+
+<p>Here is the manually crafted example.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">examples</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Do the Cozy Comfort Pullover Set have side pockets?</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Yes</span><span class="sh">"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">What collection is the Ultra-Lofty 850 Stretch Down Hooded Jacket from?</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">The DownTek collection</span><span class="sh">"</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="generating-examples-with-llms">Generating Examples with LLMs</h3>
+
+<blockquote>
+  <p>the following code was copied from</p>
+
+  <p><code class="language-plaintext highlighter-rouge">langchain/evaluation/qa/generate_chain.py</code></p>
+
+  <p>So that our code will be compatible with the new interface for langchain 0.2+</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.output_parsers.regex</span> <span class="kn">import</span> <span class="n">RegexParser</span>
+
+<span class="n">qa_gen_parser</span> <span class="o">=</span> <span class="nc">RegexParser</span><span class="p">(</span>
+    <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="sh">"</span><span class="s">QUESTION: (.*?)\n+ANSWER: (.*)</span><span class="sh">"</span><span class="p">,</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">qa_gen_template</span> <span class="o">=</span> <span class="sh">"""</span><span class="se">\
+</span><span class="s">You are a teacher coming up with questions to ask on a quiz.</span><span class="se">\
+</span><span class="s">Given the following document, please generate a question and</span><span class="se">\
+</span><span class="s">answer based on that document.
+
+Example Format:
+&lt;Begin Document&gt;
+</span><span class="gp">...</span>
+<span class="o">&lt;</span><span class="n">End</span> <span class="n">Document</span><span class="o">&gt;</span>
+<span class="n">QUESTION</span><span class="p">:</span> <span class="n">question</span> <span class="n">here</span>
+<span class="n">ANSWER</span><span class="p">:</span> <span class="n">answer</span> <span class="n">here</span>
+
+<span class="s">These questions should be detailed and be based explicitly on</span><span class="se">\
+</span><span class="s">information in the document. Begin!
+
+&lt;Begin Document&gt;
+{doc}
+&lt;End Document&gt;</span><span class="sh">"""</span>
+
+<span class="n">qa_gen_prompt</span> <span class="o">=</span> <span class="nc">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">doc</span><span class="sh">"</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">qa_gen_template</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>We now build the <code class="language-plaintext highlighter-rouge">QAGenerateChain</code> with the runable interface.</p>
+
+<blockquote>
+  <p>For old LangChain version (&lt;= 0.1), we can use the following code</p>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qa_gen</span> <span class="o">=</span> <span class="n">QAGenerateChain</span><span class="p">.</span><span class="nf">from_llm</span><span class="p">(</span><span class="n">llm</span><span class="p">)</span>
+
+<span class="n">new_examples</span> <span class="o">=</span> <span class="n">qa_gen</span><span class="p">.</span><span class="nf">apply_and_parse</span><span class="p">(</span>
+   <span class="p">[{</span><span class="sh">"</span><span class="s">doc</span><span class="sh">"</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]]</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">)</span>
+
+<span class="n">qa_gen</span> <span class="o">=</span> <span class="n">qa_gen_prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">qa_gen_parser</span>
+
+<span class="n">new_examples</span> <span class="o">=</span> <span class="n">qa_gen</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span>
+    <span class="p">[{</span><span class="sh">"</span><span class="s">doc</span><span class="sh">"</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># new examples
+</span><span class="p">[{</span>
+    <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">"</span><span class="s">What type of material is ... ?</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Soft canvas material.</span><span class="sh">'</span>
+    <span class="p">},</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">What percentage of recycled ... ?</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">94%</span><span class="sh">'</span>
+    <span class="p">},</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">"</span><span class="s">What feature of this toddler ... ?</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">The UPF 50+ rated fabric.</span><span class="sh">'</span>
+    <span class="p">},</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">"</span><span class="s">What percentage of the ... ?</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">82%</span><span class="sh">'</span>
+    <span class="p">},</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">What technology does EcoFlex ... ?</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">TEK O2 technology.</span><span class="sh">'</span>
+<span class="p">}]</span>
+</code></pre></div></div>
+
+<h3 id="manually-evaluate">Manually Evaluate</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">examples</span> <span class="o">+=</span> <span class="n">new_examples</span>
+
+<span class="n">qa</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">])</span>
+
+<span class="c1"># output
+</span><span class="p">{</span>
+  <span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Do the Cozy Comfort Pullover Set have side pockets?</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">result</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">According to ... the answer is:</span><span class="se">\n\n</span><span class="s">Yes ...</span><span class="sh">'</span>
+<span class="p">}</span>
+
+<span class="n">examples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">]</span>  <span class="c1"># Output: 'Yes'
+</span></code></pre></div></div>
+
+<h3 id="llm-assisted-evaluation">LLM assisted evaluation</h3>
+
+<p>The default prompt can be found in the file</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>langchain/evaluation/qa/eval_prompt.py
+</code></pre></div></div>
+
+<p>Here we edited the prompt so that the output is good for llama3.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.evaluation.qa</span> <span class="kn">import</span> <span class="n">QAEvalChain</span>
+
+<span class="n">grade_template</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">You are a teacher grading a quiz.
+You are given a question, the student</span><span class="sh">'</span><span class="s">s answer, and the true answer, 
+and are asked to score the student answer as either CORRECT or INCORRECT.
+
+Example Input Format:
+-----
+QUESTION: question here
+STUDENT ANSWER: student</span><span class="sh">'</span><span class="s">s answer here
+TRUE ANSWER: true answer here
+-----
+
+Example Output:
+CORRECT or INCORRECT
+
+Grade the student answers based ONLY on their factual accuracy.
+Ignore differences in punctuation and phrasing between the student answer and true answer.
+It is OK if the student answer contains more information than the true answer,
+as long as it does not contain any conflicting statements.
+
+Return the final grade. The only options are between CORRECT and INCORRECT.
+
+Here are the actual input data:
+
+QUESTION: {query}
+STUDENT ANSWER: {result}
+TRUE ANSWER: {answer}
+</span><span class="sh">"""</span>
+<span class="n">grade_prompt</span> <span class="o">=</span> <span class="nc">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">result</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">grade_template</span>
+<span class="p">)</span>
+
+<span class="n">eval_chain</span> <span class="o">=</span> <span class="n">QAEvalChain</span><span class="p">.</span><span class="nf">from_llm</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">grade_prompt</span><span class="p">)</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">qa</span><span class="p">.</span><span class="nf">batch</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
+<span class="n">graded_outputs</span> <span class="o">=</span> <span class="n">eval_chain</span><span class="p">.</span><span class="nf">evaluate</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+
+<span class="c1"># graded_outputs content
+</span><span class="p">[{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">},</span>
+ <span class="p">{</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">CORRECT</span><span class="sh">'</span><span class="p">}]</span>
+
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">eg</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Example </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Question:         </span><span class="sh">"</span> <span class="o">+</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Real Answer:      </span><span class="sh">"</span> <span class="o">+</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Predicted Answer: </span><span class="sh">"</span> <span class="o">+</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="sh">'</span><span class="s">result</span><span class="sh">'</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Predicted Grade:  </span><span class="sh">"</span> <span class="o">+</span> <span class="n">graded_outputs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="sh">'</span><span class="s">results</span><span class="sh">'</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">()</span>
+
+<span class="c1"># concole output
+</span><span class="sh">"""</span><span class="s">
+Example 0:
+Question:         Do the Cozy Comfort Pullover Set have side pockets?
+Real Answer:      Yes
+Predicted Answer: According to the ...
+Predicted Grade:  CORRECT
+
+Example 1:
+Question:         What collection is ... ?
+Real Answer:      The DownTek collection
+Predicted Answer: The Ultra-Loft 850 Stretch ...
+Predicted Grade:  CORRECT
+
+Example 2:
+Question:         What type of material is ... ?
+Real Answer:      Soft canvas material.
+Predicted Answer: According to the description ...
+Predicted Grade:  CORRECT
+
+Example 3:
+Question:         What percentage of recycled ... ?
+Real Answer:      94%
+Predicted Answer: According to the context ... the answer is 94%.
+Predicted Grade:  CORRECT
+
+Example 4:
+Question:         What feature of this toddler</span><span class="sh">'</span><span class="s">s swimsuit ... ?
+Real Answer:      The UPF 50+ rated fabric.
+Predicted Answer: Based on the context provided, the answer ...
+Predicted Grade:  CORRECT
+
+Example 5:
+Question:         What percentage of the swimtop</span><span class="sh">'</span><span class="s">s body ...?
+Real Answer:      82%
+Predicted Answer: Based on the context, I found ...
+Predicted Grade:  CORRECT
+
+Example 6:
+Question:         What technology does EcoFlex 3L ... ?
+Real Answer:      TEK O2 technology.
+Predicted Answer: According to the context, EcoFlex ...
+Predicted Grade:  CORRECT
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h3 id="debug">Debug</h3>
+
+<p>We can use the following setup to use the debug mode and see the exact input/ouput for the LLM.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.globals</span> <span class="kn">import</span> <span class="n">set_debug</span>
+<span class="nf">set_debug</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">qa</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">])</span>
+
+<span class="c1"># Massive amount of information will be printed.
+</span>
+<span class="nf">set_debug</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>  <span class="c1"># turn off debug mode
+</span></code></pre></div></div>
+
+<h2 id="agents">Agents</h2>
+
+<ul>
+  <li>set temperature to zero to get precise results.</li>
+  <li>we use the <code class="language-plaintext highlighter-rouge">OllamaFunctions</code> to support local LLM.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain_experimental.llms.ollama_functions</span> <span class="kn">import</span> <span class="n">OllamaFunctions</span>
+<span class="kn">from</span> <span class="n">langchain.agents</span> <span class="kn">import</span> <span class="n">load_tools</span><span class="p">,</span> <span class="n">create_react_agent</span><span class="p">,</span> <span class="n">AgentExecutor</span>
+<span class="kn">from</span> <span class="n">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+</code></pre></div></div>
+
+<h3 id="creating-a-tool-calling-llm">Creating a tool calling LLM</h3>
+
+<h4 id="detail-ollama-model">Detail: Ollama model</h4>
+
+<p><a href="https://python.langchain.com/v0.2/docs/integrations/chat/ollama_functions/">reference</a></p>
+
+<p>We have to install <code class="language-plaintext highlighter-rouge">langchain-experimental</code> to use the ollama model.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>langchain_experimental
+</code></pre></div></div>
+
+<p>I also changed the default system prompt a bit so  that llama3 is more likely to return a json file.</p>
+
+<h4 id="code">Code</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">TOOL_PROMPT</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+You have access to the following tools:
+
+{tools}
+
+You must always select one of the above tools and respond with only a 
+JSON object matching the following schema:
+
+tool
+
+DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
+DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
+</span><span class="sh">"""</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">OllamaFunctions</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">tool_system_prompt_template</span><span class="o">=</span><span class="n">TOOL_PROMPT</span>
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">GetWeather</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Get the current weather in a given location</span><span class="sh">"""</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nc">Field</span><span class="p">(</span>
+        <span class="p">...,</span> <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">The city and state, e.g. San Francisco, CA</span><span class="sh">"</span>
+    <span class="p">)</span>
+
+<span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="nf">bind_tools</span><span class="p">([</span><span class="n">GetWeather</span><span class="p">])</span>
+
+<span class="n">ai_message</span> <span class="o">=</span> <span class="n">llm_with_tools</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">what is the weather like in San Francisco</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># ai_message.tool_calls 
+</span><span class="p">[{</span>
+  <span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">GetWeather</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">args</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span><span class="sh">'</span><span class="s">location</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">San Francisco, CA</span><span class="sh">'</span><span class="p">},</span>
+  <span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">call_4eb652ffba9547b48ab49cc301d50385</span><span class="sh">'</span>
+<span class="p">}]</span>
+<span class="sh">"""</span><span class="s">
+</span></code></pre></div></div>
+
+<h3 id="creating-an-agent">Creating an Agent</h3>
+
+<blockquote>
+  <p>For old langchain version, the agent can be created via the following code.</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">from</span> <span class="n">langchain.agents</span> <span class="kn">import</span> <span class="n">initialize_agent</span><span class="p">,</span> <span class="n">AgentType</span>
+
+
+<span class="n">tools</span> <span class="o">=</span> <span class="nf">load_tools</span><span class="p">([</span><span class="sh">"</span><span class="s">llm-math</span><span class="sh">"</span><span class="p">,</span><span class="sh">"</span><span class="s">wikipedia</span><span class="sh">"</span><span class="p">],</span> <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">=</span> <span class="nf">initialize_agent</span><span class="p">(</span>
+    <span class="n">tools</span><span class="p">,</span> <span class="n">llm</span><span class="p">,</span> 
+    <span class="n">agent</span><span class="o">=</span><span class="n">AgentType</span><span class="p">.</span><span class="n">CHAT_ZERO_SHOT_REACT_DESCRIPTION</span><span class="p">,</span>
+    <span class="n">handle_parsing_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Here we use the newer interface for langchain 0.2+.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LLM_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">llama3</span><span class="sh">"</span>
+<span class="n">TOOL_PROMPT</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+You have access to the following tools:
+
+{tools}
+
+You must always select one of the above tools and respond with</span><span class="se">\
+</span><span class="s">only a JSON object matching the following schema:
+
+tool
+
+DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
+DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
+</span><span class="sh">"""</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">OllamaFunctions</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">tool_system_prompt_template</span><span class="o">=</span><span class="n">TOOL_PROMPT</span>
+<span class="p">)</span>
+
+<span class="n">react_template</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+Answer the following questions as best you can.
+You have access to the following tools:
+
+{tools}
+
+Use the following format:
+
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+</span><span class="gp">...</span> <span class="p">(</span><span class="n">this</span> <span class="n">Thought</span><span class="o">/</span><span class="n">Action</span><span class="o">/</span><span class="n">Action</span> <span class="n">Input</span><span class="o">/</span><span class="n">Observation</span> <span class="n">can</span> <span class="n">repeat</span> <span class="n">N</span> <span class="n">times</span><span class="p">)</span>
+<span class="n">Thought</span><span class="p">:</span> <span class="n">I</span> <span class="n">now</span> <span class="n">know</span> <span class="n">the</span> <span class="n">final</span> <span class="n">answer</span>
+<span class="n">Final</span> <span class="n">Answer</span><span class="p">:</span> <span class="n">the</span> <span class="n">final</span> <span class="n">answer</span> <span class="n">to</span> <span class="n">the</span> <span class="n">original</span> <span class="nb">input</span> <span class="n">question</span>
+
+<span class="s">Follow the follwoing rules strictly no matter what
+
+- DO NOT ADD EXTRA DESCRIPTION FOR the action and action input!
+- DO NOT REPEAT ANY INFORMATION!
+- DO NOT REPEAT THE QUESTION!
+- FOLLOW THE FORMAT REQUIREMENT!
+
+Begin!
+
+Question: {input}
+Thought:{agent_scratchpad}
+</span><span class="sh">'''</span>
+
+<span class="n">react_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">.</span><span class="nf">from_template</span><span class="p">(</span><span class="n">react_template</span><span class="p">)</span>
+
+<span class="n">tools</span> <span class="o">=</span> <span class="nf">load_tools</span><span class="p">([</span><span class="sh">"</span><span class="s">wikipedia</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">wikipedia</span><span class="sh">"</span><span class="p">],</span> <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">=</span> <span class="nf">create_react_agent</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">react_prompt</span><span class="p">)</span>
+<span class="n">agent_executor</span> <span class="o">=</span> <span class="nc">AgentExecutor</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We can interact with the agent via the <code class="language-plaintext highlighter-rouge">invoke</code> method.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">question</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Who is Joe Biden</span><span class="sh">"</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="p">.</span><span class="nf">invoke</span><span class="p">({</span><span class="sh">"</span><span class="s">input</span><span class="sh">"</span><span class="p">:</span> <span class="n">question</span><span class="p">})</span>
+
+<span class="c1"># console output
+</span><span class="sh">"""</span><span class="s">
+⇨ Entering new AgentExecutor chain...
+  ⇨ Here</span><span class="sh">'</span><span class="s">s my response:
+      Thought: I need to find information about Joe Biden.
+      Action: wikipedia
+      Action Input: Joe Biden
+        ▶ Page: Joe Biden
+        Summary: Joseph Robinette Biden ...
+        ▶ Page: Family of Joe Biden
+        Summary: Joe Biden, the 46th and ...
+        ▶ Page: Presidency of Joe Biden
+        summary: Joe Biden</span><span class="sh">'</span><span class="s">s tenure as the 46th president ...
+      Final Answer: Joe Biden is an American politician ...
+⇨ Finished chain.
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<h3 id="custom-tool">Custom Tool</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">langchain.agents</span> <span class="kn">import</span> <span class="n">tool</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+</code></pre></div></div>
+
+<p>we create a new tool called <code class="language-plaintext highlighter-rouge">timer</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@tool</span>
+<span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Returns todays date, use this for any </span><span class="se">\
+</span><span class="s">    questions related to knowing todays date. </span><span class="se">\
+</span><span class="s">    The input should always be an empty string, </span><span class="se">\
+</span><span class="s">    and this function will always return todays </span><span class="se">\
+</span><span class="s">    date - any date mathmatics should occur </span><span class="se">\
+</span><span class="s">    outside this function.</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="nf">str</span><span class="p">(</span><span class="n">date</span><span class="p">.</span><span class="nf">today</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>We use the tool like this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tools</span> <span class="o">=</span> <span class="nf">load_tools</span><span class="p">([</span><span class="sh">"</span><span class="s">wikipedia</span><span class="sh">"</span><span class="p">],</span> <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span>
+<span class="n">tools</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">=</span> <span class="nf">create_react_agent</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">react_prompt</span><span class="p">)</span>
+<span class="n">agent_executor</span> <span class="o">=</span> <span class="nc">AgentExecutor</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">question</span> <span class="o">=</span> <span class="sh">"</span><span class="s">what is the time now?</span><span class="sh">"</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="sh">"</span><span class="s">input</span><span class="sh">"</span><span class="p">:</span> <span class="n">question</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># console output
+</span><span class="sh">"""</span><span class="s">
+⇨ Entering new AgentExecutor chain...
+    Here</span><span class="sh">'</span><span class="s">s my attempt at answering your question:
+    Thought:
+    Action: timer
+    Action Input: 2024-07-19 Here</span><span class="sh">'</span><span class="s">s the answer:
+    Thought: I now know the final answer
+    Final Answer: 2024-07-19
+⇨ Finished chain.
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+</div>
+
+
+    </div>
+
+  </body>
+
+</html>
