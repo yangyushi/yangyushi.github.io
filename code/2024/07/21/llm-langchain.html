@@ -792,7 +792,10 @@ it will ultimately lead to a better response from the language model.
 &lt;&lt; FORMATTING &gt;&gt;
 Return a markdown code snippet with a JSON object formatted to look like:
 \`\`\`json
-}}
+{
+    </span><span class="sh">"</span><span class="s">destination</span><span class="sh">"</span><span class="s">: string \ name of the prompt to use or </span><span class="sh">"</span><span class="s">DEFAULT</span><span class="sh">"</span><span class="s">
+    </span><span class="sh">"</span><span class="s">next_inputs</span><span class="sh">"</span><span class="s">: string \ a potentially modified version of the original input
+}
 \`\`\`
 
 REMEMBER: </span><span class="sh">"</span><span class="s">destination</span><span class="sh">"</span><span class="s"> MUST be one of the candidate prompt \
@@ -1495,7 +1498,10 @@ You have access to the following tools:
 You must always select one of the above tools and respond with only a 
 JSON object matching the following schema:
 
-tool
+{
+  </span><span class="sh">"</span><span class="s">tool</span><span class="sh">"</span><span class="s">: &lt;name of the selected tool&gt;,
+  </span><span class="sh">"</span><span class="s">tool_input</span><span class="sh">"</span><span class="s">: &lt;parameters for the selected tool, matching the tool</span><span class="sh">'</span><span class="s">s JSON schema&gt;
+}
 
 DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
 DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
@@ -1559,7 +1565,10 @@ You have access to the following tools:
 You must always select one of the above tools and respond with</span><span class="se">\
 </span><span class="s">only a JSON object matching the following schema:
 
-tool
+{
+  </span><span class="sh">"</span><span class="s">tool</span><span class="sh">"</span><span class="s">: &lt;name of the selected tool&gt;,
+  </span><span class="sh">"</span><span class="s">tool_input</span><span class="sh">"</span><span class="s">: &lt;parameters for the selected tool, matching the tool</span><span class="sh">'</span><span class="s">s JSON schema&gt;
+}
 
 DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
 DO NOT RESPOND ANYTHING RATHER THAN THE JSON CONTENT !!!
