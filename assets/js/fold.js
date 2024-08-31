@@ -27,3 +27,19 @@ document.getElementById('btnNews').addEventListener('click', function() {
         div.style.display = 'none';
     }
 });
+
+document.getElementById('btnJupyter').addEventListener('click', function() {
+    var btn = document.getElementById('btnJupyter');
+    if (btn.innerHTML == "Jupyter Notebooks +") {
+        btn.innerHTML = "Jupyter Notebooks -"
+    } else {
+        btn.innerHTML = "Jupyter Notebooks +"
+    }
+    var div = document.getElementById('divJupyter');
+    if (div.style.display === 'none') {
+        div.style.display = 'block';
+    } else {
+        div.style.display = 'none';
+    }
+});
+

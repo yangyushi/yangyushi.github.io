@@ -35,6 +35,7 @@
 <div class="center post">
     <ul id="markdown-toc">
   <li><a href="#reload-modules" id="markdown-toc-reload-modules">Reload Modules</a></li>
+  <li><a href="#export-notebook-to-nice-html-page-with-toc" id="markdown-toc-export-notebook-to-nice-html-page-with-toc">Export notebook to nice HTML page with TOC</a></li>
   <li><a href="#install--uninstall-a-kernel" id="markdown-toc-install--uninstall-a-kernel">Install / Uninstall a Kernel</a></li>
   <li><a href="#install-image-and-resize" id="markdown-toc-install-image-and-resize">Install Image and Resize</a></li>
   <li><a href="#connecting-to-server" id="markdown-toc-connecting-to-server">Connecting to Server</a>    <ul>
@@ -54,6 +55,34 @@
 </code></pre></div></div>
 
 <p>With these magical commands, the modifications on the module code would immediately affect the result on the jupyter notebook.</p>
+
+<h2 id="export-notebook-to-nice-html-page-with-toc">Export notebook to nice HTML page with TOC</h2>
+
+<p>For the lateset jupyter notebook 7+, we can not export notebook to a single HTML page anymore. This has been a <a href="https://github.com/jupyter/nbconvert/issues/1835">long term issue</a> and it’s not likely to get fixed.</p>
+
+<p>The way to get nice HTML is to</p>
+
+<ol>
+  <li>install quarto from <a href="https://quarto.org/">their webiste</a>.</li>
+  <li>install pandoc. On Debian 12, this is possible with <code class="language-plaintext highlighter-rouge">apt</code>.</li>
+  <li>Execute the following command.</li>
+</ol>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>quarto render FILENAME.ipynb <span class="nt">--to</span> html
+</code></pre></div></div>
+
+<p>If we want to have a self–contained html file with TOC, we can add the following <strong>raw</strong> cell to the beginning of the notebook.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+title: "Preprocessing Unstructured Data for LLM Applications"
+format:
+  html:
+    toc: true
+    css: styles.css
+    embed-resources: true
+    html-math-method: katex
+---
+</code></pre></div></div>
 
 <h2 id="install--uninstall-a-kernel">Install / Uninstall a Kernel</h2>
 
