@@ -28,14 +28,14 @@ document.getElementById('btnNews').addEventListener('click', function() {
     }
 });
 
-document.getElementById('btnJupyter').addEventListener('click', function() {
-    var btn = document.getElementById('btnJupyter');
-    if (btn.innerHTML == "Jupyter Notebooks +") {
-        btn.innerHTML = "Jupyter Notebooks -"
+document.getElementById('btnNotebook').addEventListener('click', function() {
+    var btn = document.getElementById('btnNotebook');
+    if (btn.innerHTML == "Notebooks +") {
+        btn.innerHTML = "Notebooks -"
     } else {
-        btn.innerHTML = "Jupyter Notebooks +"
+        btn.innerHTML = "Notebooks +"
     }
-    var div = document.getElementById('divJupyter');
+    var div = document.getElementById('divNotebook');
     if (div.style.display === 'none') {
         div.style.display = 'block';
     } else {

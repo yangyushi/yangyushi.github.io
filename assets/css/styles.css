@@ -5,6 +5,27 @@ html {
 
 body {
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 90vh;
+  height: 100%;
+}
+
+main {
+  flex: 1;
+  height: 100%;
+  width: 50%;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+}
+
+footer div {
+  margin-left: 16px;
 }
 
 a {
@@ -229,8 +250,9 @@ blockquote:after {
   top: 5%;
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 0%);
+  transform: translate(-50%, 0);
   overflow: visible;
+  width: 45%;
 }
 
 .two_column {
@@ -275,7 +297,7 @@ img {
 
 #side_bar {
   color: #333;
-  top: 10%;
+  top: 5%;
   position: fixed;
   overflow: auto;
   z-index: 1;
@@ -283,6 +305,7 @@ img {
   padding: 4px;
   max-height: 85vh;
   max-width: 20%;
+  left: 0%;
 }
 
 #side_bar::-webkit-scrollbar {
