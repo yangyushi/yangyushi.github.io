@@ -57,6 +57,16 @@ a:active, a:hover {
   padding-bottom: 0.5em;
 }
 
+.list-item {
+  padding-left: 4em;
+  margin-bottom: 1em;
+}
+
+.list-abstract {
+  padding-left: 1em;
+  margin-bottom: 1em;
+}
+
 h1, h2 {
   color: teal;
   font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
