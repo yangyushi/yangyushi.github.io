@@ -33,83 +33,61 @@
 </header>
 
 <main>
-    <h2>Posts</h2>
-
-    <div>
-        <div class="query">
-            <input type="text" id="search" placeholder="search my blog posts with keywords" />
-            <div class="list">
-                <ul id="searchResults">
-                </ul>
+    <div class="post-section">
+        <div>
+            <h2>Posts</h2>
+        </div>
+        <div class="query-box">
+            <div class="query">
+                <input type="text" id="search" placeholder="search my blog posts with keywords" />
             </div>
         </div>
+    </div>
+    <div class="list">
+        <ul id="searchResults">
+        </ul>
     </div>
 
     <h2 id="btnNotebook">Notebooks +</h2>
     <div class="list" id="divNotebook" style="display: none;">
-      <div class="list-abstract"> 
-          A collection of my 
-          <a href="https://jupyter.org/">jupyter notebooks</a>
-          rendered via
-          <a href="https://quarto.org/">quarto</a>.
-      </div>
-      <hr />
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-06-paper-partition.html" target="_blank">
-        Process Academic Papers (PDF) for LLM applications
-        </a>
-        [<a href="assets/notebooks/nb-06-paper-partition.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-01-process-doc-unstructured.html" target="_blank">
-        Process Unstructured Data for RAG 
-        </a>
-        [<a href="assets/notebooks/nb-01-process-doc-unstructured.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-02-langchain-intro.html" target="_blank">
-        LangChain for LLM Application Development
-        </a>
-        [<a href="assets/notebooks/nb-02-langchain-intro.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-04-emgedding-models.html" target="_blank">
-        Embedding Models: From Architecture to Implementation
-        </a>
-        [<a href="assets/notebooks/nb-04-emgedding-models.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-05-onnx-python.html" target="_blank">
-        ONNX with Python
-        </a>
-        [<a href="assets/notebooks/nb-05-onnx-python.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-      <div class="list-item">
-        <a href="assets/notebooks/nb-03-tf-trt-convert.html" target="_blank">
-        Optimize TensorFlow Models with TensorRT
-        </a>
-        [<a href="assets/notebooks/nb-03-tf-trt-convert.ipynb" download="">
-            download
-        </a>]
-      </div>
-
-
+        <div class="list-abstract"> 
+            A collection of my <a href="https://jupyter.org/">jupyter notebooks</a> rendered via <a href="https://quarto.org/">quarto</a>. </div>
+        <hr />
+        <div class="list-item">
+            <a href="assets/notebooks/nb-06-paper-partition.html" target="_blank">
+                Preprocess Academic Papers for RAG
+            </a>
+            [<a href="assets/notebooks/nb-06-paper-partition.ipynb" download=""> download </a>]
+        </div>
+        <div class="list-item">
+            <a href="assets/notebooks/nb-01-process-doc-unstructured.html" target="_blank">
+                Process Unstructured Data for RAG 
+            </a>
+            [<a href="assets/notebooks/nb-01-process-doc-unstructured.ipynb" download=""> download </a>]
+        </div>
+        <div class="list-item">
+            <a href="assets/notebooks/nb-02-langchain-intro.html" target="_blank">
+                LangChain for LLM Applications
+            </a>
+            [<a href="assets/notebooks/nb-02-langchain-intro.ipynb" download="">download</a>]
+        </div>
+        <div class="list-item">
+            <a href="assets/notebooks/nb-04-emgedding-models.html" target="_blank">
+                Embedding Models
+            </a> [<a href="assets/notebooks/nb-04-emgedding-models.ipynb" download=""> download </a>]
+        </div>
+        <div class="list-item">
+            <a href="assets/notebooks/nb-05-onnx-python.html" target="_blank">
+                ONNX with Python
+            </a>
+            [<a href="assets/notebooks/nb-05-onnx-python.ipynb" download=""> download </a>]
+        </div>
+        <div class="list-item">
+            <a href="assets/notebooks/nb-03-tf-trt-convert.html" target="_blank">
+                Optimize Models with TF-TRT
+            </a>
+            [<a href="assets/notebooks/nb-03-tf-trt-convert.ipynb" download=""> download </a>]
+        </div>
     </div>
 
     <h2 id="btnNews">Recent News +</h2>
@@ -151,6 +129,25 @@
                     a paper about fish
                     </a>.
                 <br />
+            </li>
+        </ul>
+    </div>
+
+    <h2 id="btnFriends">Friends +</h2>
+    <div class="list" id="divFriends" style="display: none;">
+        <ul>
+            <li>
+                <a href="https://francescoturci.net">Francesco Turci</a>
+                (<a href="https://francescoturci.net">backup</a>)
+            </li>
+            <li>
+                <a href="https://www.mauleonamieva.com">Abraham Mauleon Amieva</a>
+            </li>
+            <li>
+                <a href="https://www.kaguelab.com/">Erika Kague</a>
+            </li>
+            <li>
+                <a href="https://paddyroyall.github.io/padrus/index.html">Paddy Royall</a>
             </li>
         </ul>
     </div>
@@ -220,17 +217,6 @@
                 <a href="assets/lmc-poster-yushi.pdf">
                     Fish Poster #2
                 </a>
-            </li>
-        </ul>
-
-        <ul>
-            <h4>Friends</h4><br />
-            <li>
-                <a href="https://francescoturci.net">Francesco Turci</a>
-                (<a href="https://francescoturci.net">backup</a>)
-            </li>
-            <li>
-                <a href="https://www.mauleonamieva.com">Abraham Mauleon Amieva</a>
             </li>
         </ul>
     </div>

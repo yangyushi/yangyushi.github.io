@@ -1,3 +1,19 @@
+document.getElementById('btnFriends').addEventListener('click', function() {
+    var btn = document.getElementById('btnFriends');
+    if (btn.innerHTML == 'Friends +') {
+        btn.innerHTML = "Friends -"
+    } else {
+        btn.innerHTML = "Friends +"
+    }
+    var div = document.getElementById('divFriends');
+    if (div.style.display === 'none') {
+        div.style.display = 'block';
+    } else {
+        div.style.display = 'none';
+    }
+});
+
+
 document.getElementById('btnBookmark').addEventListener('click', function() {
     var btn = document.getElementById('btnBookmark');
     if (btn.innerHTML == 'Bookmarks +') {
