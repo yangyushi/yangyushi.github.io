@@ -42,7 +42,11 @@
   <li><a href="#xclilp" id="markdown-toc-xclilp"><code class="language-plaintext highlighter-rouge">xclilp</code></a></li>
   <li><a href="#print-information" id="markdown-toc-print-information">Print Information</a></li>
   <li><a href="#image" id="markdown-toc-image">Image</a></li>
-  <li><a href="#download-things" id="markdown-toc-download-things">Download Things</a></li>
+  <li><a href="#download-things" id="markdown-toc-download-things">Download Things</a>    <ul>
+      <li><a href="#pypi" id="markdown-toc-pypi">pypi</a></li>
+      <li><a href="#youtube" id="markdown-toc-youtube">YouTube</a></li>
+    </ul>
+  </li>
   <li><a href="#hardware-info" id="markdown-toc-hardware-info">Hardware Info</a></li>
   <li><a href="#compile-things" id="markdown-toc-compile-things">Compile Things</a></li>
   <li><a href="#cuda-related" id="markdown-toc-cuda-related">CUDA Related</a>    <ul>
@@ -159,6 +163,9 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 
 <h2 id="rsync"><code class="language-plaintext highlighter-rouge">rsync</code></h2>
 
+<p>The <code class="language-plaintext highlighter-rouge">rsync</code> command is used for synchronizing files and directories between two locations.
+The term “rsync” stands for “remote sync”.</p>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="o">[</span>OPTIONS] SOURCE <span class="o">[</span>SOURCE]... DEST
 </code></pre></div></div>
 
@@ -174,11 +181,19 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="nt">-av</span> /path/to/source/ /path/to/destination/
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">rsync</code> command is used for synchronizing files and directories between two locations. It is commonly used for backups and mirroring data. The term “rsync” stands for “remote sync”.</p>
+<p>the <code class="language-plaintext highlighter-rouge">rsync</code> uses a delta-transfer algorithm to minimize data transfer by only sending the differences between the source and destination files.</p>
 
-<p>When you run <code class="language-plaintext highlighter-rouge">rsync</code>, it uses a delta-transfer algorithm to minimize data transfer by only sending the differences between the source and destination files. The <code class="language-plaintext highlighter-rouge">OPTIONS</code> can be used to control various aspects of its behavior, such as recursion into directories (<code class="language-plaintext highlighter-rouge">-r</code>), preserving file permissions (<code class="language-plaintext highlighter-rouge">-p</code>), and more. The <code class="language-plaintext highlighter-rouge">-a</code> flag is often used for ‘archive mode’, which is a shorthand for a number of other options (<code class="language-plaintext highlighter-rouge">-rlptgoD</code>) that preserve most attributes and enable recursion.</p>
+<p>Common <code class="language-plaintext highlighter-rouge">OPTIONS</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-r</code>: recursion into directories,</li>
+  <li><code class="language-plaintext highlighter-rouge">-p</code>: preserving file permissions</li>
+  <li><code class="language-plaintext highlighter-rouge">-a</code>: flag for ‘archive mode’, which is a shorthand for a number of other options (<code class="language-plaintext highlighter-rouge">-rlptgoD</code>) that preserve most attributes and enable recursion.</li>
+</ul>
 
 <h2 id="nohup"><code class="language-plaintext highlighter-rouge">nohup</code></h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">nohup</code> command in Linux allows us to run a process in the background and ensures that it keeps running even after the session was logged out. The term “nohup” stands for ‘No Hang Up’.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>COMMAND <span class="o">[</span>ARG]... <span class="o">[</span>&amp;]
 </code></pre></div></div>
@@ -194,11 +209,11 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>python my_script.py &amp;
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">nohup</code> command in Linux allows you to run a process in the background and ensures that it keeps running even after you’ve logged out. The term “nohup” stands for ‘No Hang Up’.</p>
-
-<p>When you run a command with <code class="language-plaintext highlighter-rouge">nohup</code>, it detaches the process from the terminal and redirects the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and standard error (<code class="language-plaintext highlighter-rouge">stderr</code>) to a file, usually <code class="language-plaintext highlighter-rouge">nohup.out</code>.</p>
+<p><code class="language-plaintext highlighter-rouge">nohup</code> detaches the process from the terminal and redirects the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and standard error (<code class="language-plaintext highlighter-rouge">stderr</code>) to a file, usually <code class="language-plaintext highlighter-rouge">nohup.out</code>.</p>
 
 <h2 id="pbcopy"><code class="language-plaintext highlighter-rouge">pbcopy</code></h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">pbcopy</code> command is used on macOS systems to copy the standard input (<code class="language-plaintext highlighter-rouge">stdin</code>) to the clipboard.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pbcopy &lt; INPUT
 </code></pre></div></div>
@@ -213,9 +228,7 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"Hello, world!"</span> | pbcopy
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">pbcopy</code> command is used on macOS systems to copy the standard input (<code class="language-plaintext highlighter-rouge">stdin</code>) to the clipboard.</p>
-
-<p>When you run <code class="language-plaintext highlighter-rouge">pbcopy</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> and places the contents into the clipboard, allowing you to paste it elsewhere. Typically, you would pipe (<code class="language-plaintext highlighter-rouge">|</code>) the output of another command into <code class="language-plaintext highlighter-rouge">pbcopy</code> to capture it.</p>
+<p><code class="language-plaintext highlighter-rouge">pbcopy</code> reads from <code class="language-plaintext highlighter-rouge">stdin</code> and places the contents into the clipboard, allowing you to paste it elsewhere. Typically, you would pipe (<code class="language-plaintext highlighter-rouge">|</code>) the output of another command into <code class="language-plaintext highlighter-rouge">pbcopy</code> to capture it.</p>
 
 <p>If using ubuntu, put the following in <code class="language-plaintext highlighter-rouge">.bashrc</code>, to make a proxy for <code class="language-plaintext highlighter-rouge">xclilp</code>.</p>
 
@@ -223,6 +236,8 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 </code></pre></div></div>
 
 <h2 id="xclilp"><code class="language-plaintext highlighter-rouge">xclilp</code></h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">xclip</code> command is used on Linux systems to interface with the X11 clipboard.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xclip <span class="o">[</span>OPTION]... <span class="o">[</span>FILE]...
 </code></pre></div></div>
@@ -237,10 +252,6 @@ find /path/to/search <span class="nt">-path</span> /path/to/search/node_modules 
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"Hello, world!"</span> | xclip <span class="nt">-sel</span> clip
 </code></pre></div></div>
-
-<p>The <code class="language-plaintext highlighter-rouge">xclip</code> command is used on Linux systems to interface with the X11 clipboard. It allows you to copy data between the clipboard and standard streams like <code class="language-plaintext highlighter-rouge">stdin</code>, <code class="language-plaintext highlighter-rouge">stdout</code>, and <code class="language-plaintext highlighter-rouge">stderr</code>.</p>
-
-<p>When you run <code class="language-plaintext highlighter-rouge">xclip</code>, it reads from <code class="language-plaintext highlighter-rouge">stdin</code> by default and places the contents into the X11 clipboard. You can specify which X11 selection to use with the <code class="language-plaintext highlighter-rouge">-sel</code> flag. For example, <code class="language-plaintext highlighter-rouge">-sel clip</code> uses the clipboard that is typically used for copy-paste operations.</p>
 
 <h2 id="print-information">Print Information</h2>
 
@@ -286,6 +297,19 @@ openssl md5
 </code></pre></div></div>
 
 <h2 id="download-things">Download Things</h2>
+
+<h3 id="pypi">pypi</h3>
+
+<p>Visit <code class="language-plaintext highlighter-rouge">https://mirrors.tuna.tsinghua.edu.cn/help/pypi/</code> to deal with internet connections in China.</p>
+
+<p>Adding</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-i</span> https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+</code></pre></div></div>
+
+<p>after <code class="language-plaintext highlighter-rouge">pip install</code> to download from the tsinghua source.</p>
+
+<h3 id="youtube">YouTube</h3>
 
 <p>Get moderate sized MP4 videos from the Youtube.</p>
 
