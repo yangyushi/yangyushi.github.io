@@ -5,22 +5,24 @@
     <title>Neural Network represented by ONNX</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -46,17 +48,17 @@
 
 <h2 id="introduction">Introduction</h2>
 
-<p>A machine learning model is often represetned as a <em>computation graph</em> in the ONNX format.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
+<p>A machine learning model is often represetned as a <em>computation graph</em> in the ONNX format.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
 
 <p>Operationally, we train our model and then (somehow) export the model to a <code class="language-plaintext highlighter-rouge">*.onnx</code> file on our harddrive.
-This file includes the definition of our model, a <em>computation graph</em><sup id="fnref:0" role="doc-noteref"><a href="#fn:0" class="footnote" rel="footnote">2</a></sup>, and the corresponding weights.</p>
+This file includes the definition of our model, a <em>computation graph</em><sup id="fnref:0"><a href="#fn:0" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>, and the corresponding weights.</p>
 
 <p>The building blocks of a ONNX computation graph are:</p>
 
 <ul>
   <li>Nodes: the input/output tensors or the operators (a single unit to carry out a specific calculation).</li>
-  <li>Initializers: the constants<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> within the graph, often act as the <em>weight</em> of the model.</li>
-  <li>Attributes: Fixed parameters of an operator<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup>.</li>
+  <li>Initializers: the constants<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> within the graph, often act as the <em>weight</em> of the model.</li>
+  <li>Attributes: Fixed parameters of an operator<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>.</li>
 </ul>
 
 <p>For instance, a linear regression model: <code class="language-plaintext highlighter-rouge">y = a x + c</code>, could be represented with,</p>
@@ -82,16 +84,16 @@ This file includes the definition of our model, a <em>computation graph</em><sup
 
 <p>The <code class="language-plaintext highlighter-rouge">onnxruntime</code> library provides C++/Python/C# APIs to execute an ONNX model, so that the inference process can be executed on various platforms including CPU and GPU.</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">onnxruntime</code> library also provides some model optimization methods like basic operator fusion<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">5</a></sup> and quantization<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">6</a></sup>.</p>
+<p>The <code class="language-plaintext highlighter-rouge">onnxruntime</code> library also provides some model optimization methods like basic operator fusion<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">5</a></sup> and quantization<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">6</a></sup>.</p>
 
 <p>The very nice feature about <code class="language-plaintext highlighter-rouge">onnxruntime</code> is its support of various <a href="https://onnxruntime.ai/docs/execution-providers/">execution providers</a> (EP). Effectively this means we can write a single standard codebase with the <code class="language-plaintext highlighter-rouge">onnxruntime</code> API, and make it run on different devices, simply by changing the EP in the configuration. Sounds good, right?</p>
 
-<p>As far as I know, the standard release version<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">7</a></sup> only contains 3 EPs:</p>
+<p>As far as I know, the standard release version<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> only contains 3 EPs:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">CPUExecutionProvider</code>: support the model to be executed on a general CPU<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">8</a></sup>.</li>
+  <li><code class="language-plaintext highlighter-rouge">CPUExecutionProvider</code>: support the model to be executed on a general CPU<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">8</a></sup>.</li>
   <li><code class="language-plaintext highlighter-rouge">CUDAExecutionProvider</code>: support the model  to be executed on a Nvidia GPU.</li>
-  <li><code class="language-plaintext highlighter-rouge">TensorrtExecutionProvider</code>: support the model to be executed on a Nvidia GPU, but in a (significantly) optimized engine named <code class="language-plaintext highlighter-rouge">TensorRT</code>.<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">9</a></sup></li>
+  <li><code class="language-plaintext highlighter-rouge">TensorrtExecutionProvider</code>: support the model to be executed on a Nvidia GPU, but in a (significantly) optimized engine named <code class="language-plaintext highlighter-rouge">TensorRT</code>.<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">9</a></sup></li>
 </ul>
 
 <p>If we want to use more EPs, we have to build our own <code class="language-plaintext highlighter-rouge">onnxruntime</code> from the source code. For instance, if we want to use the <code class="language-plaintext highlighter-rouge">OpenVINOExecutionProvider</code>, we have to perform two steps,</p>
@@ -177,31 +179,31 @@ This file includes the definition of our model, a <em>computation graph</em><sup
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>we will use the term “model”, “computation graph”, “onnx model”, and “neural network” interchangably in this note. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:0" role="doc-endnote">
+    <li id="fn:0">
       <p>Mathematically, a graph is composed of nodes and edges. For machine learning models, the computation graph corresponds to the execution instructions to compute the required result. <a href="#fnref:0" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>the name intializer is unfortunately misleading. In fact it is called <em>constant</em> in <code class="language-plaintext highlighter-rouge">onnx_graphsurgeon</code> package developed by Nvidia, which is a wrapper of the <code class="language-plaintext highlighter-rouge">onnx</code> package. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>for instance, the <code class="language-plaintext highlighter-rouge">Gemm</code> operator has parameters <code class="language-plaintext highlighter-rouge">alpha</code>, <code class="language-plaintext highlighter-rouge">beta</code>, <code class="language-plaintext highlighter-rouge">transA</code>, and <code class="language-plaintext highlighter-rouge">transB</code>. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p>As far as I know, <code class="language-plaintext highlighter-rouge">onnxruntime</code> automatically fuse <code class="language-plaintext highlighter-rouge">MatMul</code> and <code class="language-plaintext highlighter-rouge">Add</code> into <code class="language-plaintext highlighter-rouge">GEMM</code>. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:5" role="doc-endnote">
+    <li id="fn:5">
       <p>In the default setting, <code class="language-plaintext highlighter-rouge">onnxruntime</code> insert quantization and de-quantization operators for every node in the computation graph, to reduce the precision of the model weight from 32-bit float point (<code class="language-plaintext highlighter-rouge">float</code> in C++, <code class="language-plaintext highlighter-rouge">np.float32</code> in Python) to 8-bit signed integer. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:6" role="doc-endnote">
+    <li id="fn:6">
       <p>You can get the release easily from PyPI with <code class="language-plaintext highlighter-rouge">pip install onnxruntime-gpu</code> <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:7" role="doc-endnote">
+    <li id="fn:7">
       <p>I only used onnxruntime on the X68 architecture. I never tested it on ARM or RISC-V. I suspect the onnxruntime folks would support ARM given the success of Macbooks. But I am not privileged to get a good Mac for myself! <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:8" role="doc-endnote">
+    <li id="fn:8">
       <p>TensorRT is extremely powerful. I have witnessed 5x to 10x performance boost simply by converting a <code class="language-plaintext highlighter-rouge">.onnx</code> file to a TensorRT engine, with a reduced GPU memory consumption. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

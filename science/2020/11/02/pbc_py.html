@@ -5,22 +5,24 @@
     <title>Pairwise distance with PBC</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -67,7 +69,7 @@
 
 <p>where the distance of <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> are <code class="language-plaintext highlighter-rouge">d_ij</code>.</p>
 
-<p>The particles labeled with <code class="language-plaintext highlighter-rouge">i', i", j', j"</code> are the <strong>equivalences</strong> of  <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> in the neighbour boxes, as the result of the PBC. Here, since the value of <code class="language-plaintext highlighter-rouge">d_ij'</code> is smaller than that of <code class="language-plaintext highlighter-rouge">d_ij</code>, we should select <code class="language-plaintext highlighter-rouge">d_ij'</code> as the distance instead of <code class="language-plaintext highlighter-rouge">d_ij</code>, for the calculation of short-ranged interaction like LJ. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
+<p>The particles labeled with <code class="language-plaintext highlighter-rouge">i', i", j', j"</code> are the <strong>equivalences</strong> of  <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> in the neighbour boxes, as the result of the PBC. Here, since the value of <code class="language-plaintext highlighter-rouge">d_ij'</code> is smaller than that of <code class="language-plaintext highlighter-rouge">d_ij</code>, we should select <code class="language-plaintext highlighter-rouge">d_ij'</code> as the distance instead of <code class="language-plaintext highlighter-rouge">d_ij</code>, for the calculation of short-ranged interaction like LJ. <sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
 
 <h2 id="nested-for-loop">Nested For Loop</h2>
 
@@ -168,7 +170,7 @@ Getting identical results? True
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>Actually, in a straightforward calculation, we should take all the distances from all the image boxes created by the PBC. This would lead to infinite amount of distances, which can nevertheless be handled with methods such as the <a href="https://en.wikipedia.org/wiki/Ewald_summation">Ewald sum</a>. <br /><br /> However the calculation is much easier for short ranged interactions such as LJ interaction. This is because we only consider particles whose distance is smaller than a cutoff value, <code class="language-plaintext highlighter-rouge">r_cut</code>, and <code class="language-plaintext highlighter-rouge">r_cut</code> is typically much smaller than half of the box length, <code class="language-plaintext highlighter-rouge">L / 2</code>.<br /><br />Going back to the diagram, this means <code class="language-plaintext highlighter-rouge">d_ij</code> itself will definitely be ignored because it is larger that <code class="language-plaintext highlighter-rouge">L / 2</code>. However, the existence of PBC forces us to especially take care of the situation where <code class="language-plaintext highlighter-rouge">d_ij &gt; L / 2</code> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

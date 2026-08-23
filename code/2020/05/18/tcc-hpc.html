@@ -5,22 +5,24 @@
     <title>TCC on HPC</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -82,7 +84,7 @@ module add tools/cmake-3.13.4
 <pre><code class="language-shell=">vi .bashrc
 </code></pre>
 
-<p>Then we will enter the infamous text editor <a href="https://www.vim.org">Vim</a>. If you never used Vim before, think of it having two modes. The default one is a “safe mode” where you can not change the content.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> Then there is an “edit mode” where you can edit things.</p>
+<p>Then we will enter the infamous text editor <a href="https://www.vim.org">Vim</a>. If you never used Vim before, think of it having two modes. The default one is a “safe mode” where you can not change the content.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> Then there is an “edit mode” where you can edit things.</p>
 
 <p>Firsty we navigate our cursor to the bottom by pressing <code class="language-plaintext highlighter-rouge">↓</code> button. If you want to be <a href="https://vi.stackexchange.com/questions/9313/why-does-vim-use-hjkl-for-cursor-keys">old-fashioned</a>, press <code class="language-plaintext highlighter-rouge">j</code> for the same movement.</p>
 
@@ -93,12 +95,12 @@ module add languages/gcc-9.1.0
 module add tools/cmake-3.13.4
 </code></pre></div></div>
 
-<p>Also，if you do not have your own Python<sup id="fnref:python" role="doc-noteref"><a href="#fn:python" class="footnote" rel="footnote">2</a></sup> on the blue crystal, I recommand using the latest version (version 3.7.7 in 2020). You get Python 3.7.7 by adding the the following line.</p>
+<p>Also，if you do not have your own Python<sup id="fnref:python"><a href="#fn:python" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> on the blue crystal, I recommand using the latest version (version 3.7.7 in 2020). You get Python 3.7.7 by adding the the following line.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module add languages/python-3.7.7
 </code></pre></div></div>
 
-<p>In addition, I recommond adding the following line into the <code class="language-plaintext highlighter-rouge">.bashrc</code> file. The reason is written in the very long footnote. <sup id="fnref:the_prefix" role="doc-noteref"><a href="#fn:the_prefix" class="footnote" rel="footnote">3</a></sup></p>
+<p>In addition, I recommond adding the following line into the <code class="language-plaintext highlighter-rouge">.bashrc</code> file. The reason is written in the very long footnote. <sup id="fnref:the_prefix"><a href="#fn:the_prefix" class="footnote" rel="footnote" role="doc-noteref">3</a></sup></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/.local/bin
 </code></pre></div></div>
@@ -221,13 +223,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>Actually the “safe mode” is called the command mode, and you can change the content of the file inside this mode. But it involves specific command that bind into special keys. For instance you can delete a word by typing <code class="language-plaintext highlighter-rouge">dw</code>, or delete 2 words by typing <code class="language-plaintext highlighter-rouge">d2w</code>. <br /> Indeed there are 3 different modes in Vim, being the command mode (safe mode), the insert mode (edit mode), and another view mode. These details do not really matter and you do not need to master Vim to get the job done. In case you somehow want to master Vim, I highly recommond <a href="https://www.amazon.co.uk/Practical-Vim-Edit-Speed-Thought-ebook/dp/B018T6ZVPK">this book</a>. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:python" role="doc-endnote">
+    <li id="fn:python">
       <p>The various versions of Python is a real pain currently (2020). It is a good idea to stick to 3.7.7 because it “works” in most cases. But sometimes I find myself being forced to go back to a specifc version. After a lot of pathetic attempt, I decided to follow <a href="https://francescoturci.net">Francesco</a>’s advice to use <a href="https://github.com/pyenv/pyenv">pyenv</a>. It really solved the version issue of Python and you may want to take a look at it if you are suffering too. <a href="#fnref:python" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:the_prefix" role="doc-endnote">
+    <li id="fn:the_prefix">
       <p>Originally TCC is designed to run on a personal computer, typicall with a linux operating system. In this case, softwares will be put into a common directory called <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>. And you can use anything inside <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> by just typing its name. <br /> For instance, if there is a software called <code class="language-plaintext highlighter-rouge">wildcat</code> who is being inside some random folder, for instance  <code class="language-plaintext highlighter-rouge">/usr/local/random</code>. Then we will have to type <br /> <code class="language-plaintext highlighter-rouge">/usr/local/random/wildcat</code> to use the software <code class="language-plaintext highlighter-rouge">wildcat</code>. <br /> However, since <code class="language-plaintext highlighter-rouge">tcc</code> is inside <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>, and this place is holy and special, we can just use <code class="language-plaintext highlighter-rouge">tcc</code> by typing only <code class="language-plaintext highlighter-rouge">tcc</code> instead of <code class="language-plaintext highlighter-rouge">/usr/local/bin/tcc</code>. <br /> While the idea of adding everything into <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> sounds good and tempting, we can not do it on Blue Crystal. This is the rule, so that you won’t put a <code class="language-plaintext highlighter-rouge">python2.7</code> into this place, renaming it to <code class="language-plaintext highlighter-rouge">python3</code> and making everyone miserable. <br /> A popular options for HPC users are creating their own <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> equivalent. And this place is normally chosen to be <code class="language-plaintext highlighter-rouge">$HOME/.local/bin</code>. <br /> However, this place is NOT special by default. And we have to make it special by adding <code class="language-plaintext highlighter-rouge">export PATH=$PATH:$HOME/.local/bin</code> into <code class="language-plaintext highlighter-rouge">.bashrc</code>. What we will do next, is to put the <code class="language-plaintext highlighter-rouge">tcc</code> software into <code class="language-plaintext highlighter-rouge">$HOME/.local/bin</code>, and since it is a special folder now, we can use <code class="language-plaintext highlighter-rouge">tcc</code> by just typing <code class="language-plaintext highlighter-rouge">tcc</code>. <a href="#fnref:the_prefix" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

@@ -5,22 +5,24 @@
     <title>二代测序</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -141,7 +143,7 @@
 <p>通过 Markov Chain 我们可以精确计算出，在观测到 \( n \) 个碱基时，出现 \( m \) 个特定类别（ACGT）的碱基
 的概率。下面，我们以碱基类别 A 举例。</p>
 
-<p>我们用一个 \( n+1 \) 维的向量<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>，表示这个概率分布 \( \mathbf{x} \in \mathbb{R}^{n+1} \)。</p>
+<p>我们用一个 \( n+1 \) 维的向量<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>，表示这个概率分布 \( \mathbf{x} \in \mathbb{R}^{n+1} \)。</p>
 
 <ol>
   <li>没有观察任何碱基的时候，系统状态是
@@ -1797,14 +1799,14 @@ z
 Monte Carlo Simulation: 1170.33 ms
 </code></pre></div></div>
 
-<p>计算解析解的速度是蒙特卡洛模拟的 16714 倍<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>！</p>
+<p>计算解析解的速度是蒙特卡洛模拟的 16714 倍<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>！</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>在这里，\( +1 \) 的原因是因为我们要考虑“出现 0 次”的状况。我们可以轻松地作出下面的断言 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>在蒙特卡洛模拟的时候，我重复了 100 次相同的模拟，来估计最终结果的误差——这其实是一次公平的比较。如果不重复足够多次数，小概率事件 \( m = n \) 不会被观测到。 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

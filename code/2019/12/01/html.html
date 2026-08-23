@@ -5,22 +5,24 @@
     <title>HTML</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -491,12 +493,12 @@ Hello world!
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
   <span class="nt">&lt;style&gt;</span>
-    <span class="nt">div</span><span class="nf">#container</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">90px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="no">black</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="no">white</span><span class="p">}</span>
-    <span class="nt">div</span><span class="nf">#header</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">royalblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">}</span>
-    <span class="nt">div</span><span class="nf">#sidebar</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">darkorange</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
-    <span class="nt">div</span><span class="nf">#mainbody</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">forestgreen</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">150px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
-    <span class="nt">div</span><span class="nf">#footer</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="no">darkblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">;</span><span class="nl">clear</span><span class="p">:</span><span class="nb">both</span><span class="p">}</span>
-    <span class="nt">div</span><span class="nf">#formcontainer</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">220px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="n">grey</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="no">white</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#container</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">90px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="nx">black</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="nx">white</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#header</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="nx">royalblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#sidebar</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="nx">darkorange</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#mainbody</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="nx">forestgreen</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">50px</span><span class="p">;</span><span class="nl">width</span><span class="p">:</span><span class="m">150px</span><span class="p">;</span><span class="nl">float</span><span class="p">:</span><span class="nb">left</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#footer</span><span class="p">{</span><span class="nl">background-color</span><span class="p">:</span><span class="nx">darkblue</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">20px</span><span class="p">;</span><span class="nl">clear</span><span class="p">:</span><span class="nb">both</span><span class="p">}</span>
+    <span class="nt">div</span><span class="nf">#formcontainer</span><span class="p">{</span><span class="nl">width</span><span class="p">:</span><span class="m">200px</span><span class="p">;</span><span class="nl">height</span><span class="p">:</span><span class="m">220px</span><span class="p">;</span><span class="nl">background-color</span><span class="p">:</span><span class="n">grey</span><span class="p">;</span><span class="nl">color</span><span class="p">:</span><span class="nx">white</span><span class="p">}</span>
   <span class="nt">&lt;/style&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>

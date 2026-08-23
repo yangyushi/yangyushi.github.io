@@ -5,22 +5,24 @@
     <title>CSS</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -91,7 +93,7 @@
 <p>例子:</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">h1</span><span class="p">{</span>
-   <span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+   <span class="nl">color</span><span class="p">:</span><span class="nx">red</span><span class="p">;</span>
    <span class="nl">font-size</span><span class="p">:</span><span class="m">14px</span><span class="p">;</span>
    <span class="nl">font-family</span><span class="p">:</span><span class="s1">"sans serif"</span><span class="p">;</span>
 <span class="p">}</span>
@@ -125,7 +127,7 @@
 <p>例子：让所有<strong>列表</strong>中的 strong 元素变为红色，而不是通常的黑色</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">li</span> <span class="nt">strong</span><span class="p">{</span>
-    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">red</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -147,8 +149,8 @@
 
 <p>例子:</p>
 
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#divid</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;}</span>
-<span class="nf">#pid</span> <span class="nt">a</span><span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="m">#00755f</span><span class="p">;}</span>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#divid</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="nx">red</span><span class="p">;}</span>
+<span class="nf">#pid</span> <span class="nt">a</span><span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="nx">#00755f</span><span class="p">;}</span>
 </code></pre></div></div>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
@@ -171,7 +173,7 @@
 
 <p>例子：</p>
 
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.divclass</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">}</span>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.divclass</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="nx">red</span><span class="p">}</span>
 </code></pre></div></div>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"divclass"</span><span class="nt">&gt;</span> hello world <span class="nt">&lt;/div&gt;</span>
@@ -179,7 +181,7 @@
 
 <p>例子：类选择器与派生选择器嵌套</p>
 
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.pclass</span> <span class="nt">a</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">}</span>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.pclass</span> <span class="nt">a</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="nx">red</span><span class="p">}</span>
 </code></pre></div></div>
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"pclass"</span><span class="nt">&gt;</span>这是一个 class 显示效果
     <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"hhtp://www.example.com"</span><span class="nt">&gt;</span>效果<span class="nt">&lt;/a&gt;</span>
@@ -192,7 +194,7 @@
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nt">title</span><span class="o">]</span>
 <span class="p">{</span>
-<span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+<span class="nl">color</span><span class="p">:</span><span class="nx">red</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -200,7 +202,7 @@
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nt">title</span><span class="err">＝</span><span class="nt">te</span><span class="o">]</span>
 <span class="p">{</span>
-<span class="nl">color</span><span class="p">:</span><span class="no">red</span><span class="p">;</span>
+<span class="nl">color</span><span class="p">:</span><span class="nx">red</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -226,18 +228,18 @@
 <p>设定背景颜色</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">body</span><span class="p">{</span>
-   <span class="nl">background-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+   <span class="nl">background-color</span><span class="p">:</span> <span class="nx">red</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nt">p</span><span class="p">{</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#0014ff</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">#0014ff</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>将图片设置为背景</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">body</span><span class="p">{</span>
-   <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url("pic.png")</span><span class="p">;</span>
+   <span class="nl">background-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s1">"pic.png"</span><span class="p">);</span>
    <span class="nl">background-repeat</span><span class="p">:</span> <span class="nb">no-repeat</span><span class="p">;</span> 
    <span class="c">/*no-repeat 不能重复
            repeat 可重复
@@ -280,10 +282,10 @@
 
 <p>例子：</p>
 
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">a</span><span class="nd">:link</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">blue</span><span class="p">;}</span>
-<span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">purple</span><span class="p">;}</span>
-<span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span> <span class="n">color</span><span class="p">:</span><span class="no">navy</span><span class="p">;}</span>
-<span class="nt">a</span><span class="nd">:active</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="no">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="no">crimson</span><span class="p">;}</span>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">a</span><span class="nd">:link</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="nx">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="nx">blue</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="nx">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="nx">purple</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="nx">azure</span> <span class="nb">color</span><span class="p">:</span><span class="nx">navy</span><span class="p">;}</span>
+<span class="nt">a</span><span class="nd">:active</span> <span class="p">{</span><span class="nl">background-color</span><span class="p">:</span> <span class="nx">azure</span><span class="p">;</span> <span class="nl">color</span><span class="p">:</span><span class="nx">crimson</span><span class="p">;}</span>
 </code></pre></div></div>
 
 <h3 id="列表">列表</h3>
@@ -291,7 +293,7 @@
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">ol</span> <span class="p">{</span><span class="nl">list-style</span><span class="p">:</span> <span class="nb">lower-greek</span><span class="p">}</span>
  <span class="c">/*改变所有 ordered list 的图标*/</span>
 <span class="nt">ul</span><span class="nc">.lower-alpha</span> <span class="p">{</span><span class="nl">list-style</span><span class="p">:</span> <span class="nb">lower-alpha</span><span class="p">}</span>
-<span class="nt">ul</span><span class="nc">.list_image</span> <span class="p">{</span><span class="nl">list-style-image</span><span class="p">:</span> <span class="sx">url("list_image.png")</span><span class="p">;}</span>
+<span class="nt">ul</span><span class="nc">.list_image</span> <span class="p">{</span><span class="nl">list-style-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s1">"list_image.png"</span><span class="p">);}</span>
 <span class="c">/*使用图片代替列表图标*/</span>
 </code></pre></div></div>
 
@@ -327,7 +329,7 @@
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*设置 table 的 th 和 td*/</span>
 <span class="c">/*这里 table 是 id 选择器*/</span>
 <span class="nf">#table</span> <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span><span class="p">{</span>
-    <span class="nl">border</span><span class="p">:</span> <span class="m">2px</span> <span class="nb">solid</span> <span class="no">lightblue</span><span class="p">;</span>
+    <span class="nl">border</span><span class="p">:</span> <span class="m">2px</span> <span class="nb">solid</span> <span class="nx">lightblue</span><span class="p">;</span>
     <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
     <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
@@ -335,14 +337,14 @@
 
 <span class="c">/*单独设置 th 有不同的背景色和文字颜色*/</span>
 <span class="nf">#table</span> <span class="nt">th</span><span class="p">{</span>
-    <span class="nl">background-color</span><span class="p">:</span><span class="no">aliceblue</span><span class="p">;</span>
-    <span class="nl">color</span><span class="p">:</span><span class="no">black</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span><span class="nx">aliceblue</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span><span class="nx">black</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="c">/*单独设置 tr2 的 td 有不同的背景色和文字颜色*/</span>
 <span class="c">/*这里 .tr2 是类选择器*/</span>
 <span class="nf">#table</span> <span class="nt">tr</span><span class="nc">.tr2</span> <span class="nt">td</span><span class="p">{</span>
-    <span class="nl">background-color</span><span class="p">:</span><span class="no">white</span><span class="p">;</span>
-    <span class="nl">color</span><span class="p">:</span><span class="no">indianred</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span><span class="nx">white</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span><span class="nx">indianred</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -383,13 +385,13 @@
 <p>例子:</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#p1</span><span class="p">{</span>
-    <span class="nl">outline-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+    <span class="nl">outline-color</span><span class="p">:</span> <span class="nx">red</span><span class="p">;</span>
     <span class="nl">outline-style</span><span class="p">:</span> <span class="nb">groove</span><span class="p">;</span>
     <span class="nl">outline-width</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nf">#p2</span><span class="p">{</span>
-    <span class="nl">outline-color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+    <span class="nl">outline-color</span><span class="p">:</span> <span class="nx">blue</span><span class="p">;</span>
     <span class="nl">outline-style</span><span class="p">:</span> <span class="nb">dotted</span><span class="p">;</span>
     <span class="nl">outline-width</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
 <span class="p">}</span>
@@ -417,7 +419,7 @@
 <p>例子：</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.top</span><span class="p">{</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="no">aliceblue</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">aliceblue</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
     <span class="nl">height</span><span class="p">:</span><span class="m">70px</span><span class="p">;</span>
     <span class="nl">text-align</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
@@ -427,23 +429,23 @@
     <span class="nl">margin</span><span class="p">:</span><span class="m">0px</span> <span class="nb">auto</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span><span class="m">75%</span><span class="p">;</span>
     <span class="nl">height</span><span class="p">:</span> <span class="m">70px</span><span class="p">;</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="no">cadetblue</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">cadetblue</span><span class="p">;</span>
     <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
-    <span class="nl">color</span><span class="p">:</span> <span class="no">aliceblue</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">aliceblue</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nc">.middle</span><span class="p">{</span>
     <span class="nl">margin</span><span class="p">:</span> <span class="m">0px</span> <span class="nb">auto</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span> <span class="m">75%</span><span class="p">;</span>
     <span class="nl">height</span><span class="p">:</span> <span class="m">700px</span><span class="p">;</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="no">cornsilk</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">cornsilk</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nc">.middle_1</span><span class="p">{</span>
     <span class="nl">margin</span><span class="p">:</span> <span class="m">0px</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
     <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="no">darksalmon</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">darksalmon</span><span class="p">;</span>
     <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -451,7 +453,7 @@
     <span class="nl">margin</span><span class="p">:</span> <span class="m">10px</span><span class="p">,</span> <span class="m">0px</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
     <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
-    <span class="nl">background-color</span><span class="p">:</span> <span class="no">darkorange</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nx">darkorange</span><span class="p">;</span>
     <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>

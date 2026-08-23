@@ -5,22 +5,24 @@
     <title>Compile GCC offline</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -169,7 +171,7 @@ make
 make <span class="nb">install</span>
 </code></pre></div></div>
 
-<p>Since the packages are installed into user–owned directories, we can do <code class="language-plaintext highlighter-rouge">make install</code> directly without <code class="language-plaintext highlighter-rouge">sudo</code> privilege. This is extremely helpful if we were working on a cluster and we want customised environment<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+<p>Since the packages are installed into user–owned directories, we can do <code class="language-plaintext highlighter-rouge">make install</code> directly without <code class="language-plaintext highlighter-rouge">sudo</code> privilege. This is extremely helpful if we were working on a cluster and we want customised environment<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>.</p>
 
 <p>I highly recommend to read the help information for the configuration by,</p>
 
@@ -228,7 +230,7 @@ make <span class="nb">install</span>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>The administrator may get pissed off and refuse to debug my code. But I find it worthwhile. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

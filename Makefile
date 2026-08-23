@@ -1,18 +1,11 @@
-target=/home/yushi/Code/yangyushi.github.io
-today=$(shell date +"%m-%d-%y")
+.PHONY: serve publish update
 
 serve:
 	bundle exec jekyll serve
 
 publish:
-	bundle exec jekyll build
-	rm -rf $(target)/*
-	cp -r _site/* $(target)
-	cd $(target); git add *; git commit -m "post update $(today)"; git push
+	python3 publish.py publish
 
 update:
 	bundle update
-	jekyll build
-
-.PHONY:
-	publish update serve
+	python3 publish.py build

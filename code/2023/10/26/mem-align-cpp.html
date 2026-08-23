@@ -5,22 +5,24 @@
     <title>Memory Alignment in C++</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="/assets/js/lunr.js"></script>
 
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
+    <script>
+      window.MathJax = {
+        tex: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
-      });
+      };
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
 
     </head>
 
@@ -83,7 +85,7 @@ The compiler handles these gracefully for static memory allocation.</p>
 </code></pre></div></div>
 
 <p>However, pointers to vector data need to point to memory blocks that are <strong>aligned</strong>,
-which means the Memory address must be a multiple of 32<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> (bytes).
+which means the Memory address must be a multiple of 32<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> (bytes).
 If the alignment requirement are not satisifed, the programme may crash.</p>
 
 <p><strong>Example of broken code:</strong></p>
@@ -100,11 +102,11 @@ If the alignment requirement are not satisifed, the programme may crash.</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>This may cause a <code class="language-plaintext highlighter-rouge">segmentation fault</code><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>. To avoid such error, we can ensure memory allocation alignment with following methods,</p>
+<p>This may cause a <code class="language-plaintext highlighter-rouge">segmentation fault</code><sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>. To avoid such error, we can ensure memory allocation alignment with following methods,</p>
 
 <ol>
-  <li>From <code class="language-plaintext highlighter-rouge">C++17</code> onwards, use standard containers with vector types<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>: <code class="language-plaintext highlighter-rouge">std::vector&lt;float8_t&gt; x(10);</code></li>
-  <li>For older compilers, consider <code class="language-plaintext highlighter-rouge">posix_memalign</code> or <code class="language-plaintext highlighter-rouge">aligned_alloc</code><sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> from the C11 and C++17 libraries.</li>
+  <li>From <code class="language-plaintext highlighter-rouge">C++17</code> onwards, use standard containers with vector types<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>: <code class="language-plaintext highlighter-rouge">std::vector&lt;float8_t&gt; x(10);</code></li>
+  <li>For older compilers, consider <code class="language-plaintext highlighter-rouge">posix_memalign</code> or <code class="language-plaintext highlighter-rouge">aligned_alloc</code><sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> from the C11 and C++17 libraries.</li>
 </ol>
 
 <h2 id="classes-and-structs">Classes and Structs</h2>
@@ -199,16 +201,16 @@ If the alignment requirement are not satisifed, the programme may crash.</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>SIMD architectures such as SSE and AVX on x86 processors have specific alignment requirements. <strong>SSE</strong>: Requires 16-byte alignment for its 128-bit registers. <strong>AVX</strong>: Requires 32-byte alignment for its 256-bit registers. <strong>AVX-512</strong>: Requires 64-byte alignment for its 512-bit registers. If the vector type <code class="language-plaintext highlighter-rouge">float8_t</code> in the example uses AVX instructions (which handle <strong>8 single-precision floating-point (fp32) numbers</strong> simultaneously, thus occupying <strong>256 bits</strong> or <strong>32 bytes</strong>), then it would require 32-<strong>byte</strong> alignment. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>The line <code class="language-plaintext highlighter-rouge">*p = a;</code> might be attempting to use SIMD instructions to store the <code class="language-plaintext highlighter-rouge">float8_t</code> value <code class="language-plaintext highlighter-rouge">a</code> into the memory pointed to by <code class="language-plaintext highlighter-rouge">p</code>. If <code class="language-plaintext highlighter-rouge">p</code> isn’t 32-byte aligned, this can result in a crash. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>Prefer <code class="language-plaintext highlighter-rouge">std::vector</code> when possible. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p>If using these methods, it’s crucial to free memory correctly to prevent errors. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
