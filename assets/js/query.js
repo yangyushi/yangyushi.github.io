@@ -62,14 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const pagefind = await loadPagefind();
-            const response = await pagefind.debouncedSearch(query, {}, 150);
+            const listEverything = query === "*";
+            const response = listEverything
+                ? await pagefind.search(null)
+                : await pagefind.debouncedSearch(query, {}, 150);
 
             if (!response || currentRequest !== requestId) {
                 return;
             }
 
             const results = await Promise.all(
-                response.results.slice(0, 8).map((result) => result.data())
+                (listEverything ? response.results : response.results.slice(0, 8))
+                    .map((result) => result.data())
             );
 
             if (currentRequest === requestId) {
