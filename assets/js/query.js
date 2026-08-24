@@ -1,60 +1,105 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var documents;
-    fetch('assets/search_index.json')
-        .then(response => response.json())
-        .then(data => {
-            documents = data;
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("search");
+    const resultList = document.getElementById("searchResults");
 
-            var idx = lunr(function() {
-                this.ref('id');
-                this.field('title');
-                this.field('content');
+    if (!input || !resultList) {
+        return;
+    }
 
-                documents.forEach(function(doc) {
-                    this.add(doc);
-                }, this);
-            });
+    let pagefindPromise;
+    let requestId = 0;
 
-            document.getElementById("search").addEventListener("keyup", function() {
-                var query = this.value;
-                var results = idx.search(query);
-                displayResults(results, documents);
-            });
+    const loadPagefind = () => {
+        pagefindPromise ??= import("/pagefind/pagefind.js").then(async (pagefind) => {
+            await pagefind.options({ excerptLength: 20 });
+            await pagefind.init();
+            return pagefind;
+        }).catch((error) => {
+            pagefindPromise = undefined;
+            throw error;
         });
-});
+        return pagefindPromise;
+    };
 
-function displayResults(results, documents) {
-    var output = '';
-    if (results.length === 0) {
-        output = "Sorry, no articles matched your search.";
-    } else {
-        results.forEach(result => {
-            var item = documents.find(doc => doc.id === result.ref);
-            output += `<li><a href="${item.id}">${item.title}</a><li>`;
+    const clearResults = () => {
+        resultList.replaceChildren();
+    };
+
+    const showMessage = (message) => {
+        const item = document.createElement("li");
+        item.textContent = message;
+        resultList.replaceChildren(item);
+        resultList.style.display = "block";
+    };
+
+    const displayResults = (results) => {
+        if (results.length === 0) {
+            showMessage("Sorry, no articles matched your search.");
+            return;
+        }
+
+        const items = results.map((result) => {
+            const item = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = result.url;
+            link.textContent = result.meta?.title || result.url;
+            item.append(link);
+            return item;
         });
-    }
-    document.getElementById("searchResults").innerHTML = output;
-}
 
+        resultList.replaceChildren(...items);
+        resultList.style.display = "block";
+    };
 
-document.getElementById('search').addEventListener('blur', function() {
-    var obj = document.getElementById("searchResults")
+    const search = async () => {
+        const query = input.value.trim();
+        const currentRequest = ++requestId;
 
-    var is_selecting_article = false;
-    for (let i = 0; i < obj.children.length; i++) {
-        const child = obj.children[i];
-        is_selecting_article = is_selecting_article || child.matches(":active");
-    }
-    if (is_selecting_article){
-        obj.style.display = "block";
-    } else {
-        obj.style.display = "none";
-    }
-});
+        if (!query) {
+            clearResults();
+            return;
+        }
 
-document.getElementById('search').addEventListener('focus', function() {
-    var obj = document.getElementById("searchResults")
-    if (obj.style.display == "none"){
-        obj.style.display = "block";
-    }
+        try {
+            const pagefind = await loadPagefind();
+            const response = await pagefind.debouncedSearch(query, {}, 150);
+
+            if (!response || currentRequest !== requestId) {
+                return;
+            }
+
+            const results = await Promise.all(
+                response.results.slice(0, 8).map((result) => result.data())
+            );
+
+            if (currentRequest === requestId) {
+                displayResults(results);
+            }
+        } catch (error) {
+            console.error("Search failed", error);
+            if (currentRequest === requestId) {
+                showMessage("Search is temporarily unavailable.");
+            }
+        }
+    };
+
+    input.addEventListener("focus", () => {
+        resultList.style.display = "block";
+        loadPagefind().catch(() => {});
+    });
+    input.addEventListener("input", search);
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            input.value = "";
+            clearResults();
+            resultList.style.display = "none";
+            input.blur();
+        }
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+        if (event.target !== input && !resultList.contains(event.target)) {
+            resultList.style.display = "none";
+        }
+    });
 });

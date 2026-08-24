@@ -1,12 +1,10 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Home</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="/assets/js/lunr.js"></script>
-
     <script src="/assets/js/toc.js"></script>
     <script src="/assets/js/highlight.pack.js"></script>
 
@@ -41,12 +39,12 @@
         </div>
         <div class="query-box">
             <div class="query">
-                <input type="text" id="search" placeholder="search my blog posts with keywords" />
+                <input type="search" id="search" placeholder="search my blog posts with keywords" autocomplete="off" spellcheck="false" aria-label="Search blog posts" aria-controls="searchResults" />
             </div>
         </div>
     </div>
     <div class="list">
-        <ul id="searchResults">
+        <ul id="searchResults" aria-live="polite">
         </ul>
     </div>
 
