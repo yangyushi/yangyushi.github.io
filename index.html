@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Home</title>
+    
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
     <script src="/assets/js/toc.js"></script>
@@ -36,7 +37,7 @@
     <section class="post-search" aria-label="Blog posts">
         <div class="query-box">
             <div class="query">
-                <input type="search" id="search" placeholder="search my blog posts with keywords" autocomplete="off" spellcheck="false" aria-label="Search blog posts" aria-controls="searchResults" />
+                <input type="search" id="search" placeholder="search my blog posts with keywords" autocomplete="off" spellcheck="false" aria-label="Search blog posts" aria-controls="searchResults" data-search-version="1787629662" />
             </div>
         </div>
         <div class="list search-results">
@@ -45,112 +46,37 @@
         </div>
     </section>
 
-    <h2 id="btnNotebook">Notebooks +</h2>
-    <div class="list" id="divNotebook" style="display: none;">
-        <div class="list-abstract"> 
-            A collection of my <a href="https://jupyter.org/">jupyter notebooks</a> rendered via <a href="https://quarto.org/">quarto</a>. </div>
-        <hr />
-        <div class="list-item">
-            <a href="assets/notebooks/nb-06-paper-partition.html" target="_blank">
-                Preprocess Academic Papers for RAG
-            </a>
-            [<a href="assets/notebooks/nb-06-paper-partition.ipynb" download=""> download </a>]
-        </div>
-        <div class="list-item">
-            <a href="assets/notebooks/nb-01-process-doc-unstructured.html" target="_blank">
-                Process Unstructured Data for RAG 
-            </a>
-            [<a href="assets/notebooks/nb-01-process-doc-unstructured.ipynb" download=""> download </a>]
-        </div>
-        <div class="list-item">
-            <a href="assets/notebooks/nb-02-langchain-intro.html" target="_blank">
-                LangChain for LLM Applications
-            </a>
-            [<a href="assets/notebooks/nb-02-langchain-intro.ipynb" download="">download</a>]
-        </div>
-        <div class="list-item">
-            <a href="assets/notebooks/nb-04-emgedding-models.html" target="_blank">
-                Embedding Models
-            </a> [<a href="assets/notebooks/nb-04-emgedding-models.ipynb" download=""> download </a>]
-        </div>
-        <div class="list-item">
-            <a href="assets/notebooks/nb-05-onnx-python.html" target="_blank">
-                ONNX with Python
-            </a>
-            [<a href="assets/notebooks/nb-05-onnx-python.ipynb" download=""> download </a>]
-        </div>
-        <div class="list-item">
-            <a href="assets/notebooks/nb-03-tf-trt-convert.html" target="_blank">
-                Optimize Models with TF-TRT
-            </a>
-            [<a href="assets/notebooks/nb-03-tf-trt-convert.ipynb" download=""> download </a>]
-        </div>
-    </div>
+    <details class="home-section about-me">
+        <summary>About Me</summary>
+        <div class="about-content">
+            <p class="about-links">
+                <a href="https://github.com/yangyushi">GitHub</a>
+                <span aria-hidden="true"> - </span>
+                <a href="https://www.linkedin.com/in/yushi-yang-%E6%9D%A8%E9%9B%A8%E8%AF%97-5287b3108/">LinkedIn</a>
+                <span aria-hidden="true"> - </span>
+                <a href="https://x.com/yushiyang1992">Twitter</a>
+            </p>
 
-    <h2 id="btnNews">Recent News +</h2>
-    <div class="list" id="divNews" style="display: none;">
-        <ul>
-            <li>
-                <font color="teal"><b>2024</b></font>
-            </li>
-            <li>
-                Building RAG applications for MGI.
-            </li>
-            <li>
-                Published
-                <a href="https://www.nature.com/articles/s41467-024-46426-1">
-                    another paper about fish
-                </a>.
-            </li>
-            <li>
-                <font color="teal"><b>2022</b></font>
-            </li>
-            <li>
-                Working for MGI on NGS algorithms.
-            </li>
-            <li>
-                Proposed to my girlfriend.
-            </li>
-            <li>
-                Finished my PhD with
-                <a href="http://padrus.com">Paddy</a>,
-                <a href="https://scholar.google.co.uk/citations?user=liq4jfQAAAAJ&amp;hl=en">Chrissy</a>,
-                and <a href="http://tmachon.com/">Tom</a>.
-            </li>
-            <li>
-                <font color="teal"><b>2021</b></font>
-            </li>
-            <li>
-                Published
-                <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009394">
-                    a paper about fish
-                    </a>.
-                <br />
-            </li>
-        </ul>
-    </div>
+            <div class="section-divider"><span>Recents</span></div>
+            <ul class="about-list recent-list">
+                <li><strong>2024</strong> — Building RAG applications at MGI; published <a href="https://www.nature.com/articles/s41467-024-46426-1">another paper on fish</a>.</li>
+                <li><strong>2022</strong> — Worked on NGS algorithms at MGI; completed my PhD.</li>
+                <li><strong>2021</strong> — Published <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009394">a paper on fish</a>.</li>
+            </ul>
 
-    <h2 id="btnFriends">Friends +</h2>
-    <div class="list" id="divFriends" style="display: none;">
-        <ul>
-            <li>
-                <a href="https://francescoturci.net">Francesco Turci</a>
-                (<a href="https://francescoturci.net">backup</a>)
-            </li>
-            <li>
-                <a href="https://www.mauleonamieva.com">Abraham Mauleon Amieva</a>
-            </li>
-            <li>
-                <a href="https://www.kaguelab.com/">Erika Kague</a>
-            </li>
-            <li>
-                <a href="https://paddyroyall.github.io/padrus/index.html">Paddy Royall</a>
-            </li>
-        </ul>
-    </div>
+            <div class="section-divider"><span>Friends</span></div>
+            <ul class="about-list friend-list">
+                <li><a href="https://francescoturci.net">Francesco Turci</a></li>
+                <li><a href="https://www.mauleonamieva.com">Abraham Mauleon Amieva</a></li>
+                <li><a href="https://www.kaguelab.com/">Erika Kague</a></li>
+                <li><a href="https://paddyroyall.github.io/padrus/index.html">Paddy Royall</a></li>
+            </ul>
+        </div>
+    </details>
 
-    <h2 id="btnBookmark">Bookmarks +</h2>
-    <div class="list" id="divBookmark" style="display: none;">
+    <details class="home-section bookmarks">
+        <summary>Bookmarks</summary>
+        <div class="list">
         <ul>
             <li>
                 <a href="https://matplotlib.org/3.1.0/_images/sphx_glr_named_colors_003.png">
@@ -216,20 +142,10 @@
                 </a>
             </li>
         </ul>
-    </div>
+        </div>
+    </details>
 </main>
-
-<footer>
-  <div>♫</div>
-  <div><a href="https://github.com/yangyushi">GitHub</a></div>
-  <div><a href="https://x.com/yushiyang1992">Twitter</a></div>
-  <div><a href="https://www.linkedin.com/in/yushi-yang-%E6%9D%A8%E9%9B%A8%E8%AF%97-5287b3108/">LinkedIn</a></div>
-  <div>✦</div>
-</footer>
-
-<script src="/assets/js/fold.js"></script>
-
-<script src="/assets/js/query.js?v=1787621924"></script>
+<script src="/assets/js/query.js?v=1787629662"></script>
 
 
 

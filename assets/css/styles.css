@@ -39,19 +39,6 @@ header {
   margin: var(--space-3) auto;
 }
 
-footer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-3);
-  width: min(100%, var(--home-width));
-  margin: var(--space-4) auto var(--space-3);
-}
-
-footer div {
-  margin: 0;
-}
-
 a {
   color: darkslategray;
   background: transparent;
@@ -70,11 +57,6 @@ button:focus-visible,
   outline-offset: 3px;
 }
 
-.notebooks ul {
-  padding-inline-start: 0;
-  list-style-type: none;
-}
-
 .list {
   max-width: 100%;
 }
@@ -87,16 +69,6 @@ button:focus-visible,
 
 .list li {
   padding-bottom: 0.2em;
-}
-
-.list-item {
-  padding-left: 2em;
-  margin-bottom: 0.25em;
-}
-
-.list-abstract {
-  padding-left: 1em;
-  margin-bottom: 1em;
 }
 
 h1, h2 {
@@ -529,7 +501,7 @@ img {
 
 #searchResults a {
   display: block;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   box-sizing: border-box;
   color: #333;
   text-decoration: none;
@@ -537,6 +509,128 @@ img {
 
 #searchResults a:hover {
   background-color: #f5f5f5;
+}
+
+.search-result-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.search-result-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-type {
+  flex: none;
+  color: #777;
+  font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.search-result-excerpt {
+  margin: 0.15rem 0 0;
+  overflow: hidden;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-excerpt mark {
+  color: inherit;
+  background: transparent;
+  font-weight: 600;
+}
+
+.search-message {
+  padding: var(--space-1) var(--space-2);
+  color: #666;
+}
+
+.search-group-title {
+  margin-top: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid #ddd;
+  color: teal;
+  font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.home-section {
+  margin-top: var(--space-3);
+}
+
+.home-section summary {
+  width: fit-content;
+  color: teal;
+  cursor: pointer;
+  font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 1.5em;
+  font-weight: bold;
+  list-style: none;
+  user-select: none;
+}
+
+.home-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-section summary::after {
+  content: " +";
+}
+
+.home-section[open] summary::after {
+  content: " -";
+}
+
+.home-section summary:focus-visible {
+  outline: 2px solid teal;
+  outline-offset: 3px;
+}
+
+.about-content {
+  padding-top: var(--space-2);
+  color: #333;
+  line-height: 1.6;
+}
+
+.about-links {
+  margin: 0;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-2);
+  color: #777;
+  font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid #ddd;
+}
+
+.about-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-list li {
+  margin-bottom: var(--space-1);
 }
 
 @media (max-width: 800px) {

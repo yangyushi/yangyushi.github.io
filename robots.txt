@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yangyushi.github.io/sitemap.xml

@@ -1,0 +1,284 @@
+{
+  "posts": [
+    
+    {
+      "title": "LangChain for LLM Application Development",
+      "url": "/code/2024/07/21/llm-langchain.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Reflexive Verbs",
+      "url": "/code/2024/01/30/reflexive-verb.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Neural Network represented by ONNX",
+      "url": "/code/2023/11/19/onnx.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Memory Alignment in C++",
+      "url": "/code/2023/10/26/mem-align-cpp.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "incident about invalid libgomp",
+      "url": "/code/2023/10/24/libgomp-issue.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Compile GCC offline",
+      "url": "/code/2023/10/16/compile-gcc.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Heart Sūtra",
+      "url": "/idea/2023/10/07/heart-sutra.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "ChatGPT Prompts",
+      "url": "/code/2023/09/18/chatgpt.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Enumeration in Python/C++",
+      "url": "/code/2023/09/09/enum-py-cpp.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "统计物理",
+      "url": "/science/2023/09/08/stat-phy.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Jupyter Notebook Tricks",
+      "url": "/code/2023/09/07/jupyter-notebook.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "二代测序",
+      "url": "/work/2023/08/18/ngs.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Quantitative Modeling",
+      "url": "/sci/2022/05/07/quantitative-model.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Tensorflow Applications",
+      "url": "/code/2022/04/02/nlp-deep-learning.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "读书笔记",
+      "url": "/idea/2022/02/07/read.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "数学",
+      "url": "/science/2022/01/18/math.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Open NPY in ImageJ",
+      "url": "/code/2021/12/17/raw-npy.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "C++",
+      "url": "/code/2021/04/14/cpp.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Modeling Confocal Images",
+      "url": "/science/2021/04/04/image-der.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Connecting Raspeberry Pi",
+      "url": "/code/2021/01/13/connect-pi.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Mathematics for Echonomists",
+      "url": "/science/2020/11/22/mathmatics-for-economists.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "机器学习",
+      "url": "/code/2020/11/15/ml.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Pairwise distance with PBC",
+      "url": "/science/2020/11/02/pbc_py.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Useful Linux Commands",
+      "url": "/code/2020/10/22/hpc.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "随机过程",
+      "url": "/science/2020/07/03/stochastic-process.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Create a C++ Library",
+      "url": "/code/2020/06/26/cpp-library.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "TCC on HPC",
+      "url": "/code/2020/05/18/tcc-hpc.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Noise in 3D Vicsek model",
+      "url": "/science/2020/04/28/vicsek-noise.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Python",
+      "url": "/code/2020/04/22/python.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Opencv Camera Distortion",
+      "url": "/code/2020/03/04/opencv-undistort.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Vim Desktop in Ubuntu",
+      "url": "/code/2020/03/02/vim-desktop.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Video Editing",
+      "url": "/code/2020/02/09/ffmpeg.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "C 语言",
+      "url": "/code/2020/01/11/C.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Removing the Perspective",
+      "url": "/code/2019/12/17/remove_perspective.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "HTML",
+      "url": "/code/2019/12/01/html.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "CSS",
+      "url": "/code/2019/08/23/css.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "论证笔记",
+      "url": "/science/2019/05/17/arguments.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Python Module Struct",
+      "url": "/code/2017/12/09/struct.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "Javascript",
+      "url": "/code/2017/07/22/javascript.html",
+      "type": "Post"
+    },
+    
+    {
+      "title": "MySQL 简介",
+      "url": "/code/2017/04/05/mysql.html",
+      "type": "Post"
+    }
+    
+  ],
+  "notebooks": [
+    
+    {
+      "title": "Preprocess Academic Papers for RAG",
+      "url": "/assets/notebooks/nb-06-paper-partition.html",
+      "type": "Notebook"
+    },
+    
+    {
+      "title": "Process Unstructured Data for RAG",
+      "url": "/assets/notebooks/nb-01-process-doc-unstructured.html",
+      "type": "Notebook"
+    },
+    
+    {
+      "title": "LangChain for LLM Applications",
+      "url": "/assets/notebooks/nb-02-langchain-intro.html",
+      "type": "Notebook"
+    },
+    
+    {
+      "title": "Embedding Models",
+      "url": "/assets/notebooks/nb-04-emgedding-models.html",
+      "type": "Notebook"
+    },
+    
+    {
+      "title": "ONNX with Python",
+      "url": "/assets/notebooks/nb-05-onnx-python.html",
+      "type": "Notebook"
+    },
+    
+    {
+      "title": "Optimize Models with TF-TRT",
+      "url": "/assets/notebooks/nb-03-tf-trt-convert.html",
+      "type": "Notebook"
+    }
+    
+  ]
+}
