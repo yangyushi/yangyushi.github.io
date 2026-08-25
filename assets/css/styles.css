@@ -481,10 +481,11 @@ img {
 }
 
 .post-section {
-  display: grid;
-  grid-template-columns: auto minmax(16rem, 28rem);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   margin-top: var(--space-3);
   margin-bottom: var(--space-3);
@@ -492,10 +493,13 @@ img {
 
 .post-section h2 {
   margin: 0;
+  white-space: nowrap;
 }
 
 .query-box {
-  min-width: 0;
+  flex: 0 1 28rem;
+  width: min(28rem, 100%);
+  min-width: 16rem;
 }
 
 .query {
@@ -543,8 +547,12 @@ img {
     margin-bottom: var(--space-3);
   }
   .post-section {
-    grid-template-columns: 1fr;
+    width: 100%;
     gap: var(--space-2);
+  }
+  .query-box {
+    flex-basis: 100%;
+    min-width: 0;
   }
 }
 
