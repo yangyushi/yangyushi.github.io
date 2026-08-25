@@ -104,7 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const type = document.createElement("span");
         type.className = "search-result-type";
-        type.textContent = result.meta?.type || result.type || "Post";
+        const resultType = result.meta?.type || result.type || "Post";
+        type.dataset.type = resultType.toLowerCase();
+        type.textContent = resultType === "Notebook" ? "Note" : resultType;
 
         heading.append(title, type);
         link.append(heading);
