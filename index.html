@@ -33,20 +33,17 @@
 </header>
 
 <main>
-    <div class="post-section">
-        <div>
-            <h2>Posts</h2>
-        </div>
+    <section class="post-search" aria-label="Blog posts">
         <div class="query-box">
             <div class="query">
                 <input type="search" id="search" placeholder="search my blog posts with keywords" autocomplete="off" spellcheck="false" aria-label="Search blog posts" aria-controls="searchResults" />
             </div>
         </div>
-    </div>
-    <div class="list">
-        <ul id="searchResults" aria-live="polite">
-        </ul>
-    </div>
+        <div class="list search-results">
+            <ul id="searchResults" aria-live="polite">
+            </ul>
+        </div>
+    </section>
 
     <h2 id="btnNotebook">Notebooks +</h2>
     <div class="list" id="divNotebook" style="display: none;">
@@ -232,7 +229,7 @@
 
 <script src="/assets/js/fold.js"></script>
 
-<script src="/assets/js/query.js?v=1787621340"></script>
+<script src="/assets/js/query.js?v=1787621924"></script>
 
 
 
