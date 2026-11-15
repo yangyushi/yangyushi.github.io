@@ -13,15 +13,13 @@ function foldTOC() {
 
 function moveTOC() {
     var toc = document.getElementById('markdown-toc');
-    if (toc) {
-        var new_toc = toc.cloneNode(true);
-        toc.parentNode.removeChild(toc);
-        new_toc.id = 'markdown-toc-new'
-        var side_toc = document.getElementById('side_bar');
-        side_toc.innerHTML = '<div class="toc_click"> <a href="/">Back to Home</a> </div>';
+    var side_toc = document.getElementById('side_toc');
+    if (toc && side_toc) {
+        side_toc.innerHTML = '';
         side_toc.innerHTML += '<div onclick="topFunction()" class="toc_click"> Back to Top </div>';
-        side_toc.innerHTML += '<div onclick="foldTOC()" class="toc_click", id="toc-btn">Hide TOC</div>';
-        side_toc.appendChild(new_toc);
+        side_toc.innerHTML += '<div onclick="foldTOC()" class="toc_click" id="toc-btn">Hide TOC</div>';
+        toc.id = 'markdown-toc-new';
+        side_toc.appendChild(toc);
     }
 }
 
@@ -40,7 +38,7 @@ function addClick() {
             if (child.children.length > 1){
                 var to_click = document.createElement("span");
                 to_click.innerHTML = '<span onclick="foldTOCList(this)" class="fold_click"> + </span>';
-                to_click.id = child.children[0].id;
+                to_click.id = 'toc-toggle-' + child.children[0].id;
                 child.insertBefore(to_click, child.children[1]);
             }
         }

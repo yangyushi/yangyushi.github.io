@@ -138,6 +138,38 @@ nav a {
   margin-bottom: 32px;
 }
 
+.post-header {
+  margin-bottom: var(--space-4);
+}
+
+.post-header h1 {
+  margin: 0 0 var(--space-2);
+}
+
+.post-meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  color: #777;
+  font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.post-category {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.post-nav {
+  margin-bottom: var(--space-3);
+  font-family: Monaco, Consolas, "Andale  Mono", "DejaVu Sans Mono", monospace;
+  font-size: 0.85rem;
+}
+
 .post h2 {
   font-size: 1.5em;
   margin-top: 1.5em;
@@ -640,6 +672,8 @@ img {
   border-top: 1px solid #ddd;
 }
 
+/* Reading stats live in assets/css/stats.css. The notebook pages load that
+   file too, so one file controls both. */
 @media (max-width: 800px) {
   .article-shell {
     display: block;

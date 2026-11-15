@@ -1,0 +1,52 @@
+/* Reading stats. Used by the post layout and by the notebook pages. */
+
+.post-stats {
+    margin-top: var(--space-2, 0.75rem);
+    color: #777;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+.post-stats-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2, 0.75rem);
+    margin: 0;
+}
+
+.like-button {
+    padding: 0.05rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+
+.like-heart {
+    font-size: 1em;
+    line-height: 1;
+}
+
+/* The white heart emoji is faint on a white page. Darken it a little so the
+   button reads the same at small sizes. */
+.like-button[aria-pressed="false"] .like-heart {
+    filter: grayscale(1) brightness(0.72);
+}
+
+.like-button:hover,
+.like-button[aria-pressed="true"] {
+    border-color: teal;
+    color: teal;
+}
+
+.like-button:disabled {
+    cursor: default;
+}
+
+.post-stats-error {
+    margin: 0;
+}

@@ -1,0 +1,342 @@
+﻿/* Comments. Loaded by the post layout and injected into notebook pages.
+   The margins are narrow on purpose: a comment must stay secondary to the
+   text it points at. */
+
+.cm-section {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+}
+
+.cm-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.cm-section .cm-heading {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 1.2em;
+    line-height: 1.3;
+}
+
+/* Post headings get a # marker from main.scss. The comment heading does not. */
+.post .cm-heading:before {
+    content: none;
+}
+
+.cm-button {
+    padding: 0.15rem 0.55rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: transparent;
+    color: #555;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.cm-button:hover,
+.cm-button:focus-visible {
+    border-color: teal;
+    color: teal;
+}
+
+/* The page-level action under the article. Quiet, but it reads as a button. */
+.cm-page-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid #cfd8d8;
+    border-radius: 999px;
+    background: #fff;
+    color: #00706e;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.cm-page-button:hover,
+.cm-page-button:focus-visible {
+    border-color: teal;
+    background: #f2fbfa;
+    color: #006d6d;
+}
+
+.cm-page-button svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+}
+
+/* A commented range in the text. Dotted so the words stay readable. */
+.cm-mark {
+    background: transparent;
+    border-bottom: 2px dotted #b8860b;
+    cursor: pointer;
+}
+
+.cm-mark:hover {
+    background: rgba(184, 134, 11, 0.12);
+}
+
+/* Margin cards: one card per text range, level with its text. */
+.cm-rail {
+    position: absolute;
+    z-index: 5;
+}
+
+.cm-rail[hidden] {
+    display: none;
+}
+
+.cm-rail .cm-card {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cm-card {
+    padding: 0.5rem 0.65rem;
+    border-left: 2px solid teal;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+    font-size: 0.85rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.cm-card-active {
+    box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.35);
+}
+
+.cm-card .cm-comment + .cm-comment {
+    margin-top: 0.45rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed #e5e5e5;
+}
+
+.cm-quote {
+    margin: 0 0 0.35rem;
+    padding-left: 0.45rem;
+    border-left: 2px solid #e5e5e5;
+    color: #777;
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+}
+
+.cm-body {
+    margin: 0 0 0.35rem;
+    color: #333;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.cm-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: #888;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.72rem;
+}
+
+.cm-like {
+    margin-left: auto;
+    padding: 0 0.35rem;
+    font-size: 0.72rem;
+}
+
+.cm-pending {
+    margin: 0.2rem 0 0;
+    color: #a15c00;
+    font-size: 0.72rem;
+}
+
+.cm-note {
+    margin: 0.3rem 0 0;
+    color: #888;
+    font-size: 0.78rem;
+}
+
+.cm-list:empty {
+    display: none;
+}
+
+.cm-list .cm-card {
+    margin-bottom: 0.6rem;
+    background: #fafafa;
+    box-shadow: none;
+}
+
+/* The small Comment button that follows a text selection. */
+.cm-add {
+    position: fixed;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.8rem;
+    border: 0;
+    border-radius: 999px;
+    background: teal;
+    color: #fff;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cm-add:hover {
+    background: #006d6d;
+}
+
+.cm-add:focus-visible {
+    outline: 2px solid rgba(0, 128, 128, 0.45);
+    outline-offset: 2px;
+}
+
+.cm-add svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.cm-add[hidden] {
+    display: none;
+}
+
+/* The composer: a popover near the selection, a sheet on narrow screens. */
+.cm-composer {
+    position: fixed;
+    margin: 0;
+    padding: 0.7rem;
+    width: min(360px, calc(100vw - 1rem));
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.cm-composer::backdrop {
+    background: transparent;
+}
+
+.cm-composer .cm-quote {
+    -webkit-line-clamp: 3;
+}
+
+.cm-composer.cm-bottom {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.cm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.cm-name,
+.cm-text {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.35rem 0.45rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fff;
+    color: #333;
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+.cm-name:focus,
+.cm-text:focus {
+    border-color: teal;
+    outline: 2px solid rgba(0, 128, 128, 0.2);
+}
+
+.cm-text {
+    min-height: 4.5rem;
+    resize: vertical;
+}
+
+.cm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+.cm-send {
+    border-color: teal;
+    color: teal;
+}
+
+.cm-status {
+    margin: 0;
+    color: #a15c00;
+    font-size: 0.78rem;
+}
+
+/* The bottom sheet that carries the comments on a phone. */
+.cm-sheet {
+    margin: auto 0 0;
+    padding: 0;
+    width: 100%;
+    max-width: none;
+    max-height: 70vh;
+    border: 0;
+    border-radius: 10px 10px 0 0;
+    background: #fff;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cm-sheet::backdrop {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.cm-sheet-head {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.4rem 0.6rem 0;
+}
+
+.cm-close {
+    border: 0;
+    background: transparent;
+    color: #888;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cm-sheet-body {
+    max-height: calc(70vh - 2.2rem);
+    padding: 0 0.8rem 1rem;
+    overflow: auto;
+}
+
+.cm-sheet .cm-card {
+    margin-bottom: 0.5rem;
+    box-shadow: none;
+}
