@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yushi Yang</title>
+    <link>https://yangyushi.github.io/</link>
+    <description>Notes on code, science, and ideas by Yushi Yang.</description>
+    <language>en</language>
+    <lastBuildDate>Mon, 16 Nov 2026 23:09:46 +0800</lastBuildDate>
+    <atom:link href="https://yangyushi.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LangChain for LLM Application Development</title>
+      <link>https://yangyushi.github.io/code/2024/07/21/llm-langchain.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2024/07/21/llm-langchain.html</guid>
+      <pubDate>Sun, 21 Jul 2024 00:00:00 +0800</pubDate>
+      <description>This is the notes that I took when walking through this lecture. I did two important modifications, I used a local LLM served by Ollama instead of chatGPT in OpenAI. I used a new version (0.2.7) an...</description>
+    </item>
+    <item>
+      <title>Reflexive Verbs</title>
+      <link>https://yangyushi.github.io/code/2024/01/30/reflexive-verb.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2024/01/30/reflexive-verb.html</guid>
+      <pubDate>Tue, 30 Jan 2024 00:00:00 +0800</pubDate>
+      <description>Reflexive verbs (反身动词) represent a grammatical mechanism where the subject of a verb is also its object, meaning the action of the verb is performed on the subject itself. Introduction Reflexive ve...</description>
+    </item>
+    <item>
+      <title>Neural Network represented by ONNX</title>
+      <link>https://yangyushi.github.io/code/2023/11/19/onnx.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/11/19/onnx.html</guid>
+      <pubDate>Sun, 19 Nov 2023 00:00:00 +0800</pubDate>
+      <description>Introduction</description>
+    </item>
+    <item>
+      <title>Memory Alignment in C++</title>
+      <link>https://yangyushi.github.io/code/2023/10/26/mem-align-cpp.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/10/26/mem-align-cpp.html</guid>
+      <pubDate>Thu, 26 Oct 2023 00:00:00 +0800</pubDate>
+      <description>Introduction Memory alignment refers to the way data is arranged and accessed in computer memory. Data types have an intrinsic alignment requirement, which ensures efficient access and correct beha...</description>
+    </item>
+    <item>
+      <title>incident about invalid libgomp</title>
+      <link>https://yangyushi.github.io/code/2023/10/24/libgomp-issue.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/10/24/libgomp-issue.html</guid>
+      <pubDate>Tue, 24 Oct 2023 00:00:00 +0800</pubDate>
+      <description>Background</description>
+    </item>
+    <item>
+      <title>Compile GCC offline</title>
+      <link>https://yangyushi.github.io/code/2023/10/16/compile-gcc.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/10/16/compile-gcc.html</guid>
+      <pubDate>Mon, 16 Oct 2023 00:00:00 +0800</pubDate>
+      <description>Sometimes we need our own version of gcc (often the latest versions) to use the new features in C++. This means we need to compile the source code on the machine, which can be difficult.</description>
+    </item>
+    <item>
+      <title>Heart Sūtra</title>
+      <link>https://yangyushi.github.io/idea/2023/10/07/heart-sutra.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/idea/2023/10/07/heart-sutra.html</guid>
+      <pubDate>Sat, 07 Oct 2023 00:00:00 +0800</pubDate>
+      <description>Heart Sūtra Key Points What is the Heart Sutra? A Mahayana (大乘) Buddhist text that discusses the concept of “emptiness” (空). Purpose: To help practitioners understand the nature of reality and atta...</description>
+    </item>
+    <item>
+      <title>ChatGPT Prompts</title>
+      <link>https://yangyushi.github.io/code/2023/09/18/chatgpt.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/09/18/chatgpt.html</guid>
+      <pubDate>Mon, 18 Sep 2023 00:00:00 +0800</pubDate>
+      <description>Explain a Command</description>
+    </item>
+    <item>
+      <title>Enumeration in Python/C++</title>
+      <link>https://yangyushi.github.io/code/2023/09/09/enum-py-cpp.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/09/09/enum-py-cpp.html</guid>
+      <pubDate>Sat, 09 Sep 2023 00:00:00 +0800</pubDate>
+      <description>General Concept</description>
+    </item>
+    <item>
+      <title>统计物理</title>
+      <link>https://yangyushi.github.io/science/2023/09/08/stat-phy.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/science/2023/09/08/stat-phy.html</guid>
+      <pubDate>Fri, 08 Sep 2023 00:00:00 +0800</pubDate>
+      <description>Van Hove 关联函数</description>
+    </item>
+    <item>
+      <title>Jupyter Notebook Tricks</title>
+      <link>https://yangyushi.github.io/code/2023/09/07/jupyter-notebook.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2023/09/07/jupyter-notebook.html</guid>
+      <pubDate>Thu, 07 Sep 2023 00:00:00 +0800</pubDate>
+      <description>Reload Modules</description>
+    </item>
+    <item>
+      <title>二代测序</title>
+      <link>https://yangyushi.github.io/work/2023/08/18/ngs.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/work/2023/08/18/ngs.html</guid>
+      <pubDate>Fri, 18 Aug 2023 00:00:00 +0800</pubDate>
+      <description>测序基础</description>
+    </item>
+    <item>
+      <title>Quantitative Modeling</title>
+      <link>https://yangyushi.github.io/sci/2022/05/07/quantitative-model.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/sci/2022/05/07/quantitative-model.html</guid>
+      <pubDate>Sat, 07 May 2022 00:00:00 +0800</pubDate>
+      <description>This is the note that I took while learning the Fundamentals of Quantitative Modeling Coursera course. Week 1 Introduction Purpose of the course expose to the language of modelling see different mo...</description>
+    </item>
+    <item>
+      <title>Tensorflow Applications</title>
+      <link>https://yangyushi.github.io/code/2022/04/02/nlp-deep-learning.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2022/04/02/nlp-deep-learning.html</guid>
+      <pubDate>Sat, 02 Apr 2022 00:00:00 +0800</pubDate>
+      <description>This is the note I took when taking the following two courses, Tensorflow for NLP Tensorflow for time series Modelling Time Series Introduction Times seires is defined as an ordered sequence of val...</description>
+    </item>
+    <item>
+      <title>读书笔记</title>
+      <link>https://yangyushi.github.io/idea/2022/02/07/read.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/idea/2022/02/07/read.html</guid>
+      <pubDate>Mon, 07 Feb 2022 00:00:00 +0800</pubDate>
+      <description>沉思录</description>
+    </item>
+    <item>
+      <title>数学</title>
+      <link>https://yangyushi.github.io/science/2022/01/18/math.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/science/2022/01/18/math.html</guid>
+      <pubDate>Tue, 18 Jan 2022 00:00:00 +0800</pubDate>
+      <description>泛函导数</description>
+    </item>
+    <item>
+      <title>Open NPY in ImageJ</title>
+      <link>https://yangyushi.github.io/code/2021/12/17/raw-npy.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2021/12/17/raw-npy.html</guid>
+      <pubDate>Fri, 17 Dec 2021 00:00:00 +0800</pubDate>
+      <description>In certain situations I would like to use the software ImageJ (or FIJI) to see an Numpy array, which is dumped in the binary format as an NPY file. This post talkes about the correct way to import ...</description>
+    </item>
+    <item>
+      <title>C++</title>
+      <link>https://yangyushi.github.io/code/2021/04/14/cpp.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2021/04/14/cpp.html</guid>
+      <pubDate>Wed, 14 Apr 2021 00:00:00 +0800</pubDate>
+      <description>参考资料</description>
+    </item>
+    <item>
+      <title>Modeling Confocal Images</title>
+      <link>https://yangyushi.github.io/science/2021/04/04/image-der.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/science/2021/04/04/image-der.html</guid>
+      <pubDate>Sun, 04 Apr 2021 00:00:00 +0800</pubDate>
+      <description>The model</description>
+    </item>
+    <item>
+      <title>Connecting Raspeberry Pi</title>
+      <link>https://yangyushi.github.io/code/2021/01/13/connect-pi.html</link>
+      <guid isPermaLink="true">https://yangyushi.github.io/code/2021/01/13/connect-pi.html</guid>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0800</pubDate>
+      <description>This post recoreded how I connected to my raspberry pi from a Ubuntu PC via ethernet. The raspberry pi is installed with the Raspberry Pi OS (Jan 2021). I spend embarransingly long time to figure i...</description>
+    </item>
+  </channel>
+</rss>

@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <title>Tensorflow Applications</title>
-    
+    <title>Tensorflow Applications · Yushi Yang</title>
+    <meta name="description" content="This is the note I took when taking the following two courses, Tensorflow for NLP Tensorflow for time series Modelling Time Series Introduction Times seires ...">
+    <meta name="author" content="Yushi Yang">
+    <link rel="canonical" href="https://yangyushi.github.io/code/2022/04/02/nlp-deep-learning.html">
+
+    <meta property="og:site_name" content="Yushi Yang">
+    <meta property="og:title" content="Tensorflow Applications · Yushi Yang">
+    <meta property="og:description" content="This is the note I took when taking the following two courses, Tensorflow for NLP Tensorflow for time series Modelling Time Series Introduction Times seires ...">
+    <meta property="og:url" content="https://yangyushi.github.io/code/2022/04/02/nlp-deep-learning.html">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2022-04-02T00:00:00+08:00">
+    <meta property="article:author" content="Yushi Yang">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@yushiyang1992">
+
+    <link rel="alternate" type="application/rss+xml" title="Yushi Yang" href="/feed.xml">
     <meta data-pagefind-meta="title[content]" content="Tensorflow Applications">
     <meta data-pagefind-meta="type[content]" content="Post">
-    
+
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/stats.css">
     <link rel="stylesheet" href="/assets/css/comments.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="/assets/js/toc.js"></script>
-    <script src="/assets/js/highlight.pack.js"></script>
-
+    <script defer src="/assets/js/toc.js"></script>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <script>
       window.MathJax = {
         tex: {
@@ -25,83 +38,62 @@
         }
       };
     </script>
-
     <script id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
       integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
       crossorigin="anonymous"></script>
+  </head>
 
-    </head>
+  <body id="page-top" class="">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/">Yushi Yang</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/posts/" aria-current="page">Posts</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
 
-  <body>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-    <div class="article-shell">
-    <aside id="side_bar">
-        <div class="post-nav">
-            <a href="/">&larr; Back to Home</a>
-        </div>
-        <div id="side_toc"></div>
+    <main class="article-shell" id="main-content">
+    <aside id="side_bar" aria-label="Table of contents">
+        <p class="toc-label">On this page</p>
+        <nav id="side_toc" aria-label="On this page"></nav>
+        <a class="toc-top" href="#page-top">Back to top &uarr;</a>
     </aside>
 
-    <article class="center post" data-pagefind-body="">
-        <header class="post-header">
+    <article class="center post" data-pagefind-body>
+        <header class="post-header" data-pagefind-ignore data-no-comment>
             <h1>Tensorflow Applications</h1>
             <p class="post-meta">
                 <time datetime="2022-04-02T00:00:00+08:00">02 Apr 2022</time>
-                <span class="post-category">code</span>
+                <span class="post-category">Code</span>
+                <span class="post-lang">EN</span>
             </p>
-            <div class="post-stats" data-post-slug="/code/2022/04/02/nlp-deep-learning.html" hidden="">
-    <p class="post-stats-line" hidden="">
+            <div class="post-stats"
+     data-post-slug="/code/2022/04/02/nlp-deep-learning.html"
+     data-pagefind-ignore
+     hidden>
+    <p class="post-stats-line" hidden>
         <span class="stat-views">0</span> reads
         <span aria-hidden="true">&middot;</span>
-        <button type="button" class="like-button" aria-pressed="false" aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
-        <span class="stat-comments-wrap" hidden=""><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
+        <button type="button" class="like-button" aria-pressed="false"
+                aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
+        <span class="stat-comments-wrap" hidden><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
     </p>
-    <p class="post-stats-error" role="status" hidden="">Reading numbers is unavailable right now.</p>
+    <p class="post-stats-error" role="status" hidden>Reading numbers is unavailable right now.</p>
 </div>
 
         </header>
-        <ul id="markdown-toc">
-  <li><a href="#modelling-time-series" id="markdown-toc-modelling-time-series">Modelling Time Series</a>    <ul>
-      <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
-      <li><a href="#typical-patterns" id="markdown-toc-typical-patterns">Typical Patterns</a>        <ul>
-          <li><a href="#stationary" id="markdown-toc-stationary">Stationary</a></li>
-          <li><a href="#non-stationary" id="markdown-toc-non-stationary">Non-stationary</a></li>
-        </ul>
-      </li>
-      <li><a href="#prepare-data" id="markdown-toc-prepare-data">Prepare Data</a>        <ul>
-          <li><a href="#tfdatadataset" id="markdown-toc-tfdatadataset">tf.data.Dataset</a></li>
-          <li><a href="#training-data" id="markdown-toc-training-data">Training Data</a></li>
-        </ul>
-      </li>
-      <li><a href="#train-models" id="markdown-toc-train-models">Train Models</a>        <ul>
-          <li><a href="#baseline-models" id="markdown-toc-baseline-models">Baseline Models</a></li>
-          <li><a href="#linear-regression" id="markdown-toc-linear-regression">Linear Regression</a></li>
-          <li><a href="#mlp" id="markdown-toc-mlp">MLP</a></li>
-          <li><a href="#simple-rnn" id="markdown-toc-simple-rnn">Simple RNN</a></li>
-          <li><a href="#lstm" id="markdown-toc-lstm">LSTM</a></li>
-        </ul>
-      </li>
-      <li><a href="#evaluate-prediction" id="markdown-toc-evaluate-prediction">Evaluate Prediction</a></li>
-    </ul>
-  </li>
-  <li><a href="#modellling-natural-language" id="markdown-toc-modellling-natural-language">Modellling Natural Language</a>    <ul>
-      <li><a href="#introduction-1" id="markdown-toc-introduction-1">Introduction</a></li>
-      <li><a href="#tokenise" id="markdown-toc-tokenise">Tokenise</a></li>
-      <li><a href="#learning-the-embedding" id="markdown-toc-learning-the-embedding">Learning the Embedding</a></li>
-      <li><a href="#model-the-sequence" id="markdown-toc-model-the-sequence">Model the Sequence</a>        <ul>
-          <li><a href="#lstm-1" id="markdown-toc-lstm-1">LSTM</a></li>
-          <li><a href="#1d-cnn" id="markdown-toc-1d-cnn">1D CNN</a></li>
-        </ul>
-      </li>
-      <li><a href="#generate-new-text" id="markdown-toc-generate-new-text">Generate New Text</a></li>
-    </ul>
-  </li>
-</ul>
 
-<hr />
+        <details class="toc-mobile" data-pagefind-ignore data-no-comment>
+            <summary><span>On this page <span class="toc-count"></span></span></summary>
+            <div class="toc-body"></div>
+        </details>
+
+        <hr />
 
 <p>This is the note I took when taking the following two courses,</p>
 
@@ -831,16 +823,26 @@ ys[6][65] -&gt; 0
 </span></code></pre></div></div>
 
 
-        <div class="post-comments" data-post-comments="" data-post-slug="/code/2022/04/02/nlp-deep-learning.html"></div>
+        <div class="post-comments" data-post-comments data-pagefind-ignore data-post-slug="/code/2022/04/02/nlp-deep-learning.html"></div>
 
     </article>
-</div>
+</main>
 
-<script type="module" src="/assets/js/post.js?v=1794759302"></script>
+<script type="module" src="/assets/js/post.js?v=1794841786"></script>
 
+    <footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>&copy; 2026 Yushi Yang</p>
+    <nav aria-label="Footer">
+      <a href="/posts/">Posts</a>
+      <a href="/about/">About</a>
+      <a href="/feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
 
-
-
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script>if (window.hljs) { hljs.initHighlightingOnLoad(); }</script>
+    <script type="module" src="/assets/js/copy-code.js?v=1794841786"></script>
   </body>
-
 </html>

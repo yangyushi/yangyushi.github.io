@@ -1,93 +1,171 @@
-function foldTOC() {
-    var toc = document.getElementById('markdown-toc-new');
-    var toc_btn = document.getElementById('toc-btn');
-    if (toc.style.display === "none") {
-        toc.style.display = "block";
-        toc_btn.innerHTML = "Hide TOC";
-    } else {
-        toc.style.display = "none";
-        toc_btn.innerHTML = "Show TOC";
+// Build the table of contents from the post headings.
+// One list feeds the desktop rail and the mobile disclosure.
+(function () {
+  const article = document.querySelector(".post");
+  const rail = document.getElementById("side_toc");
+  const sidebar = document.getElementById("side_bar");
+  const mobile = document.querySelector(".toc-mobile");
+  const mobileBody = mobile && mobile.querySelector(".toc-body");
+  const mobileCount = mobile && mobile.querySelector(".toc-count");
+  if (!article || !rail) {
+    return;
+  }
+
+  document.querySelectorAll("#markdown-toc").forEach((old) => old.remove());
+
+  const headings = Array.from(article.querySelectorAll("h2:not(.cm-heading), h3:not(.cm-heading)"));
+  if (!headings.length) {
+    if (sidebar) {
+      sidebar.remove();
     }
-}
-
-
-function moveTOC() {
-    var toc = document.getElementById('markdown-toc');
-    var side_toc = document.getElementById('side_toc');
-    if (toc && side_toc) {
-        side_toc.innerHTML = '';
-        side_toc.innerHTML += '<div onclick="topFunction()" class="toc_click"> Back to Top </div>';
-        side_toc.innerHTML += '<div onclick="foldTOC()" class="toc_click" id="toc-btn">Hide TOC</div>';
-        toc.id = 'markdown-toc-new';
-        side_toc.appendChild(toc);
+    if (mobile) {
+      mobile.remove();
     }
-}
+    return;
+  }
 
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-}
-
-function addClick() {
-    var toc = document.getElementById('markdown-toc-new');
-    if (toc){
-        var children = toc.children;
-        for (var i = 0; i < children.length; i++){
-            var child = children[i];
-            if (child.children.length > 1){
-                var to_click = document.createElement("span");
-                to_click.innerHTML = '<span onclick="foldTOCList(this)" class="fold_click"> + </span>';
-                to_click.id = 'toc-toggle-' + child.children[0].id;
-                child.insertBefore(to_click, child.children[1]);
-            }
-        }
+  const used = new Set(Array.from(document.querySelectorAll("[id]"), (el) => el.id));
+  const slug = (text) => {
+    const base = text
+      .trim()
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s-]/gu, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 60) || "section";
+    let candidate = base;
+    let n = 2;
+    while (used.has(candidate)) {
+      candidate = base + "-" + n;
+      n += 1;
     }
-}
+    used.add(candidate);
+    return candidate;
+  };
 
-function autoFold() {
-    var toc = document.getElementById('markdown-toc-new');
-    if (toc){
-        var children = toc.children;
-        for (var i = 0; i < children.length; i++){
-            var child = children[i];
-            if (child.children.length > 1){
-                var to_click = child.children[1].children[0];
-                foldTOCList(to_click);
-            }
-        }
+  headings.forEach((heading) => {
+    if (!heading.id) {
+      heading.id = slug(heading.textContent || "");
     }
-}
+  });
 
-function foldTOCList(clicked) {
-    var to_fold = clicked.parentElement.parentElement.children[2];
-    if (typeof to_fold == 'object' && to_fold != null){
-        if (to_fold.style.display === "none") {
-            to_fold.style.display = "block";
-            clicked.innerHTML = ' - ';
-        } else {
-            to_fold.style.display = "none";
-            clicked.innerHTML = ' + ';
-        }
+  const root = document.createElement("ul");
+  let group = null;
+
+  headings.forEach((heading) => {
+    const link = document.createElement("a");
+    link.href = "#" + heading.id;
+    link.textContent = (heading.textContent || "").trim();
+    link.dataset.target = heading.id;
+
+    const item = document.createElement("li");
+
+    if (heading.tagName === "H2") {
+      const row = document.createElement("div");
+      row.className = "toc-row";
+      row.append(link);
+      item.className = "toc-h2";
+      item.append(row);
+      root.append(item);
+      group = { item, row, sub: null };
+      return;
     }
-}
 
+    if (!group) {
+      item.append(link);
+      root.append(item);
+      return;
+    }
 
-if ( document.addEventListener ) { // Mozilla, Opera, Webkit
-    document.addEventListener( 'DOMContentLoaded', function() {
-        document.removeEventListener( 'DOMContentLoaded', arguments.callee, false);
-        moveTOC();
-        addClick();
-        autoFold();
-    }, false );
-} else if ( document.attachEvent ) { // If IE event model is used
-    // ensure firing before onload
-    document.attachEvent('onreadystatechange', function() {
-        if ( document.readyState === 'complete' ) {
-            document.detachEvent( 'onreadystatechange', arguments.callee );
-            moveTOC();
-            addClick();
-            autoFold();
-        }
+    if (!group.sub) {
+      const sub = document.createElement("ul");
+      sub.className = "toc-sub";
+      sub.hidden = true;
+      group.item.append(sub);
+      group.sub = sub;
+
+      const owner = group;
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "toc-toggle";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Expand subsections");
+      toggle.textContent = "+";
+      group.row.append(toggle);
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        toggle.setAttribute("aria-label", expanded ? "Expand subsections" : "Collapse subsections");
+        toggle.textContent = expanded ? "+" : "\u2212";
+        owner.sub.hidden = expanded;
+      });
+    }
+
+    const subItem = document.createElement("li");
+    subItem.append(link);
+    group.sub.append(subItem);
+  });
+
+  rail.replaceChildren(root);
+
+  if (mobile && mobileBody) {
+    const clone = root.cloneNode(true);
+    clone.querySelectorAll(".toc-sub").forEach((sub) => sub.remove());
+    clone.querySelectorAll(".toc-toggle").forEach((button) => button.remove());
+    clone.querySelectorAll(".toc-row").forEach((row) => {
+      const link = row.querySelector("a");
+      if (link) {
+        row.replaceWith(link);
+      }
     });
-}
+    mobileBody.replaceChildren(clone);
+    const topLevel = headings.filter((heading) => heading.tagName === "H2").length || headings.length;
+    if (mobileCount) {
+      mobileCount.textContent = topLevel + (topLevel === 1 ? " section" : " sections");
+    }
+  }
+
+  const links = Array.from(rail.querySelectorAll("a"));
+  const byId = new Map(links.map((link) => [link.dataset.target, link]));
+  const anchors = headings.filter((heading) => heading.tagName === "H2");
+  const activeHeadings = anchors.length ? anchors : headings;
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const line = window.scrollY + 140;
+    let current = null;
+    activeHeadings.forEach((heading) => {
+      const top = heading.getBoundingClientRect().top + window.scrollY;
+      if (top <= line) {
+        current = heading;
+      }
+    });
+    links.forEach((link) => {
+      link.classList.remove("is-active");
+      link.removeAttribute("aria-current");
+    });
+    if (!current && activeHeadings.length) {
+      current = activeHeadings[0];
+    }
+    if (current) {
+      const active = byId.get(current.id);
+      if (active) {
+        active.classList.add("is-active");
+        active.setAttribute("aria-current", "location");
+      }
+    }
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    },
+    { passive: true }
+  );
+
+  update();
+})();

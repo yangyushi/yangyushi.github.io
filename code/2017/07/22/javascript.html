@@ -5,111 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <title>Javascript</title>
-    
+    <title>Javascript · Yushi Yang</title>
+    <meta name="description" content="Javascript 简介">
+    <meta name="author" content="Yushi Yang">
+    <link rel="canonical" href="https://yangyushi.github.io/code/2017/07/22/javascript.html">
+
+    <meta property="og:site_name" content="Yushi Yang">
+    <meta property="og:title" content="Javascript · Yushi Yang">
+    <meta property="og:description" content="Javascript 简介">
+    <meta property="og:url" content="https://yangyushi.github.io/code/2017/07/22/javascript.html">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-07-22T00:00:00+08:00">
+    <meta property="article:author" content="Yushi Yang">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@yushiyang1992">
+
+    <link rel="alternate" type="application/rss+xml" title="Yushi Yang" href="/feed.xml">
     <meta data-pagefind-meta="title[content]" content="Javascript">
     <meta data-pagefind-meta="type[content]" content="Post">
-    
+
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/stats.css">
     <link rel="stylesheet" href="/assets/css/comments.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="/assets/js/toc.js"></script>
-    <script src="/assets/js/highlight.pack.js"></script>
+    <script defer src="/assets/js/toc.js"></script>
+  </head>
 
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-          processEscapes: true
-        }
-      };
-    </script>
+  <body id="page-top" class="">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/">Yushi Yang</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/posts/" aria-current="page">Posts</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
 
-    <script id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
-      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
-      crossorigin="anonymous"></script>
-
-    </head>
-
-  <body>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-    <div class="article-shell">
-    <aside id="side_bar">
-        <div class="post-nav">
-            <a href="/">&larr; Back to Home</a>
-        </div>
-        <div id="side_toc"></div>
+    <main class="article-shell" id="main-content">
+    <aside id="side_bar" aria-label="Table of contents">
+        <p class="toc-label">On this page</p>
+        <nav id="side_toc" aria-label="On this page"></nav>
+        <a class="toc-top" href="#page-top">Back to top &uarr;</a>
     </aside>
 
-    <article class="center post" data-pagefind-body="">
-        <header class="post-header">
+    <article class="center post" data-pagefind-body>
+        <header class="post-header" data-pagefind-ignore data-no-comment>
             <h1>Javascript</h1>
             <p class="post-meta">
                 <time datetime="2017-07-22T00:00:00+08:00">22 Jul 2017</time>
-                <span class="post-category">code</span>
+                <span class="post-category">Code</span>
+                <span class="post-lang">CN</span>
             </p>
-            <div class="post-stats" data-post-slug="/code/2017/07/22/javascript.html" hidden="">
-    <p class="post-stats-line" hidden="">
+            <div class="post-stats"
+     data-post-slug="/code/2017/07/22/javascript.html"
+     data-pagefind-ignore
+     hidden>
+    <p class="post-stats-line" hidden>
         <span class="stat-views">0</span> reads
         <span aria-hidden="true">&middot;</span>
-        <button type="button" class="like-button" aria-pressed="false" aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
-        <span class="stat-comments-wrap" hidden=""><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
+        <button type="button" class="like-button" aria-pressed="false"
+                aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
+        <span class="stat-comments-wrap" hidden><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
     </p>
-    <p class="post-stats-error" role="status" hidden="">Reading numbers is unavailable right now.</p>
+    <p class="post-stats-error" role="status" hidden>Reading numbers is unavailable right now.</p>
 </div>
 
         </header>
-        <ul id="markdown-toc">
-  <li><a href="#javascript-简介" id="markdown-toc-javascript-简介">Javascript 简介</a></li>
-  <li><a href="#基本语法" id="markdown-toc-基本语法">基本语法</a>    <ul>
-      <li><a href="#变量" id="markdown-toc-变量">变量</a></li>
-      <li><a href="#数据类型" id="markdown-toc-数据类型">数据类型</a></li>
-      <li><a href="#运算符" id="markdown-toc-运算符">运算符</a></li>
-      <li><a href="#逻辑控制语句" id="markdown-toc-逻辑控制语句">逻辑控制语句</a></li>
-      <li><a href="#函数" id="markdown-toc-函数">函数</a></li>
-    </ul>
-  </li>
-  <li><a href="#事件" id="markdown-toc-事件">事件</a>    <ul>
-      <li><a href="#常用事件" id="markdown-toc-常用事件">常用事件</a></li>
-      <li><a href="#例子" id="markdown-toc-例子">例子</a></li>
-    </ul>
-  </li>
-  <li><a href="#对象" id="markdown-toc-对象">对象</a>    <ul>
-      <li><a href="#创建对象" id="markdown-toc-创建对象">创建对象</a></li>
-      <li><a href="#访问对象的属性和方法" id="markdown-toc-访问对象的属性和方法">访问对象的属性和方法</a></li>
-      <li><a href="#string-字符串对象" id="markdown-toc-string-字符串对象">String 字符串对象</a></li>
-      <li><a href="#math-对象" id="markdown-toc-math-对象">Math 对象</a></li>
-      <li><a href="#array-数组对象" id="markdown-toc-array-数组对象">Array 数组对象</a></li>
-    </ul>
-  </li>
-  <li><a href="#dom" id="markdown-toc-dom">DOM</a>    <ul>
-      <li><a href="#基本概念" id="markdown-toc-基本概念">基本概念</a>        <ul>
-          <li><a href="#什么是-dom" id="markdown-toc-什么是-dom">什么是 DOM</a></li>
-          <li><a href="#节点" id="markdown-toc-节点">节点</a></li>
-        </ul>
-      </li>
-      <li><a href="#选取文档元素" id="markdown-toc-选取文档元素">选取文档元素</a>        <ul>
-          <li><a href="#通过-id-选取元素" id="markdown-toc-通过-id-选取元素">通过 ID 选取元素</a></li>
-          <li><a href="#通过名字name或标签名tagname选取元素" id="markdown-toc-通过名字name或标签名tagname选取元素">通过名字（Name）或标签名（TagName）选取元素</a></li>
-        </ul>
-      </li>
-      <li><a href="#节点属性操作和文档遍历" id="markdown-toc-节点属性操作和文档遍历">节点、属性操作和文档遍历</a>        <ul>
-          <li><a href="#查询和设置元素的属性" id="markdown-toc-查询和设置元素的属性">查询和设置元素的属性</a></li>
-          <li><a href="#父节点" id="markdown-toc-父节点">父节点</a></li>
-          <li><a href="#创建和插入节点" id="markdown-toc-创建和插入节点">创建和插入节点</a></li>
-          <li><a href="#删除节点" id="markdown-toc-删除节点">删除节点</a></li>
-        </ul>
-      </li>
-      <li><a href="#作业" id="markdown-toc-作业">作业</a></li>
-    </ul>
-  </li>
-</ul>
 
-<h2 id="javascript-简介">Javascript 简介</h2>
+        <details class="toc-mobile" data-pagefind-ignore data-no-comment>
+            <summary><span>On this page <span class="toc-count"></span></span></summary>
+            <div class="toc-body"></div>
+        </details>
+
+        <h2 id="javascript-简介">Javascript 简介</h2>
 
 <p>JavaScript 是一种脚本语言，它的解释器被称为 JavaScript 引擎。 JavaScript 被发明用于在 HTML 网页上使用，给HTML网页增加动态功能。</p>
 
@@ -894,16 +865,26 @@ function click_button() {
 <p><img src="/assets/images/js_intro/14824755476197.gif" alt="set w300" /></p>
 
 
-        <div class="post-comments" data-post-comments="" data-post-slug="/code/2017/07/22/javascript.html"></div>
+        <div class="post-comments" data-post-comments data-pagefind-ignore data-post-slug="/code/2017/07/22/javascript.html"></div>
 
     </article>
-</div>
+</main>
 
-<script type="module" src="/assets/js/post.js?v=1794759302"></script>
+<script type="module" src="/assets/js/post.js?v=1794841786"></script>
 
+    <footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>&copy; 2026 Yushi Yang</p>
+    <nav aria-label="Footer">
+      <a href="/posts/">Posts</a>
+      <a href="/about/">About</a>
+      <a href="/feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
 
-
-
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script>if (window.hljs) { hljs.initHighlightingOnLoad(); }</script>
+    <script type="module" src="/assets/js/copy-code.js?v=1794841786"></script>
   </body>
-
 </html>

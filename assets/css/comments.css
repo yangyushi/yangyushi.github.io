@@ -1,4 +1,4 @@
-﻿/* Comments. Loaded by the post layout and injected into notebook pages.
+/* Comments. Loaded by the post layout and injected into notebook pages.
    The margins are narrow on purpose: a comment must stay secondary to the
    text it points at. */
 
@@ -125,7 +125,7 @@
     margin: 0 0 0.35rem;
     padding-left: 0.45rem;
     border-left: 2px solid #e5e5e5;
-    color: #777;
+    color: #5c6969;
     font-size: 0.78rem;
     font-style: italic;
     line-height: 1.4;
@@ -149,7 +149,7 @@
     display: flex;
     align-items: baseline;
     gap: 0.35rem;
-    color: #888;
+    color: #5c6969;
     font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     font-size: 0.72rem;
 }
@@ -168,7 +168,7 @@
 
 .cm-note {
     margin: 0.3rem 0 0;
-    color: #888;
+    color: #5c6969;
     font-size: 0.78rem;
 }
 

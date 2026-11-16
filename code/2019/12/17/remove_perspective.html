@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <title>Removing the Perspective</title>
-    
+    <title>Removing the Perspective · Yushi Yang</title>
+    <meta name="description" content="This post is a not about the way to remove the perspective of the image. Setting up I used Python to perform the task. I used the following libraries. import...">
+    <meta name="author" content="Yushi Yang">
+    <link rel="canonical" href="https://yangyushi.github.io/code/2019/12/17/remove_perspective.html">
+
+    <meta property="og:site_name" content="Yushi Yang">
+    <meta property="og:title" content="Removing the Perspective · Yushi Yang">
+    <meta property="og:description" content="This post is a not about the way to remove the perspective of the image. Setting up I used Python to perform the task. I used the following libraries. import...">
+    <meta property="og:url" content="https://yangyushi.github.io/code/2019/12/17/remove_perspective.html">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-12-17T00:00:00+08:00">
+    <meta property="article:author" content="Yushi Yang">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@yushiyang1992">
+
+    <link rel="alternate" type="application/rss+xml" title="Yushi Yang" href="/feed.xml">
     <meta data-pagefind-meta="title[content]" content="Removing the Perspective">
     <meta data-pagefind-meta="type[content]" content="Post">
-    
+
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/stats.css">
     <link rel="stylesheet" href="/assets/css/comments.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="/assets/js/toc.js"></script>
-    <script src="/assets/js/highlight.pack.js"></script>
-
+    <script defer src="/assets/js/toc.js"></script>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <script>
       window.MathJax = {
         tex: {
@@ -25,54 +38,62 @@
         }
       };
     </script>
-
     <script id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
       integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
       crossorigin="anonymous"></script>
+  </head>
 
-    </head>
+  <body id="page-top" class="">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/">Yushi Yang</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/posts/" aria-current="page">Posts</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
 
-  <body>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-    <div class="article-shell">
-    <aside id="side_bar">
-        <div class="post-nav">
-            <a href="/">&larr; Back to Home</a>
-        </div>
-        <div id="side_toc"></div>
+    <main class="article-shell" id="main-content">
+    <aside id="side_bar" aria-label="Table of contents">
+        <p class="toc-label">On this page</p>
+        <nav id="side_toc" aria-label="On this page"></nav>
+        <a class="toc-top" href="#page-top">Back to top &uarr;</a>
     </aside>
 
-    <article class="center post" data-pagefind-body="">
-        <header class="post-header">
+    <article class="center post" data-pagefind-body>
+        <header class="post-header" data-pagefind-ignore data-no-comment>
             <h1>Removing the Perspective</h1>
             <p class="post-meta">
                 <time datetime="2019-12-17T00:00:00+08:00">17 Dec 2019</time>
-                <span class="post-category">code</span>
+                <span class="post-category">Code</span>
+                <span class="post-lang">EN</span>
             </p>
-            <div class="post-stats" data-post-slug="/code/2019/12/17/remove_perspective.html" hidden="">
-    <p class="post-stats-line" hidden="">
+            <div class="post-stats"
+     data-post-slug="/code/2019/12/17/remove_perspective.html"
+     data-pagefind-ignore
+     hidden>
+    <p class="post-stats-line" hidden>
         <span class="stat-views">0</span> reads
         <span aria-hidden="true">&middot;</span>
-        <button type="button" class="like-button" aria-pressed="false" aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
-        <span class="stat-comments-wrap" hidden=""><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
+        <button type="button" class="like-button" aria-pressed="false"
+                aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
+        <span class="stat-comments-wrap" hidden><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
     </p>
-    <p class="post-stats-error" role="status" hidden="">Reading numbers is unavailable right now.</p>
+    <p class="post-stats-error" role="status" hidden>Reading numbers is unavailable right now.</p>
 </div>
 
         </header>
-        <ul id="markdown-toc">
-  <li><a href="#setting-up" id="markdown-toc-setting-up">Setting up</a></li>
-  <li><a href="#load-image--measurements" id="markdown-toc-load-image--measurements">Load Image &amp; measurements</a></li>
-  <li><a href="#calculate-the-line-at-infinity" id="markdown-toc-calculate-the-line-at-infinity">Calculate the Line at Infinity</a></li>
-  <li><a href="#affine-rectified-image" id="markdown-toc-affine-rectified-image">Affine rectified image</a></li>
-  <li><a href="#measure-coordinates-again" id="markdown-toc-measure-coordinates-again">Measure Coordinates Again</a></li>
-  <li><a href="#calculate-the-homography" id="markdown-toc-calculate-the-homography">Calculate the homography</a></li>
-  <li><a href="#composing-the-transformation" id="markdown-toc-composing-the-transformation">Composing the transformation</a></li>
-</ul>
-<hr />
+
+        <details class="toc-mobile" data-pagefind-ignore data-no-comment>
+            <summary><span>On this page <span class="toc-count"></span></span></summary>
+            <div class="toc-body"></div>
+        </details>
+
+        <hr />
 
 <p>This post is a not about the way to remove the perspective of the image.</p>
 
@@ -297,16 +318,26 @@
 <span class="n">img_fish</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="sh">'</span><span class="s">cam-1-fish.png</span><span class="sh">'</span><span class="p">)</span>
 </code></pre></div></div>
 
-        <div class="post-comments" data-post-comments="" data-post-slug="/code/2019/12/17/remove_perspective.html"></div>
+        <div class="post-comments" data-post-comments data-pagefind-ignore data-post-slug="/code/2019/12/17/remove_perspective.html"></div>
 
     </article>
-</div>
+</main>
 
-<script type="module" src="/assets/js/post.js?v=1794759302"></script>
+<script type="module" src="/assets/js/post.js?v=1794841786"></script>
 
+    <footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>&copy; 2026 Yushi Yang</p>
+    <nav aria-label="Footer">
+      <a href="/posts/">Posts</a>
+      <a href="/about/">About</a>
+      <a href="/feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
 
-
-
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script>if (window.hljs) { hljs.initHighlightingOnLoad(); }</script>
+    <script type="module" src="/assets/js/copy-code.js?v=1794841786"></script>
   </body>
-
 </html>

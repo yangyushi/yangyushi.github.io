@@ -5,130 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <title>LangChain for LLM Application Development</title>
-    
+    <title>LangChain for LLM Application Development · Yushi Yang</title>
+    <meta name="description" content="This is the notes that I took when walking through this lecture. I did two important modifications, I used a local LLM served by Ollama instead of chatGPT in...">
+    <meta name="author" content="Yushi Yang">
+    <link rel="canonical" href="https://yangyushi.github.io/code/2024/07/21/llm-langchain.html">
+
+    <meta property="og:site_name" content="Yushi Yang">
+    <meta property="og:title" content="LangChain for LLM Application Development · Yushi Yang">
+    <meta property="og:description" content="This is the notes that I took when walking through this lecture. I did two important modifications, I used a local LLM served by Ollama instead of chatGPT in...">
+    <meta property="og:url" content="https://yangyushi.github.io/code/2024/07/21/llm-langchain.html">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2024-07-21T00:00:00+08:00">
+    <meta property="article:author" content="Yushi Yang">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@yushiyang1992">
+
+    <link rel="alternate" type="application/rss+xml" title="Yushi Yang" href="/feed.xml">
     <meta data-pagefind-meta="title[content]" content="LangChain for LLM Application Development">
     <meta data-pagefind-meta="type[content]" content="Post">
-    
+
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/stats.css">
     <link rel="stylesheet" href="/assets/css/comments.css">
     <link rel="stylesheet" href="/assets/css/styles/github-gist.css">
-    <script src="/assets/js/toc.js"></script>
-    <script src="/assets/js/highlight.pack.js"></script>
+    <script defer src="/assets/js/toc.js"></script>
+  </head>
 
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-          processEscapes: true
-        }
-      };
-    </script>
+  <body id="page-top" class="">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/">Yushi Yang</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/posts/" aria-current="page">Posts</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
 
-    <script id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
-      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
-      crossorigin="anonymous"></script>
-
-    </head>
-
-  <body>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-    <div class="article-shell">
-    <aside id="side_bar">
-        <div class="post-nav">
-            <a href="/">&larr; Back to Home</a>
-        </div>
-        <div id="side_toc"></div>
+    <main class="article-shell" id="main-content">
+    <aside id="side_bar" aria-label="Table of contents">
+        <p class="toc-label">On this page</p>
+        <nav id="side_toc" aria-label="On this page"></nav>
+        <a class="toc-top" href="#page-top">Back to top &uarr;</a>
     </aside>
 
-    <article class="center post" data-pagefind-body="">
-        <header class="post-header">
+    <article class="center post" data-pagefind-body>
+        <header class="post-header" data-pagefind-ignore data-no-comment>
             <h1>LangChain for LLM Application Development</h1>
             <p class="post-meta">
                 <time datetime="2024-07-21T00:00:00+08:00">21 Jul 2024</time>
-                <span class="post-category">code</span>
+                <span class="post-category">Code</span>
+                <span class="post-lang">EN</span>
             </p>
-            <div class="post-stats" data-post-slug="/code/2024/07/21/llm-langchain.html" hidden="">
-    <p class="post-stats-line" hidden="">
+            <div class="post-stats"
+     data-post-slug="/code/2024/07/21/llm-langchain.html"
+     data-pagefind-ignore
+     hidden>
+    <p class="post-stats-line" hidden>
         <span class="stat-views">0</span> reads
         <span aria-hidden="true">&middot;</span>
-        <button type="button" class="like-button" aria-pressed="false" aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
-        <span class="stat-comments-wrap" hidden=""><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
+        <button type="button" class="like-button" aria-pressed="false"
+                aria-label="Like this page"><span class="like-heart" aria-hidden="true">&#x1F90D;</span> Like <span class="stat-likes">0</span></button>
+        <span class="stat-comments-wrap" hidden><span aria-hidden="true">&middot;</span> <span class="stat-comments">0</span> <span class="stat-comments-label">comments</span></span>
     </p>
-    <p class="post-stats-error" role="status" hidden="">Reading numbers is unavailable right now.</p>
+    <p class="post-stats-error" role="status" hidden>Reading numbers is unavailable right now.</p>
 </div>
 
         </header>
-        <ul id="markdown-toc">
-  <li><a href="#models-prompts-and-parsers" id="markdown-toc-models-prompts-and-parsers">Models, Prompts, and Parsers</a>    <ul>
-      <li><a href="#using-an-llm-via-ollama" id="markdown-toc-using-an-llm-via-ollama">Using an LLM via Ollama</a></li>
-      <li><a href="#chatting-with-a-template" id="markdown-toc-chatting-with-a-template">Chatting with a template</a></li>
-      <li><a href="#use-llm-to-get-json-output" id="markdown-toc-use-llm-to-get-json-output">Use LLM to get JSON output</a></li>
-    </ul>
-  </li>
-  <li><a href="#memory" id="markdown-toc-memory">Memory</a>    <ul>
-      <li><a href="#conversationbuffermemory" id="markdown-toc-conversationbuffermemory">ConversationBufferMemory</a></li>
-      <li><a href="#clear-memory" id="markdown-toc-clear-memory">clear memory</a></li>
-      <li><a href="#add-extra-memory" id="markdown-toc-add-extra-memory">add extra memory</a></li>
-      <li><a href="#window-memory" id="markdown-toc-window-memory">Window Memory</a></li>
-      <li><a href="#memory-with-a-fixed-token-size" id="markdown-toc-memory-with-a-fixed-token-size">Memory with a Fixed Token size</a></li>
-      <li><a href="#summary-in-the-memory" id="markdown-toc-summary-in-the-memory">Summary in the Memory</a></li>
-    </ul>
-  </li>
-  <li><a href="#chains-in-langchain" id="markdown-toc-chains-in-langchain">Chains in LangChain</a>    <ul>
-      <li><a href="#llmchain" id="markdown-toc-llmchain">LLMChain</a></li>
-      <li><a href="#simple-sequential-chain" id="markdown-toc-simple-sequential-chain">Simple Sequential Chain</a></li>
-      <li><a href="#sequential-chain" id="markdown-toc-sequential-chain">Sequential Chain</a></li>
-      <li><a href="#router-chain" id="markdown-toc-router-chain">Router Chain</a></li>
-    </ul>
-  </li>
-  <li><a href="#qa-for-documents" id="markdown-toc-qa-for-documents">QA for Documents</a>    <ul>
-      <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
-      <li><a href="#creating-the-vector-db" id="markdown-toc-creating-the-vector-db">Creating the Vector DB</a></li>
-      <li><a href="#generate-response-given-a-query" id="markdown-toc-generate-response-given-a-query">Generate response given a query</a></li>
-      <li><a href="#rag-step-by-step" id="markdown-toc-rag-step-by-step">RAG Step-by-Step</a>        <ul>
-          <li><a href="#load-the-documents" id="markdown-toc-load-the-documents">Load the Documents</a></li>
-          <li><a href="#create-the-vector-database" id="markdown-toc-create-the-vector-database">Create the Vector Database</a></li>
-          <li><a href="#generate-the-response" id="markdown-toc-generate-the-response">Generate the Response</a></li>
-        </ul>
-      </li>
-      <li><a href="#retrieval-qa-chain" id="markdown-toc-retrieval-qa-chain">Retrieval QA Chain</a></li>
-    </ul>
-  </li>
-  <li><a href="#retrievel-methods" id="markdown-toc-retrievel-methods">Retrievel Methods</a>    <ul>
-      <li><a href="#stuff" id="markdown-toc-stuff">Stuff</a></li>
-      <li><a href="#map-reduce" id="markdown-toc-map-reduce">Map Reduce</a></li>
-      <li><a href="#refine" id="markdown-toc-refine">Refine</a></li>
-      <li><a href="#map-rerank" id="markdown-toc-map-rerank">Map Rerank</a></li>
-    </ul>
-  </li>
-  <li><a href="#llm-evaluation" id="markdown-toc-llm-evaluation">LLM Evaluation</a>    <ul>
-      <li><a href="#general-instruction" id="markdown-toc-general-instruction">General Instruction</a></li>
-      <li><a href="#setting-up" id="markdown-toc-setting-up">Setting Up</a></li>
-      <li><a href="#creating-examples-manually" id="markdown-toc-creating-examples-manually">Creating Examples Manually</a></li>
-      <li><a href="#generating-examples-with-llms" id="markdown-toc-generating-examples-with-llms">Generating Examples with LLMs</a></li>
-      <li><a href="#manually-evaluate" id="markdown-toc-manually-evaluate">Manually Evaluate</a></li>
-      <li><a href="#llm-assisted-evaluation" id="markdown-toc-llm-assisted-evaluation">LLM assisted evaluation</a></li>
-      <li><a href="#debug" id="markdown-toc-debug">Debug</a></li>
-    </ul>
-  </li>
-  <li><a href="#agents" id="markdown-toc-agents">Agents</a>    <ul>
-      <li><a href="#creating-a-tool-calling-llm" id="markdown-toc-creating-a-tool-calling-llm">Creating a tool calling LLM</a>        <ul>
-          <li><a href="#detail-ollama-model" id="markdown-toc-detail-ollama-model">Detail: Ollama model</a></li>
-          <li><a href="#code" id="markdown-toc-code">Code</a></li>
-        </ul>
-      </li>
-      <li><a href="#creating-an-agent" id="markdown-toc-creating-an-agent">Creating an Agent</a></li>
-      <li><a href="#custom-tool" id="markdown-toc-custom-tool">Custom Tool</a></li>
-    </ul>
-  </li>
-</ul>
 
-<hr />
+        <details class="toc-mobile" data-pagefind-ignore data-no-comment>
+            <summary><span>On this page <span class="toc-count"></span></span></summary>
+            <div class="toc-body"></div>
+        </details>
+
+        <hr />
 
 <p>This is the notes that I took when walking through <a href="https://learn.deeplearning.ai/courses/langchain/lesson/1/introduction">this lecture</a>.</p>
 
@@ -1715,16 +1667,26 @@ Thought:{agent_scratchpad}
 </span><span class="sh">"""</span>
 </code></pre></div></div>
 
-        <div class="post-comments" data-post-comments="" data-post-slug="/code/2024/07/21/llm-langchain.html"></div>
+        <div class="post-comments" data-post-comments data-pagefind-ignore data-post-slug="/code/2024/07/21/llm-langchain.html"></div>
 
     </article>
-</div>
+</main>
 
-<script type="module" src="/assets/js/post.js?v=1794759302"></script>
+<script type="module" src="/assets/js/post.js?v=1794841786"></script>
 
+    <footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>&copy; 2026 Yushi Yang</p>
+    <nav aria-label="Footer">
+      <a href="/posts/">Posts</a>
+      <a href="/about/">About</a>
+      <a href="/feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
 
-
-
+    <script src="/assets/js/highlight.pack.js"></script>
+    <script>if (window.hljs) { hljs.initHighlightingOnLoad(); }</script>
+    <script type="module" src="/assets/js/copy-code.js?v=1794841786"></script>
   </body>
-
 </html>

@@ -16,6 +16,7 @@ const BUBBLE_ICON =
   '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
   '<path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" ' +
   'stroke-width="1.4" stroke-linejoin="round"/></svg>';
+const NO_COMMENT = "[data-no-comment], .quarto-title-block, .post-stats";
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -34,6 +35,11 @@ function dateLabel(value) {
     return "";
   }
   return new Intl.DateTimeFormat(undefined, { day: "numeric", month: "short" }).format(date);
+}
+
+function inNoComment(node) {
+  const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+  return element ? element.closest(NO_COMMENT) !== null : false;
 }
 
 function readPending(store, slug) {
@@ -243,6 +249,10 @@ export async function mountComments({ mount, slug, config, api, store, reader })
         orphans.push(item);
         continue;
       }
+      if (inNoComment(range.startContainer) || inNoComment(range.endContainer)) {
+        page.push(item);
+        continue;
+      }
       const key = [item.block_index, item.quote, item.prefix, item.suffix].join("\u0000");
       if (!groups.has(key)) {
         groups.set(key, { key, items: [], range });
@@ -365,6 +375,10 @@ export async function mountComments({ mount, slug, config, api, store, reader })
     }
     const range = selection.getRangeAt(0);
     if (!root.contains(range.commonAncestorContainer)) {
+      hideAdd();
+      return;
+    }
+    if (inNoComment(range.startContainer) || inNoComment(range.endContainer)) {
       hideAdd();
       return;
     }

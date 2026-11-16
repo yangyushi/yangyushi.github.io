@@ -3,6 +3,12 @@
   <url>
     <loc>https://yangyushi.github.io/</loc>
   </url>
+  <url>
+    <loc>https://yangyushi.github.io/posts/</loc>
+  </url>
+  <url>
+    <loc>https://yangyushi.github.io/about/</loc>
+  </url>
   
   <url>
     <loc>https://yangyushi.github.io/code/2024/07/21/llm-langchain.html</loc>
