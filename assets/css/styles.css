@@ -1144,6 +1144,73 @@ img {
   padding: 0;
 }
 
+/* Math: MathJax SVG written at build time (scripts/render_static_assets.mjs). */
+mjx-container[jax=SVG] {
+  display: inline;
+  direction: ltr;
+  line-height: 0;
+}
+
+mjx-container[jax=SVG][display=true] {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+}
+
+mjx-container[jax=SVG] > svg {
+  max-width: 100%;
+  height: auto;
+  min-width: 1px;
+  min-height: 1px;
+  overflow: visible;
+}
+
+mjx-container[jax=SVG] > svg a {
+  fill: var(--teal);
+  stroke: var(--teal);
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  display: block !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 1px 0 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* Diagrams: Mermaid rendered to SVG by Pele at build time. */
+.diagram {
+  margin: 1.75rem 0;
+}
+
+.diagram-wide {
+  display: block;
+}
+
+.diagram-narrow {
+  display: none;
+}
+
+.diagram svg {
+  display: block;
+  margin: 0 auto;
+  --pele-bg: transparent;
+  --pele-fg: var(--ink);
+  --pele-muted: var(--muted);
+  --pele-line: #5f7070;
+  --pele-surface: #f3f8f7;
+  --pele-surface-alt: #eaf2f1;
+  --pele-border: var(--line-strong);
+  --pele-accent: var(--teal);
+  --pele-radius: 4px;
+  --pele-font: var(--font-sans);
+}
+
 .footnotes {
   margin-top: 3rem;
   padding-top: 1rem;
@@ -1277,6 +1344,12 @@ img {
   }
   .bookmark-list {
     columns: 1;
+  }
+  .diagram-wide {
+    display: none;
+  }
+  .diagram-narrow {
+    display: block;
   }
 }
 @media (max-width: 560px) {
