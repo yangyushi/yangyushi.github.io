@@ -18,6 +18,152 @@
   --space-3: 1.25rem;
   --space-4: 2rem;
   --space-5: 3rem;
+  --header-h: 56px;
+}
+
+/* Site chrome */
+/* Quarto sets a 17px root, so any rem in this file would come out 6% larger in
+   a notebook and the header would visibly shift and grow when you move from a
+   post to a notebook. Pin the chrome to the site's 16px base instead: the
+   tokens are re-bound in em so they resolve against that base. */
+.site-header,
+.site-footer {
+  font-size: 16px;
+  line-height: 1.5;
+  --page: 56em;
+  --gutter: 1.25em;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  width: min(100% - 2 * var(--gutter), var(--page));
+  min-height: var(--header-h);
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--teal);
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--teal-dark);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.35em;
+  font-family: var(--font-mono);
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 0.82em;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current=page] {
+  color: var(--teal);
+}
+
+/* The header is sticky, so the skip link has to sit above it to stay usable. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  z-index: 40;
+  padding: 0.6rem 0.9rem;
+  background: #fff;
+  color: var(--teal-dark);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  outline: 2px solid var(--teal);
+}
+
+.site-footer {
+  margin-top: 3.5em;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75em 1.5em;
+  width: min(100% - 2 * var(--gutter), var(--page));
+  margin: 0 auto;
+  padding: 1.5em 0 2em;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.72em;
+}
+
+.site-footer nav {
+  display: flex;
+  gap: 1em;
+}
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 0.72em;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--teal);
+}
+
+@media (max-width: 560px) {
+  .site-nav {
+    gap: 0.9em;
+  }
+  .site-nav a {
+    font-size: 0.78em;
+  }
+}
+/* Quarto notebooks bring their own sticky table of contents on the right.
+   It has to start below the header instead of sliding under it. This selector
+   only matches the exported notebook pages. */
+#quarto-margin-sidebar {
+  top: var(--header-h);
+  max-height: calc(100vh - var(--header-h));
 }
 
 *,
@@ -32,6 +178,7 @@
 
 html {
   overflow-y: scroll;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -64,25 +211,6 @@ svg {
   outline: 2px solid var(--teal);
   outline-offset: 3px;
   border-radius: 2px;
-}
-
-.skip-link {
-  position: absolute;
-  top: 0;
-  left: -9999px;
-  z-index: 20;
-  padding: 0.6rem 0.9rem;
-  background: #fff;
-  color: var(--teal-dark);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  text-decoration: none;
-}
-
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  outline: 2px solid var(--teal);
 }
 
 .sr-only {
@@ -143,99 +271,6 @@ a {
 a:hover {
   color: var(--teal);
   text-decoration-color: currentColor;
-}
-
-/* Site chrome */
-.site-header {
-  border-bottom: 1px solid var(--line);
-  background: #fff;
-}
-
-.site-header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: min(100% - 2 * var(--gutter), var(--page));
-  margin: 0 auto;
-  padding: 1rem 0;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  color: var(--teal);
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-}
-
-.brand:hover {
-  color: var(--teal-dark);
-}
-
-.site-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.35rem;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-}
-
-.site-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.site-nav a:hover,
-.site-nav a[aria-current=page] {
-  color: var(--teal);
-}
-
-.site-footer {
-  margin-top: 3.5rem;
-  border-top: 1px solid var(--line);
-}
-
-.site-footer-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  width: min(100% - 2 * var(--gutter), var(--page));
-  margin: 0 auto;
-  padding: 1.5rem 0 2rem;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-
-.site-footer p {
-  margin: 0;
-}
-
-.site-footer nav {
-  display: flex;
-  gap: 1rem;
-}
-
-.site-footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.site-footer a:hover {
-  color: var(--teal);
 }
 
 /* Home */
@@ -711,8 +746,8 @@ a:hover {
 
 #side_bar {
   position: sticky;
-  top: 1.5rem;
-  max-height: calc(100vh - 3rem);
+  top: calc(var(--header-h) + 1rem);
+  max-height: calc(100vh - var(--header-h) - 2rem);
   overflow: auto;
   padding: 0 0 1rem;
   background: #fff;
@@ -955,7 +990,6 @@ a:hover {
   margin: 2.4em 0 0.7em;
   font-size: 1.42rem;
   line-height: 1.3;
-  scroll-margin-top: 1.5rem;
 }
 
 .post h2:before {
@@ -969,7 +1003,6 @@ a:hover {
 .post h3 {
   margin: 2em 0 0.5em;
   font-size: 1.16rem;
-  scroll-margin-top: 1.5rem;
 }
 
 .post h4 {
@@ -1328,9 +1361,6 @@ mjx-assistive-mml {
   }
 }
 @media (max-width: 640px) {
-  .site-header-inner {
-    padding: 0.9rem 0;
-  }
   .home,
   .page {
     margin-top: 2rem;
@@ -1353,14 +1383,10 @@ mjx-assistive-mml {
   }
 }
 @media (max-width: 560px) {
+  /* The header stays on one row: it is sticky, so a stacked header would
+     eat a third of a phone screen. */
   .site-header-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.55rem;
-  }
-  .site-nav {
-    gap: 1rem;
-    font-size: 0.78rem;
+    gap: 0.75rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

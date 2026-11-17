@@ -1,0 +1,168 @@
+:root {
+  --ink: #2b2f33;
+  --muted: #5c6969;
+  --teal: #008080;
+  --teal-dark: #006666;
+  --teal-soft: #edf6f5;
+  --line: #e3e8e8;
+  --line-strong: #cfdada;
+  --bg-soft: #fafcfc;
+  --page: 56rem;
+  --reading: 72ch;
+  --gutter: 1.25rem;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --space-1: 0.4rem;
+  --space-2: 0.75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --header-h: 56px;
+}
+
+/* Site chrome */
+/* Quarto sets a 17px root, so any rem in this file would come out 6% larger in
+   a notebook and the header would visibly shift and grow when you move from a
+   post to a notebook. Pin the chrome to the site's 16px base instead: the
+   tokens are re-bound in em so they resolve against that base. */
+.site-header,
+.site-footer {
+  font-size: 16px;
+  line-height: 1.5;
+  --page: 56em;
+  --gutter: 1.25em;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  width: min(100% - 2 * var(--gutter), var(--page));
+  min-height: var(--header-h);
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--teal);
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--teal-dark);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.35em;
+  font-family: var(--font-mono);
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 0.82em;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current=page] {
+  color: var(--teal);
+}
+
+/* The header is sticky, so the skip link has to sit above it to stay usable. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  z-index: 40;
+  padding: 0.6rem 0.9rem;
+  background: #fff;
+  color: var(--teal-dark);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  outline: 2px solid var(--teal);
+}
+
+.site-footer {
+  margin-top: 3.5em;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75em 1.5em;
+  width: min(100% - 2 * var(--gutter), var(--page));
+  margin: 0 auto;
+  padding: 1.5em 0 2em;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.72em;
+}
+
+.site-footer nav {
+  display: flex;
+  gap: 1em;
+}
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 0.72em;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--teal);
+}
+
+@media (max-width: 560px) {
+  .site-nav {
+    gap: 0.9em;
+  }
+  .site-nav a {
+    font-size: 0.78em;
+  }
+}
+/* Quarto notebooks bring their own sticky table of contents on the right.
+   It has to start below the header instead of sliding under it. This selector
+   only matches the exported notebook pages. */
+#quarto-margin-sidebar {
+  top: var(--header-h);
+  max-height: calc(100vh - var(--header-h));
+}
+
+/*# sourceMappingURL=chrome.css.map */
